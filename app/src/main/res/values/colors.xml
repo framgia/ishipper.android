@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#52c61d</color>
+    <color name="colorPrimaryDark">#61a11e</color>
+    <color name="colorAccent">#61a11e</color>
+
+    <color name="colorGreen">#44b610</color>
+    <color name="colorGreenDark">#72c125</color>
+    <color name="blue">#2e97cc</color>
+    <color name="white">#fff</color>
+    <color name="back_ground_grey">#ffeeeeee</color>
+    <color name="grey_DA_lightest">#ffc3c3c3</color>
+    <color name="fiveship_list_background">#ffebebeb</color>
+    <color name="fiveship_bg_dim_color">#66000000</color>
+    <color name="menu_divider">#ffd6d8d7</color>
+    <color name="fiveship_common_text">#ff3f454f</color>
+    <color name="grey_DA_light">#ffadadad</color>
+    <color name="black_80">#7f000000</color>
+    <color name="light_gray">#e1e1e1</color>
+    <color name="button_clean_background">#f9f9f9</color>
+    <color name="button_stroke_clean">#ebebeb</color>
+    <color name="btn_normal_background">#f9f9f9</color>
+    <color name="color_status_pick">#ff7200</color>
+    <color name="color_status_shipping">#72c125</color>
+    <color name="drawable_tint">#bdbdbd</color>
+    <color name="bg_edt_create_order_step2">#dcffffff</color>
+    <color name="back_ground_light_grey">#f1f1f1</color>
+    <color name="color_status_cancelled">#394b54</color>
+    <color name="color_status_waiting">#999999</color>
+    <color name="color_status_delivered">#6258c6</color>
+    <color name="color_status_finish">#28a277</color>
+</resources>

@@ -1,0 +1,41 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="text_size_button">16sp</dimen>
+    <dimen name="text_size_content">14sp</dimen>
+    <dimen name="text_size_content_plus">16sp</dimen>
+    <dimen name="_3dp">3dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+
+    <dimen name="nav_contact_icon_width">90dp</dimen>
+    <dimen name="nav_contact_icon_height">90dp</dimen>
+    <dimen name="nav_contact_icon_margin">16dp</dimen>
+    <dimen name="nav_header_text_size">16sp</dimen>
+    <dimen name="nav_drawer_width">300dp</dimen>
+    <dimen name="nav_drawer_height">200dp</dimen>
+    <dimen name="nav_header_bg_height">250dp</dimen>
+
+    <dimen name="dot_layout_margin_left">8dp</dimen>
+    <dimen name="dot_repeat_width">3dp</dimen>
+    <dimen name="_15dp">15dp</dimen>
+    <dimen name="_20dp">20dp</dimen>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_30dp">30dp</dimen>
+    <dimen name="_50dp">50dp</dimen>
+    <dimen name="fragment_shipping_desc_height">80dp</dimen>
+    <dimen name="button_accept_shipper_width">250dp</dimen>
+    <dimen name="text_size_tiny_material">10sp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+
+    <dimen name="text_view_margin">10dp</dimen>
+    <dimen name="button_edge_radius">3dp</dimen>
+    <dimen name="button_stroke_size">1dp</dimen>
+    <dimen name="nav_header_icon_margin_top">35dp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
+</resources>
