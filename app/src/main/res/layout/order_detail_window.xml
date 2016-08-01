@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/window_order_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:background="@color/white"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_order_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_shipping_order_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_car_green"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="Đang giao hàng"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/ll_shop_order_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/_10dp"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/_10dp">
+
+                <TextView
+                    android:id="@+id/tv_item_order_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_order_green"
+                    android:drawablePadding="10dp"
+                    android:gravity="bottom"
+                    android:text="Rhodi Shop"
+                    android:visibility="visible" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    style="?android:ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="3.5" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f0f0f0" />
+
+        <LinearLayout
+            android:id="@+id/action_detail_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10dp">
+
+            <LinearLayout
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/all_ship_price"
+                        android:textAllCaps="true"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_item_order_ship_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="40K"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_detail_promotion_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="2dp"
+                            android:src="@drawable/ic_promotion_label"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/menu_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_detail_from" />
+
+                        <View
+                            android:layout_width="2dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1.0"
+                            android:background="@drawable/dot_repeate_img" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_item_order_from"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="13dp"
+                        android:drawablePadding="15dp"
+                        android:text="Minh khai ha noi"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/delivery_to_address_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_detail_to" />
+
+                    <TextView
+                        android:id="@+id/tv_item_order_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="13 Nam Du" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="0dp"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/order_detail_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_distance" />
+
+                <TextView
+                    android:id="@+id/tv_item_order_distance"
+                    style="@style/order_detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2 KM" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="0dp">
+
+                <TextView
+                    style="@style/order_detail_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/all_ship_time" />
+
+                <TextView
+                    android:id="@+id/tv_item_order_ship_time"
+                    style="@style/order_detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="13 year ago" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="0dp">
+
+                <TextView
+                    style="@style/order_detail_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_order_price" />
+
+                <TextView
+                    android:id="@+id/tv_item_order_price"
+                    style="@style/order_detail_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="150K" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10dp">
+
+            <TextView
+                android:id="@+id/btn_item_order_show_path"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_clean_radius_background"
+                android:text="@string/all_show_path"
+                android:textColor="#959595"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/btn_item_order_register_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_assign_accept_selector"
+                android:text="@string/all_register_order"
+                android:textColor="@drawable/title_order_accept_selector"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/action_cancel_accept_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_green_radius_background"
+                android:text="@string/all_cancel_receive_order"
+                android:textColor="@drawable/title_order_accept_selector"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/action_call_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_clean_radius_background"
+                android:text="@string/all_call_order"
+                android:textColor="#959595"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/action_receive_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_green_radius_background"
+                android:text="@string/all_receive_order"
+                android:textColor="@drawable/title_order_accept_selector"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/btn_nearby_done_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_green_radius_background"
+                android:text="@string/all_done_order"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/btn_cancel_item_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_clean_radius_background"
+                android:text="@string/cancelled"
+                android:textColor="#959595"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/btn_action_item_order"
+                style="@style/ButtonShippingOrderAct"
+                android:background="@drawable/btn_assign_accept_selector"
+                android:text="@string/action_shipper_take"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

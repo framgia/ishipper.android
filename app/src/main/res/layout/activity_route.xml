@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.framgia.ishipper.ui.activity.RouteActivity">
+
+    <include
+        android:id="@+id/layoutToolbar"
+        layout="@layout/toolbar"/>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutToolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutToolbar"
+        android:layout_margin="@dimen/_10dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/_5dp"
+                android:src="@drawable/ic_status_pick"/>
+
+            <TextView
+                android:id="@+id/shipping_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:text="Minh Khai, Hanoi"
+                android:textSize="@dimen/text_size_content_plus"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/_5dp"
+            android:layout_marginTop="@dimen/_5dp"
+            android:background="@color/menu_divider"/>
+
+        <LinearLayout
+            android:id="@+id/delivery_to_address_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/_5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_status_delivering"/>
+
+            <TextView
+                android:id="@+id/orderEndAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:text="13 Nam Dư, Lĩnh Nam"
+                android:textSize="@dimen/text_size_content_plus"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
