@@ -21,18 +21,23 @@ public class LoginActivity extends AppCompatActivity {
         getConfig();
     }
 
-    @OnClick({R.id.btnShop, R.id.btnShipper})
+    @OnClick({R.id.btnShop, R.id.btnShipper, R.id.btnRegister})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnShop:
                 MainActivity.userType = MainActivity.SHOP;
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
             case R.id.btnShipper:
                 MainActivity.userType = MainActivity.SHIPPER;
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
+            case R.id.btnRegister:
+                startActivity(new Intent(this, RegisterActivity.class));
         }
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+
     }
 
     private void getConfig() {

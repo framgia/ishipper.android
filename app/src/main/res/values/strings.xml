@@ -103,7 +103,7 @@
     <string name="all_order_name">Tên đơn hàng</string>
     <string name="all_note">Ghi chú</string>
     <string name="all_shop_name">Tên cửa hàng</string>
-    <string name="all_phone_number">Số điện thoại</string>
+    <string name="all_phone_number">Di động</string>
     <string name="all_shop_fb">Facebook</string>
     <string name="detail_shop_infor"><u>Thông tin shop</u></string>
     <string name="detail_customer_infor"><u>Thông tin khách hàng</u></string>
@@ -130,4 +130,10 @@
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng kí</string>
     <string name="forgot_pass">Quên mật khẩu</string>
+    <string name="email">Email</string>
+    <string name="name">Họ tên</string>
+    <string name="plate">Biển số xe</string>
+    <string name="name_shop">Tên shop</string>
+    <string name="all_phone_sample">0976 990 043</string>
+    <string name="all_plate_sample">30K1 56789</string>
 </resources>
