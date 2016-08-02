@@ -8,6 +8,7 @@
     <color name="colorGreenDark">#72c125</color>
     <color name="blue">#2e97cc</color>
     <color name="white">#fff</color>
+    <color name="gray">#bdbab4</color>
     <color name="back_ground_grey">#ffeeeeee</color>
     <color name="grey_DA_lightest">#ffc3c3c3</color>
     <color name="fiveship_list_background">#ffebebeb</color>
@@ -16,6 +17,7 @@
     <color name="fiveship_common_text">#ff3f454f</color>
     <color name="grey_DA_light">#ffadadad</color>
     <color name="black_80">#7f000000</color>
+    <color name="black_20">#33000000</color>
     <color name="light_gray">#e1e1e1</color>
     <color name="button_clean_background">#f9f9f9</color>
     <color name="button_stroke_clean">#ebebeb</color>

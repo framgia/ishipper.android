@@ -125,4 +125,9 @@
     <string name="all_shipper_call">Gọi cho shipper</string>
     <string name="accept">CHẤP NHẬN</string>
     <string name="verified">Đã xác nhận</string>
+    <string name="username_login">Số điện thoại</string>
+    <string name="pass_login">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng kí</string>
+    <string name="forgot_pass">Quên mật khẩu</string>
 </resources>
