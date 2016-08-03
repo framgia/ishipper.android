@@ -148,4 +148,11 @@
     <string name="next">Tiếp</string>
     <string name="resent_validate_sms">Gửi lại tin nhắn</string>
     <string name="message_phone_validate_sent">Chúng tôi vừa gửi một mã xác nhận tới số điện thoại của bạn. Vui lòng nhập mã xác nhận tới số 0976990043.</string>
+    <string name="profile_user_name">Họ và tên (*)</string>
+    <string name="profile_plate">Biển số xe</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_phone">Số điện thoại</string>
+    <string name="profile_address">Địa chỉ</string>
+    <string name="user_profile_title">Thông tin tài khoản</string>
+    <string name="all_update">CẬP NHẬT</string>
 </resources>

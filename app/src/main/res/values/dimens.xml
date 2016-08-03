@@ -72,5 +72,11 @@
     <dimen name="fragment_phone_validate_text_size">44sp</dimen>
 
     <dimen name="background_shadow_size">0.5dp</dimen>
-
+    <dimen name="tv_drawable_padding">10dp</dimen>
+    <dimen name="title_profile_margin_bottom">-50dp</dimen>
+    <dimen name="img_profile_width">120dp</dimen>
+    <dimen name="img_profile_height">120dp</dimen>
+    <dimen name="tv_profile_name_margin_bottom">25dp</dimen>
+    <dimen name="cardview_margin">6dp</dimen>
+    <dimen name="linear_profile_padding">10dp</dimen>
 </resources>

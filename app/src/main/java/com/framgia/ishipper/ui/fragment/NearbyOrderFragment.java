@@ -304,4 +304,5 @@ public class NearbyOrderFragment extends Fragment implements
             addMarkerToMap();
         }
     }
+
 }
