@@ -28,11 +28,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mypopsy.widget.FloatingSearchView;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -52,8 +50,6 @@ public class NearbyShipperFragment extends Fragment implements
     private GoogleMap mGoogleMap;
     private ArrayList<Shipper> shippers = new ArrayList<>();
     private SupportMapFragment mMapFragment;
-    @BindView(R.id.search_nearby_shipper)
-    FloatingSearchView searchNearbyShipper;
 
     public NearbyShipperFragment() {
 

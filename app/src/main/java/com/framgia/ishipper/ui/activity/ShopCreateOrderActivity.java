@@ -26,7 +26,10 @@ public class ShopCreateOrderActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        addFragment(new ShopCreateOrderStep1Fragment());
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new ShopCreateOrderStep1Fragment())
+                .commit();
 
     }
 

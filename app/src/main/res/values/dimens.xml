@@ -11,13 +11,13 @@
     <dimen name="padding_4">4dp</dimen>
 
     <!--Navigation-->
-    <dimen name="nav_contact_icon_width">90dp</dimen>
-    <dimen name="nav_contact_icon_height">90dp</dimen>
+    <dimen name="nav_contact_icon_width">100dp</dimen>
+    <dimen name="nav_contact_icon_height">100dp</dimen>
     <dimen name="nav_contact_icon_margin">16dp</dimen>
     <dimen name="nav_header_text_size">16sp</dimen>
     <dimen name="nav_drawer_width">300dp</dimen>
     <dimen name="nav_drawer_height">200dp</dimen>
-    <dimen name="nav_header_bg_height">250dp</dimen>
+    <dimen name="nav_header_bg_height">100dp</dimen>
 
     <dimen name="dot_layout_margin_left">8dp</dimen>
     <dimen name="dot_repeat_width">3dp</dimen>
@@ -64,5 +64,10 @@
     <dimen name="all_padding_medium">10dp</dimen>
     <dimen name="all_padding_small">5dp</dimen>
     <dimen name="register_bg_radius">7dp</dimen>
+    <dimen name="nav_contact_icon_border_width">3dp</dimen>
+    <dimen name="searchview_text_size">10sp</dimen>
+    <dimen name="searchview_margin">10dp</dimen>
+    <dimen name="searchview_padding">5dp</dimen>
 
+    <item name="background_shadow_size" type="dimen" format="float">0.5dp</item>
 </resources>
