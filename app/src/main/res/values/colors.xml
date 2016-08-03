@@ -23,6 +23,7 @@
     <color name="button_stroke_clean">#ebebeb</color>
     <color name="btn_normal_background">#f9f9f9</color>
     <color name="color_status_pick">#ff7200</color>
+    <color name="orange">#ff7200</color>
     <color name="color_status_shipping">#72c125</color>
     <color name="drawable_tint">#bdbdbd</color>
     <color name="bg_edt_create_order_step2">#dcffffff</color>
@@ -31,4 +32,5 @@
     <color name="color_status_waiting">#999999</color>
     <color name="color_status_delivered">#6258c6</color>
     <color name="color_status_finish">#28a277</color>
+    <color name="transparent">#00000000</color>
 </resources>

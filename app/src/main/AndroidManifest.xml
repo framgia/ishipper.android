@@ -40,6 +40,8 @@
         <activity android:name=".ui.activity.RouteActivity"/>
         <activity android:name=".ui.activity.ShopCreateOrderActivity">
         </activity>
+        <activity android:name=".ui.activity.RegisterActivity">
+        </activity>
     </application>
 
 </manifest>
