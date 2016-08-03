@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_shipper_main_group"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_nearby_order"
             android:icon="@drawable/ic_near_me_black_24dp"
-            android:title="@string/nav_nearby_order_item" />
+            android:title="@string/nav_nearby_order_item"/>
         <item
             android:id="@+id/nav_fb_order"
             android:icon="@drawable/ic_facebook_logo"
-            android:title="@string/nav_fb_order_item" />
+            android:title="@string/nav_fb_order_item"/>
         <item
             android:id="@+id/nav_order_management"
             android:icon="@drawable/ic_order_management"
-            android:title="@string/nav_order_management_item" />
+            android:title="@string/nav_order_management_item"/>
+    </group>
+    <group
+        android:id="@+id/nav_shipper_infor_group"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_rate_us"
             android:icon="@drawable/ic_rate_review_black_24dp"
-            android:title="@string/nav_rate_us_item" />
+            android:title="@string/nav_rate_us_item"/>
         <item
             android:id="@+id/nav_information"
             android:icon="@drawable/ic_info_black_24dp"
-            android:title="@string/nav_inform_item" />
+            android:title="@string/nav_inform_item"/>
+    </group>
+    <group
+        android:id="@+id/nav_shipper_tool_group"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="@string/nav_sign_out_item" />
+            android:title="@string/nav_sign_out_item"/>
     </group>
 </menu>

@@ -136,4 +136,8 @@
     <string name="name_shop">Tên shop</string>
     <string name="all_phone_sample">0976 990 043</string>
     <string name="all_plate_sample">30K1 56789</string>
+    <string name="all_search_area">Khu vực tìm kiếm</string>
+    <string name="nav_order_total">Tổng đơn:</string>
+    <string name="nav_success_order">Đơn thành công:</string>
+    <string name="all_address_sample">Nguyễn Khoái, Hoàng Mai, Hà Nội</string>
 </resources>
