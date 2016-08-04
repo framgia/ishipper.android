@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Order;
@@ -18,12 +19,14 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements OrderListFragment.OnListFragmentInteractionListener {
+    private static final String TAG = "MainActivity";
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.main_navigation) NavigationView mNavigationView;
     @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
@@ -62,6 +65,14 @@ public class MainActivity extends AppCompatActivity
                 R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        View view = mNavigationView.getHeaderView(0);
+        CircularImageView imageView = (CircularImageView) view.findViewById(R.id.nav_user_icon);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getBaseContext(), UserProfileActivity.class));
+            }
+        });
 
     }
 

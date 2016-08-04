@@ -42,6 +42,6 @@
         <activity android:name=".ui.activity.ShopCreateOrderActivity"/>
         <activity android:name=".ui.activity.RegisterActivity"/>
         <activity android:name=".ui.activity.ForgetPasswordActivity"/>
+        <activity android:name=".ui.activity.UserProfileActivity"/>
     </application>
-
 </manifest>

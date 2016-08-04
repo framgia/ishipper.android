@@ -12,6 +12,7 @@
         android:scaleType="centerCrop"/>
 
     <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/nav_user_icon"
         android:layout_width="@dimen/nav_contact_icon_width"
         android:layout_height="@dimen/nav_contact_icon_height"
         android:layout_marginLeft="@dimen/nav_contact_icon_margin"
