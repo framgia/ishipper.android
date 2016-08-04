@@ -76,6 +76,19 @@
                 android:inputType="textPassword"/>
 
             <TextView
+                style="@style/AppLabelTitle"
+                android:layout_marginTop="@dimen/all_margin_medium"
+                android:text="@string/password_confirm"/>
+
+            <EditText
+                android:id="@+id/edtPasswordRegisterConfirm"
+                style="@style/AppTextFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/all_margin_small"
+                android:inputType="textPassword"/>
+
+            <TextView
                 android:id="@+id/tvTitleName"
                 style="@style/AppLabelTitle"
                 android:layout_width="match_parent"

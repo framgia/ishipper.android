@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
         getConfig();
     }
 
-    @OnClick({R.id.btnShop, R.id.btnShipper, R.id.btnRegister})
+    @OnClick({R.id.btnShop, R.id.btnShipper, R.id.btnRegister, R.id.btnForgotPass})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnShop:
@@ -36,6 +36,9 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.btnRegister:
                 startActivity(new Intent(this, RegisterActivity.class));
+                break;
+            case R.id.btnForgotPass:
+                startActivity(new Intent(this, ForgetPasswordActivity.class));
         }
 
     }

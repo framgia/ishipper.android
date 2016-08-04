@@ -68,6 +68,9 @@
     <dimen name="searchview_text_size">10sp</dimen>
     <dimen name="searchview_margin">10dp</dimen>
     <dimen name="searchview_padding">5dp</dimen>
+    <dimen name="all_layout_margin_regular">16dp</dimen>
+    <dimen name="fragment_phone_validate_text_size">44sp</dimen>
 
-    <item name="background_shadow_size" type="dimen" format="float">0.5dp</item>
+    <dimen name="background_shadow_size">0.5dp</dimen>
+
 </resources>
