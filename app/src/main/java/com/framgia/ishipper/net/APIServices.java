@@ -1,9 +1,12 @@
 package com.framgia.ishipper.net;
 
+import com.framgia.ishipper.server.RegisterResponse;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -18,5 +21,8 @@ public interface APIServices {
             @FieldMap Map<String, String> params
     );
 
+    @FormUrlEncoded
+    @POST(APIDefinition.RegisterUser.PATH)
+    Call<APIResponse<RegisterResponse>> signupUser(@FieldMap Map<String, String> userParams);
 
 }

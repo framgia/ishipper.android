@@ -5,11 +5,9 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by vuduychuong1994 on 8/4/16.
  */
-public class UserResponse extends Response {
+public class RegisterResponse {
 
-
-    @SerializedName("data")
-    private User mUser;
+    @SerializedName("user") private User mUser;
 
     public User getUser() {
         return mUser;

@@ -7,8 +7,18 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "192.168.1.21";
+    private static final String DEV_URL = "http://192.168.1.21:3001";
     private static final String PROD_URL = "";
+
+    public static class RegisterUser {
+        public static final String PATH = "/api/sign_up/";
+        public static final String USER_PHONE_NUMBER = "user[phone_number]";
+        public static final String USER_PASSWORD = "user[password]";
+        public static final String USER_PASSWORD_CONFIRMATION = "user[password_confirmation]";
+        public static final String USER_PLATE_NUMBER = "user[plate_number]";
+        public static final String USER_ROLE = "user[role]";
+        public static final String USER_NAME = "user[name]";
+    }
 
     public static class PutUpdateProfile {
         public static final String TAG = "Update Profile";
