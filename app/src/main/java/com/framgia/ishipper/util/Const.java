@@ -4,6 +4,7 @@ package com.framgia.ishipper.util;
  */
 public class Const {
 
+    public static final String DEBUG_TAG = "iShipper Debug";
 
     public static final String SERVER_URL = "http://192.168.1.135:3001/";
     public static final String SIGNUP_PATH = "api/sign_up/";
