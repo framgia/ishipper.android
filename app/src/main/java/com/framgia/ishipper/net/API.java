@@ -188,6 +188,52 @@ public abstract class API {
                 callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
+
+    /* Get shipper nearby */
+    public static void getShipperNearby(String token,
+                                        Map<String, String> userParams,
+                                        final APICallback<APIResponse<ShipperNearbyResponse>> callback) {
+        client.getShipperNearby(token, userParams).enqueue(
+                new Callback<APIResponse<ShipperNearbyResponse>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<ShipperNearbyResponse>> call,
+                                           Response<APIResponse<ShipperNearbyResponse>> response) {
+
+                        if (response.body().isSuccess()) {
+                            callback.onResponse(response.body());
+                        } else {
+                            callback.onFailure(response.body().getCode(),
+                                               response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<ShipperNearbyResponse>> call,
+                                          Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
     }
 
+    /* Get Invoice nearby */
+    public static void getInvoiceNearby(String token, Map<String, String> userParams,
+                                        final APICallback<APIResponse<GetInvoiceResponse>> callback) {
+        client.getInvoices(token, userParams).enqueue(
+                new Callback<APIResponse<GetInvoiceResponse>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<GetInvoiceResponse>> call,
+                                           Response<APIResponse<GetInvoiceResponse>> response) {
+                        if (response.body().isSuccess()) {
+                            callback.onResponse(response.body());
+                        } else {
+                            callback.onFailure(response.body().getCode(), response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<GetInvoiceResponse>> call, Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
+    }
 }
