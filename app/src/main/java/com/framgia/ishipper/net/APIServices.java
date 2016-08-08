@@ -1,17 +1,20 @@
 package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.server.RegisterResponse;
-
+import com.framgia.ishipper.server.ShipperNearbyResponse;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by HungNT on 8/5/16.
@@ -54,4 +57,13 @@ public interface APIServices {
     @FormUrlEncoded
     @POST(APIDefinition.SignIn.PATH)
     Call<APIResponse<APIResponse.SignInResponse>> signIn( @FieldMap Map<String, String> params);
+
+    /* Get Shipper nearby */
+    @GET(APIDefinition.GetShipperNearby.PATH)
+    Call<APIResponse<ShipperNearbyResponse>> getShipperNearby(
+            @Header(APIDefinition.GetShipperNearby.HEADER_AUTHORIZE) String token,
+            @QueryMap Map<String, String> userParams);
+
+
+
 }
