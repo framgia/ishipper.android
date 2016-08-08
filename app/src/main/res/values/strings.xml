@@ -155,4 +155,5 @@
     <string name="profile_address">Địa chỉ</string>
     <string name="user_profile_title">Thông tin tài khoản</string>
     <string name="all_update">CẬP NHẬT</string>
+    <string name="register_success">Đăng ký thành công</string>
 </resources>

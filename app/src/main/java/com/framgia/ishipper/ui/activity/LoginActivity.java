@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.framgia.ishipper.Config;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.btnRegister:
                 startActivity(new Intent(this, RegisterActivity.class));
+                finish();
                 break;
             case R.id.btnForgotPass:
                 startActivity(new Intent(this, ForgetPasswordActivity.class));
