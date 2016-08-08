@@ -6,7 +6,7 @@ import android.location.Geocoder;
 
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
-import com.framgia.ishipper.Config;
+import com.framgia.ishipper.common.Config;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
