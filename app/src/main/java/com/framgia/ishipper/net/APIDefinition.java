@@ -43,6 +43,7 @@ public class APIDefinition {
         public static final String PATH = "/api/password";
         public static final String HEADER_AUTHORIZE = "Authorization";
         public static final String PARAM_PHONE_NUMBER = "user[phone_number]";
+        public static final String PARAM_CURRENT_PASSWORD = "user[current_password]";
         public static final String PARAM_PASSWORD = "user[password]";
         public static final String PARAM_PASSWORD_CONFIRMATION = "user[password_confirmation]";
     }

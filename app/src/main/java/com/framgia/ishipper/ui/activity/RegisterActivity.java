@@ -9,14 +9,17 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.server.RegisterResponse;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -83,7 +86,8 @@ public class RegisterActivity extends ToolbarActivity {
             @Override
             public void onResponse(APIResponse<RegisterResponse> response) {
                 Toast.makeText(RegisterActivity.this, R.string.register_success,
-                               Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();
+                LoginActivity.sUser = response.getData().getUser();
                 Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
