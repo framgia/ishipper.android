@@ -147,7 +147,7 @@
     <string name="input_your_number">Nhập số điện thoại của bạn</string>
     <string name="next">Tiếp</string>
     <string name="resent_validate_sms">Gửi lại tin nhắn</string>
-    <string name="message_phone_validate_sent">Chúng tôi vừa gửi một mã xác nhận tới số điện thoại của bạn. Vui lòng nhập mã xác nhận tới số 0976990043.</string>
+    <string name="message_phone_validate_sent">Chúng tôi vừa gửi một mã xác nhận tới số điện thoại của bạn. Vui lòng nhập mã xác nhận tới số %1$s.</string>
     <string name="profile_user_name">Họ và tên (*)</string>
     <string name="profile_plate">Biển số xe</string>
     <string name="profile_email">Email</string>
@@ -156,8 +156,12 @@
     <string name="user_profile_title">Thông tin tài khoản</string>
     <string name="all_update">CẬP NHẬT</string>
     <string name="register_success">Đăng ký thành công</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="reenter_password">Nhập lại mật khẩu</string>
+    <string name="change_password">Đổi mật khẩu</string>
     <string name="profile_change_password"><u>Thay đổi mật khẩu</u></string>
     <string name="all_reset_password">đổi mật khẩu</string>
     <string name="all_new_password">Mật khẩu mới</string>
     <string name="title_activity_change_password">Thay đổi mật khẩu</string>
+    <string name="error_empty_string">Khong Duoc De Trong</string>
 </resources>

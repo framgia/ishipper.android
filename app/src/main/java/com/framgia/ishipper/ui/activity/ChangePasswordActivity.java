@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.fragment.ChangePasswordFragment;
-import com.framgia.ishipper.ui.fragment.ValidatePhoneFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

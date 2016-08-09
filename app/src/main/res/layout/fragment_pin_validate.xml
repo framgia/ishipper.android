@@ -28,10 +28,10 @@
             android:layout_marginRight="@dimen/all_margin_large"
             android:layout_marginTop="@dimen/all_margin_small"
             android:gravity="center"
-            android:inputType="phone"
             android:textSize="@dimen/fragment_phone_validate_text_size"/>
 
         <TextView
+            android:id="@+id/tvDetailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/all_margin_large"
