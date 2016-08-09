@@ -22,29 +22,36 @@ interface APIError {
 
 }
 
-public abstract class APIResponse<T> {
+public class APIResponse<T> {
     private static final String TAG = "APIResponse";
 
     public boolean success;
 
+    public APIResponse(int code, String message, T data) {
+        mCode = code;
+        mMessage = message;
+        mData = data;
+    }
 
     @SerializedName("code")
-    private int mCode;
+    protected int mCode;
 
     @SerializedName("message")
-    private String mMessage;
+    protected String mMessage;
 
     @SerializedName("data")
-    private T mData;
+    protected T mData;
 
+    public boolean isSuccess() {
+        return mCode == 1;
+    }
     public static class PutUpdateProfileResponse extends APIResponse {
 
         public User user;
 
-    }
-
-    public boolean isSuccess() {
-        return success;
+        public PutUpdateProfileResponse(int code, String message, Object data) {
+            super(code, message, data);
+        }
     }
 
     public void setSuccess(boolean success) {
@@ -73,5 +80,17 @@ public abstract class APIResponse<T> {
 
     public void setData(T data) {
         mData = data;
+    }
+
+    public class ChangePasswordResponse {
+        private User user;
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
     }
 }

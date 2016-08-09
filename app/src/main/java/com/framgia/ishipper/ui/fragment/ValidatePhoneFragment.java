@@ -15,8 +15,7 @@ public class ValidatePhoneFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_phone_validate, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_pin_validate, container, false);
         return view;
     }
 }

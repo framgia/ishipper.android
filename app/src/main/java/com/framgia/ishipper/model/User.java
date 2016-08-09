@@ -24,7 +24,7 @@ public class User {
 
     @SerializedName("plate_number") private String mPlateNumber;
 
-    @SerializedName("status") private int mStatus;
+    @SerializedName("status") private String mStatus;
 
     @SerializedName("role") private String mRole;
 
@@ -99,11 +99,11 @@ public class User {
         mPlateNumber = plateNumber;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return mStatus;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         mStatus = status;
     }
 

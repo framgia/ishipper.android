@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://192.168.1.21:3001";
+    private static final String DEV_URL = "http://192.168.1.149:3001";
     private static final String PROD_URL = "";
 
     public static class RegisterUser {
@@ -37,6 +37,14 @@ public class APIDefinition {
     public static class ForgotPassword {
         public static final String TAG = "Forgot Password";
         public static final String PATH = "";
+    }
+    public static class ChangePassword{
+        private static final String TAG = "ChangePassword";
+        public static final String PATH = "/api/password";
+        public static final String HEADER_AUTHORIZE = "Authorization";
+        public static final String PARAM_PHONE_NUMBER = "user[phone_number]";
+        public static final String PARAM_PASSWORD = "user[password]";
+        public static final String PARAM_PASSWORD_CONFIRMATION = "user[password_confirmation]";
     }
 
     public static String getBaseUrl() {

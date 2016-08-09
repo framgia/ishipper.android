@@ -43,5 +43,8 @@
         <activity android:name=".ui.activity.RegisterActivity"/>
         <activity android:name=".ui.activity.ForgetPasswordActivity"/>
         <activity android:name=".ui.activity.UserProfileActivity"/>
+        <activity android:name=".ui.activity.ChangePasswordActivity">
+        </activity>
     </application>
+
 </manifest>
