@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/all_padding_medium"
-            android:text="@string/pass_login"
+            android:text="@string/all_password"
             android:textSize="@dimen/text_size_title"
             android:textStyle="bold"/>
 

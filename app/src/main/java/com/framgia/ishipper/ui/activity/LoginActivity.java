@@ -7,11 +7,13 @@ import android.view.View;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.User;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
+    public static User sUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

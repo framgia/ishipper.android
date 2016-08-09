@@ -38,6 +38,7 @@
 
     <!--Activity Login-->
     <dimen name="activity_login_margin">45dp</dimen>
+    <dimen name="fragment_reset_password_padding">45dp</dimen>
 
     <!-- Shape -->
     <dimen name="all_divider_height">1dp</dimen>

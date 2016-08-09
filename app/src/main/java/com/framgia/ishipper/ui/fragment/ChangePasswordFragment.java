@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.ui.activity.LoginActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,15 +45,18 @@ public class ChangePasswordFragment extends Fragment {
 
     @OnClick(R.id.btn_change_password)
     public void onClick() {
+        User user = LoginActivity.sUser;
+        user.setAuthenticationToken("EiXhr4PpMnhYP7qPC_FG");
+        user.setPhoneNumber("+841234561232");
         Map<String, String> params = new HashMap<>();
-        params.put(APIDefinition.ChangePassword.PARAM_PHONE_NUMBER, "+841234561232");
+        params.put(APIDefinition.ChangePassword.PARAM_PHONE_NUMBER, user.getPhoneNumber());
         params.put(APIDefinition.ChangePassword.PARAM_PASSWORD, mEdtNewPassword.getText().toString());
         params.put(APIDefinition.ChangePassword.PARAM_PASSWORD_CONFIRMATION, mEdtConfirmPassword.getText().toString());
-        API.changePassword("EiXhr4PpMnhYP7qPC_FG", params, new API.APICallback<APIResponse<APIResponse.ChangePasswordResponse>>() {
+        API.changePassword(user.getAuthenticationToken(), params, new API.APICallback<APIResponse<APIResponse.ChangePasswordResponse>>() {
 
             @Override
             public void onResponse(APIResponse<APIResponse.ChangePasswordResponse> response) {
-                Toast.makeText(getContext(), response.getData().getUser().getAuthenticationToken(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
