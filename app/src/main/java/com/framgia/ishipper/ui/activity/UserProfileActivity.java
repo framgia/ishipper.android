@@ -1,16 +1,15 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.framgia.ishipper.R;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class UserProfileActivity extends ToolbarActivity {
 
@@ -36,5 +35,10 @@ public class UserProfileActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.nav_user_name_example;
+    }
+
+    @OnClick(R.id.tv_change_password)
+    public void onClick() {
+        startActivity(new Intent(this, ChangePasswordActivity.class));
     }
 }
