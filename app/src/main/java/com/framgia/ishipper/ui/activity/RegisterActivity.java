@@ -17,6 +17,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.server.RegisterResponse;
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

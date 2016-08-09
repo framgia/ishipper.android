@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Shipper;
+import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.server.ShipperNearbyResponse;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,6 +35,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -102,7 +110,8 @@ public class NearbyShipperFragment extends Fragment implements
             return;
         }
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        new LoadMapTask().execute();
+        markShipperNearby();
+        configGoogleMap();
     }
 
     @Override
@@ -141,6 +150,7 @@ public class NearbyShipperFragment extends Fragment implements
 
 
     private void addMarkerToMap() {
+
         for (Shipper shipper : shippers) {
             LatLng latLng = shipper.getLatLng();
             mGoogleMap.addMarker(new MarkerOptions()
@@ -150,19 +160,43 @@ public class NearbyShipperFragment extends Fragment implements
         }
     }
 
-    private class LoadMapTask extends AsyncTask<Void, Void, Void> {
+    private void markShipperNearby() {
+        User user = new User();
+        user.setAuthenticationToken("FQTeVhjFpWyGQiZ4W5Bw");
+        user.setLatitude((float) mLocation.getLatitude());
+        user.setLongitude((float) mLocation.getLongitude());
+        int distance = 2;
+        Map<String, String> userParams = new HashMap<>();
+        userParams.put(APIDefinition.GetShipperNearby.USER_LAT_PARAM, String.valueOf(user.getLatitude()));
+        userParams.put(APIDefinition.GetShipperNearby.USER_LNG_PARAM, String.valueOf(user.getLongitude()));
+        userParams.put(APIDefinition.GetShipperNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
+        API.getShipperNearby(user.getAuthenticationToken(), userParams,
+                             new API.APICallback<APIResponse<ShipperNearbyResponse>>() {
+                                 @Override
+                                 public void onResponse(APIResponse<ShipperNearbyResponse> response) {
+                                     Log.d(TAG, "onResponse: " + response.getCode());
+                                     addListMarker(response.getData().getUsers());
+                                 }
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            shippers = Shipper.getSampleListData(mLocation);
-            return null;
-        }
+                                 @Override
+                                 public void onFailure(int code, String message) {
+                                     Log.d(TAG, "onFailure: " + message);
+                                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                 }
+                             });
+    }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            configGoogleMap();
-            addMarkerToMap();
+    private void addListMarker(List<User> users) {
+        for (User user : users) {
+            addMarkShipper(user);
         }
+    }
+
+    private void addMarkShipper(User user) {
+        LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
+        mGoogleMap.addMarker(new MarkerOptions()
+                                     .position(latLng)
+                                     .icon(BitmapDescriptorFactory
+                                                   .fromResource(R.drawable.ic_marker_shipper)));
     }
 }

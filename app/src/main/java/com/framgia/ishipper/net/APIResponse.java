@@ -35,6 +35,10 @@ public class APIResponse<T> {
         return mCode == CODE_SUCCESS;
     }
 
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
     public int getCode() {
         return mCode;
     }

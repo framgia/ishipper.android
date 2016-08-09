@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://192.168.1.149:3001";
+    private static final String DEV_URL = "http://192.168.1.118:3001";
     private static final String PROD_URL = "";
 
     public static class RegisterUser {
@@ -80,6 +80,24 @@ public class APIDefinition {
         public static final String PARAM_PASSWORD = "user[password]";
         public static final String PARAM_PASSWORD_CONFIRM = "user[password_confirmation]";
         public static final String PARAM_PIN = "user[pin]";
+    }
+
+    public static class GetShipperNearby {
+
+        public static final String PATH = "/api/users";
+        public static final String HEADER_AUTHORIZE = "Authorization";
+        public static final String USER_LAT_PARAM = "user[latitude]";
+        public static final String USER_LNG_PARAM = "user[longitude]";
+        public static final String USER_DISTANCE_PARAM = "user[distance]";
+    }
+
+
+    public static class GetInvoiceNearby {
+        public static final String PATH = "/api/invoices";
+        public static final String HEADER_AUTHORIZE = "Authorization";
+        public static final String USER_LAT_PARAM = "user[latitude]";
+        public static final String USER_LNG_PARAM = "user[longitude]";
+        public static final String USER_DISTANCE_PARAM = "user[distance]";
     }
 
     public static String getBaseUrl() {

@@ -3,6 +3,7 @@ package com.framgia.ishipper.net;
 import android.util.Log;
 
 import com.framgia.ishipper.server.RegisterResponse;
+import com.framgia.ishipper.server.ShipperNearbyResponse;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -50,6 +51,8 @@ public abstract class API {
 
     // ** API ******/
 
+
+    /* Register User */
     public static void register(Map<String, String> userParams,
                                 final APICallback<APIResponse<RegisterResponse>> callback) {
         client.signupUser(userParams).enqueue(new Callback<APIResponse<RegisterResponse>>() {
@@ -157,21 +160,49 @@ public abstract class API {
 
     public static void putResetPassword(HashMap<String, String> params,
                                         final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
-        client.resetPassword(params).enqueue(new Callback<APIResponse<APIResponse.EmptyResponse>>() {
-            @Override
-            public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
-                                   Response<APIResponse<APIResponse.EmptyResponse>> response) {
-                if (response.body().isSuccess()) {
-                    callback.onResponse(response.body());
-                } else {
-                    callback.onFailure(response.body().getCode(), response.body().getMessage());
-                }
-            }
+        client.resetPassword(params).enqueue(
+                new Callback<APIResponse<APIResponse.EmptyResponse>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
+                                           Response<APIResponse<APIResponse.EmptyResponse>> response) {
+                        if (response.body().isSuccess()) {
+                            callback.onResponse(response.body());
+                        } else {
+                            callback.onFailure(response.body().getCode(),
+                                               response.body().getMessage());
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<APIResponse<APIResponse.EmptyResponse>> call, Throwable t) {
-                callback.onFailure(LOCAL_ERROR, t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<APIResponse<APIResponse.EmptyResponse>> call,
+                                          Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
+    }
+    /* Get shipper nearby */
+    public static void getShipperNearby(String token,
+                                        Map<String, String> userParams,
+                                        final APICallback<APIResponse<ShipperNearbyResponse>> callback) {
+        client.getShipperNearby(token, userParams).enqueue(
+                new Callback<APIResponse<ShipperNearbyResponse>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<ShipperNearbyResponse>> call,
+                                           Response<APIResponse<ShipperNearbyResponse>> response) {
+
+                        if (response.body().isSuccess()) {
+                            callback.onResponse(response.body());
+                        } else {
+                            callback.onFailure(response.body().getCode(),
+                                               response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<ShipperNearbyResponse>> call,
+                                          Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
     }
 }
