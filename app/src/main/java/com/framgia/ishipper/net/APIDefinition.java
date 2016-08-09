@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://192.168.1.149:3001";
+    private static final String DEV_URL = "http://192.168.1.13:3001";
     private static final String PROD_URL = "";
 
     public static class RegisterUser {
@@ -18,6 +18,10 @@ public class APIDefinition {
         public static final String USER_PLATE_NUMBER = "user[plate_number]";
         public static final String USER_ROLE = "user[role]";
         public static final String USER_NAME = "user[name]";
+    }
+
+    public static class ConfirmationPin {
+        public static final String PATH = "/api/confirmation";
     }
 
     public static class PutUpdateProfile {

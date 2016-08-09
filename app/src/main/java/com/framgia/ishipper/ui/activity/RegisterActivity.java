@@ -1,6 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,7 +15,8 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.server.RegisterResponse;
+import com.framgia.ishipper.server.SignUpResponse;
+import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,11 +66,13 @@ public class RegisterActivity extends ToolbarActivity {
 
     @OnClick(R.id.btnDone)
     public void onClick() {
-        // TODO request register api
+        // TODO request signUp api
         registerRequest();
     }
 
     private void registerRequest() {
+        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.show();
         user.setPhoneNumber(mEdtPhoneNumber.getText().toString());
         user.setPassword(mEdtPasswordRegister.getText().toString());
         user.setName(mEdtNameRegister.getText().toString());
@@ -82,19 +85,26 @@ public class RegisterActivity extends ToolbarActivity {
         userParams.put(APIDefinition.RegisterUser.USER_ROLE, user.getRole());
         userParams.put(APIDefinition.RegisterUser.USER_PLATE_NUMBER, user.getPlateNumber());
 
-        API.register(userParams, new API.APICallback<APIResponse<RegisterResponse>>() {
+        API.signUp(userParams, new API.APICallback<APIResponse<SignUpResponse>>() {
             @Override
-            public void onResponse(APIResponse<RegisterResponse> response) {
+            public void onResponse(APIResponse<SignUpResponse> response) {
+                if (progressDialog.isShowing()) progressDialog.hide();
                 Toast.makeText(RegisterActivity.this, R.string.register_success,
                         Toast.LENGTH_SHORT).show();
                 LoginActivity.sUser = response.getData().getUser();
-                Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                finish();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.container,
+                             ValidatePinFragment.newInstance(LoginActivity.sUser.getPhoneNumber(),
+                                                             ValidatePinFragment.ACTION_ACTIVATE))
+                        .addToBackStack(null)
+                        .commit();
+
             }
 
             @Override
             public void onFailure(int code, String message) {
+                if (progressDialog.isShowing()) progressDialog.hide();
                 Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by vuduychuong1994 on 8/4/16.
  */
-public class RegisterResponse {
+public class SignUpResponse {
 
     @SerializedName("user") private User mUser;
 
