@@ -126,7 +126,7 @@
     <string name="accept">CHẤP NHẬN</string>
     <string name="verified">Đã xác nhận</string>
     <string name="username_login">Số điện thoại</string>
-    <string name="pass_login">Mật khẩu</string>
+    <string name="all_password">Mật khẩu</string>
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng kí</string>
     <string name="activity_login_forgot_pass"><u>Quên mật khẩu?</u></string>
@@ -141,7 +141,7 @@
     <string name="nav_order_total">Tổng đơn:</string>
     <string name="nav_success_order">Đơn thành công:</string>
     <string name="all_address_sample">Nguyễn Khoái, Hoàng Mai, Hà Nội</string>
-    <string name="password_confirm">Nhập lại mật khẩu</string>
+    <string name="all_password_confirm">Nhập lại mật khẩu</string>
     <string name="send">Gửi</string>
     <string name="confirm_phone_input">Nhập mã số xác nhận của bạn</string>
     <string name="input_your_number">Nhập số điện thoại của bạn</string>
@@ -156,4 +156,8 @@
     <string name="user_profile_title">Thông tin tài khoản</string>
     <string name="all_update">CẬP NHẬT</string>
     <string name="register_success">Đăng ký thành công</string>
+    <string name="profile_change_password"><u>Thay đổi mật khẩu</u></string>
+    <string name="all_reset_password">đổi mật khẩu</string>
+    <string name="all_new_password">Mật khẩu mới</string>
+    <string name="title_activity_change_password">Thay đổi mật khẩu</string>
 </resources>

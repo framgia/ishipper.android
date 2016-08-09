@@ -65,7 +65,7 @@
             <TextView
                 style="@style/AppLabelTitle"
                 android:layout_marginTop="@dimen/all_margin_medium"
-                android:text="@string/pass_login"/>
+                android:text="@string/all_password"/>
 
             <EditText
                 android:id="@+id/edtPasswordRegister"
@@ -78,7 +78,7 @@
             <TextView
                 style="@style/AppLabelTitle"
                 android:layout_marginTop="@dimen/all_margin_medium"
-                android:text="@string/password_confirm"/>
+                android:text="@string/all_password_confirm"/>
 
             <EditText
                 android:id="@+id/edtPasswordRegisterConfirm"
