@@ -11,8 +11,6 @@ public class APIResponse<T> {
     private static final String TAG = "APIResponse";
     private static final int CODE_SUCCESS = 1;
 
-    public boolean success;
-
     public APIResponse(int code, String message, T data) {
         mCode = code;
         mMessage = message;
@@ -27,9 +25,6 @@ public class APIResponse<T> {
 
     @SerializedName("data")
     protected T mData;
-
-    public static class EmptyResponse {
-    }
 
     public boolean isSuccess() {
         return mCode == CODE_SUCCESS;
@@ -82,4 +77,9 @@ public class APIResponse<T> {
             this.user = user;
         }
     }
+
+    public class EmptyResponse {
+
+    }
+
 }

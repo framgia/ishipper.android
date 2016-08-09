@@ -1,9 +1,7 @@
 package com.framgia.ishipper.net;
 
-import android.util.Log;
-
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.server.RegisterResponse;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +21,6 @@ public abstract class API {
     private static final String TAG = "API";
     public static final int LOCAL_ERROR = 1111;
 
-    public static Gson sConverter = new Gson();
-
     private static OkHttpClient loggingClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -33,13 +29,12 @@ public abstract class API {
         return httpClient.build();
     }
 
-    private static final Retrofit builder = new Retrofit.Builder()
+    private static final APIServices client = new Retrofit.Builder()
             .baseUrl(APIDefinition.getBaseUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .client(loggingClient())
-            .build();
-
-    private static final APIServices client = builder.create(APIServices.class);
+            .build()
+            .create(APIServices.class);
 
     // **** Common callback interface ***/
     public interface APICallback<T> {
@@ -56,10 +51,10 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<RegisterResponse>> call,
                                    Response<APIResponse<RegisterResponse>> response) {
-                if (response.body() != null) {
+                if (response.body() != null && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
-                    callback.onFailure(LOCAL_ERROR, response.message());
+                    callback.onFailure(LOCAL_ERROR, response.body().getMessage());
                 }
             }
 
@@ -78,11 +73,11 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.ChangePasswordResponse>> call,
                                    Response<APIResponse<APIResponse.ChangePasswordResponse>> response) {
-                Log.d(TAG, "onResponse: ");
-                if (response.body() != null && response.code() == 1) {
+                Log.d(TAG, "On Response");
+                if (response.isSuccessful() && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
-                    callback.onFailure(LOCAL_ERROR, response.message());
+                    callback.onFailure(LOCAL_ERROR, response.body().getMessage());
                 }
             }
 
@@ -100,7 +95,7 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.SignInResponse>> call,
                                    Response<APIResponse<APIResponse.SignInResponse>> response) {
-                if (response.body() != null && response.body().getCode() == 1) {
+                if (response.isSuccessful() && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
                     callback.onFailure(LOCAL_ERROR, response.body().getMessage());
@@ -121,7 +116,7 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
                                    Response<APIResponse<APIResponse.EmptyResponse>> response) {
-                if (response.body().isSuccess()) {
+                if (response.isSuccessful() && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
                     callback.onFailure(response.body().getCode(), response.body().getMessage());
@@ -141,7 +136,7 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
                                    Response<APIResponse<APIResponse.EmptyResponse>> response) {
-                if (response.body().isSuccess()) {
+                if (response.isSuccessful() && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
                     callback.onFailure(response.body().getCode(), response.body().getMessage());
@@ -161,7 +156,7 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
                                    Response<APIResponse<APIResponse.EmptyResponse>> response) {
-                if (response.body().isSuccess()) {
+                if (response.isSuccessful() && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
                     callback.onFailure(response.body().getCode(), response.body().getMessage());
@@ -174,4 +169,5 @@ public abstract class API {
             }
         });
     }
+
 }
