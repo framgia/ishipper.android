@@ -7,25 +7,42 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by HungNT on 8/5/16.
  */
 public interface APIServices {
 
-    @PUT(APIDefinition.PutUpdateProfile.PATH)
-    Call<APIResponse.PutUpdateProfileResponse> updateProfile(
-            @Path(APIDefinition.PutUpdateProfile.PATH_ID) String id,
-            @FieldMap Map<String, String> params
-    );
-
     @FormUrlEncoded
     @POST(APIDefinition.RegisterUser.PATH)
     Call<APIResponse<RegisterResponse>> signupUser(@FieldMap Map<String, String> userParams);
+
+    @GET(APIDefinition.GetPin.PATH)
+    Call<APIResponse<APIResponse.EmptyResponse>> getConfirmationPin(
+            @Query(APIDefinition.GetPin.PARAM_PHONE) String phoneNumber
+    );
+
+    @GET(APIDefinition.GetCheckPin.PATH)
+    Call<APIResponse<APIResponse.EmptyResponse>> getCheckPin(
+            @Query(APIDefinition.GetCheckPin.PARAM_PHONE) String phoneNumber,
+            @Query(APIDefinition.GetCheckPin.PARAM_PIN) String pin
+    );
+
+    @GET(APIDefinition.GetUserInformation.PATH)
+    Call<APIResponse> getUserInformation(
+            @Header("Authorization") String authorization
+    );
+
+    @FormUrlEncoded
+    @PUT(APIDefinition.PutResetPassword.PATH)
+    Call<APIResponse<APIResponse.EmptyResponse>> resetPassword(
+            @FieldMap Map<String, String> params
+    );
 
     @FormUrlEncoded
     @PUT(APIDefinition.ChangePassword.PATH)

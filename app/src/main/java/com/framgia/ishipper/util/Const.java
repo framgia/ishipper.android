@@ -19,4 +19,7 @@ public class Const {
     public static final String ROLE = "user[role]";
     public static final String NAME = "user[name]";
     public static final String EMAIL = "user[email]";
+
+    public static String VIETNAM_PREFIX = "+84";
+
 }

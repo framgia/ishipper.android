@@ -5,6 +5,7 @@ import android.util.Log;
 import com.framgia.ishipper.server.RegisterResponse;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -20,6 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public abstract class API {
     private static final String TAG = "API";
+    public static final int LOCAL_ERROR = 1111;
+
     public static Gson sConverter = new Gson();
 
     private static OkHttpClient loggingClient() {
@@ -46,32 +49,6 @@ public abstract class API {
     }
 
     // ** API ******/
-    public static void updateProfile(String userId, Map<String, String> params,
-                                     final APICallback<APIResponse.PutUpdateProfileResponse> callback) {
-        client.updateProfile(userId, params).enqueue(
-                new Callback<APIResponse.PutUpdateProfileResponse>() {
-                    @Override
-                    public void onResponse(Call<APIResponse.PutUpdateProfileResponse> call,
-                                           Response<APIResponse.PutUpdateProfileResponse> response) {
-                        if (response.isSuccessful()) {
-                            if (response.body().mCode == 1) {
-                                callback.onResponse(response.body());
-                            } else {
-                                callback.onFailure(response.body().getCode(),
-                                        response.body().getMessage());
-                            }
-                        } else {
-                            callback.onFailure(response.code(), response.message());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<APIResponse.PutUpdateProfileResponse> call,
-                                          Throwable t) {
-                        callback.onFailure(APIError.LOCAL_ERROR, t.getMessage());
-                    }
-                });
-    }
 
     public static void register(Map<String, String> userParams,
                                 final APICallback<APIResponse<RegisterResponse>> callback) {
@@ -82,13 +59,13 @@ public abstract class API {
                 if (response.body() != null) {
                     callback.onResponse(response.body());
                 } else {
-                    callback.onFailure(APIError.LOCAL_ERROR, response.message());
+                    callback.onFailure(LOCAL_ERROR, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<APIResponse<RegisterResponse>> call, Throwable t) {
-                callback.onFailure(APIError.LOCAL_ERROR, t.getMessage());
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
     }
@@ -105,14 +82,14 @@ public abstract class API {
                 if (response.body() != null && response.code() == 1) {
                     callback.onResponse(response.body());
                 } else {
-                    callback.onFailure(APIError.LOCAL_ERROR, response.message());
+                    callback.onFailure(LOCAL_ERROR, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<APIResponse<APIResponse.ChangePasswordResponse>> call, Throwable t) {
                 Log.d(TAG, "onFailure: ");
-                callback.onFailure(APIError.LOCAL_ERROR, t.getMessage());
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
     }
@@ -123,18 +100,78 @@ public abstract class API {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.SignInResponse>> call,
                                    Response<APIResponse<APIResponse.SignInResponse>> response) {
-                if (response.body() != null && response.code() == 1) {
+                if (response.body() != null && response.body().getCode() == 1) {
                     callback.onResponse(response.body());
                 } else {
-                    callback.onFailure(APIError.LOCAL_ERROR, response.body().getMessage());
+                    callback.onFailure(LOCAL_ERROR, response.body().getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<APIResponse<APIResponse.SignInResponse>> call, Throwable t) {
-                callback.onFailure(APIError.LOCAL_ERROR, t.getMessage());
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
 
+    }
+
+    public static void getConfirmationPin(String phoneNumber,
+                                          final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
+        client.getConfirmationPin(phoneNumber).enqueue(new Callback<APIResponse<APIResponse.EmptyResponse>>() {
+            @Override
+            public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
+                                   Response<APIResponse<APIResponse.EmptyResponse>> response) {
+                if (response.body().isSuccess()) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.body().getCode(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<APIResponse.EmptyResponse>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
+    }
+
+    public static void getCheckPin(String phoneNumber, String pin,
+                                   final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
+        client.getCheckPin(phoneNumber, pin).enqueue(new Callback<APIResponse<APIResponse.EmptyResponse>>() {
+            @Override
+            public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
+                                   Response<APIResponse<APIResponse.EmptyResponse>> response) {
+                if (response.body().isSuccess()) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.body().getCode(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<APIResponse.EmptyResponse>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
+    }
+
+    public static void putResetPassword(HashMap<String, String> params,
+                                        final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
+        client.resetPassword(params).enqueue(new Callback<APIResponse<APIResponse.EmptyResponse>>() {
+            @Override
+            public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
+                                   Response<APIResponse<APIResponse.EmptyResponse>> response) {
+                if (response.body().isSuccess()) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(response.body().getCode(), response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<APIResponse.EmptyResponse>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
     }
 }

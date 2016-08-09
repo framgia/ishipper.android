@@ -52,6 +52,36 @@ public class APIDefinition {
         public static final String PARAM_PASSWORD = "user[password]";
     }
 
+    public static class GetPin {
+        public static final String TAG = "Get Pin";
+        public static final String PATH = "/api/confirmation";
+
+        public static final String PARAM_PHONE = "user[phone_number]";
+    }
+
+    public static class GetCheckPin {
+        public static final String TAG = "Get Pin";
+        public static final String PATH = "/api/password";
+
+        public static final String PARAM_PHONE = "user[phone_number]";
+        public static final String PARAM_PIN = "user[pin]";
+    }
+
+    public static class GetUserInformation {
+        public static final String TAG = "Get User Detail";
+        public static final String PATH = "/api/users";
+    }
+
+    public static class PutResetPassword {
+        public static final String TAG = "Put Reset Password";
+        public static final String PATH = "/api/password";
+
+        public static final String PARAM_PHONE = "user[phone_number]";
+        public static final String PARAM_PASSWORD = "user[password]";
+        public static final String PARAM_PASSWORD_CONFIRM = "user[password_confirmation]";
+        public static final String PARAM_PIN = "user[pin]";
+    }
+
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
     }
