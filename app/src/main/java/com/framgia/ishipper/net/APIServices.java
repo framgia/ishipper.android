@@ -1,6 +1,7 @@
 package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.server.RegisterResponse;
+
 import java.util.Map;
 
 import retrofit2.Call;
@@ -32,4 +33,8 @@ public interface APIServices {
             @FieldMap Map<String, String> params,
             @Header(APIDefinition.ChangePassword.HEADER_AUTHORIZE) String token
     );
+
+    @FormUrlEncoded
+    @POST(APIDefinition.SignIn.PATH)
+    Call<APIResponse<APIResponse.SignInResponse>> signIn( @FieldMap Map<String, String> params);
 }

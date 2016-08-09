@@ -93,14 +93,16 @@ public abstract class API {
         });
     }
 
-    public static void changePassword(String token, Map<String, String> params,
-                                      final APICallback callback) {
+    public static void changePassword(
+            String token,
+            Map<String, String> params,
+            final APICallback<APIResponse<APIResponse.ChangePasswordResponse>> callback) {
         client.changePassword(params, token).enqueue(new Callback<APIResponse<APIResponse.ChangePasswordResponse>>() {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.ChangePasswordResponse>> call,
                                    Response<APIResponse<APIResponse.ChangePasswordResponse>> response) {
                 Log.d(TAG, "onResponse: ");
-                if (response.body() != null) {
+                if (response.body() != null && response.code() == 1) {
                     callback.onResponse(response.body());
                 } else {
                     callback.onFailure(APIError.LOCAL_ERROR, response.message());
@@ -113,5 +115,26 @@ public abstract class API {
                 callback.onFailure(APIError.LOCAL_ERROR, t.getMessage());
             }
         });
+    }
+
+    public static void signIn(Map<String, String> params,
+                              final APICallback<APIResponse<APIResponse.SignInResponse>> callback) {
+        client.signIn(params).enqueue(new Callback<APIResponse<APIResponse.SignInResponse>>() {
+            @Override
+            public void onResponse(Call<APIResponse<APIResponse.SignInResponse>> call,
+                                   Response<APIResponse<APIResponse.SignInResponse>> response) {
+                if (response.body() != null && response.code() == 1) {
+                    callback.onResponse(response.body());
+                } else {
+                    callback.onFailure(APIError.LOCAL_ERROR, response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<APIResponse.SignInResponse>> call, Throwable t) {
+                callback.onFailure(APIError.LOCAL_ERROR, t.getMessage());
+            }
+        });
+
     }
 }

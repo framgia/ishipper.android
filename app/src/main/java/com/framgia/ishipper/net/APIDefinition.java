@@ -46,6 +46,11 @@ public class APIDefinition {
         public static final String PARAM_PASSWORD = "user[password]";
         public static final String PARAM_PASSWORD_CONFIRMATION = "user[password_confirmation]";
     }
+    public static class SignIn{
+        public static final String PATH = "api/sign_in";
+        public static final String PARAM_PHONE_NUMBER = "user[phone_number]";
+        public static final String PARAM_PASSWORD = "user[password]";
+    }
 
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
