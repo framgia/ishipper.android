@@ -1,19 +1,17 @@
 package com.framgia.ishipper.net;
 
+import com.framgia.ishipper.server.GetInvoiceResponse;
 import com.framgia.ishipper.server.RegisterResponse;
 import com.framgia.ishipper.server.ShipperNearbyResponse;
 import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Header;
-import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 /**
@@ -65,5 +63,9 @@ public interface APIServices {
             @QueryMap Map<String, String> userParams);
 
 
-
+    /* Get Invoice nearby */
+    @GET(APIDefinition.GetInvoiceNearby.PATH)
+    Call<APIResponse<GetInvoiceResponse>> getInvoices(
+            @Header(APIDefinition.GetInvoiceNearby.HEADER_AUTHORIZE) String token,
+            @QueryMap Map<String, String> userParams);
 }

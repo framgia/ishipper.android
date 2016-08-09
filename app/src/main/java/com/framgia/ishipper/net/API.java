@@ -2,6 +2,7 @@ package com.framgia.ishipper.net;
 
 import android.util.Log;
 
+import com.framgia.ishipper.server.GetInvoiceResponse;
 import com.framgia.ishipper.server.RegisterResponse;
 import com.framgia.ishipper.server.ShipperNearbyResponse;
 import com.google.gson.Gson;
@@ -201,6 +202,28 @@ public abstract class API {
                     @Override
                     public void onFailure(Call<APIResponse<ShipperNearbyResponse>> call,
                                           Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
+    }
+
+    /* Get Invoice nearby */
+    public static void getInvoiceNearby(String token, Map<String, String> userParams,
+                                        final APICallback<APIResponse<GetInvoiceResponse>> callback) {
+        client.getInvoices(token, userParams).enqueue(
+                new Callback<APIResponse<GetInvoiceResponse>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<GetInvoiceResponse>> call,
+                                           Response<APIResponse<GetInvoiceResponse>> response) {
+                        if (response.body().isSuccess()) {
+                            callback.onResponse(response.body());
+                        } else {
+                            callback.onFailure(response.body().getCode(), response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<GetInvoiceResponse>> call, Throwable t) {
                         callback.onFailure(LOCAL_ERROR, t.getMessage());
                     }
                 });
