@@ -46,8 +46,8 @@ public class ChangePasswordFragment extends Fragment {
     @OnClick(R.id.btn_change_password)
     public void onClick() {
         User user = LoginActivity.sUser;
-        user.setAuthenticationToken("EiXhr4PpMnhYP7qPC_FG");
-        user.setPhoneNumber("+841234561232");
+//        user.setAuthenticationToken("EiXhr4PpMnhYP7qPC_FG");
+//        user.setPhoneNumber("+841234561232");
         Map<String, String> params = new HashMap<>();
         params.put(APIDefinition.ChangePassword.PARAM_PHONE_NUMBER, user.getPhoneNumber());
         params.put(APIDefinition.ChangePassword.PARAM_PASSWORD, mEdtNewPassword.getText().toString());
@@ -57,6 +57,7 @@ public class ChangePasswordFragment extends Fragment {
             @Override
             public void onResponse(APIResponse<APIResponse.ChangePasswordResponse> response) {
                 Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             }
 
             @Override

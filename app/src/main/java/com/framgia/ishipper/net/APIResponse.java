@@ -45,6 +45,7 @@ public class APIResponse<T> {
     public boolean isSuccess() {
         return mCode == 1;
     }
+
     public static class PutUpdateProfileResponse extends APIResponse {
 
         public User user;
@@ -83,6 +84,18 @@ public class APIResponse<T> {
     }
 
     public class ChangePasswordResponse {
+        private User user;
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
+    }
+
+    public class SignInResponse {
         private User user;
 
         public User getUser() {
