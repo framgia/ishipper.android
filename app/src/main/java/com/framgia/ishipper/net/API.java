@@ -1,7 +1,7 @@
 package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.common.Log;
-import com.framgia.ishipper.server.RegisterResponse;
+import com.framgia.ishipper.server.SignUpResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,12 +45,12 @@ public abstract class API {
 
     // ** API ******/
 
-    public static void register(Map<String, String> userParams,
-                                final APICallback<APIResponse<RegisterResponse>> callback) {
-        client.signupUser(userParams).enqueue(new Callback<APIResponse<RegisterResponse>>() {
+    public static void signUp(Map<String, String> userParams,
+                              final APICallback<APIResponse<SignUpResponse>> callback) {
+        client.signUpUser(userParams).enqueue(new Callback<APIResponse<SignUpResponse>>() {
             @Override
-            public void onResponse(Call<APIResponse<RegisterResponse>> call,
-                                   Response<APIResponse<RegisterResponse>> response) {
+            public void onResponse(Call<APIResponse<SignUpResponse>> call,
+                                   Response<APIResponse<SignUpResponse>> response) {
                 if (response.body() != null && response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -59,12 +59,32 @@ public abstract class API {
             }
 
             @Override
-            public void onFailure(Call<APIResponse<RegisterResponse>> call, Throwable t) {
+            public void onFailure(Call<APIResponse<SignUpResponse>> call, Throwable t) {
                 callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
     }
 
+    public static void confirmationPinInSignup(String phoneNumber, String pin,
+                                               final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
+        client.confirmationPinInSignup(phoneNumber, pin)
+                .enqueue(new Callback<APIResponse<APIResponse.EmptyResponse>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
+                                           Response<APIResponse<APIResponse.EmptyResponse>> response) {
+                        if (response.isSuccessful() && response.body().isSuccess()) {
+                            callback.onResponse(response.body());
+                        } else {
+                            callback.onFailure(response.body().getCode(), response.body().getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<APIResponse.EmptyResponse>> call, Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+        });
+    }
     public static void changePassword(
             String token,
             Map<String, String> params,

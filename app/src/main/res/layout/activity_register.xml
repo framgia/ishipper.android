@@ -4,137 +4,144 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/all_margin_large"
-            android:layout_marginRight="@dimen/all_margin_large"
-            android:layout_marginTop="@dimen/all_margin_large"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical">
-
-            <RadioGroup
-                android:id="@+id/radioGroupUserType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radioShipper"
-                    style="@style/AppRadioShip"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_radio_shipper"
-                    android:button="@color/transparent"
-                    android:checked="true"
-                    android:text="@string/shipper"/>
-
-                <RadioButton
-                    android:id="@+id/radioShop"
-                    style="@style/AppRadioShip"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_radio_shop"
-                    android:button="@color/transparent"
-                    android:text="@string/shop"/>
-
-            </RadioGroup>
-
-            <TextView
-                style="@style/AppLabelTitle"
-                android:layout_marginTop="@dimen/all_margin_medium"
-                android:text="@string/all_phone_number"/>
-
-            <EditText
-                android:id="@+id/edtPhoneNumber"
-                style="@style/AppTextFieldStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/all_margin_small"
-                android:hint="@string/all_phone_sample"
-                android:inputType="phone"/>
-
-            <TextView
-                style="@style/AppLabelTitle"
-                android:layout_marginTop="@dimen/all_margin_medium"
-                android:text="@string/all_password"/>
-
-            <EditText
-                android:id="@+id/edtPasswordRegister"
-                style="@style/AppTextFieldStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/all_margin_small"
-                android:inputType="textPassword"/>
-
-            <TextView
-                style="@style/AppLabelTitle"
-                android:layout_marginTop="@dimen/all_margin_medium"
-                android:text="@string/all_password_confirm"/>
-
-            <EditText
-                android:id="@+id/edtPasswordRegisterConfirm"
-                style="@style/AppTextFieldStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/all_margin_small"
-                android:inputType="textPassword"/>
-
-            <TextView
-                android:id="@+id/tvTitleName"
-                style="@style/AppLabelTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/all_margin_medium"
-                android:text="@string/name"/>
-
-            <EditText
-                android:id="@+id/edtNameRegister"
-                style="@style/AppTextFieldStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/all_margin_small"
-                android:inputType="textCapWords"/>
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/layoutPlate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/all_margin_large"
+                android:layout_marginRight="@dimen/all_margin_large"
+                android:layout_marginTop="@dimen/all_margin_large"
+                android:animateLayoutChanges="true"
                 android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/radioGroupUserType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioShipper"
+                        style="@style/AppRadioShip"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_radio_shipper"
+                        android:button="@color/transparent"
+                        android:checked="true"
+                        android:text="@string/shipper" />
+
+                    <RadioButton
+                        android:id="@+id/radioShop"
+                        style="@style/AppRadioShip"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_radio_shop"
+                        android:button="@color/transparent"
+                        android:text="@string/shop" />
+
+                </RadioGroup>
 
                 <TextView
                     style="@style/AppLabelTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_medium"
-                    android:text="@string/plate"/>
+                    android:text="@string/all_phone_number" />
 
                 <EditText
-                    android:id="@+id/edtPlateNumber"
+                    android:id="@+id/edtPhoneNumber"
                     style="@style/AppTextFieldStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_small"
-                    android:hint="@string/all_plate_sample"
-                    android:inputType="textCapWords"/>
+                    android:hint="@string/all_phone_sample"
+                    android:inputType="phone" />
+
+                <TextView
+                    style="@style/AppLabelTitle"
+                    android:layout_marginTop="@dimen/all_margin_medium"
+                    android:text="@string/all_password" />
+
+                <EditText
+                    android:id="@+id/edtPasswordRegister"
+                    style="@style/AppTextFieldStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/all_margin_small"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    style="@style/AppLabelTitle"
+                    android:layout_marginTop="@dimen/all_margin_medium"
+                    android:text="@string/all_password_confirm" />
+
+                <EditText
+                    android:id="@+id/edtPasswordRegisterConfirm"
+                    style="@style/AppTextFieldStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/all_margin_small"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:id="@+id/tvTitleName"
+                    style="@style/AppLabelTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/all_margin_medium"
+                    android:text="@string/name" />
+
+                <EditText
+                    android:id="@+id/edtNameRegister"
+                    style="@style/AppTextFieldStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/all_margin_small"
+                    android:inputType="textCapWords" />
+
+                <LinearLayout
+                    android:id="@+id/layoutPlate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/AppLabelTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/all_margin_medium"
+                        android:text="@string/plate" />
+
+                    <EditText
+                        android:id="@+id/edtPlateNumber"
+                        style="@style/AppTextFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/all_margin_small"
+                        android:hint="@string/all_plate_sample"
+                        android:inputType="textCapWords" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btnDone"
+                    style="@style/AppButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/all_margin_large"
+                    android:text="@string/register" />
+
             </LinearLayout>
+        </ScrollView>
 
-            <TextView
-                android:id="@+id/btnDone"
-                style="@style/AppButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/all_margin_large"
-                android:text="@string/register"/>
-
-        </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
 </LinearLayout>

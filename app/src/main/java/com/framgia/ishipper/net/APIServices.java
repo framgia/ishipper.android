@@ -1,10 +1,11 @@
 package com.framgia.ishipper.net;
 
-import com.framgia.ishipper.server.RegisterResponse;
+import com.framgia.ishipper.server.SignUpResponse;
 
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -20,7 +21,7 @@ public interface APIServices {
 
     @FormUrlEncoded
     @POST(APIDefinition.RegisterUser.PATH)
-    Call<APIResponse<RegisterResponse>> signupUser(@FieldMap Map<String, String> userParams);
+    Call<APIResponse<SignUpResponse>> signUpUser(@FieldMap Map<String, String> userParams);
 
     @GET(APIDefinition.GetPin.PATH)
     Call<APIResponse<APIResponse.EmptyResponse>> getConfirmationPin(
@@ -54,4 +55,11 @@ public interface APIServices {
     @FormUrlEncoded
     @POST(APIDefinition.SignIn.PATH)
     Call<APIResponse<APIResponse.SignInResponse>> signIn( @FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @PUT(APIDefinition.ConfirmationPin.PATH)
+    Call<APIResponse<APIResponse.EmptyResponse>> confirmationPinInSignup(
+            @Field(APIDefinition.GetCheckPin.PARAM_PHONE) String phoneNumber,
+            @Field(APIDefinition.GetCheckPin.PARAM_PIN) String pin
+    );
 }

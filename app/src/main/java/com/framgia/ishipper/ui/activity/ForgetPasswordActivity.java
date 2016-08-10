@@ -61,7 +61,9 @@ public class ForgetPasswordActivity extends ToolbarActivity {
                         pd.dismiss();
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .add(R.id.container, ValidatePinFragment.newInstance(phoneNumber))
+                                .add(R.id.container,
+                                     ValidatePinFragment.newInstance(phoneNumber,
+                                                            ValidatePinFragment.ACTION_FORGOT_PASSWORD))
                                 .addToBackStack(null)
                                 .commit();
                     }
