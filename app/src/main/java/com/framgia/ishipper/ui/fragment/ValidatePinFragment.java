@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.activity.MainActivity;
 
 import butterknife.BindView;
@@ -57,9 +58,9 @@ public class ValidatePinFragment extends Fragment {
                 if (mAction == ACTION_FORGOT_PASSWORD) {
                     /* Forgot password */
                     API.getCheckPin(mPhoneNumber, mEdtPhoneNumber.getText().toString(),
-                            new API.APICallback<APIResponse<APIResponse.EmptyResponse>>() {
+                            new API.APICallback<APIResponse<EmptyData>>() {
                                 @Override
-                                public void onResponse(APIResponse<APIResponse.EmptyResponse> response) {
+                                public void onResponse(APIResponse<EmptyData> response) {
                                     pd.dismiss();
                                     getActivity().getSupportFragmentManager()
                                             .beginTransaction()
@@ -79,12 +80,12 @@ public class ValidatePinFragment extends Fragment {
                             });
                 } else {
                      /* Signup */
-                    API.confirmationPinInSignup(mPhoneNumber,
+                    API.confirmationPinInSignUp(mPhoneNumber,
                                                 mEdtPhoneNumber.getText().toString(),
-                                                new API.APICallback<APIResponse<APIResponse.EmptyResponse>>() {
+                                                new API.APICallback<APIResponse<EmptyData>>() {
                                             @Override
                                             public void onResponse(
-                                                    APIResponse<APIResponse.EmptyResponse> response) {
+                                                    APIResponse<EmptyData> response) {
                                                 pd.dismiss();
                                                 Intent mainIntent = new Intent(getActivity(),
                                                                                MainActivity.class);

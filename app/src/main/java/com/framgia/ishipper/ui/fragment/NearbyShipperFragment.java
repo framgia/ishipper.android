@@ -3,25 +3,25 @@ package com.framgia.ishipper.ui.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Shipper;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.server.ShipperNearbyResponse;
+import com.framgia.ishipper.net.data.ShipperNearbyData;
+import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -149,20 +149,8 @@ public class NearbyShipperFragment extends Fragment implements
     }
 
 
-    private void addMarkerToMap() {
-
-        for (Shipper shipper : shippers) {
-            LatLng latLng = shipper.getLatLng();
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper))
-            );
-        }
-    }
-
     private void markShipperNearby() {
-        User user = new User();
-        user.setAuthenticationToken("FQTeVhjFpWyGQiZ4W5Bw");
+        User user = LoginActivity.sUser;
         user.setLatitude((float) mLocation.getLatitude());
         user.setLongitude((float) mLocation.getLongitude());
         int distance = 2;
@@ -171,10 +159,14 @@ public class NearbyShipperFragment extends Fragment implements
         userParams.put(APIDefinition.GetShipperNearby.USER_LNG_PARAM, String.valueOf(user.getLongitude()));
         userParams.put(APIDefinition.GetShipperNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
         API.getShipperNearby(user.getAuthenticationToken(), userParams,
-                             new API.APICallback<APIResponse<ShipperNearbyResponse>>() {
+                             new API.APICallback<APIResponse<ShipperNearbyData>>() {
                                  @Override
-                                 public void onResponse(APIResponse<ShipperNearbyResponse> response) {
+                                 public void onResponse(APIResponse<ShipperNearbyData> response) {
                                      Log.d(TAG, "onResponse: " + response.getCode());
+                                     Toast.makeText(getContext(),
+                                             response.getMessage(),
+                                             Toast.LENGTH_SHORT)
+                                             .show();
                                      addListMarker(response.getData().getUsers());
                                  }
 
