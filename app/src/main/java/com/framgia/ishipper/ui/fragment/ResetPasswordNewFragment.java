@@ -13,6 +13,7 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 
 import java.util.HashMap;
 
@@ -55,9 +56,9 @@ public class ResetPasswordNewFragment extends Fragment {
                 params.put(APIDefinition.PutResetPassword.PARAM_PASSWORD, mEdtNewPassword.getText().toString());
                 params.put(APIDefinition.PutResetPassword.PARAM_PASSWORD_CONFIRM, mEdtPasswordAgain.getText().toString());
                 params.put(APIDefinition.PutResetPassword.PARAM_PIN, mPin);
-                API.postResetPassword(params, new API.APICallback<APIResponse<APIResponse.EmptyResponse>>() {
+                API.postResetPassword(params, new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
-                    public void onResponse(APIResponse<APIResponse.EmptyResponse> response) {
+                    public void onResponse(APIResponse<EmptyData> response) {
                         pd.dismiss();
                         getActivity().finish();
                         Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();

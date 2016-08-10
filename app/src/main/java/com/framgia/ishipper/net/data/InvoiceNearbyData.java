@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by dinhduc on 10/08/2016.
  */
-public class GetInvoiceData {
+public class InvoiceNearbyData {
 
     @SerializedName("invoices") private List<Invoice> mInvoiceList = new ArrayList<>();
 

@@ -15,7 +15,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.server.SignUpResponse;
+import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
 
 import java.util.HashMap;
@@ -85,9 +85,9 @@ public class RegisterActivity extends ToolbarActivity {
         userParams.put(APIDefinition.RegisterUser.USER_ROLE, user.getRole());
         userParams.put(APIDefinition.RegisterUser.USER_PLATE_NUMBER, user.getPlateNumber());
 
-        API.signUp(userParams, new API.APICallback<APIResponse<SignUpResponse>>() {
+        API.signUp(userParams, new API.APICallback<APIResponse<SignUpData>>() {
             @Override
-            public void onResponse(APIResponse<SignUpResponse> response) {
+            public void onResponse(APIResponse<SignUpData> response) {
                 if (progressDialog.isShowing()) progressDialog.hide();
                 Toast.makeText(RegisterActivity.this, R.string.register_success,
                         Toast.LENGTH_SHORT).show();

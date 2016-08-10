@@ -3,7 +3,7 @@ package com.framgia.ishipper.net;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.net.data.GetInvoiceData;
+import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
@@ -237,12 +237,12 @@ public abstract class API {
 
     /* Get Invoice nearby */
     public static void getInvoiceNearby(String token, Map<String, String> userParams,
-                                        final APICallback<APIResponse<GetInvoiceData>> callback) {
+                                        final APICallback<APIResponse<InvoiceNearbyData>> callback) {
         client.getInvoices(token, userParams).enqueue(
-                new Callback<APIResponse<GetInvoiceData>>() {
+                new Callback<APIResponse<InvoiceNearbyData>>() {
                     @Override
-                    public void onResponse(Call<APIResponse<GetInvoiceData>> call,
-                                           Response<APIResponse<GetInvoiceData>> response) {
+                    public void onResponse(Call<APIResponse<InvoiceNearbyData>> call,
+                                           Response<APIResponse<InvoiceNearbyData>> response) {
                         if (response.body().isSuccess()) {
                             callback.onResponse(response.body());
                         } else {
@@ -251,7 +251,7 @@ public abstract class API {
                     }
 
                     @Override
-                    public void onFailure(Call<APIResponse<GetInvoiceData>> call, Throwable t) {
+                    public void onFailure(Call<APIResponse<InvoiceNearbyData>> call, Throwable t) {
                         callback.onFailure(LOCAL_ERROR, t.getMessage());
                     }
                 });

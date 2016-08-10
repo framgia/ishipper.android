@@ -5,7 +5,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,7 +32,8 @@ import com.framgia.ishipper.model.WindowOrder;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.server.GetInvoiceResponse;
+import com.framgia.ishipper.net.data.InvoiceNearbyData;
+import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.MapUtils;
@@ -162,8 +162,7 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void markInvoiceNearby() {
-        User user = new User();
-        user.setAuthenticationToken("FQTeVhjFpWyGQiZ4W5Bw");
+        User user = LoginActivity.sUser;
         user.setLatitude((float) mLocation.getLatitude());
         user.setLongitude((float) mLocation.getLongitude());
         int distance = 5;
@@ -172,9 +171,9 @@ public class NearbyOrderFragment extends Fragment implements
         userParams.put(APIDefinition.GetInvoiceNearby.USER_LNG_PARAM, String.valueOf(user.getLongitude()));
         userParams.put(APIDefinition.GetInvoiceNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
         API.getInvoiceNearby(user.getAuthenticationToken(), userParams,
-                             new API.APICallback<APIResponse<GetInvoiceResponse>>() {
+                             new API.APICallback<APIResponse<InvoiceNearbyData>>() {
                                  @Override
-                                 public void onResponse(APIResponse<GetInvoiceResponse> response) {
+                                 public void onResponse(APIResponse<InvoiceNearbyData> response) {
                                      Log.d(TAG, "onResponse: " + response.getMessage());
                                      addListMarker(response.getData().getInvoiceList());
                                      Toast.makeText(getContext(),

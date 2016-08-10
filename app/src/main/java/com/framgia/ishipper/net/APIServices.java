@@ -2,7 +2,7 @@ package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.net.data.GetInvoiceData;
+import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
@@ -77,7 +77,7 @@ public interface APIServices {
 
     /* Get Invoice nearby */
     @GET(APIDefinition.GetInvoiceNearby.PATH)
-    Call<APIResponse<GetInvoiceData>> getInvoices(
+    Call<APIResponse<InvoiceNearbyData>> getInvoices(
             @Header(APIDefinition.GetInvoiceNearby.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
 }
