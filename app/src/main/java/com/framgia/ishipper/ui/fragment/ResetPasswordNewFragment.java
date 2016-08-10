@@ -55,7 +55,7 @@ public class ResetPasswordNewFragment extends Fragment {
                 params.put(APIDefinition.PutResetPassword.PARAM_PASSWORD, mEdtNewPassword.getText().toString());
                 params.put(APIDefinition.PutResetPassword.PARAM_PASSWORD_CONFIRM, mEdtPasswordAgain.getText().toString());
                 params.put(APIDefinition.PutResetPassword.PARAM_PIN, mPin);
-                API.putResetPassword(params, new API.APICallback<APIResponse<APIResponse.EmptyResponse>>() {
+                API.postResetPassword(params, new API.APICallback<APIResponse<APIResponse.EmptyResponse>>() {
                     @Override
                     public void onResponse(APIResponse<APIResponse.EmptyResponse> response) {
                         pd.dismiss();

@@ -40,7 +40,7 @@ public interface APIServices {
     );
 
     @FormUrlEncoded
-    @PUT(APIDefinition.PutResetPassword.PATH)
+    @POST(APIDefinition.PutResetPassword.PATH)
     Call<APIResponse<APIResponse.EmptyResponse>> resetPassword(
             @FieldMap Map<String, String> params
     );

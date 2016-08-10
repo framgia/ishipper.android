@@ -170,8 +170,8 @@ public abstract class API {
         });
     }
 
-    public static void putResetPassword(HashMap<String, String> params,
-                                        final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
+    public static void postResetPassword(HashMap<String, String> params,
+                                         final APICallback<APIResponse<APIResponse.EmptyResponse>> callback) {
         client.resetPassword(params).enqueue(new Callback<APIResponse<APIResponse.EmptyResponse>>() {
             @Override
             public void onResponse(Call<APIResponse<APIResponse.EmptyResponse>> call,
