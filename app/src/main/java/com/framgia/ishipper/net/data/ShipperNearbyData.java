@@ -1,14 +1,17 @@
-package com.framgia.ishipper.server;
+package com.framgia.ishipper.net.data;
+
 import com.framgia.ishipper.model.User;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by vuduychuong1994 on 8/9/16.
+ * Created by dinhduc on 10/08/2016.
  */
-public class ShipperNearbyResponse {
+public class ShipperNearbyData {
 
 
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     public List<User> getUsers() {
         return users;

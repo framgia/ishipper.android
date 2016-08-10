@@ -15,19 +15,12 @@ import android.view.View;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Order;
-import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIDefinition;
-import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.server.ShipperNearbyResponse;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.util.HashMap;
-import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -30,10 +30,6 @@ public class APIResponse<T> {
         return mCode == CODE_SUCCESS;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
     public int getCode() {
         return mCode;
     }
@@ -56,34 +52,6 @@ public class APIResponse<T> {
 
     public void setData(T data) {
         mData = data;
-    }
-
-    public class ChangePasswordResponse {
-        private User user;
-
-        public User getUser() {
-            return user;
-        }
-
-        public void setUser(User user) {
-            this.user = user;
-        }
-    }
-
-    public class SignInResponse {
-        private User user;
-
-        public User getUser() {
-            return user;
-        }
-
-        public void setUser(User user) {
-            this.user = user;
-        }
-    }
-
-    public class EmptyResponse {
-
     }
 
 }
