@@ -11,6 +11,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.ChangePasswordData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,10 +57,10 @@ public class ChangePasswordActivity extends ToolbarActivity {
         API.changePassword(
                 user.getAuthenticationToken(),
                 params,
-                new API.APICallback<APIResponse<APIResponse.ChangePasswordResponse>>() {
+                new API.APICallback<APIResponse<ChangePasswordData>>() {
 
                     @Override
-                    public void onResponse(APIResponse<APIResponse.ChangePasswordResponse> response) {
+                    public void onResponse(APIResponse<ChangePasswordData> response) {
                         Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                         finish();
                     }

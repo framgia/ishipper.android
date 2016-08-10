@@ -1,14 +1,17 @@
-package com.framgia.ishipper.server;
+package com.framgia.ishipper.net.data;
+
 import com.framgia.ishipper.model.Invoice;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by vuduychuong1994 on 8/9/16.
+ * Created by dinhduc on 10/08/2016.
  */
-public class GetInvoiceResponse {
+public class GetInvoiceData {
 
-    @SerializedName("invoices") private List<Invoice> mInvoiceList;
+    @SerializedName("invoices") private List<Invoice> mInvoiceList = new ArrayList<>();
 
     public List<Invoice> getInvoiceList() {
         return mInvoiceList;

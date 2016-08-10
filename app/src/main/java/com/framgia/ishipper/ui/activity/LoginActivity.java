@@ -13,6 +13,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.SignInData;
 
 import java.util.HashMap;
 
@@ -58,9 +59,9 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER, mEdtPhoneNumber.getText().toString());
                 params.put(APIDefinition.SignIn.PARAM_PASSWORD, mEdtPassword.getText().toString());
-                API.signIn(params, new API.APICallback<APIResponse<APIResponse.SignInResponse>>() {
+                API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
                     @Override
-                    public void onResponse(APIResponse<APIResponse.SignInResponse> response) {
+                    public void onResponse(APIResponse<SignInData> response) {
                         Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                         sUser = response.getData().getUser();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));

@@ -1,11 +1,12 @@
-package com.framgia.ishipper.server;
+package com.framgia.ishipper.net.data;
+
 import com.framgia.ishipper.model.User;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by vuduychuong1994 on 8/4/16.
+ * Created by dinhduc on 10/08/2016.
  */
-public class SignUpResponse {
+public class SignUpData {
 
     @SerializedName("user") private User mUser;
 

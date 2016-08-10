@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
 import com.framgia.ishipper.util.Const;
 
@@ -55,9 +56,9 @@ public class ForgetPasswordActivity extends ToolbarActivity {
 
         final String phoneNumber = Const.VIETNAM_PREFIX + mEdtPhoneNumber.getText().toString();
         API.getConfirmationPin(phoneNumber,
-                new API.APICallback<APIResponse<APIResponse.EmptyResponse>>() {
+                new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
-                    public void onResponse(APIResponse<APIResponse.EmptyResponse> response) {
+                    public void onResponse(APIResponse<EmptyData> response) {
                         pd.dismiss();
                         getSupportFragmentManager()
                                 .beginTransaction()
