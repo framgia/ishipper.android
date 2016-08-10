@@ -87,6 +87,24 @@ public class APIDefinition {
         public static final String PARAM_PIN = "user[pin]";
     }
 
+    public static class GetShipperNearby {
+
+        public static final String PATH = "/api/users";
+        public static final String HEADER_AUTHORIZE = "Authorization";
+        public static final String USER_LAT_PARAM = "user[latitude]";
+        public static final String USER_LNG_PARAM = "user[longitude]";
+        public static final String USER_DISTANCE_PARAM = "user[distance]";
+    }
+
+
+    public static class GetInvoiceNearby {
+        public static final String PATH = "/api/invoices";
+        public static final String HEADER_AUTHORIZE = "Authorization";
+        public static final String USER_LAT_PARAM = "user[latitude]";
+        public static final String USER_LNG_PARAM = "user[longitude]";
+        public static final String USER_DISTANCE_PARAM = "user[distance]";
+    }
+
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
     }

@@ -1,5 +1,7 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.adapter.MainTabAdapter;
 import com.framgia.ishipper.ui.view.CustomViewPager;
 

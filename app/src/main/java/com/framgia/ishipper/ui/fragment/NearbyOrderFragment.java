@@ -27,7 +27,13 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.model.WindowOrder;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.server.GetInvoiceResponse;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.MapUtils;
@@ -47,6 +53,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,7 +116,6 @@ public class NearbyOrderFragment extends Fragment implements
         mUnbinder = ButterKnife.bind(this, view);
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
-//        mOrderStatus.setVisibility(View.GONE);
         return view;
     }
 
@@ -150,7 +158,50 @@ public class NearbyOrderFragment extends Fragment implements
             return;
         }
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        new LoadMapTask().execute();
+        markInvoiceNearby();
+    }
+
+    private void markInvoiceNearby() {
+        User user = new User();
+        user.setAuthenticationToken("FQTeVhjFpWyGQiZ4W5Bw");
+        user.setLatitude((float) mLocation.getLatitude());
+        user.setLongitude((float) mLocation.getLongitude());
+        int distance = 5;
+        Map<String, String> userParams = new HashMap<>();
+        userParams.put(APIDefinition.GetInvoiceNearby.USER_LAT_PARAM, String.valueOf(user.getLatitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.USER_LNG_PARAM, String.valueOf(user.getLongitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
+        API.getInvoiceNearby(user.getAuthenticationToken(), userParams,
+                             new API.APICallback<APIResponse<GetInvoiceResponse>>() {
+                                 @Override
+                                 public void onResponse(APIResponse<GetInvoiceResponse> response) {
+                                     Log.d(TAG, "onResponse: " + response.getMessage());
+                                     addListMarker(response.getData().getInvoiceList());
+                                     Toast.makeText(getContext(),
+                                                    response.getMessage(),
+                                                    Toast.LENGTH_SHORT)
+                                             .show();
+                                     configGoogleMap(response.getData().getInvoiceList());
+                                 }
+
+                                 @Override
+                                 public void onFailure(int code, String message) {
+                                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                 }
+                             });
+    }
+
+    private void addListMarker(List<Invoice> invoiceList) {
+        for (Invoice invoice : invoiceList) {
+            addMarkInvoice(invoice);
+        }
+    }
+
+    private void addMarkInvoice(Invoice invoice) {
+        LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
+        mGoogleMap.addMarker(new MarkerOptions()
+                                     .position(latLng)
+                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
     }
 
     @Override
@@ -176,7 +227,7 @@ public class NearbyOrderFragment extends Fragment implements
         super.onDestroy();
     }
 
-    private void configGoogleMap() {
+    private void configGoogleMap(final List<Invoice> invoiceList) {
         LatLng currentPos = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .tilt(TILT_DEGREE)
@@ -192,22 +243,23 @@ public class NearbyOrderFragment extends Fragment implements
                 mWindowOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
-                final WindowOrder order = orders.get(pos);
-                mTvNearbyDistance.setText(String.valueOf(order.getDistance()) + "km");
-                mTvNearbyFrom.setText(order.getStartAddress());
-                mTvNearbyTo.setText(order.getEndAddress());
-                mTvNearbyShipTime.setText(order.getShipTime());
-                mTvNearbyShipPrice.setText(order.getShipPrice());
-                mTvNearbyOrderPrice.setText(order.getGoodPrice());
+                final Invoice invoice = invoiceList.get(pos);
+                mTvNearbyDistance.setText(String.valueOf(invoice.getDistance()) + "km");
+                mTvNearbyFrom.setText(invoice.getAddressStart());
+                mTvNearbyTo.setText(invoice.getAddressFinish());
+                mTvNearbyShipTime.setText(invoice.getDeliveryTime());
+                mTvNearbyShipPrice.setText(String.valueOf(invoice.getShippingPrice()));
+                mTvNearbyOrderPrice.setText(String.valueOf(invoice.getPrice()));
                 if (mPolylineRoute != null) {
                     mPolylineRoute.remove();
                     mMakerEndOrder.remove();
                 }
 
                 mMakerEndOrder = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(order.getEndPoint()));
-
-                MapUtils.routing(order.getStartPoint(), order.getEndPoint(),
+                        .position(new LatLng(invoice.getLatFinish(), invoice.getLngFinish())));
+                final LatLng startPoint = new LatLng(invoice.getLatStart(), invoice.getLngStart());
+                final LatLng endPoint = new LatLng(invoice.getLatFinish(), invoice.getLngFinish());
+                MapUtils.routing(startPoint, endPoint,
                         new RoutingListener() {
                             @Override
                             public void onRoutingFailure(RouteException e) {
@@ -233,7 +285,7 @@ public class NearbyOrderFragment extends Fragment implements
 
                                 mPolylineRoute = mGoogleMap.addPolyline(polyOptions);
 
-                                MapUtils.updateZoomMap(mGoogleMap, order.getStartPoint(), order.getEndPoint());
+                                MapUtils.updateZoomMap(mGoogleMap, startPoint, endPoint);
                             }
 
                             @Override
@@ -257,16 +309,6 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
 
-    private void addMarkerToMap() {
-        for (WindowOrder order : orders) {
-            LatLng latLng = new LatLng(order.getLat(), order.getLng());
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop))
-            );
-        }
-    }
-
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -288,21 +330,4 @@ public class NearbyOrderFragment extends Fragment implements
     @OnClick(R.id.window_order_detail)
     public void onClick() {
     }
-
-    private class LoadMapTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            orders = WindowOrder.getSampleListData(mLocation);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            configGoogleMap();
-            addMarkerToMap();
-        }
-    }
-
 }
