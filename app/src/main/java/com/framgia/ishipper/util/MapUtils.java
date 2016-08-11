@@ -6,7 +6,6 @@ import android.location.Geocoder;
 
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
-import com.framgia.ishipper.common.Config;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,8 +37,8 @@ public class MapUtils {
         }
         LatLngBounds bounds = builder.build();
 
-        int width = Config.SCREEN_WIDTH;
-        int height = Config.SCREEN_HEIGHT;
+        int width = Const.SCREEN_WIDTH;
+        int height = Const.SCREEN_HEIGHT;
         int padding = (int) (width * 0.12);
 
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);

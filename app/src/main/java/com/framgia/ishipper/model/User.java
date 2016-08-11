@@ -1,4 +1,5 @@
 package com.framgia.ishipper.model;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
@@ -37,6 +38,8 @@ public class User {
     @SerializedName("signed_in") private boolean mIsSignedIn;
 
     @SerializedName("password") private String mPassword;
+
+    @SerializedName("id") private String mId;
 
     @Override
     public String toString() {
@@ -153,5 +156,9 @@ public class User {
 
     public void setPassword(String password) {
         mPassword = password;
+    }
+
+    public String getId() {
+        return mId;
     }
 }

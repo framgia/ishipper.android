@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@drawable/main_background"
               android:orientation="vertical"
               android:paddingLeft="@dimen/activity_login_margin"
               android:paddingRight="@dimen/activity_login_margin">
@@ -24,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/username_login"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_title"
             android:textStyle="bold"/>
 
@@ -41,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/all_padding_medium"
             android:text="@string/all_password"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_title"
             android:textStyle="bold"/>
 
@@ -82,6 +85,7 @@
                 android:layout_alignParentRight="true"
                 android:padding="@dimen/all_padding_small"
                 android:text="@string/activity_login_forgot_pass"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_button"/>
 
         </RelativeLayout>
@@ -92,14 +96,14 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:gravity="center"
-        android:paddingTop="@dimen/all_padding_medium"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="@dimen/all_padding_medium">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/all_divider_height"
             android:layout_marginBottom="@dimen/all_margin_large"
-            android:background="@color/black_20"/>
+            android:background="@color/white_20"/>
 
         <LinearLayout
             android:layout_width="match_parent"

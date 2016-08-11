@@ -13,6 +13,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.net.data.SignInData;
 
 import java.util.HashMap;
@@ -64,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(APIResponse<SignInData> response) {
                         Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                         sUser = response.getData().getUser();
+                        Config.getInstance().setUserInfo(getApplicationContext(), response.getData().getUser());
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
@@ -79,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getConfig() {
-        Config.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
-        Config.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
+        Const.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
+        Const.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
     }
 }
