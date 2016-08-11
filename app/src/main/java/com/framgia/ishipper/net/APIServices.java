@@ -6,6 +6,7 @@ import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
+import com.framgia.ishipper.net.data.UpdateProfileData;
 
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -61,6 +63,14 @@ public interface APIServices {
     @FormUrlEncoded
     @POST(APIDefinition.SignIn.PATH)
     Call<APIResponse<SignInData>> signIn(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @PUT(APIDefinition.PutUpdateProfile.PATH)
+    Call<APIResponse<UpdateProfileData>> putUpdateProfile(
+            @FieldMap Map<String, String> params,
+            @Path(APIDefinition.PutUpdateProfile.PATH_ID) String userId,
+            @Header(APIDefinition.ChangePassword.HEADER_AUTHORIZE) String token
+    );
 
     @FormUrlEncoded
     @PUT(APIDefinition.ConfirmationPin.PATH)

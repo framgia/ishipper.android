@@ -1,5 +1,6 @@
 package com.framgia.ishipper.net;
 
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.EmptyData;
@@ -7,6 +8,7 @@ import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
+import com.framgia.ishipper.net.data.UpdateProfileData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,7 @@ public abstract class API {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
+
         return httpClient.build();
     }
 
@@ -256,4 +259,35 @@ public abstract class API {
                     }
                 });
     }
+
+    public static void putUpdateProfile(HashMap<String, String> params,
+                                        final APICallback<APIResponse<UpdateProfileData>> callback) {
+        client.putUpdateProfile(
+                params,
+                Config.getInstance().getUserInfo(null).getId(),
+                Config.getInstance().getUserInfo(null).getAuthenticationToken()
+        ).enqueue(new Callback<APIResponse<UpdateProfileData>>() {
+                      @Override
+                      public void onResponse(Call<APIResponse<UpdateProfileData>> call,
+                                             Response<APIResponse<UpdateProfileData>> response) {
+                          if (response.isSuccessful()) {
+                              if (response.body().isSuccess()) {
+                                  callback.onResponse(response.body());
+                              } else {
+                                  callback.onFailure(response.body().getCode(), response.body().getMessage());
+                              }
+                          } else {
+                              callback.onFailure(response.code(), response.message());
+                          }
+                      }
+
+                      @Override
+                      public void onFailure(Call<APIResponse<UpdateProfileData>> call, Throwable t) {
+                          callback.onFailure(LOCAL_ERROR, t.getMessage());
+                      }
+                  }
+
+        );
+    }
+
 }
