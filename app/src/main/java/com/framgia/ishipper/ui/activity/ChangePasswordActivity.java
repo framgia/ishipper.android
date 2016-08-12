@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
@@ -48,14 +49,14 @@ public class ChangePasswordActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_change_password)
     public void onClick() {
-        User user = LoginActivity.sUser;
+        User currentUser = Config.getInstance().getUserInfo(this);
         Map<String, String> params = new HashMap<>();
-        params.put(APIDefinition.ChangePassword.PARAM_PHONE_NUMBER, user.getPhoneNumber());
+        params.put(APIDefinition.ChangePassword.PARAM_PHONE_NUMBER, currentUser.getPhoneNumber());
         params.put(APIDefinition.ChangePassword.PARAM_CURRENT_PASSWORD, mEdtOldPassword.getText().toString());
         params.put(APIDefinition.ChangePassword.PARAM_PASSWORD, mEdtNewPassword.getText().toString());
         params.put(APIDefinition.ChangePassword.PARAM_PASSWORD_CONFIRMATION, mEdtConfirmPassword.getText().toString());
         API.changePassword(
-                user.getAuthenticationToken(),
+                currentUser.getAuthenticationToken(),
                 params,
                 new API.APICallback<APIResponse<ChangePasswordData>>() {
 

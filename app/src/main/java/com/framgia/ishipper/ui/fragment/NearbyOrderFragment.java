@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.model.WindowOrder;
@@ -89,6 +91,7 @@ public class NearbyOrderFragment extends Fragment implements
     @BindView(R.id.action_receive_order) TextView mActionReceiveOrder;
     @BindView(R.id.window_order_detail) RelativeLayout mWindowOrderDetail;
     @BindView(R.id.ll_order_status) LinearLayout mOrderStatus;
+    @BindView(R.id.rating_order_window) RatingBar mRatingOrderWindow;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -98,6 +101,7 @@ public class NearbyOrderFragment extends Fragment implements
     private Unbinder mUnbinder;
     private Polyline mPolylineRoute;
     private Marker mMakerEndOrder;
+    private User mCurrentUser;
 
     public NearbyOrderFragment() {
         // Required empty public constructor
@@ -116,6 +120,7 @@ public class NearbyOrderFragment extends Fragment implements
         mUnbinder = ButterKnife.bind(this, view);
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
+        mRatingOrderWindow.setRating(4);
         return view;
     }
 
@@ -162,32 +167,32 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void markInvoiceNearby() {
-        User user = LoginActivity.sUser;
-        user.setLatitude((float) mLocation.getLatitude());
-        user.setLongitude((float) mLocation.getLongitude());
+        mCurrentUser = Config.getInstance().getUserInfo(getContext());
+        mCurrentUser.setLatitude((float) mLocation.getLatitude());
+        mCurrentUser.setLongitude((float) mLocation.getLongitude());
         int distance = 5;
         Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.GetInvoiceNearby.USER_LAT_PARAM, String.valueOf(user.getLatitude()));
-        userParams.put(APIDefinition.GetInvoiceNearby.USER_LNG_PARAM, String.valueOf(user.getLongitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.USER_LAT_PARAM, String.valueOf(mCurrentUser.getLatitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.USER_LNG_PARAM, String.valueOf(mCurrentUser.getLongitude()));
         userParams.put(APIDefinition.GetInvoiceNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
-        API.getInvoiceNearby(user.getAuthenticationToken(), userParams,
-                             new API.APICallback<APIResponse<InvoiceNearbyData>>() {
-                                 @Override
-                                 public void onResponse(APIResponse<InvoiceNearbyData> response) {
-                                     Log.d(TAG, "onResponse: " + response.getMessage());
-                                     addListMarker(response.getData().getInvoiceList());
-                                     Toast.makeText(getContext(),
-                                                    response.getMessage(),
-                                                    Toast.LENGTH_SHORT)
-                                             .show();
-                                     configGoogleMap(response.getData().getInvoiceList());
-                                 }
+        API.getInvoiceNearby(mCurrentUser.getAuthenticationToken(), userParams,
+                new API.APICallback<APIResponse<InvoiceNearbyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<InvoiceNearbyData> response) {
+                        Log.d(TAG, "onResponse: " + response.getMessage());
+                        addListMarker(response.getData().getInvoiceList());
+                        Toast.makeText(getContext(),
+                                response.getMessage(),
+                                Toast.LENGTH_SHORT)
+                                .show();
+                        configGoogleMap(response.getData().getInvoiceList());
+                    }
 
-                                 @Override
-                                 public void onFailure(int code, String message) {
-                                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                                 }
-                             });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void addListMarker(List<Invoice> invoiceList) {
@@ -199,8 +204,8 @@ public class NearbyOrderFragment extends Fragment implements
     private void addMarkInvoice(Invoice invoice) {
         LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
         mGoogleMap.addMarker(new MarkerOptions()
-                                     .position(latLng)
-                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.framgia.ishipper.net;
 
-import android.widget.Toast;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.net.data.ChangePasswordData;
@@ -28,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class API {
     private static final String TAG = "API";
     public static final int LOCAL_ERROR = 1111;
+    public static final String SERVER_ERROR = "Server Error";
 
     private static OkHttpClient loggingClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -61,7 +61,7 @@ public abstract class API {
             public void onResponse(Call<APIResponse<SignUpData>> call,
                                    Response<APIResponse<SignUpData>> response) {
                 if (response.body() == null) {
-                    Log.d(TAG, "Server Error");
+                    Log.d(TAG, SERVER_ERROR);
                 } else if (response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -84,7 +84,7 @@ public abstract class API {
                     public void onResponse(Call<APIResponse<EmptyData>> call,
                                            Response<APIResponse<EmptyData>> response) {
                         if (response.body() == null) {
-                            Log.d(TAG, "Server Error");
+                            Log.d(TAG, SERVER_ERROR);
                         } else if (response.body().isSuccess()) {
                             callback.onResponse(response.body());
                         } else {
@@ -108,7 +108,7 @@ public abstract class API {
             public void onResponse(Call<APIResponse<ChangePasswordData>> call,
                                    Response<APIResponse<ChangePasswordData>> response) {
                 if (response.body() == null) {
-                    Log.d(TAG, "Server Error");
+                    Log.d(TAG, SERVER_ERROR);
                 } else if (response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -131,7 +131,7 @@ public abstract class API {
             public void onResponse(Call<APIResponse<SignInData>> call,
                                    Response<APIResponse<SignInData>> response) {
                 if (response.body() == null) {
-                    Log.d(TAG, "Server Error");
+                    Log.d(TAG, SERVER_ERROR);
                 } else if (response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -154,7 +154,7 @@ public abstract class API {
             public void onResponse(Call<APIResponse<EmptyData>> call,
                                    Response<APIResponse<EmptyData>> response) {
                 if (response.body() == null) {
-                    Log.d(TAG, "Server Error");
+                    Log.d(TAG, SERVER_ERROR);
                 } else if (response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -176,7 +176,7 @@ public abstract class API {
             public void onResponse(Call<APIResponse<EmptyData>> call,
                                    Response<APIResponse<EmptyData>> response) {
                 if (response.body() == null) {
-                    Log.d(TAG, "Server Error");
+                    Log.d(TAG, SERVER_ERROR);
                 } else if (response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -198,7 +198,7 @@ public abstract class API {
             public void onResponse(Call<APIResponse<EmptyData>> call,
                                    Response<APIResponse<EmptyData>> response) {
                 if (response.body() == null) {
-                    Log.d(TAG, "Server Error");
+                    Log.d(TAG, SERVER_ERROR);
                 } else if (response.body().isSuccess()) {
                     callback.onResponse(response.body());
                 } else {
@@ -223,11 +223,12 @@ public abstract class API {
                     public void onResponse(Call<APIResponse<ShipperNearbyData>> call,
                                            Response<APIResponse<ShipperNearbyData>> response) {
 
-                        if (response.body().isSuccess()) {
+                        if (response.body() == null) {
+                            Log.d(TAG, SERVER_ERROR);
+                        } else if (response.body().isSuccess()) {
                             callback.onResponse(response.body());
                         } else {
-                            callback.onFailure(response.body().getCode(),
-                                    response.body().getMessage());
+                            callback.onFailure(LOCAL_ERROR, response.body().getMessage());
                         }
                     }
 
@@ -247,10 +248,12 @@ public abstract class API {
                     @Override
                     public void onResponse(Call<APIResponse<InvoiceNearbyData>> call,
                                            Response<APIResponse<InvoiceNearbyData>> response) {
-                        if (response.body().isSuccess()) {
+                        if (response.body() == null) {
+                            Log.d(TAG, SERVER_ERROR);
+                        } else if (response.body().isSuccess()) {
                             callback.onResponse(response.body());
                         } else {
-                            callback.onFailure(response.body().getCode(), response.body().getMessage());
+                            callback.onFailure(LOCAL_ERROR, response.body().getMessage());
                         }
                     }
 

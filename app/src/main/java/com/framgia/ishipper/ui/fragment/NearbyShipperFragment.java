@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Shipper;
 import com.framgia.ishipper.model.User;
@@ -58,6 +59,7 @@ public class NearbyShipperFragment extends Fragment implements
     private GoogleMap mGoogleMap;
     private ArrayList<Shipper> shippers = new ArrayList<>();
     private SupportMapFragment mMapFragment;
+    private User mCurrentUser;
 
     public NearbyShipperFragment() {
 
@@ -150,15 +152,15 @@ public class NearbyShipperFragment extends Fragment implements
 
 
     private void markShipperNearby() {
-        User user = LoginActivity.sUser;
-        user.setLatitude((float) mLocation.getLatitude());
-        user.setLongitude((float) mLocation.getLongitude());
+        mCurrentUser = Config.getInstance().getUserInfo(getContext());
+        mCurrentUser.setLatitude((float) mLocation.getLatitude());
+        mCurrentUser.setLongitude((float) mLocation.getLongitude());
         int distance = 2;
         Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.GetShipperNearby.USER_LAT_PARAM, String.valueOf(user.getLatitude()));
-        userParams.put(APIDefinition.GetShipperNearby.USER_LNG_PARAM, String.valueOf(user.getLongitude()));
+        userParams.put(APIDefinition.GetShipperNearby.USER_LAT_PARAM, String.valueOf(mCurrentUser.getLatitude()));
+        userParams.put(APIDefinition.GetShipperNearby.USER_LNG_PARAM, String.valueOf(mCurrentUser.getLongitude()));
         userParams.put(APIDefinition.GetShipperNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
-        API.getShipperNearby(user.getAuthenticationToken(), userParams,
+        API.getShipperNearby(mCurrentUser.getAuthenticationToken(), userParams,
                              new API.APICallback<APIResponse<ShipperNearbyData>>() {
                                  @Override
                                  public void onResponse(APIResponse<ShipperNearbyData> response) {

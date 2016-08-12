@@ -148,7 +148,7 @@
     <string name="next">Tiếp</string>
     <string name="resent_validate_sms">Gửi lại tin nhắn</string>
     <string name="message_phone_validate_sent">Chúng tôi vừa gửi một mã xác nhận tới số điện thoại của bạn. Vui lòng nhập mã xác nhận tới số %1$s.</string>
-    <string name="profile_user_name">Họ và tên (*)</string>
+    <string name="profile_user_name">Họ và tên</string>
     <string name="profile_plate">Biển số xe</string>
     <string name="profile_email">Email</string>
     <string name="profile_phone">Số điện thoại</string>
@@ -165,4 +165,10 @@
     <string name="title_activity_change_password">Thay đổi mật khẩu</string>
     <string name="error_empty_string">Không được để trống</string>
     <string name="all_old_password">Mật khẩu cũ</string>
+    <string name="all_ok">Ok</string>
+    <string name="all_cancel">Hủy</string>
+    <string name="dialog_receive_order_message">Bạn có muốn nhận đơn hàng không?</string>
+    <string name="all_yes">Có</string>
+    <string name="all_no">Không</string>
+    <string name="dialog_input_password">Nhập mật khẩu</string>
 </resources>
