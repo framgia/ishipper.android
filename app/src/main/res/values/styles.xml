@@ -1,0 +1,119 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppButton">
+        <item name="android:background">@drawable/bg_btn_green</item>
+        <item name="android:padding">@dimen/_10dp</item>
+        <item name="android:textSize">@dimen/text_size_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AppRadioShip">
+        <item name="android:padding">@dimen/all_padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AppTextFieldStyle">
+        <item name="android:background">@drawable/bg_edittext_login</item>
+        <item name="android:padding">@dimen/all_padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="AppLabelTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="ButtonShippingOrderAct">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">5.0dp</item>
+        <item name="android:paddingRight">5.0dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">0.0dp</item>
+        <item name="android:layout_height">40.0dp</item>
+        <item name="android:layout_marginLeft">5.0dp</item>
+        <item name="android:layout_marginRight">5.0dp</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <style name="order_detail_label">
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="order_detail_content">
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/grey_DA_light</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="btn_radius_green_border">
+        <item name="android:background">@drawable/btn_radius_green_border_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorGreenDark</item>
+    </style>
+
+    <style name="rb_create_order">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/_5dp</item>
+        <item name="android:layout_marginRight">@dimen/_5dp</item>
+        <item name="android:layout_marginTop">@dimen/_5dp</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+    </style>
+
+    <style name="divider_pick_time_create_order">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">@dimen/_5dp</item>
+        <item name="android:layout_marginRight">@dimen/_5dp</item>
+        <item name="android:background">@color/grey_DA_light</item>
+    </style>
+
+    <style name="divider_item_create_order">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/back_ground_grey</item>
+    </style>
+
+    <style name="btn_radius_green_solid">
+        <item name="android:background">@drawable/btn_green_radius_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+</resources>
