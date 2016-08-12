@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,7 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
-    public static User sUser = new User();
     private static final String TAG = "LoginActivity";
     @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
     @BindView(R.id.edtPassword) EditText mEdtPassword;
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         getConfig();
@@ -64,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(APIResponse<SignInData> response) {
                         Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                        sUser = response.getData().getUser();
                         Config.getInstance().setUserInfo(getApplicationContext(), response.getData().getUser());
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();

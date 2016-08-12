@@ -15,7 +15,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     public static final int SHIPPER = 0;
     public static final int SHOP = 1;
     public static int userType = SHIPPER;
+    private User mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initView() {
+        mCurrentUser = Config.getInstance().getUserInfo(this);
         setSupportActionBar(mToolbar);
         if (userType == SHOP) {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shop);
@@ -121,20 +125,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void signOut() {
-        API.signOut(LoginActivity.sUser.getAuthenticationToken(),
-                    LoginActivity.sUser.getPhoneNumber(),
-                    new API.APICallback<APIResponse<EmptyData>>() {
-                        @Override
-                        public void onResponse(APIResponse<EmptyData> response) {
-                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                            finish();
-                        }
+        API.signOut(mCurrentUser.getAuthenticationToken(),
+                mCurrentUser.getPhoneNumber(),
+                new API.APICallback<APIResponse<EmptyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<EmptyData> response) {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+                    }
 
-                        @Override
-                        public void onFailure(int code, String message) {
-                            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

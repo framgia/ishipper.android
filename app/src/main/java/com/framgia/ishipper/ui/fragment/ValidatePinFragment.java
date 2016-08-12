@@ -91,6 +91,8 @@ public class ValidatePinFragment extends Fragment {
                                                                                MainActivity.class);
                                                 startActivity(mainIntent);
                                                 getActivity().finish();
+                                                Toast.makeText(getContext(),
+                                                        getString(R.string.register_success), Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
