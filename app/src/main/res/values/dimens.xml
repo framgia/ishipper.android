@@ -34,7 +34,7 @@
 
     <dimen name="button_edge_radius">3dp</dimen>
     <dimen name="button_stroke_size">1dp</dimen>
-    <dimen name="nav_header_icon_margin_top">35dp</dimen>
+    <dimen name="nav_header_icon_margin_top">40dp</dimen>
 
     <!--Activity Login-->
     <dimen name="activity_login_margin">45dp</dimen>

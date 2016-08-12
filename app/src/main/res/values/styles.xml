@@ -116,4 +116,12 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="star_rating_bar_small" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_selector_small</item>
+        <item name="android:minHeight">18dp</item>
+        <item name="android:maxHeight">18dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
