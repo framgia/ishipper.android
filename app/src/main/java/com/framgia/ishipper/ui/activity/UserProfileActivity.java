@@ -3,8 +3,11 @@ package com.framgia.ishipper.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
@@ -26,9 +29,13 @@ public class UserProfileActivity extends ToolbarActivity {
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.edt_profile_name) TextInputEditText mEdtProfileName;
     @BindView(R.id.edt_profile_plate) TextInputEditText mEdtProfilePlate;
-    @BindView(R.id.edt_profile_password) TextInputEditText mEdtProfilePassword;
     @BindView(R.id.edt_profile_phone) TextInputEditText mEdtProfilePhone;
     @BindView(R.id.edt_profile_address) TextInputEditText mEdtProfileAddress;
+    private User mCurrentUser;
+    private TextView mEdtProfilePassword;
+    private TextView mDialogPasswordOk;
+    private TextView mDialogPasswordCancel;
+    private AlertDialog mInputPasswordDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,7 @@ public class UserProfileActivity extends ToolbarActivity {
         setContentView(R.layout.activity_user_profile);
         ButterKnife.bind(this);
         bindData();
+
     }
 
     @Override
@@ -49,10 +57,14 @@ public class UserProfileActivity extends ToolbarActivity {
     }
 
     private void bindData() {
-        User user = Config.getInstance().getUserInfo(getApplicationContext());
-        mEdtProfilePlate.setText(user.getPlateNumber());
-        mEdtProfileName.setText(user.getName());
-        mEdtProfilePhone.setText(user.getPhoneNumber());
+        mCurrentUser = Config.getInstance().getUserInfo(getApplicationContext());
+        mEdtProfilePlate.setText(mCurrentUser.getPlateNumber());
+        mEdtProfileName.setText(mCurrentUser.getName());
+        mEdtProfilePhone.setText(mCurrentUser.getPhoneNumber());
+        mEdtProfileAddress.setText(mCurrentUser.getAddress());
+        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
+            mEdtProfilePlate.setVisibility(View.GONE);
+        }
     }
 
 
@@ -63,25 +75,55 @@ public class UserProfileActivity extends ToolbarActivity {
                 startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.btn_profile_update:
-                HashMap<String, String> params = new HashMap<>();
-                params.put(APIDefinition.PutUpdateProfile.PARAM_NAME, mEdtProfileName.getText().toString());
-                params.put(APIDefinition.PutUpdateProfile.USER_CURRENT_PASSWORD, mEdtProfilePassword.getText().toString());
-                params.put(APIDefinition.PutUpdateProfile.PARAM_PHONE_NUMBER, mEdtProfilePhone.getText().toString());
-                params.put(APIDefinition.PutUpdateProfile.PARAM_PLATE_NUMBER, mEdtProfilePlate.getText().toString());
-
-                API.putUpdateProfile(params, new API.APICallback<APIResponse<UpdateProfileData>>() {
-                    @Override
-                    public void onResponse(APIResponse<UpdateProfileData> response) {
-                        Config.getInstance().setUserInfo(getApplicationContext(), response.getData().user);
-                        Toast.makeText(UserProfileActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                showPasswordDialog();
                 break;
         }
     }
+
+    private void showPasswordDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_input_password, null);
+        mEdtProfilePassword = (TextView) view.findViewById(R.id.edt_profile_password);
+        mDialogPasswordOk = (TextView) view.findViewById(R.id.dialog_password_ok);
+        mDialogPasswordCancel = (TextView) view.findViewById(R.id.dialog_password_cancel);
+        mDialogPasswordOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updatePassword();
+                mInputPasswordDialog.cancel();
+            }
+        });
+        mDialogPasswordCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mInputPasswordDialog.cancel();
+            }
+        });
+        mInputPasswordDialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .setCancelable(true)
+                .show();
+    }
+
+    private void updatePassword() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(APIDefinition.PutUpdateProfile.PARAM_NAME, mEdtProfileName.getText().toString());
+        params.put(APIDefinition.PutUpdateProfile.USER_CURRENT_PASSWORD, mEdtProfilePassword.getText().toString());
+        params.put(APIDefinition.PutUpdateProfile.PARAM_PHONE_NUMBER, mEdtProfilePhone.getText().toString());
+        params.put(APIDefinition.PutUpdateProfile.PARAM_PLATE_NUMBER, mEdtProfilePlate.getText().toString());
+        params.put(APIDefinition.PutUpdateProfile.PARAM_ADDRESS, mEdtProfileAddress.getText().toString());
+
+        API.putUpdateProfile(params, new API.APICallback<APIResponse<UpdateProfileData>>() {
+            @Override
+            public void onResponse(APIResponse<UpdateProfileData> response) {
+                Config.getInstance().setUserInfo(getApplicationContext(), response.getData().user);
+                Toast.makeText(UserProfileActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int code, String message) {
+                Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
