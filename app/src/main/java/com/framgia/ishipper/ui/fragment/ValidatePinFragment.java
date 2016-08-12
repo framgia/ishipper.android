@@ -32,11 +32,10 @@ public class ValidatePinFragment extends Fragment {
     private static final String BUNDLE_ACTION = "BUNDLE_ACTION";
 
     @BindView(R.id.tvDetailText) TextView mTvDetailText;
+    @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
 
     private String mPhoneNumber;
     private int mAction;
-
-    @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,10 +63,9 @@ public class ValidatePinFragment extends Fragment {
                                     pd.dismiss();
                                     getActivity().getSupportFragmentManager()
                                             .beginTransaction()
-                                            .add(R.id.container,
-                                                 ResetPasswordNewFragment
-                                                         .newInstance(mPhoneNumber,
-                                                                      mEdtPhoneNumber.getText().toString()))
+                                            .add(R.id.container, ResetPasswordNewFragment.newInstance(
+                                                 mPhoneNumber,
+                                                 mEdtPhoneNumber.getText().toString()))
                                             .addToBackStack(null)
                                             .commit();
                                 }
@@ -80,34 +78,56 @@ public class ValidatePinFragment extends Fragment {
                             });
                 } else {
                      /* Signup */
-                    API.confirmationPinInSignUp(mPhoneNumber,
-                                                mEdtPhoneNumber.getText().toString(),
-                                                new API.APICallback<APIResponse<EmptyData>>() {
-                                            @Override
-                                            public void onResponse(
-                                                    APIResponse<EmptyData> response) {
-                                                pd.dismiss();
-                                                Intent mainIntent = new Intent(getActivity(),
-                                                                               MainActivity.class);
-                                                startActivity(mainIntent);
-                                                getActivity().finish();
-                                                Toast.makeText(getContext(),
-                                                        getString(R.string.register_success), Toast.LENGTH_SHORT).show();
-                                            }
+                    API.confirmationPinInSignUp(
+                            mPhoneNumber,
+                            mEdtPhoneNumber.getText().toString(),
+                            new API.APICallback<APIResponse<EmptyData>>() {
+                                @Override
+                                public void onResponse(
+                                        APIResponse<EmptyData> response) {
+                                    pd.dismiss();
+                                    Intent mainIntent = new Intent(getActivity(),
+                                            MainActivity.class);
+                                    startActivity(mainIntent);
+                                    getActivity().finish();
+                                    Toast.makeText(getContext(),
+                                            getString(R.string.register_success), Toast.LENGTH_SHORT).show();
+                                }
 
-                                            @Override
-                                            public void onFailure(int code, String message) {
-                                                pd.dismiss();
-                                                Toast.makeText(getActivity(),
-                                                               message,
-                                                               Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                @Override
+                                public void onFailure(int code, String message) {
+                                    pd.dismiss();
+                                    Toast.makeText(getActivity(),
+                                            message,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
                 break;
             case R.id.btnResent:
+                getConfirmationPin();
                 break;
         }
+    }
+
+    private void getConfirmationPin() {
+        final ProgressDialog pd = new ProgressDialog(getActivity());
+        pd.show();
+        API.getConfirmationPin(mPhoneNumber,
+                new API.APICallback<APIResponse<EmptyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<EmptyData> response) {
+                        pd.dismiss();
+                        Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        pd.dismiss();
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
     public static ValidatePinFragment newInstance(String phoneNumber, int action) {

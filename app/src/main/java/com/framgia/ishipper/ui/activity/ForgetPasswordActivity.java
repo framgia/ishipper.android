@@ -74,7 +74,8 @@ public class ForgetPasswordActivity extends ToolbarActivity {
                         pd.dismiss();
                         Toast.makeText(ForgetPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+        );
 
     }
 }
