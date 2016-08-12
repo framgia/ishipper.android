@@ -12,9 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
@@ -99,13 +103,11 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
             case R.id.nav_create_order:
-//                fragment = new CreateOrderFragment();
                 fragment = null;
                 startActivity(new Intent(this, ShopCreateOrderActivity.class));
                 break;
             case R.id.nav_sign_out:
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                signOut();
             default:
                 return;
         }
@@ -116,6 +118,23 @@ public class MainActivity extends AppCompatActivity
                     .commit();
             mNavigationView.setCheckedItem(id);
         }
+    }
+
+    private void signOut() {
+        API.signOut(LoginActivity.sUser.getAuthenticationToken(),
+                    LoginActivity.sUser.getPhoneNumber(),
+                    new API.APICallback<APIResponse<EmptyData>>() {
+                        @Override
+                        public void onResponse(APIResponse<EmptyData> response) {
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(int code, String message) {
+                            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
     }
 
     @Override

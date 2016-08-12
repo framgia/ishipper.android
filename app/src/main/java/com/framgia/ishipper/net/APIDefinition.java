@@ -110,6 +110,13 @@ public class APIDefinition {
         public static final String USER_DISTANCE_PARAM = "user[distance]";
     }
 
+    public static class SignOut {
+        public static final String PATH = "/api/sign_out";
+        public static final String PARAM_PHONE_NUMBER = "user[phone_number]";
+        public static final String AUTHENTICATE_TOKEN = "user[authentication_token]";
+    }
+
+
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
     }
