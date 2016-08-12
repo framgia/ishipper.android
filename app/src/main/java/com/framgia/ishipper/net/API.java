@@ -1,5 +1,6 @@
 package com.framgia.ishipper.net;
 
+import android.widget.Toast;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.net.data.ChangePasswordData;
@@ -288,6 +289,31 @@ public abstract class API {
                   }
 
         );
+    }
+
+    public static void signOut(String token,
+                               String phoneNumber,
+                               final APICallback<APIResponse<EmptyData>> callback) {
+        client.signOut(token, phoneNumber).enqueue(new Callback<APIResponse<EmptyData>>() {
+            @Override
+            public void onResponse(Call<APIResponse<EmptyData>> call,
+                                   Response<APIResponse<EmptyData>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
+                        callback.onResponse(response.body());
+                    } else {
+                        callback.onFailure(response.body().getCode(), response.body().getMessage());
+                    }
+                } else {
+                    callback.onFailure(response.code(), response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<EmptyData>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
     }
 
 }

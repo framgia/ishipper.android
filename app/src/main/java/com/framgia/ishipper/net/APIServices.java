@@ -11,6 +11,7 @@ import com.framgia.ishipper.net.data.UpdateProfileData;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -90,4 +91,11 @@ public interface APIServices {
     Call<APIResponse<InvoiceNearbyData>> getInvoices(
             @Header(APIDefinition.GetInvoiceNearby.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
+
+    /* Sign out */
+    @DELETE(APIDefinition.SignOut.PATH)
+    Call<APIResponse<EmptyData>> signOut(
+            @Query(APIDefinition.SignOut.AUTHENTICATE_TOKEN) String token,
+            @Query(APIDefinition.SignOut.PARAM_PHONE_NUMBER) String phoneNumber);
+
 }
