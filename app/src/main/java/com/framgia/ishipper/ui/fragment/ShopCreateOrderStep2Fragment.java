@@ -26,22 +26,16 @@ import butterknife.OnClick;
 public class ShopCreateOrderStep2Fragment extends Fragment
         implements RadioGroup.OnCheckedChangeListener {
 
-    @BindView(R.id.edt_order_name)
-    EditText mEdtOrderName;
-    @BindView(R.id.edt_order_price)
-    EditText mEdtOrderPrice;
-    @BindView(R.id.edt_ship_price)
-    EditText mEdtShipPrice;
-    @BindView(R.id.text_time)
-    TextView mTextTime;
-    @BindView(R.id.edt_customer_name)
-    EditText mEdtCustomerName;
-    @BindView(R.id.edt_customer_phone)
-    EditText mEdtCustomerPhone;
-    @BindView(R.id.rg_pick_time)
-    RadioGroup mRgPickTime;
-    @BindView(R.id.btn_submit)
-    Button mBtnSubmit;
+    @BindView(R.id.edt_order_name) EditText mEdtOrderName;
+    @BindView(R.id.edt_order_weight) EditText mEdtOrderWeight;
+    @BindView(R.id.edt_order_price) EditText mEdtOrderPrice;
+    @BindView(R.id.edt_ship_price) EditText mEdtShipPrice;
+    @BindView(R.id.text_time) TextView mTextTime;
+    @BindView(R.id.edt_customer_name) EditText mEdtCustomerName;
+    @BindView(R.id.edt_customer_phone) EditText mEdtCustomerPhone;
+    @BindView(R.id.rg_pick_time) RadioGroup mRgPickTime;
+    @BindView(R.id.btn_submit) Button mBtnSubmit;
+    @BindView(R.id.edt_note) EditText mEdtNote;
 
     @Nullable
     @Override
@@ -69,6 +63,19 @@ public class ShopCreateOrderStep2Fragment extends Fragment
                 }
                 break;
             case R.id.btn_submit:
+                // TODO: Set invoice
+                ShopCreateOrderActivity.sInvoice.setName(mEdtOrderName.getText().toString());
+                ShopCreateOrderActivity.sInvoice.setWeight(
+                        Float.valueOf(mEdtOrderWeight.getText().toString()));
+                ShopCreateOrderActivity.sInvoice.setPrice(
+                        Float.valueOf(mEdtOrderPrice.getText().toString()));
+                ShopCreateOrderActivity.sInvoice.setShippingPrice(
+                        Float.valueOf(mEdtShipPrice.getText().toString()));
+                ShopCreateOrderActivity.sInvoice.setDeliveryTime(mTextTime.getText().toString());
+                ShopCreateOrderActivity.sInvoice.setCustomerName(mEdtCustomerName.getText().toString());
+                ShopCreateOrderActivity.sInvoice.setCustomerNumber(mEdtCustomerPhone.getText().toString());
+                ShopCreateOrderActivity.sInvoice.setDescription(mEdtNote.getText().toString());
+
                 ((ShopCreateOrderActivity) getActivity()).addFragment(new ShopCreateOrderStep3Fragment());
                 break;
             case R.id.rb_today_select:

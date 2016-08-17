@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by vuduychuong1994 on 8/9/16.
  */
 public class Invoice {
+    public static final String STATUS_INIT = "init";
 
     @SerializedName("id") private int mId;
     @SerializedName("name") private String mName;
@@ -22,6 +23,8 @@ public class Invoice {
     @SerializedName("status") private String mStatus;
     @SerializedName("weight") private Float mWeight;
     @SerializedName("user_id") private int mUserId;
+    @SerializedName("customer_name") private String mCustomerName;
+    @SerializedName("customer_number") private String mCustomerNumber;
 
     public int getId() {
         return mId;
@@ -149,5 +152,21 @@ public class Invoice {
 
     public void setUserId(int userId) {
         mUserId = userId;
+    }
+
+    public String getCustomerName() {
+        return mCustomerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        mCustomerName = customerName;
+    }
+
+    public String getCustomerNumber() {
+        return mCustomerNumber;
+    }
+
+    public void setCustomerNumber(String customerNumber) {
+        mCustomerNumber = customerNumber;
     }
 }

@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity
 
     private void initView() {
         mCurrentUser = Config.getInstance().getUserInfo(this);
+        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
+            userType = SHIPPER;
+        } else {
+            userType = SHOP;
+        }
         setSupportActionBar(mToolbar);
         if (userType == SHOP) {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shop);

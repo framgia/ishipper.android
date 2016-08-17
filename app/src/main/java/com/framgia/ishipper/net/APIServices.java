@@ -1,6 +1,7 @@
 package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.net.data.ChangePasswordData;
+import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
@@ -97,5 +98,12 @@ public interface APIServices {
     Call<APIResponse<EmptyData>> signOut(
             @Query(APIDefinition.SignOut.AUTHENTICATE_TOKEN) String token,
             @Query(APIDefinition.SignOut.PARAM_PHONE_NUMBER) String phoneNumber);
+
+    /* Create invoice */
+    @FormUrlEncoded
+    @POST(APIDefinition.CreateInvoice.PATH)
+    Call<APIResponse<CreateInVoiceData>> createInvoice(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @FieldMap Map<String, String> params);
 
 }
