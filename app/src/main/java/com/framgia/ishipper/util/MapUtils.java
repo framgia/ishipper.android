@@ -30,15 +30,13 @@ public class MapUtils {
         routing.execute();
     }
 
-    public static void updateZoomMap(GoogleMap googleMap, LatLng... points) {
+    public static void updateZoomMap(GoogleMap googleMap, int width, int height, LatLng... points) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng item : points) {
             builder.include(item);
         }
         LatLngBounds bounds = builder.build();
 
-        int width = Const.SCREEN_WIDTH;
-        int height = Const.SCREEN_HEIGHT;
         int padding = (int) (width * 0.12);
 
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
