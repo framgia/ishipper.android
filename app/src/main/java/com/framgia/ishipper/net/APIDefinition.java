@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://ishipper.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.120:3001";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -119,5 +119,25 @@ public class APIDefinition {
 
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
+    }
+
+    public static class CreateInvoice {
+        public static final String PATH = "/api/invoices";
+        public static final String NAME = "invoice[name]";
+        public static final String ADDRESS_START = "invoice[address_start]";
+        public static final String LATITUDE_START = "invoice[latitude_start]";
+        public static final String LONGITUDE_START = "invoice[longitude_start]";
+        public static final String ADDRESS_FINISH = "invoice[address_finish]";
+        public static final String LATITUDE_FINISH = "invoice[latitude_finish]";
+        public static final String LONGITUDE_FINISH = "invoice[longitude_finish]";
+        public static final String DELIVERY_TIME = "invoice[delivery_time]";
+        public static final String DISTANCE = "invoice[distance]";
+        public static final String DESCRIPTION = "invoice[description]";
+        public static final String PRICE = "invoice[price]";
+        public static final String SHIPPING_PRICE = "invoice[shipping_price]";
+        public static final String STATUS = "invoice[status]";
+        public static final String WEIGHT = "invoice[weight]";
+        public static final String CUSTOMER_NAME = "invoice[customer_name]";
+        public static final String CUSTOMER_NUMBER = "invoice[customer_number]";
     }
 }

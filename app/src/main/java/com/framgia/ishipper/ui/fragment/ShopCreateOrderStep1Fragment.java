@@ -1,7 +1,9 @@
 package com.framgia.ishipper.ui.fragment;
 
-
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -32,13 +34,14 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     private final int PICK_START_POINT = 2;
     private final int PICK_END_POINT = 3;
 
-
     @BindView(R.id.imgPickPosition) ImageView mImgPickPosition;
     @BindView(R.id.edt_address_start) EditText mEdtAddressStart;
     @BindView(R.id.edt_address_end) EditText mEdtAddressEnd;
     private GoogleMap mMap;
     private Marker mMakerStart, mMakerEnd;
     private int status = NONE;
+    private LatLng mLatLngStart;
+    private LatLng mLatLngFinish;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,12 +80,13 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     mMakerEnd.remove();
                 }
 
-                LatLng taget = mMap.getCameraPosition().target;
-                mEdtAddressEnd.setText(MapUtils.getAddressName(getContext(), taget));
+                mLatLngStart = mMap.getCameraPosition().target;
+                mEdtAddressEnd.setText(MapUtils.getAddressName(getContext(), mLatLngStart));
 
                 mMakerEnd = mMap.addMarker(
-                        new MarkerOptions().position(taget)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_end))
+                        new MarkerOptions().position(mLatLngStart)
+                                .icon(BitmapDescriptorFactory.fromResource(
+                                        R.drawable.ic_map_picker_end))
                 );
 
                 // Zoom to previous location, if don't have previous -> go to current location
@@ -101,10 +105,11 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 if (mMakerStart != null) {
                     mMakerStart.remove();
                 }
-
+                mLatLngFinish = mMap.getCameraPosition().target;
                 mMakerStart = mMap.addMarker(
-                        new MarkerOptions().position(mMap.getCameraPosition().target)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start))
+                        new MarkerOptions().position(mLatLngFinish)
+                                .icon(BitmapDescriptorFactory.fromResource(
+                                        R.drawable.ic_map_picker_start))
                 );
 
                 startPickLocation(mMakerEnd);
@@ -113,7 +118,14 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 break;
             case R.id.btnContinue:
                 //TODO
-                ((ShopCreateOrderActivity) getActivity()).addFragment(new ShopCreateOrderStep2Fragment());
+                ShopCreateOrderActivity.sInvoice.setAddressStart(mEdtAddressStart.getText().toString());
+                ShopCreateOrderActivity.sInvoice.setLatStart((float) mLatLngStart.latitude);
+                ShopCreateOrderActivity.sInvoice.setLngStart((float) mLatLngStart.longitude);
+                ShopCreateOrderActivity.sInvoice.setAddressFinish(mEdtAddressEnd.getText().toString());
+                ShopCreateOrderActivity.sInvoice.setLatFinish((float) mLatLngFinish.latitude);
+                ShopCreateOrderActivity.sInvoice.setLngFinish((float) mLatLngFinish.longitude);
+                ((ShopCreateOrderActivity) getActivity()).addFragment(
+                        new ShopCreateOrderStep2Fragment());
                 break;
         }
     }
@@ -136,20 +148,29 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     private void enableMyLocation() {
         // Permission to access the location is missing.
 
-//        mMap.setMyLocationEnabled(true);
-//        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-//            @Override
-//            public void onMyLocationChange(Location location) {
-//                MapUtils.updateZoomMap(mMap, new LatLng(location.getLatitude(), location.getLongitude()));
-//                mMap.setMyLocationEnabled(false);
-//            }
-//        });
+        //        mMap.setMyLocationEnabled(true);
+        //        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+        //            @Override
+        //            public void onMyLocationChange(Location location) {
+        //                MapUtils.updateZoomMap(mMap, new LatLng(location.getLatitude(), location.getLongitude()));
+        //                mMap.setMyLocationEnabled(false);
+        //            }
+        //        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         enableMyLocation();
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                                               Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(),
+                                                   Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return;
+        }
         googleMap.setMyLocationEnabled(true);
     }
 }

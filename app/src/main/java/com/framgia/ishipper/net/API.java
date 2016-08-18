@@ -2,7 +2,9 @@ package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.data.ChangePasswordData;
+import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
@@ -294,6 +296,7 @@ public abstract class API {
         );
     }
 
+    /* Sign out */
     public static void signOut(String token,
                                String phoneNumber,
                                final APICallback<APIResponse<EmptyData>> callback) {
@@ -317,6 +320,33 @@ public abstract class API {
                 callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
+    }
+
+    /* Create Invoice */
+    public static void createInvoice(String token,
+                                     Map<String, String> params,
+                                     final APICallback<APIResponse<CreateInVoiceData>> callback) {
+        client.createInvoice(token, params).enqueue(
+                new Callback<APIResponse<CreateInVoiceData>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<CreateInVoiceData>> call,
+                                           Response<APIResponse<CreateInVoiceData>> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().isSuccess()) {
+                                callback.onResponse(response.body());
+                            } else {
+                                callback.onFailure(response.body().getCode(), response.body().getMessage());
+                            }
+                        } else {
+                            callback.onFailure(response.code(), response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<CreateInVoiceData>> call, Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
     }
 
 }

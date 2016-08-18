@@ -171,4 +171,6 @@
     <string name="all_yes">Có</string>
     <string name="all_no">Không</string>
     <string name="dialog_input_password">Nhập mật khẩu</string>
+    <string name="create_order">TẠO ĐƠN HÀNG</string>
+    <string name="text_order_weight">Khối lượng</string>
 </resources>

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.ui.fragment.ShopCreateOrderStep1Fragment;
 
 import butterknife.BindView;
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 
 public class ShopCreateOrderActivity extends AppCompatActivity {
     private static final String TAG = "ShopCreateOrderActivity";
+    public static Invoice sInvoice = new Invoice();
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
