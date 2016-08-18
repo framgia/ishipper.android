@@ -51,17 +51,33 @@ public class MapUtils {
         map.animateCamera(center);
     }
 
-    public static String getAddressName(Context context, LatLng latLng) {
+    public static String getAddressFromLocation(Context context, LatLng latLng) {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(context, Locale.getDefault());
 
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            return addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
+            if (addresses.size()>0) {
+                return addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return "";
         }
+        return "";
+    }
+
+    public static LatLng getLocationFromAddress(Context context, String address) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocationName(address, 1);
+            if (addresses.size()>0) {
+                return new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

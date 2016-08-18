@@ -2,10 +2,10 @@ package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
-import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
@@ -391,4 +391,29 @@ public abstract class API {
         putUpdateInvoice(params, invoiceId, callback);
     }
 
+    /* Filter Invoice */
+    public static void filterInvoice(String token,
+                                     Map<String, String> params,
+                                     final APICallback<APIResponse<FilterInvoiceData>> callback){
+        client.filterInvoice(token,params).enqueue(new Callback<APIResponse<FilterInvoiceData>>() {
+            @Override
+            public void onResponse(Call<APIResponse<FilterInvoiceData>> call, Response<APIResponse<FilterInvoiceData>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
+                        callback.onResponse(response.body());
+                    } else {
+                        callback.onFailure(response.body().getCode(), response.body().getMessage());
+                    }
+                } else {
+                    callback.onFailure(response.code(), response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<FilterInvoiceData>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
+
+    }
 }
