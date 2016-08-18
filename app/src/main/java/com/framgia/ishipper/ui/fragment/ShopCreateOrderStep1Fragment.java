@@ -81,7 +81,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 }
 
                 mLatLngStart = mMap.getCameraPosition().target;
-                mEdtAddressEnd.setText(MapUtils.getAddressName(getContext(), mLatLngStart));
+                mEdtAddressEnd.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
 
                 mMakerEnd = mMap.addMarker(
                         new MarkerOptions().position(mLatLngStart)

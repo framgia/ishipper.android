@@ -55,6 +55,8 @@
                         android:layout_height="wrap_content"
                         app:absoluteMaxValue="10000"
                         app:absoluteMinValue="0"
+                        app:activateOnDefaultValues="true"
+                        app:activeColor="@color/colorPrimary"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
                     <TextView
@@ -72,6 +74,8 @@
                         android:layout_weight="1"
                         app:absoluteMaxValue="100"
                         app:absoluteMinValue="0"
+                        app:activateOnDefaultValues="true"
+                        app:activeColor="@color/colorPrimary"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
 
@@ -89,6 +93,8 @@
                         android:layout_weight="1"
                         app:absoluteMaxValue="20"
                         app:absoluteMinValue="0"
+                        app:activateOnDefaultValues="true"
+                        app:activeColor="@color/colorPrimary"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
 
@@ -106,6 +112,8 @@
                         android:layout_weight="1"
                         app:absoluteMaxValue="20"
                         app:absoluteMinValue="0"
+                        app:activateOnDefaultValues="true"
+                        app:activeColor="@color/colorPrimary"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
 
@@ -157,6 +165,9 @@
                         android:layout_weight="1"
                         app:absoluteMaxValue="10"
                         app:absoluteMinValue="0"
+                        app:activateOnDefaultValues="true"
+                        app:activeColor="@color/colorPrimary"
+                        app:singleThumb="true"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -164,6 +175,7 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/btn_filter_invoice"
         style="@style/AppButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

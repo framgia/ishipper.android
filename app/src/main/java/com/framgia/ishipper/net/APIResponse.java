@@ -1,6 +1,5 @@
 package com.framgia.ishipper.net;
 
-import com.framgia.ishipper.model.User;
 import com.google.gson.annotations.SerializedName;
 
 /**
