@@ -183,4 +183,5 @@
     <string name="filter_ship_price">Tiền ship (k)</string>
     <string name="filter_distance">Quãng đương (km)</string>
     <string name="filter_weight">Cân nang (kg)</string>
+    <string name="dialog_loading_message">Loading. Please wait...</string>
 </resources>

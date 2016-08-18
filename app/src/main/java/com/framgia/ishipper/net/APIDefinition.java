@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://192.168.1.120:3001";
+    private static final String DEV_URL = "";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -49,7 +49,6 @@ public class APIDefinition {
     public static class ChangePassword {
         private static final String TAG = "ChangePassword";
         public static final String PATH = "/api/password";
-        public static final String HEADER_AUTHORIZE = "Authorization";
         public static final String PARAM_PHONE_NUMBER = "user[phone_number]";
         public static final String PARAM_CURRENT_PASSWORD = "user[current_password]";
         public static final String PARAM_PASSWORD = "user[password]";
@@ -95,7 +94,6 @@ public class APIDefinition {
     public static class GetShipperNearby {
 
         public static final String PATH = "/api/users";
-        public static final String HEADER_AUTHORIZE = "Authorization";
         public static final String USER_LAT_PARAM = "user[latitude]";
         public static final String USER_LNG_PARAM = "user[longitude]";
         public static final String USER_DISTANCE_PARAM = "user[distance]";
@@ -104,7 +102,6 @@ public class APIDefinition {
 
     public static class GetInvoiceNearby {
         public static final String PATH = "/api/invoices";
-        public static final String HEADER_AUTHORIZE = "Authorization";
         public static final String USER_LAT_PARAM = "user[latitude]";
         public static final String USER_LNG_PARAM = "user[longitude]";
         public static final String USER_DISTANCE_PARAM = "user[distance]";
@@ -116,6 +113,37 @@ public class APIDefinition {
         public static final String AUTHENTICATE_TOKEN = "user[authentication_token]";
     }
 
+    public static class PutUpdateInvoice {
+        public static final String PATH = "/api/invoices/{id}";
+
+        public static final String PATH_ID = "id";
+
+        public static final String PARAM_NAME = "invoice[name]";
+        public static final String PARAM_ADDRESS_START = "invoice[name]";
+        public static final String PARAM_LAT_START = "invoice[name]";
+        public static final String PARAM_LNG_START = "invoice[name]";
+        public static final String PARAM_ADDRESS_FINISH = "invoice[name]";
+        public static final String PARAM_LAT_FINISH = "invoice[name]";
+        public static final String PARAM_LNG_FINISH = "invoice[name]";
+        public static final String PARAM_DELIVERY_TIME = "invoice[name]";
+        public static final String PARAM_DISTANCE = "invoice[name]";
+        public static final String PARAM_DESCRIPTION = "invoice[name]";
+        public static final String PARAM_PRICE = "invoice[name]";
+        public static final String PARAM_SHIPPING_PRICE = "invoice[name]";
+        public static final String PARAM_STATUS = "invoice[name]";
+        public static final String PARAM_WEIGHT = "invoice[name]";
+        public static final String PARAM_CUSTOMER_NAME = "invoice[name]";
+        public static final String PARAM_CUSTOMER_NUMBER = "invoice[name]";
+    }
+
+    public static class InvoiceStatus {
+        public static final String STATUS_INIT = "init";
+        public static final String STATUS_WAITING = "waiting";
+        public static final String STATUS_SHIPPING = "shipping";
+        public static final String STATUS_SHIPPED = "shipped";
+        public static final String STATUS_FINISH = "finished";
+        public static final String STATUS_CANCEL = "cancel";
+    }
 
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
