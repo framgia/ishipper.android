@@ -2,9 +2,12 @@ package com.framgia.ishipper.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
@@ -65,50 +68,96 @@ public class FilterOrderActivity extends ToolbarActivity {
         return R.string.all_filter_order;
     }
 
-    @OnClick(R.id.btn_filter_invoice)
-    public void onClick() {
-        LatLng currentLatLng = MapUtils.getLocationFromAddress(
-                getBaseContext(),
-                mEdtAddressStart.getText().toString());
-        Map<String, String> params = new HashMap<>();
-        if (currentLatLng != null) {
-            params.put(APIDefinition.FilterInvoice.CURRENT_LAT_PARAM,
-                    currentLatLng.latitude + "");
-            params.put(APIDefinition.FilterInvoice.CURRENT_LONG_PARAM,
-                    currentLatLng.longitude + "");
-            params.put(APIDefinition.FilterInvoice.RADIUS_PARAM,
-                    mSeekbarFilterRadius.getSelectedMaxValue() + "");
+    @OnClick({
+            R.id.tv_filter_order_price,
+            R.id.tv_filter_ship_price,
+            R.id.tv_filter_distance,
+            R.id.tv_filter_weight,
+            R.id.tv_filter_radius,
+            R.id.btn_filter_invoice
+    })
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_filter_order_price:
+                showView((TextView) view, mSeekbarFilterOrderPrice);
+                break;
+            case R.id.tv_filter_ship_price:
+                showView((TextView) view, mSeekbarFilterShipPrice);
+                break;
+            case R.id.tv_filter_distance:
+                showView((TextView) view, mSeekbarFilterDistance);
+                break;
+            case R.id.tv_filter_weight:
+                showView((TextView) view, mSeekbarFilterWeight);
+                break;
+            case R.id.tv_filter_radius:
+                showView((TextView) view, mSeekbarFilterRadius);
+                break;
+            case R.id.btn_filter_invoice:
+                LatLng currentLatLng = MapUtils.getLocationFromAddress(
+                        getBaseContext(),
+                        mEdtAddressStart.getText().toString());
+                Map<String, String> params = new HashMap<>();
+                if (currentLatLng != null) {
+                    params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LAT,
+                            currentLatLng.latitude + "");
+                    params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LONG,
+                            currentLatLng.longitude + "");
+                    params.put(APIDefinition.FilterInvoice.PARAM_RADIUS,
+                            mSeekbarFilterRadius.getSelectedMaxValue() + "");
+                }
+                if (isVisible(mSeekbarFilterDistance)) {
+                    params.put(APIDefinition.FilterInvoice.PARAM_MIN_DISTANCE,
+                            mSeekbarFilterDistance.getSelectedMinValue() + "");
+                    params.put(APIDefinition.FilterInvoice.PARAM_MAX_DISTANCE,
+                            mSeekbarFilterDistance.getSelectedMaxValue() + "");
+                }
+                if (isVisible(mSeekbarFilterOrderPrice)) {
+                    params.put(APIDefinition.FilterInvoice.PARAM_MIN_ORDER_PRICE,
+                            mSeekbarFilterOrderPrice.getSelectedMinValue() + "");
+                    params.put(APIDefinition.FilterInvoice.PARAM_MAX_ORDER_PRICE,
+                            mSeekbarFilterOrderPrice.getSelectedMaxValue() + "");
+                }
+                if (isVisible(mSeekbarFilterShipPrice)) {
+                    params.put(APIDefinition.FilterInvoice.PARAM_MIN_SHIP_PRICE,
+                            mSeekbarFilterShipPrice.getSelectedMinValue() + "");
+                    params.put(APIDefinition.FilterInvoice.PARAM_MAX_SHIP_PRICE,
+                            mSeekbarFilterShipPrice.getSelectedMaxValue() + "");
+                }
+                if (isVisible(mSeekbarFilterWeight)) {
+                    params.put(APIDefinition.FilterInvoice.PARAM_MIN_WEIGHT,
+                            mSeekbarFilterWeight.getSelectedMinValue() + "");
+                    params.put(APIDefinition.FilterInvoice.PARAM_MAX_WEIGHT,
+                            mSeekbarFilterWeight.getSelectedMaxValue() + "");
+                }
+
+                API.filterInvoice(
+                        mUser.getAuthenticationToken(),
+                        params,
+                        new API.APICallback<APIResponse<FilterInvoiceData>>() {
+                            @Override
+                            public void onResponse(APIResponse<FilterInvoiceData> response) {
+                                // TODO: 18/08/2016
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                // TODO: 18/08/2016
+                            }
+                        });
+                break;
         }
-        params.put(APIDefinition.FilterInvoice.MIN_DISTANCE_PARAM,
-                mSeekbarFilterDistance.getSelectedMinValue() + "");
-        params.put(APIDefinition.FilterInvoice.MAX_DISTANCE_PARAM,
-                mSeekbarFilterDistance.getSelectedMaxValue() + "");
-        params.put(APIDefinition.FilterInvoice.MIN_ORDER_PRICE_PARAM,
-                mSeekbarFilterOrderPrice.getSelectedMinValue() + "");
-        params.put(APIDefinition.FilterInvoice.MAX_ORDER_PRICE_PARAM,
-                mSeekbarFilterOrderPrice.getSelectedMaxValue() + "");
-        params.put(APIDefinition.FilterInvoice.MIN_SHIP_PRICE_PARAM,
-                mSeekbarFilterShipPrice.getSelectedMinValue() + "");
-        params.put(APIDefinition.FilterInvoice.MAX_SHIP_PRICE_PARAM,
-                mSeekbarFilterShipPrice.getSelectedMaxValue() + "");
-        params.put(APIDefinition.FilterInvoice.MIN_WEIGHT_PARAM,
-                mSeekbarFilterWeight.getSelectedMinValue() + "");
-        params.put(APIDefinition.FilterInvoice.MAX_WEIGHT_PARAM,
-                mSeekbarFilterWeight.getSelectedMaxValue() + "");
+    }
 
-        API.filterInvoice(
-                mUser.getAuthenticationToken(),
-                params,
-                new API.APICallback<APIResponse<FilterInvoiceData>>() {
-                    @Override
-                    public void onResponse(APIResponse<FilterInvoiceData> response) {
-                        // TODO: 18/08/2016
-                    }
+    private void showView(TextView textView, RangeSeekBar seekBar) {
+        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                seekBar.getVisibility() == View.VISIBLE
+                        ? R.drawable.ic_arrow_drop_down_24dp
+                        : R.drawable.ic_arrow_drop_up_24dp, 0);
+        seekBar.setVisibility(seekBar.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    }
 
-                    @Override
-                    public void onFailure(int code, String message) {
-                        // TODO: 18/08/2016
-                    }
-                });
+    private boolean isVisible(View view) {
+        return view.getVisibility() == View.VISIBLE;
     }
 }

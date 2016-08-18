@@ -6,8 +6,9 @@ import com.framgia.ishipper.common.Config;
  * Created by HungNT on 8/5/16.
  */
 public class APIDefinition {
-    public static final String DEV_URL = "http://ishipper.herokuapp.com";
-//    private static final String DEV_URL = "http://192.168.1.124:3001/";
+
+//            private static final String DEV_URL = "http://ishipper.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.136:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -162,23 +163,28 @@ public class APIDefinition {
 
     public static class FilterInvoice {
         public static final String PATH = "/api/invoices";
+        public static final String PARAM_MIN_ORDER_PRICE = "invoice[price][min]";
+        public static final String PARAM_MAX_ORDER_PRICE = "invoice[price][max]";
+        public static final String PARAM_MIN_SHIP_PRICE = "invoice[shipping_price][min]";
+        public static final String PARAM_MAX_SHIP_PRICE = "invoice[shipping_price][max]";
+        public static final String PARAM_MIN_DISTANCE = "invoice[distance][min]";
+        public static final String PARAM_MAX_DISTANCE = "invoice[distance][max]";
+        public static final String PARAM_MIN_WEIGHT = "invoice[weight][min]";
+        public static final String PARAM_MAX_WEIGHT = "invoice[weight][max]";
+        public static final String PARAM_CURRENT_LAT = "invoice[latitude]";
+        public static final String PARAM_CURRENT_LONG = "invoice[longitude]";
+        public static final String PARAM_RADIUS = "invoice[radius]";
 
-        public static final String MIN_ORDER_PRICE_PARAM = "invoice[min_price]";
-        public static final String MAX_ORDER_PRICE_PARAM = "invoice[max_price]";
-        public static final String MIN_SHIP_PRICE_PARAM = "invoice[min_shipping_price]";
-        public static final String MAX_SHIP_PRICE_PARAM = "invoice[max_shipping_price]";
-        public static final String MIN_DISTANCE_PARAM = "invoice[min_distance]";
-        public static final String MAX_DISTANCE_PARAM = "invoice[max_distance]";
-        public static final String MIN_WEIGHT_PARAM = "invoice[min_weight]";
-        public static final String MAX_WEIGHT_PARAM = "invoice[max_weight]";
-        public static final String CURRENT_LAT_PARAM = "invoice[latitude]";
-        public static final String CURRENT_LONG_PARAM = "invoice[longitude]";
-        public static final String RADIUS_PARAM = "invoice[distance]";
     }
 
     public static class GetListInvoice {
         public static final String PATH = "/api/{usertype}/invoices";
         public static final String PARAM_USER_TYPE = "usertype";
         public static final String PARAM_STATUS = "status";
+    }
+
+    public static class GetUser {
+        public static final String PATH = "/api/users/{id}";
+        public static final String PARAM_USER_ID = "id";
     }
 }

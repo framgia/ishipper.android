@@ -124,4 +124,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="tv_filter_sub_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:drawableRight">@drawable/ic_arrow_drop_down_24dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>

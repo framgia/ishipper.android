@@ -5,7 +5,7 @@
         android:drawable="@drawable/ic_star_grey_18dp"/>
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/ic_star_green_18dp"/>
+        android:drawable="@drawable/ic_star_grey_18dp"/>
     <item
         android:id="@android:id/progress"
         android:drawable="@drawable/ic_star_green_18dp"/>

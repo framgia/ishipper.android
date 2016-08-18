@@ -45,7 +45,9 @@
         <activity android:name=".ui.activity.UserProfileActivity"/>
         <activity android:name=".ui.activity.ChangePasswordActivity">
         </activity>
-        <activity android:name=".ui.activity.FilterOrderActivity">
+        <activity
+            android:name=".ui.activity.FilterOrderActivity"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 
