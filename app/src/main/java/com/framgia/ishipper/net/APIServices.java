@@ -4,6 +4,7 @@ import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.FilterInvoiceData;
+import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
@@ -121,4 +122,9 @@ public interface APIServices {
     Call<APIResponse<FilterInvoiceData>> filterInvoice(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> params);
+    /* Get User */
+    @GET(APIDefinition.GetUser.PATH)
+    Call<APIResponse<GetUserData>> getUser(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.GetUser.PARAM_USER_ID) String id);
 }

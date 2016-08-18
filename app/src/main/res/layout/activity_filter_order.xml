@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.framgia.ishipper.ui.activity.FilterOrderActivity">
 
@@ -14,7 +14,7 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1">
 
         <LinearLayout
@@ -30,22 +30,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical"
                     android:padding="@dimen/activity_vertical_margin">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:text="@string/filter_order_detail"
                         android:textSize="@dimen/text_size_title"
                         android:textStyle="bold"/>
 
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:id="@+id/tv_filter_order_price"
+                        style="@style/tv_filter_sub_title"
                         android:text="@string/filter_order_price"/>
 
 
@@ -60,10 +59,8 @@
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:layout_weight="1"
+                        android:id="@+id/tv_filter_ship_price"
+                        style="@style/tv_filter_sub_title"
                         android:text="@string/filter_ship_price"/>
 
 
@@ -71,7 +68,6 @@
                         android:id="@+id/seekbar_filter_ship_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         app:absoluteMaxValue="100"
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
@@ -80,9 +76,8 @@
 
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:id="@+id/tv_filter_distance"
+                        style="@style/tv_filter_sub_title"
                         android:text="@string/filter_distance"/>
 
 
@@ -90,7 +85,6 @@
                         android:id="@+id/seekbar_filter_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         app:absoluteMaxValue="20"
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
@@ -99,9 +93,8 @@
 
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:id="@+id/tv_filter_weight"
+                        style="@style/tv_filter_sub_title"
                         android:text="@string/filter_weight"/>
 
 
@@ -109,7 +102,6 @@
                         android:id="@+id/seekbar_filter_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         app:absoluteMaxValue="20"
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
@@ -130,6 +122,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical"
                     android:padding="@dimen/activity_vertical_margin">
 
@@ -137,6 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/filter_area"
+                        android:textSize="@dimen/text_size_title"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -152,9 +146,8 @@
                         android:textSize="@dimen/text_size_content"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:id="@+id/tv_filter_radius"
+                        style="@style/tv_filter_sub_title"
                         android:text="@string/filter_radius"/>
 
 
@@ -162,7 +155,6 @@
                         android:id="@+id/seekbar_filter_radius"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         app:absoluteMaxValue="10"
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
@@ -179,5 +171,6 @@
         style="@style/AppButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:text="@string/all_filter_order"/>
 </LinearLayout>

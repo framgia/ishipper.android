@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,9 +37,9 @@ import com.framgia.ishipper.model.WindowOrder;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.ui.activity.FilterOrderActivity;
-import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.MapUtils;
@@ -95,7 +95,10 @@ public class NearbyOrderFragment extends Fragment implements
     @BindView(R.id.action_receive_order) TextView mActionReceiveOrder;
     @BindView(R.id.window_order_detail) RelativeLayout mWindowOrderDetail;
     @BindView(R.id.ll_order_status) LinearLayout mOrderStatus;
-    @BindView(R.id.rating_order_window) RatingBar mRatingOrderWindow;
+    @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
+    @BindView(R.id.tv_shipping_order_status) TextView mTvShippingOrderStatus;
+    @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
+    @BindView(R.id.ll_shop_order_status) LinearLayout mLlShopOrderStatus;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -124,7 +127,6 @@ public class NearbyOrderFragment extends Fragment implements
         mUnbinder = ButterKnife.bind(this, view);
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
-        mRatingOrderWindow.setRating(4);
         setHasOptionsMenu(true);
         return view;
     }
@@ -141,12 +143,6 @@ public class NearbyOrderFragment extends Fragment implements
                     .addApi(LocationServices.API)
                     .build();
         }
-        mWindowOrderDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getContext(), OrderDetailActivity.class));
-            }
-        });
     }
 
     @Override
@@ -253,12 +249,33 @@ public class NearbyOrderFragment extends Fragment implements
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
                 final Invoice invoice = invoiceList.get(pos);
-                mTvNearbyDistance.setText(String.valueOf(invoice.getDistance()) + "km");
-                mTvNearbyFrom.setText(invoice.getAddressStart());
-                mTvNearbyTo.setText(invoice.getAddressFinish());
-                mTvNearbyShipTime.setText(invoice.getDeliveryTime());
-                mTvNearbyShipPrice.setText(String.valueOf(invoice.getShippingPrice()));
-                mTvNearbyOrderPrice.setText(String.valueOf(invoice.getPrice()));
+
+                /** get shop information */
+                API.getUser(
+                        mCurrentUser.getAuthenticationToken(),
+                        String.valueOf(invoice.getUserId()),
+                        new API.APICallback<APIResponse<GetUserData>>() {
+                            @Override
+                            public void onResponse(APIResponse<GetUserData> response) {
+                                User user = response.getData().getUser();
+                                mTvItemOrderShopName.setText(user.getName());
+                                mRatingOrderWindow.setRating(user.getRate());
+
+                                mTvNearbyDistance.setText(String.valueOf(invoice.getDistance()) + "km");
+                                mTvNearbyFrom.setText(invoice.getAddressStart());
+                                mTvNearbyTo.setText(invoice.getAddressFinish());
+                                mTvNearbyShipTime.setText(invoice.getDeliveryTime());
+                                mTvNearbyShipPrice.setText(String.valueOf(invoice.getShippingPrice()));
+                                mTvNearbyOrderPrice.setText(String.valueOf(invoice.getPrice()));
+
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                 if (mPolylineRoute != null) {
                     mPolylineRoute.remove();
                     mMakerEndOrder.remove();
@@ -338,7 +355,7 @@ public class NearbyOrderFragment extends Fragment implements
 
     @OnClick(R.id.window_order_detail)
     public void onClick() {
-
+        startActivity(new Intent(getContext(), OrderDetailActivity.class));
     }
 
     @Override
