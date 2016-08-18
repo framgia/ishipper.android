@@ -6,6 +6,7 @@ import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
@@ -347,6 +348,47 @@ public abstract class API {
                         callback.onFailure(LOCAL_ERROR, t.getMessage());
                     }
                 });
+    }
+
+    public static void putUpdateInvoice(HashMap<String, String> params, String invoiceId,
+                                        final APICallback<APIResponse<InvoiceData>> callback) {
+        client.putUpdateInvoice(
+                params,
+                invoiceId,
+                Config.getInstance().getUserInfo(null).getAuthenticationToken()
+        ).enqueue(new Callback<APIResponse<InvoiceData>>() {
+                      @Override
+                      public void onResponse(Call<APIResponse<InvoiceData>> call,
+                                             Response<APIResponse<InvoiceData>> response) {
+                          if (response.isSuccessful()) {
+                              if (response.body().isSuccess()) {
+                                  callback.onResponse(response.body());
+                              } else {
+                                  callback.onFailure(response.body().getCode(), response.body().getMessage());
+                              }
+                          } else {
+                              callback.onFailure(response.code(), response.message());
+                          }
+                      }
+
+                      @Override
+                      public void onFailure(Call<APIResponse<InvoiceData>> call, Throwable t) {
+                          callback.onFailure(LOCAL_ERROR, t.getMessage());
+                      }
+                  }
+        );
+    }
+
+    /**
+     * @param status
+     * @param callback
+     */
+    public static void putUpdateInvoiceStatus(String invoiceId, String status,
+                                              final APICallback<APIResponse<InvoiceData>> callback) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(APIDefinition.PutUpdateInvoice.PARAM_STATUS, status);
+
+        putUpdateInvoice(params, invoiceId, callback);
     }
 
 }

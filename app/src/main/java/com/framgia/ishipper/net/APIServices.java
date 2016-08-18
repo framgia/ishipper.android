@@ -3,6 +3,7 @@ package com.framgia.ishipper.net;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
@@ -46,7 +47,7 @@ public interface APIServices {
 
     @GET(APIDefinition.GetUserInformation.PATH)
     Call<APIResponse> getUserInformation(
-            @Header("Authorization") String authorization
+            @Header(APIDefinition.HEADER_AUTHORIZE) String authorization
     );
 
     @FormUrlEncoded
@@ -59,7 +60,7 @@ public interface APIServices {
     @PUT(APIDefinition.ChangePassword.PATH)
     Call<APIResponse<ChangePasswordData>> changePassword(
             @FieldMap Map<String, String> params,
-            @Header(APIDefinition.ChangePassword.HEADER_AUTHORIZE) String token
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
 
     @FormUrlEncoded
@@ -71,7 +72,7 @@ public interface APIServices {
     Call<APIResponse<UpdateProfileData>> putUpdateProfile(
             @FieldMap Map<String, String> params,
             @Path(APIDefinition.PutUpdateProfile.PATH_ID) String userId,
-            @Header(APIDefinition.ChangePassword.HEADER_AUTHORIZE) String token
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
 
     @FormUrlEncoded
@@ -84,13 +85,13 @@ public interface APIServices {
     /* Get Shipper nearby */
     @GET(APIDefinition.GetShipperNearby.PATH)
     Call<APIResponse<ShipperNearbyData>> getShipperNearby(
-            @Header(APIDefinition.GetShipperNearby.HEADER_AUTHORIZE) String token,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
 
     /* Get Invoice nearby */
     @GET(APIDefinition.GetInvoiceNearby.PATH)
     Call<APIResponse<InvoiceNearbyData>> getInvoices(
-            @Header(APIDefinition.GetInvoiceNearby.HEADER_AUTHORIZE) String token,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
 
     /* Sign out */
@@ -106,4 +107,12 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @FieldMap Map<String, String> params);
 
+    /* Put update invoice*/
+    @FormUrlEncoded
+    @PUT(APIDefinition.PutUpdateInvoice.PATH)
+    Call<APIResponse<InvoiceData>> putUpdateInvoice(
+            @FieldMap Map<String, String> params,
+            @Path(APIDefinition.PutUpdateInvoice.PATH_ID) String invoiceId,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token
+    );
 }

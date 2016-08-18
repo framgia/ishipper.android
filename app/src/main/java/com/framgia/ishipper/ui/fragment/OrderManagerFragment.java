@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,16 +10,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
+import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,24 +146,73 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
     @Override
     public void onClickAction(Order order) {
+        final Dialog loadingDialog;
         switch (order.getStatus()) {
             case Order.ORDER_STATUS_WAIT:
                 startActivity(new Intent(mContext, ListShipperRegActivity.class));
                 break;
             case Order.ORDER_STATUS_TAKE:
-                order.setStatus(Order.ORDER_STATUS_SHIPPING);
-                notifyChangeTab(Order.ORDER_STATUS_TAKE);
-                notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
+                // TODO invoice id
+                loadingDialog = CommonUtils.showLoadingDialog(getActivity());
+                API.putUpdateInvoiceStatus(String.valueOf(order.getId()),
+                        APIDefinition.InvoiceStatus.STATUS_SHIPPING,
+                        new API.APICallback<APIResponse<InvoiceData>>() {
+                            @Override
+                            public void onResponse(APIResponse<InvoiceData> response) {
+//                                order.setStatus(Order.ORDER_STATUS_SHIPPING);
+                                notifyChangeTab(Order.ORDER_STATUS_TAKE);
+                                notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
+                                loadingDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
+                            }
+                        });
+
                 break;
             case Order.ORDER_STATUS_SHIPPING:
-                order.setStatus(Order.ORDER_STATUS_DELIVERED);
-                notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
-                notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
+                loadingDialog = CommonUtils.showLoadingDialog(getActivity());
+                API.putUpdateInvoiceStatus(String.valueOf(order.getId()),
+                        APIDefinition.InvoiceStatus.STATUS_SHIPPING,
+                        new API.APICallback<APIResponse<InvoiceData>>() {
+                            @Override
+                            public void onResponse(APIResponse<InvoiceData> response) {
+                                loadingDialog.dismiss();
+//                                order.setStatus(Order.ORDER_STATUS_DELIVERED);
+                                notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
+                                notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                loadingDialog.dismiss();
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                 break;
             case Order.ORDER_STATUS_DELIVERED:
-                order.setStatus(Order.ORDER_STATUS_FINISHED);
-                notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
-                notifyChangeTab(Order.ORDER_STATUS_FINISHED);
+                loadingDialog = CommonUtils.showLoadingDialog(getActivity());
+                API.putUpdateInvoiceStatus(String.valueOf(order.getId()),
+                        APIDefinition.InvoiceStatus.STATUS_SHIPPING,
+                        new API.APICallback<APIResponse<InvoiceData>>() {
+                            @Override
+                            public void onResponse(APIResponse<InvoiceData> response) {
+//                                order.setStatus(Order.ORDER_STATUS_SHIPPING);
+                                loadingDialog.dismiss();
+                                notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
+                                notifyChangeTab(Order.ORDER_STATUS_FINISHED);
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                loadingDialog.dismiss();
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 break;
         }
     }
