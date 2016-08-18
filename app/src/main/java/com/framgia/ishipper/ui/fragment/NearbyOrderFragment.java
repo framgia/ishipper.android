@@ -42,6 +42,7 @@ import com.framgia.ishipper.ui.activity.FilterOrderActivity;
 import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -294,7 +295,8 @@ public class NearbyOrderFragment extends Fragment implements
 
                                 mPolylineRoute = mGoogleMap.addPolyline(polyOptions);
 
-                                MapUtils.updateZoomMap(mGoogleMap, startPoint, endPoint);
+                                MapUtils.updateZoomMap(mGoogleMap, Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT,
+                                                       startPoint, endPoint);
                             }
 
                             @Override
