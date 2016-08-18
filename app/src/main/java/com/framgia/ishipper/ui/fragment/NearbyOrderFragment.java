@@ -14,6 +14,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +38,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceNearbyData;
+import com.framgia.ishipper.ui.activity.FilterOrderActivity;
 import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
@@ -121,6 +125,7 @@ public class NearbyOrderFragment extends Fragment implements
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
         mRatingOrderWindow.setRating(4);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -333,5 +338,20 @@ public class NearbyOrderFragment extends Fragment implements
 
     @OnClick(R.id.window_order_detail)
     public void onClick() {
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_nearby_order, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_filter) {
+            startActivity(new Intent(getContext(), FilterOrderActivity.class));
+        }
+        return true;
     }
 }

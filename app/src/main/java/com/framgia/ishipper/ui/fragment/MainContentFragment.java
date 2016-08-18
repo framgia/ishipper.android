@@ -1,7 +1,5 @@
 package com.framgia.ishipper.ui.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.adapter.MainTabAdapter;
 import com.framgia.ishipper.ui.view.CustomViewPager;
 
@@ -46,7 +43,6 @@ public class MainContentFragment extends Fragment {
         MainTabAdapter adapter = new MainTabAdapter(getChildFragmentManager(), getContext());
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        setHasOptionsMenu(true);
         return view;
     }
 
@@ -54,16 +50,5 @@ public class MainContentFragment extends Fragment {
     public void onDestroy() {
         mUnbinder.unbind();
         super.onDestroy();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_nearby_order, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 }
