@@ -7,19 +7,19 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://ishipper.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.135:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
 
     public static class RegisterUser {
         public static final String PATH = "/api/sign_up/";
-        public static final String USER_PHONE_NUMBER = "user[phone_number]";
-        public static final String USER_PASSWORD = "user[password]";
-        public static final String USER_PASSWORD_CONFIRMATION = "user[password_confirmation]";
-        public static final String USER_PLATE_NUMBER = "user[plate_number]";
-        public static final String USER_ROLE = "user[role]";
-        public static final String USER_NAME = "user[name]";
+        public static final String PARAM_USER_PHONE_NUMBER = "user[phone_number]";
+        public static final String PARAM_USER_PASSWORD = "user[password]";
+        public static final String PARAM_USER_PASSWORD_CONFIRMATION = "user[password_confirmation]";
+        public static final String PARAM_USER_PLATE_NUMBER = "user[plate_number]";
+        public static final String PARAM_USER_ROLE = "user[role]";
+        public static final String PARAM_USER_NAME = "user[name]";
     }
 
     public static class ConfirmationPin {
@@ -94,17 +94,17 @@ public class APIDefinition {
     public static class GetShipperNearby {
 
         public static final String PATH = "/api/users";
-        public static final String USER_LAT_PARAM = "user[latitude]";
-        public static final String USER_LNG_PARAM = "user[longitude]";
-        public static final String USER_DISTANCE_PARAM = "user[distance]";
+        public static final String PARAM_USER_LAT = "user[latitude]";
+        public static final String PARAM_USER_LNG = "user[longitude]";
+        public static final String PARAM_USER_DISTANCE = "user[distance]";
     }
 
 
     public static class GetInvoiceNearby {
         public static final String PATH = "/api/invoices";
-        public static final String USER_LAT_PARAM = "user[latitude]";
-        public static final String USER_LNG_PARAM = "user[longitude]";
-        public static final String USER_DISTANCE_PARAM = "user[distance]";
+        public static final String PARAM_USER_LAT = "user[latitude]";
+        public static final String PARAM_USER_LNG = "user[longitude]";
+        public static final String PARAM_USER_DISTANCE = "user[distance]";
     }
 
     public static class SignOut {
@@ -136,37 +136,28 @@ public class APIDefinition {
         public static final String PARAM_CUSTOMER_NUMBER = "invoice[name]";
     }
 
-    public static class InvoiceStatus {
-        public static final String STATUS_INIT = "init";
-        public static final String STATUS_WAITING = "waiting";
-        public static final String STATUS_SHIPPING = "shipping";
-        public static final String STATUS_SHIPPED = "shipped";
-        public static final String STATUS_FINISH = "finished";
-        public static final String STATUS_CANCEL = "cancel";
-    }
-
     public static String getBaseUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
     }
 
     public static class CreateInvoice {
         public static final String PATH = "/api/invoices";
-        public static final String NAME = "invoice[name]";
-        public static final String ADDRESS_START = "invoice[address_start]";
-        public static final String LATITUDE_START = "invoice[latitude_start]";
-        public static final String LONGITUDE_START = "invoice[longitude_start]";
-        public static final String ADDRESS_FINISH = "invoice[address_finish]";
-        public static final String LATITUDE_FINISH = "invoice[latitude_finish]";
-        public static final String LONGITUDE_FINISH = "invoice[longitude_finish]";
-        public static final String DELIVERY_TIME = "invoice[delivery_time]";
-        public static final String DISTANCE = "invoice[distance]";
-        public static final String DESCRIPTION = "invoice[description]";
-        public static final String PRICE = "invoice[price]";
-        public static final String SHIPPING_PRICE = "invoice[shipping_price]";
-        public static final String STATUS = "invoice[status]";
-        public static final String WEIGHT = "invoice[weight]";
-        public static final String CUSTOMER_NAME = "invoice[customer_name]";
-        public static final String CUSTOMER_NUMBER = "invoice[customer_number]";
+        public static final String PARAM_NAME = "invoice[name]";
+        public static final String PARAM_ADDRESS_START = "invoice[address_start]";
+        public static final String PARAM_LATITUDE_START = "invoice[latitude_start]";
+        public static final String PARAM_LONGITUDE_START = "invoice[longitude_start]";
+        public static final String PARAM_ADDRESS_FINISH = "invoice[address_finish]";
+        public static final String PARAM_LATITUDE_FINISH = "invoice[latitude_finish]";
+        public static final String PARAM_LONGITUDE_FINISH = "invoice[longitude_finish]";
+        public static final String PARAM_DELIVERY_TIME = "invoice[delivery_time]";
+        public static final String PARAM_DISTANCE = "invoice[distance]";
+        public static final String PARAM_DESCRIPTION = "invoice[description]";
+        public static final String PARAM_PRICE = "invoice[price]";
+        public static final String PARAM_SHIPPING_PRICE = "invoice[shipping_price]";
+        public static final String PARAM_STATUS = "invoice[status]";
+        public static final String PARAM_WEIGHT = "invoice[weight]";
+        public static final String PARAM_CUSTOMER_NAME = "invoice[customer_name]";
+        public static final String PARAM_CUSTOMER_NUMBER = "invoice[customer_number]";
     }
 
     public static class FilterInvoice {
@@ -183,5 +174,11 @@ public class APIDefinition {
         public static final String CURRENT_LONG_PARAM = "invoice[longitude]";
         public static final String RADIUS_PARAM = "invoice[distance]";
 
+    }
+
+    public static class GetListInvoice {
+        public static final String PATH = "/api/{usertype}/invoices";
+        public static final String PARAM_USER_TYPE = "usertype";
+        public static final String PARAM_STATUS = "status";
     }
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.ui.adapter.OrderAdapter;
 import java.util.ArrayList;
@@ -17,25 +18,26 @@ import java.util.List;
 public class OrderListFragment extends Fragment implements OrderAdapter.OnClickCancelListener,
         OrderAdapter.OnClickActionListener {
 
-    private static final String LIST_ORDER = "list order";
+    private static final String LIST_INVOICE = "list invoice";
     private static final String TAB_TITLE = "title";
     private String mTitle;
     private OnListFragmentInteractionListener mListener;
     private OnActionClickListener mOnActionClickListener;
     private OrderManagerFragment mManagerFragment;
 
-    private List<Order> mOrderList;
+//    private List<Order> mOrderList;
+    private List<Invoice> mInvoiceList;
     private OrderAdapter mOrderAdapter;
 
     public OrderListFragment() {
     }
 
 
-    public static OrderListFragment newInstance(String title, ArrayList<Order> orderList) {
+    public static OrderListFragment newInstance(String title, ArrayList<Invoice> invoiceList) {
         OrderListFragment fragment = new OrderListFragment();
         Bundle args = new Bundle();
         args.putString(TAB_TITLE, title);
-        args.putParcelableArrayList(LIST_ORDER, orderList);
+        args.putParcelableArrayList(LIST_INVOICE, invoiceList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +47,7 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mOrderList = getArguments().getParcelableArrayList(LIST_ORDER);
+            mInvoiceList = getArguments().getParcelableArrayList(LIST_INVOICE);
             mTitle = getArguments().getString(TAB_TITLE);
         }
     }
@@ -59,7 +61,7 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mOrderAdapter = new OrderAdapter(context, mOrderList, mListener);
+            mOrderAdapter = new OrderAdapter(context, mInvoiceList, mListener);
             mOrderAdapter.setClickCancelListener(this);
             mOrderAdapter.setClickActionListener(this);
             recyclerView.setAdapter(mOrderAdapter);
@@ -67,17 +69,17 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         return view;
     }
 
-    public List<Order> getOrderList() {
-        return mOrderList;
+    public List<Invoice> getInvoiceList() {
+        return mInvoiceList;
     }
 
-    public void setOrderList(List<Order> orderList) {
-        mOrderList = orderList;
+    public void setInvoiceList(List<Invoice> invoiceList) {
+        mInvoiceList = invoiceList;
     }
 
-    public void notifyChangedData (List<Order> orderList) {
-        mOrderList.clear();
-        mOrderList.addAll(orderList);
+    public void notifyChangedData (List<Invoice> invoiceList) {
+        mInvoiceList.clear();
+        mInvoiceList.addAll(invoiceList);
         mOrderAdapter.notifyDataSetChanged();
     }
 
@@ -117,25 +119,25 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     }
 
     @Override
-    public void onClickCancelListener(Order order) {
+    public void onClickCancelListener(Invoice invoice) {
         if (mOnActionClickListener != null) {
-            mOnActionClickListener.onClickCancel(order);
+            mOnActionClickListener.onClickCancel(invoice);
         }
     }
 
     @Override
-    public void onClickActionListener(Order order) {
+    public void onClickActionListener(Invoice invoice) {
         if (mOnActionClickListener != null) {
-            mOnActionClickListener.onClickAction(order);
+            mOnActionClickListener.onClickAction(invoice);
         }
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Order order);
+        void onListFragmentInteraction(Invoice invoice);
     }
 
     public interface OnActionClickListener {
-        void onClickAction(Order order);
-        void onClickCancel(Order order);
+        void onClickAction(Invoice invoice);
+        void onClickCancel(Invoice invoice);
     }
 }

@@ -5,7 +5,7 @@ import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.InvoiceData;
-import com.framgia.ishipper.net.data.InvoiceNearbyData;
+import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
@@ -91,7 +91,7 @@ public interface APIServices {
 
     /* Get Invoice nearby */
     @GET(APIDefinition.GetInvoiceNearby.PATH)
-    Call<APIResponse<InvoiceNearbyData>> getInvoices(
+    Call<APIResponse<ListInvoiceData>> getInvoiceNearBy(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
 
@@ -119,6 +119,13 @@ public interface APIServices {
     /* Filter Invoice */
     @GET(APIDefinition.FilterInvoice.PATH)
     Call<APIResponse<FilterInvoiceData>> filterInvoice(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @QueryMap Map<String, String> params);
+
+    /* Get invoice */
+    @GET(APIDefinition.GetListInvoice.PATH)
+    Call<APIResponse<ListInvoiceData>> getListInvoice(
+            @Path(APIDefinition.GetListInvoice.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> params);
 }

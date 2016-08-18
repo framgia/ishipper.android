@@ -1,11 +1,26 @@
 package com.framgia.ishipper.model;
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by vuduychuong1994 on 8/9/16.
  */
-public class Invoice {
+public class Invoice implements Parcelable {
     public static final String STATUS_INIT = "init";
+    public static final String STATUS_WAITING = "waiting";
+    public static final String STATUS_SHIPPING = "shipping";
+    public static final String STATUS_SHIPPED = "shipped";
+    public static final String STATUS_FINISHED = "finished";
+    public static final String STATUS_CANCEL = "cancel";
+    public static final String STATUS_ALL = "all";
+    public static final int STATUS_CODE_INIT = 0;
+    public static final int STATUS_CODE_WAITING = 1;
+    public static final int STATUS_CODE_SHIPPING = 2;
+    public static final int STATUS_CODE_SHIPPED = 3;
+    public static final int STATUS_CODE_FINISHED = 4;
+    public static final int STATUS_CODE_CANCEL = 5;
+    public static final int STATUS_CODE_ALL = 6;
 
     @SerializedName("id") private int mId;
     @SerializedName("name") private String mName;
@@ -25,6 +40,22 @@ public class Invoice {
     @SerializedName("user_id") private int mUserId;
     @SerializedName("customer_name") private String mCustomerName;
     @SerializedName("customer_number") private String mCustomerNumber;
+
+
+    public Invoice() {
+
+    }
+
+    public int getStatusCode() {
+        if (mStatus.equals(Invoice.STATUS_INIT)) return STATUS_CODE_INIT;
+        if (mStatus.equals(Invoice.STATUS_WAITING)) return STATUS_CODE_WAITING;
+        if (mStatus.equals(Invoice.STATUS_SHIPPING)) return STATUS_CODE_SHIPPING;
+        if (mStatus.equals(Invoice.STATUS_SHIPPED)) return STATUS_CODE_SHIPPED;
+        if (mStatus.equals(Invoice.STATUS_FINISHED)) return STATUS_CODE_FINISHED;
+        if (mStatus.equals(Invoice.STATUS_CANCEL)) return STATUS_CODE_CANCEL;
+        if (mStatus.equals(Invoice.STATUS_ALL)) return STATUS_CODE_ALL;
+        return -1;
+    }
 
     public int getId() {
         return mId;
@@ -169,4 +200,56 @@ public class Invoice {
     public void setCustomerNumber(String customerNumber) {
         mCustomerNumber = customerNumber;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
+        parcel.writeString(mName);
+        parcel.writeString(mAddressStart);
+        parcel.writeFloat(mLatStart);
+        parcel.writeFloat(mLngStart);
+        parcel.writeString(mAddressFinish);
+        parcel.writeFloat(mLatFinish);
+        parcel.writeFloat(mLngFinish);
+        parcel.writeString(mDeliveryTime);
+        parcel.writeFloat(mDistance);
+        parcel.writeString(mDescription);
+        parcel.writeFloat(mPrice);
+        parcel.writeFloat(mShippingPrice);
+        parcel.writeString(mStatus);
+        parcel.writeFloat(mWeight);
+        parcel.writeInt(mUserId);
+        parcel.writeString(mCustomerName);
+        parcel.writeString(mCustomerNumber);
+    }
+
+    protected Invoice(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
+        mAddressStart = in.readString();
+        mAddressFinish = in.readString();
+        mDeliveryTime = in.readString();
+        mDescription = in.readString();
+        mStatus = in.readString();
+        mUserId = in.readInt();
+        mCustomerName = in.readString();
+        mCustomerNumber = in.readString();
+    }
+
+    public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {
+        @Override
+        public Invoice createFromParcel(Parcel in) {
+            return new Invoice(in);
+        }
+
+        @Override
+        public Invoice[] newArray(int size) {
+            return new Invoice[size];
+        }
+    };
 }

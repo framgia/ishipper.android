@@ -79,12 +79,12 @@ public class RegisterActivity extends ToolbarActivity {
         mCurrentUser.setName(mEdtNameRegister.getText().toString());
         mCurrentUser.setPlateNumber(mEdtPlateNumber.getText().toString());
         Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.RegisterUser.USER_PHONE_NUMBER, mCurrentUser.getPhoneNumber());
-        userParams.put(APIDefinition.RegisterUser.USER_PASSWORD, mCurrentUser.getPassword());
-        userParams.put(APIDefinition.RegisterUser.USER_PASSWORD_CONFIRMATION, mCurrentUser.getPassword());
-        userParams.put(APIDefinition.RegisterUser.USER_NAME, mCurrentUser.getName());
-        userParams.put(APIDefinition.RegisterUser.USER_ROLE, mCurrentUser.getRole());
-        userParams.put(APIDefinition.RegisterUser.USER_PLATE_NUMBER, mCurrentUser.getPlateNumber());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_PHONE_NUMBER, mCurrentUser.getPhoneNumber());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_PASSWORD, mCurrentUser.getPassword());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_PASSWORD_CONFIRMATION, mCurrentUser.getPassword());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_NAME, mCurrentUser.getName());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_ROLE, mCurrentUser.getRole());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_PLATE_NUMBER, mCurrentUser.getPlateNumber());
 
         API.signUp(userParams, new API.APICallback<APIResponse<SignUpData>>() {
             @Override

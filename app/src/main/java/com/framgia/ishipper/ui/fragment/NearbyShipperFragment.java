@@ -22,7 +22,6 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
-import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -157,9 +156,9 @@ public class NearbyShipperFragment extends Fragment implements
         mCurrentUser.setLongitude((float) mLocation.getLongitude());
         int distance = 2;
         Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.GetShipperNearby.USER_LAT_PARAM, String.valueOf(mCurrentUser.getLatitude()));
-        userParams.put(APIDefinition.GetShipperNearby.USER_LNG_PARAM, String.valueOf(mCurrentUser.getLongitude()));
-        userParams.put(APIDefinition.GetShipperNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
+        userParams.put(APIDefinition.GetShipperNearby.PARAM_USER_LAT, String.valueOf(mCurrentUser.getLatitude()));
+        userParams.put(APIDefinition.GetShipperNearby.PARAM_USER_LNG, String.valueOf(mCurrentUser.getLongitude()));
+        userParams.put(APIDefinition.GetShipperNearby.PARAM_USER_DISTANCE, String.valueOf(distance));
         API.getShipperNearby(mCurrentUser.getAuthenticationToken(), userParams,
                              new API.APICallback<APIResponse<ShipperNearbyData>>() {
                                  @Override
