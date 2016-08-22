@@ -186,4 +186,5 @@
     <string name="dialog_loading_message">Loading. Please wait...</string>
     <string name="invoice_weight_unit">Kg</string>
     <string name="price_unit">VNĐ</string>
+    <string name="fragment_shipping_note">Note:</string>
 </resources>

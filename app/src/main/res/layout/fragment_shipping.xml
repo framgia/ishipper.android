@@ -71,6 +71,7 @@
         >
 
         <TextView
+            android:id="@+id/textAddressFrom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_status_pick"
@@ -82,6 +83,7 @@
 
 
         <TextView
+            android:id="@+id/textAddressTo"
             android:padding="@dimen/_10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,23 +103,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Note:"
+                android:text="@string/fragment_shipping_note"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_content"
                 android:textStyle="italic"/>
 
             <TextView
-                android:id="@+id/tvOrderDesc"
+                android:id="@+id/textInvoiceDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ship +20.000, Thu 150.000\nShip trước 5h chiều nay"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_content"/>
 
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>

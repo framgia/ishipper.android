@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    private static final String DEV_URL = "http://192.168.1.135:3001/";
+    private static final String DEV_URL = "http://192.168.1.124:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -119,21 +119,21 @@ public class APIDefinition {
         public static final String PATH_ID = "id";
 
         public static final String PARAM_NAME = "invoice[name]";
-        public static final String PARAM_ADDRESS_START = "invoice[name]";
-        public static final String PARAM_LAT_START = "invoice[name]";
-        public static final String PARAM_LNG_START = "invoice[name]";
-        public static final String PARAM_ADDRESS_FINISH = "invoice[name]";
-        public static final String PARAM_LAT_FINISH = "invoice[name]";
-        public static final String PARAM_LNG_FINISH = "invoice[name]";
-        public static final String PARAM_DELIVERY_TIME = "invoice[name]";
-        public static final String PARAM_DISTANCE = "invoice[name]";
-        public static final String PARAM_DESCRIPTION = "invoice[name]";
-        public static final String PARAM_PRICE = "invoice[name]";
-        public static final String PARAM_SHIPPING_PRICE = "invoice[name]";
-        public static final String PARAM_STATUS = "invoice[name]";
-        public static final String PARAM_WEIGHT = "invoice[name]";
-        public static final String PARAM_CUSTOMER_NAME = "invoice[name]";
-        public static final String PARAM_CUSTOMER_NUMBER = "invoice[name]";
+        public static final String PARAM_ADDRESS_START = "invoice[address_start]";
+        public static final String PARAM_LAT_START = "invoice[latitude_start]";
+        public static final String PARAM_LNG_START = "invoice[longitude_start]";
+        public static final String PARAM_ADDRESS_FINISH = "invoice[address_finish]";
+        public static final String PARAM_LAT_FINISH = "invoice[latitude_finish]";
+        public static final String PARAM_LNG_FINISH = "invoice[longitude_finish]";
+        public static final String PARAM_DELIVERY_TIME = "invoice[delivery_time]";
+        public static final String PARAM_DISTANCE = "invoice[distance]";
+        public static final String PARAM_DESCRIPTION = "invoice[description]";
+        public static final String PARAM_PRICE = "invoice[price]";
+        public static final String PARAM_SHIPPING_PRICE = "invoice[shipping_price]";
+        public static final String PARAM_STATUS = "invoice[status]";
+        public static final String PARAM_WEIGHT = "invoice[weight]";
+        public static final String PARAM_CUSTOMER_NAME = "invoice[customer_name]";
+        public static final String PARAM_CUSTOMER_NUMBER = "invoice[customer_number]";
     }
 
     public static String getBaseUrl() {
@@ -162,6 +162,7 @@ public class APIDefinition {
 
     public static class FilterInvoice {
         public static final String PATH = "/api/invoices";
+
         public static final String MIN_ORDER_PRICE_PARAM = "invoice[min_price]";
         public static final String MAX_ORDER_PRICE_PARAM = "invoice[max_price]";
         public static final String MIN_SHIP_PRICE_PARAM = "invoice[min_shipping_price]";
@@ -173,7 +174,6 @@ public class APIDefinition {
         public static final String CURRENT_LAT_PARAM = "invoice[latitude]";
         public static final String CURRENT_LONG_PARAM = "invoice[longitude]";
         public static final String RADIUS_PARAM = "invoice[distance]";
-
     }
 
     public static class GetListInvoice {

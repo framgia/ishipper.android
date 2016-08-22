@@ -201,6 +201,10 @@ public class Invoice implements Parcelable {
         mCustomerNumber = customerNumber;
     }
 
+    public String getInvoiceDesc() {
+        return String.format("Ship +%s, Thu %s\n%s", mShippingPrice, mPrice, mDescription);
+    }
+
     @Override
     public int describeContents() {
         return 0;
