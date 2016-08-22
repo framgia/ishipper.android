@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/text_view_margin"
+        android:background="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_order_management"
+        android:drawablePadding="@dimen/text_view_margin"
+        android:padding="@dimen/all_padding_medium"
+        android:text="@string/all_register_order"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_view_margin"
+        android:text="@string/dialog_receive_order_message"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/text_view_margin"
+            android:text="@string/all_yes"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_view_margin"
+            android:text="@string/all_no"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+</LinearLayout>

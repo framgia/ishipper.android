@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.framgia.ishipper">
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation">
+        </activity>
+        <activity android:name=".ui.activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.ListShipperRegActivity"
+            android:label="@string/title_activity_list_shipper_reg">
+        </activity>
+        <activity android:name=".ui.activity.OrderDetailActivity"/>
+        <activity android:name=".ui.activity.RouteActivity"/>
+        <activity android:name=".ui.activity.ShopCreateOrderActivity"/>
+        <activity android:name=".ui.activity.RegisterActivity"/>
+        <activity android:name=".ui.activity.ForgetPasswordActivity"/>
+        <activity android:name=".ui.activity.UserProfileActivity"/>
+        <activity android:name=".ui.activity.ChangePasswordActivity">
+        </activity>
+        <activity android:name=".ui.activity.FilterOrderActivity">
+        </activity>
+    </application>
+
+</manifest>

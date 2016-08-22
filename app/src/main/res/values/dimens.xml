@@ -1,0 +1,83 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+
+    <dimen name="_3dp">3dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="padding_4">4dp</dimen>
+
+    <!--Navigation-->
+    <dimen name="nav_contact_icon_width">100dp</dimen>
+    <dimen name="nav_contact_icon_height">100dp</dimen>
+    <dimen name="nav_contact_icon_margin">16dp</dimen>
+    <dimen name="nav_header_text_size">16sp</dimen>
+    <dimen name="nav_drawer_width">300dp</dimen>
+    <dimen name="nav_drawer_height">200dp</dimen>
+    <dimen name="nav_header_bg_height">100dp</dimen>
+
+    <dimen name="dot_layout_margin_left">8dp</dimen>
+    <dimen name="dot_repeat_width">3dp</dimen>
+    <dimen name="_15dp">15dp</dimen>
+    <dimen name="_20dp">20dp</dimen>
+
+
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_30dp">30dp</dimen>
+    <dimen name="_50dp">50dp</dimen>
+    <dimen name="fragment_shipping_desc_height">80dp</dimen>
+    <dimen name="button_accept_shipper_width">250dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+
+    <dimen name="button_edge_radius">3dp</dimen>
+    <dimen name="button_stroke_size">1dp</dimen>
+    <dimen name="nav_header_icon_margin_top">40dp</dimen>
+
+    <!--Activity Login-->
+    <dimen name="activity_login_margin">45dp</dimen>
+    <dimen name="fragment_reset_password_padding">45dp</dimen>
+
+    <!-- Shape -->
+    <dimen name="all_divider_height">1dp</dimen>
+    <dimen name="all_stroke_width">1dp</dimen>
+    <dimen name="all_corner_radius">2dp</dimen>
+
+    <!-- Text Size -->
+    <dimen name="text_size_button">16sp</dimen>
+    <dimen name="text_size_content">14sp</dimen>
+    <dimen name="text_size_content_plus">16sp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
+    <dimen name="text_size_15sp">15sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="text_view_margin">10dp</dimen>
+    <dimen name="text_size_tiny_material">10sp</dimen>
+
+    <!-- Margin -->
+    <dimen name="all_margin_large">20dp</dimen>
+    <dimen name="all_margin_medium">10dp</dimen>
+    <dimen name="all_margin_small">5dp</dimen>
+
+    <!-- Padding -->
+    <dimen name="all_padding_large">20dp</dimen>
+    <dimen name="all_padding_medium">10dp</dimen>
+    <dimen name="all_padding_small">5dp</dimen>
+    <dimen name="register_bg_radius">7dp</dimen>
+    <dimen name="nav_contact_icon_border_width">3dp</dimen>
+    <dimen name="searchview_text_size">10sp</dimen>
+    <dimen name="searchview_margin">10dp</dimen>
+    <dimen name="searchview_padding">5dp</dimen>
+    <dimen name="all_layout_margin_regular">16dp</dimen>
+    <dimen name="fragment_phone_validate_text_size">44sp</dimen>
+
+    <dimen name="background_shadow_size">0.5dp</dimen>
+    <dimen name="tv_drawable_padding">10dp</dimen>
+    <dimen name="title_profile_margin_bottom">-50dp</dimen>
+    <dimen name="img_profile_width">120dp</dimen>
+    <dimen name="img_profile_height">120dp</dimen>
+    <dimen name="tv_profile_name_margin_bottom">25dp</dimen>
+    <dimen name="cardview_margin">6dp</dimen>
+    <dimen name="linear_profile_padding">10dp</dimen>
+</resources>
