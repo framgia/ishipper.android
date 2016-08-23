@@ -25,18 +25,18 @@ public class Invoice implements Parcelable {
     @SerializedName("id") private int mId;
     @SerializedName("name") private String mName;
     @SerializedName("address_start") private String mAddressStart;
-    @SerializedName("latitude_start") private Float mLatStart;
-    @SerializedName("longitude_start") private Float mLngStart;
+    @SerializedName("latitude_start") private double mLatStart;
+    @SerializedName("longitude_start") private double mLngStart;
     @SerializedName("address_finish") private String mAddressFinish;
-    @SerializedName("latitude_finish") private Float mLatFinish;
-    @SerializedName("longitude_finish") private Float mLngFinish;
+    @SerializedName("latitude_finish") private double mLatFinish;
+    @SerializedName("longitude_finish") private double mLngFinish;
     @SerializedName("delivery_time") private String mDeliveryTime;
-    @SerializedName("distance") private Float mDistance;
+    @SerializedName("distance") private double mDistance;
     @SerializedName("description") private String mDescription;
-    @SerializedName("price") private Float mPrice;
-    @SerializedName("shipping_price") private Float mShippingPrice;
+    @SerializedName("price") private double mPrice;
+    @SerializedName("shipping_price") private double mShippingPrice;
     @SerializedName("status") private String mStatus;
-    @SerializedName("weight") private Float mWeight;
+    @SerializedName("weight") private double mWeight;
     @SerializedName("user_id") private int mUserId;
     @SerializedName("customer_name") private String mCustomerName;
     @SerializedName("customer_number") private String mCustomerNumber;
@@ -55,6 +55,17 @@ public class Invoice implements Parcelable {
         if (mStatus.equals(Invoice.STATUS_CANCEL)) return STATUS_CODE_CANCEL;
         if (mStatus.equals(Invoice.STATUS_ALL)) return STATUS_CODE_ALL;
         return -1;
+    }
+
+    public static String getStatusFromCode(int code) {
+        if (code == Invoice.STATUS_CODE_INIT) return Invoice.STATUS_INIT;
+        if (code == Invoice.STATUS_CODE_WAITING) return Invoice.STATUS_WAITING;
+        if (code == Invoice.STATUS_CODE_SHIPPING) return Invoice.STATUS_SHIPPING;
+        if (code == Invoice.STATUS_CODE_SHIPPED) return Invoice.STATUS_SHIPPED;
+        if (code == Invoice.STATUS_CODE_FINISHED) return Invoice.STATUS_FINISHED;
+        if (code == Invoice.STATUS_CODE_CANCEL) return Invoice.STATUS_CANCEL;
+        if (code == Invoice.STATUS_CODE_ALL) return Invoice.STATUS_ALL;
+        return "";
     }
 
     public int getId() {
@@ -81,19 +92,19 @@ public class Invoice implements Parcelable {
         mAddressStart = addressStart;
     }
 
-    public Float getLatStart() {
+    public double getLatStart() {
         return mLatStart;
     }
 
-    public void setLatStart(Float latStart) {
+    public void setLatStart(double latStart) {
         mLatStart = latStart;
     }
 
-    public Float getLngStart() {
+    public double getLngStart() {
         return mLngStart;
     }
 
-    public void setLngStart(Float lngStart) {
+    public void setLngStart(double lngStart) {
         mLngStart = lngStart;
     }
 
@@ -105,19 +116,19 @@ public class Invoice implements Parcelable {
         mAddressFinish = addressFinish;
     }
 
-    public Float getLatFinish() {
+    public double getLatFinish() {
         return mLatFinish;
     }
 
-    public void setLatFinish(Float latFinish) {
+    public void setLatFinish(double latFinish) {
         mLatFinish = latFinish;
     }
 
-    public Float getLngFinish() {
+    public double getLngFinish() {
         return mLngFinish;
     }
 
-    public void setLngFinish(Float lngFinish) {
+    public void setLngFinish(double lngFinish) {
         mLngFinish = lngFinish;
     }
 
@@ -129,11 +140,11 @@ public class Invoice implements Parcelable {
         mDeliveryTime = deliveryTime;
     }
 
-    public Float getDistance() {
+    public double getDistance() {
         return mDistance;
     }
 
-    public void setDistance(Float distance) {
+    public void setDistance(double distance) {
         mDistance = distance;
     }
 
@@ -145,19 +156,19 @@ public class Invoice implements Parcelable {
         mDescription = description;
     }
 
-    public Float getPrice() {
+    public double getPrice() {
         return mPrice;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(double price) {
         mPrice = price;
     }
 
-    public Float getShippingPrice() {
+    public double getShippingPrice() {
         return mShippingPrice;
     }
 
-    public void setShippingPrice(Float shippingPrice) {
+    public void setShippingPrice(double shippingPrice) {
         mShippingPrice = shippingPrice;
     }
 
@@ -169,11 +180,11 @@ public class Invoice implements Parcelable {
         mStatus = status;
     }
 
-    public Float getWeight() {
+    public double getWeight() {
         return mWeight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(double weight) {
         mWeight = weight;
     }
 
@@ -215,18 +226,18 @@ public class Invoice implements Parcelable {
         parcel.writeInt(mId);
         parcel.writeString(mName);
         parcel.writeString(mAddressStart);
-        parcel.writeFloat(mLatStart);
-        parcel.writeFloat(mLngStart);
+        parcel.writeDouble(mLatStart);
+        parcel.writeDouble(mLngStart);
         parcel.writeString(mAddressFinish);
-        parcel.writeFloat(mLatFinish);
-        parcel.writeFloat(mLngFinish);
+        parcel.writeDouble(mLatFinish);
+        parcel.writeDouble(mLngFinish);
         parcel.writeString(mDeliveryTime);
-        parcel.writeFloat(mDistance);
+        parcel.writeDouble(mDistance);
         parcel.writeString(mDescription);
-        parcel.writeFloat(mPrice);
-        parcel.writeFloat(mShippingPrice);
+        parcel.writeDouble(mPrice);
+        parcel.writeDouble(mShippingPrice);
         parcel.writeString(mStatus);
-        parcel.writeFloat(mWeight);
+        parcel.writeDouble(mWeight);
         parcel.writeInt(mUserId);
         parcel.writeString(mCustomerName);
         parcel.writeString(mCustomerNumber);

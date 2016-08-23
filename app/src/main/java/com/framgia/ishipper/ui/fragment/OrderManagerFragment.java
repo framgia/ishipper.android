@@ -20,24 +20,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
-import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
-import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
-import com.framgia.ishipper.ui.activity.LoginActivity;
-import com.framgia.ishipper.ui.adapter.OrderAdapter;
 import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,17 +84,21 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                 titleTab = getContext().getString(R.string.tab_title_unknow);
             }
             OrderListFragment orderListFragment =
-                    OrderListFragment.newInstance(titleTab, invoices);
+                    OrderListFragment.newInstance(titleTab, type);
             orderListFragment.setOnActionClickListener(this);
             mListOrderFragment.add(orderListFragment);
             mOrderManagerPagerAdapter.notifyDataSetChanged();
         }
-//        getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-//                   Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-//                   mListOrderFragment.get(Invoice.STATUS_CODE_INIT).getOrderAdapter(),
-//                   Invoice.STATUS_CODE_INIT);
 
+       mListOrderFragment.get(Invoice.STATUS_CODE_INIT).setData(mContext);
 
+    }
+
+    private void onSelectTab(int position) {
+        mListOrderFragment.get(position).setData(mContext);
+    }
+
+    private void initEvent() {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
@@ -113,13 +109,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             @Override
             public void onPageSelected(int position) {
                 Log.d(TAG, "onPageSelected: " + position);
-
-                if (mListOrderFragment.get(position).getInvoiceList().size() == 0) {
-                    getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-                               Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                               mListOrderFragment.get(position).getOrderAdapter(),
-                               position);
-                }
+                onSelectTab(position);
             }
 
             @Override
@@ -127,52 +117,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                 Log.d(TAG, "onPageScrollStateChanged: " + state);
             }
         });
-    }
-
-    private void getInvoice(String role, String authenticationToken, final OrderAdapter orderAdapter,
-                            int type) {
-        String status = Invoice.STATUS_ALL;
-        if (type == Invoice.STATUS_CODE_INIT) status = Invoice.STATUS_INIT;
-        if (type == Invoice.STATUS_CODE_WAITING) status = Invoice.STATUS_WAITING;
-        if (type == Invoice.STATUS_CODE_SHIPPING) status = Invoice.STATUS_SHIPPING;
-        if (type == Invoice.STATUS_CODE_SHIPPED) status = Invoice.STATUS_SHIPPED;
-        if (type == Invoice.STATUS_CODE_FINISHED) status = Invoice.STATUS_FINISHED;
-        if (type == Invoice.STATUS_CODE_CANCEL) status = Invoice.STATUS_CANCEL;
-        if (type == Invoice.STATUS_CODE_ALL) status = Invoice.STATUS_ALL;
-        Map<String, String> params = new HashMap<>();
-        params.put(APIDefinition.GetListInvoice.PARAM_STATUS, status);
-        API.getInvoice(role,
-                       authenticationToken,
-                       params,
-                       new API.APICallback<APIResponse<ListInvoiceData>>() {
-                           @Override
-                           public void onResponse(APIResponse<ListInvoiceData> response) {
-                               Log.d(TAG, "onResponse: " + response.isSuccess());
-                               orderAdapter.getInvoiceList().clear();
-                               orderAdapter.getInvoiceList().addAll(response.getData().getInvoiceList());
-                               orderAdapter.notifyDataSetChanged();
-                           }
-
-                           @Override
-                           public void onFailure(int code, String message) {
-                               Log.d(TAG, "onFailure: " + message);
-                           }
-                       }
-        );
-    }
-
-    public ArrayList<Order> filterOrder(ArrayList<Order> orderArrayList, int type) {
-        if (type == Order.ORDER_STATUS_ALL)
-            return orderArrayList;
-        ArrayList<Order> filteredOrderList = new ArrayList<>();
-        for (Order order : orderArrayList) {
-            if (order.getStatus() == type)
-                filteredOrderList.add(order);
-        }
-        return filteredOrderList;
-    }
-
-    private void initEvent() {
     }
 
     @Override
@@ -210,11 +154,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
     public void notifyChangeTab(int type) {
         if (mListOrderFragment.size() > type) {
-            getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-                       Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                       mListOrderFragment.get(type).getOrderAdapter(),
-                       type);
-//            mListOrderFragment.get(type).notifyChangedData(orderList);
+            mListOrderFragment.get(type).setData(mContext);
         }
     }
 
@@ -222,7 +162,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     public void onClickAction(Invoice invoice) {
         final Dialog loadingDialog;
         switch (invoice.getStatusCode()) {
-            case Order.ORDER_STATUS_WAIT:
+            case Order.ORDER_STATUS_INIT:
                 startActivity(new Intent(mContext, ListShipperRegActivity.class));
                 break;
             case Order.ORDER_STATUS_TAKE:

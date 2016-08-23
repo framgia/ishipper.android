@@ -79,7 +79,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.mTvNearbyShipPrice.setText(formatPrice(holder.mInvoice.getShippingPrice()));
     }
 
-    private String formatPrice(float orderPrice) {
+    private String formatPrice(double orderPrice) {
         StringBuilder builder = new StringBuilder();
         int length = String.valueOf(orderPrice).length();
 
@@ -103,7 +103,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         int statusColor;
         boolean canCancel;
         switch (status) {
-            case Order.ORDER_STATUS_WAIT:
+            case Invoice.STATUS_CODE_INIT:
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     textStatus = mContext.getString(R.string.order_status_wait);
                     action = "";
@@ -118,7 +118,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                                              null);
                 statusColor = mContext.getResources().getColor(R.color.color_status_waiting);
                 break;
-            case Order.ORDER_STATUS_TAKE:
+            case Invoice.STATUS_CODE_WAITING:
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     textStatus = mContext.getString(R.string.order_status_take);
                     action = mContext.getString(R.string.action_shipper_take);
@@ -133,7 +133,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                                              null);
                 statusColor = mContext.getResources().getColor(R.color.color_status_pick);
                 break;
-            case Order.ORDER_STATUS_SHIPPING:
+            case Invoice.STATUS_CODE_SHIPPING:
                 textStatus = mContext.getString(R.string.order_status_shipping);
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     action = mContext.getString(R.string.action_shipper_shipping);
@@ -147,7 +147,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                                              null);
                 statusColor = mContext.getResources().getColor(R.color.color_status_shipping);
                 break;
-            case Order.ORDER_STATUS_DELIVERED:
+            case Invoice.STATUS_CODE_SHIPPED:
                 textStatus = mContext.getString(R.string.order_status_delivered);
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     action = "";
@@ -161,7 +161,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                                              null);
                 statusColor = mContext.getResources().getColor(R.color.color_status_delivered);
                 break;
-            case Order.ORDER_STATUS_FINISHED:
+            case Invoice.STATUS_CODE_FINISHED:
                 textStatus = mContext.getString(R.string.order_status_finished);
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     canCancel = false;
@@ -173,7 +173,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                                                              null);
                 statusColor = mContext.getResources().getColor(R.color.color_status_finish);
                 break;
-            case Order.ORDER_STATUS_CANCELLED:
+            case Invoice.STATUS_CODE_CANCEL:
                 textStatus = mContext.getString(R.string.order_status_cancelled);
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     canCancel = false;
