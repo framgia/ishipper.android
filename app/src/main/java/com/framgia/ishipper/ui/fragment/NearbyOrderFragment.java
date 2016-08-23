@@ -146,6 +146,7 @@ public class NearbyOrderFragment extends Fragment implements
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
         setHasOptionsMenu(true);
+        mWindowOrderDetail.setVisibility(View.GONE);
         return view;
     }
 

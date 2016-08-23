@@ -26,6 +26,7 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.framgia.ishipper.ui.view.ReportDialog;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
