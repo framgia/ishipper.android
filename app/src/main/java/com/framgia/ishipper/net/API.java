@@ -2,6 +2,7 @@ package com.framgia.ishipper.net;
 
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
@@ -394,8 +395,8 @@ public abstract class API {
     /* Filter Invoice */
     public static void filterInvoice(String token,
                                      Map<String, String> params,
-                                     final APICallback<APIResponse<FilterInvoiceData>> callback){
-        client.filterInvoice(token,params).enqueue(new Callback<APIResponse<FilterInvoiceData>>() {
+                                     final APICallback<APIResponse<FilterInvoiceData>> callback) {
+        client.filterInvoice(token, params).enqueue(new Callback<APIResponse<FilterInvoiceData>>() {
             @Override
             public void onResponse(Call<APIResponse<FilterInvoiceData>> call, Response<APIResponse<FilterInvoiceData>> response) {
                 if (response.isSuccessful()) {
@@ -414,6 +415,15 @@ public abstract class API {
                 callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
+    }
+
+    /* Get List Shipper Invoices */
+    public static void getListShipperInvoices(String token,
+                                              String status,
+                                              final APICallback<APIResponse<ListInvoiceData>> callback) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(APIDefinition.GetListInvoice.PARAM_STATUS, status);
+        getInvoice(User.ROLE_SHIPPER, token, params, callback);
     }
 
     /* Get Invoice */

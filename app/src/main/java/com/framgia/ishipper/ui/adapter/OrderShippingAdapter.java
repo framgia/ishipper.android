@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.Order;
-import com.framgia.ishipper.ui.fragment.OrderListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
@@ -20,9 +18,9 @@ import butterknife.OnClick;
 public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdapter.ViewHolder> {
 
     private List<Invoice> mInvoiceList;
-    private OnListFragmentInteractionListener mListener;
+    private OnItemClickListener mListener;
 
-    public OrderShippingAdapter(List<Invoice> invoiceList, OnListFragmentInteractionListener listener) {
+    public OrderShippingAdapter(List<Invoice> invoiceList, OnItemClickListener listener) {
         mInvoiceList = invoiceList;
         mListener = listener;
     }
@@ -35,10 +33,12 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Invoice invoice = mInvoiceList.get(position);
-        holder.mOrderEndAddress.setText(invoice.getAddressFinish());
-        holder.mOrderPrePay.setText(invoice.getPrice() + " ");
-        holder.mOrderShippingCost.setText(invoice.getShippingPrice() + " ");
+        Invoice item = mInvoiceList.get(position);
+        holder.mOrderEndAddress.setText(item.getAddressFinish());
+        holder.mOrderStartAddress.setText(item.getAddressStart());
+        holder.mOrderPrePay.setText(item.getPrice() + "");
+        holder.mOrderShippingCost.setText(item.getShippingPrice() + "");
+        holder.mOrderShippingTime.setText(item.getDeliveryTime());
     }
 
     @Override
@@ -49,8 +49,10 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_item_order_to) TextView mOrderEndAddress;
+        @BindView(R.id.tv_item_order_from) TextView mOrderStartAddress;
         @BindView(R.id.tv_item_order_price) TextView mOrderPrePay;
         @BindView(R.id.tv_item_order_ship_price) TextView mOrderShippingCost;
+        @BindView(R.id.tv_item_order_ship_time) TextView mOrderShippingTime;
 
         public ViewHolder(View view) {
             super(view);
@@ -60,7 +62,7 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onListFragmentInteraction(mInvoiceList.get(getAdapterPosition()));
+                    mListener.onClick(getAdapterPosition());
                 }
             });
         }
@@ -71,6 +73,10 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
             mInvoiceList.remove(pos);
             notifyItemRemoved(pos);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position);
     }
 
 

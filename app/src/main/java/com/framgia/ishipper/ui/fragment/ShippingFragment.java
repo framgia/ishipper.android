@@ -21,13 +21,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.adapter.OrderShippingAdapter;
 import com.framgia.ishipper.util.MapUtils;
@@ -51,7 +55,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ShippingFragment extends Fragment implements OnMapReadyCallback, RoutingListener, OrderListFragment.OnListFragmentInteractionListener, GoogleMap.OnMarkerClickListener {
+public class ShippingFragment extends Fragment implements OnMapReadyCallback, RoutingListener,
+        GoogleMap.OnMarkerClickListener, OrderShippingAdapter.OnItemClickListener {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int POLY_LINE_WIDTH = 8;
@@ -62,9 +67,11 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
     @BindView(R.id.layoutMap) View mLayoutMap;
     @BindView(R.id.rvOrders) RecyclerView mRvOrders;
-    @BindView(R.id.tvOrderDesc) TextView mTvOrderDesc;
+    @BindView(R.id.textInvoiceDesc) TextView mTextInvoiceDesc;
     @BindView(R.id.layoutOrderDetail) View mLayoutOrderDetail;
     @BindView(R.id.imgExpandMap) ImageView mImgExpandMap;
+    @BindView(R.id.textAddressFrom) TextView mTextAddressFrom;
+    @BindView(R.id.textAddressTo) TextView mTextAddressTo;
 
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap;
@@ -83,27 +90,45 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
         View v = inflater.inflate(R.layout.fragment_shipping, container, false);
         ButterKnife.bind(this, v);
 
-        initData();
-        settingRecycleView();
+        getListShippingInvoice();
         return v;
     }
 
-    private void initData() {
-        Invoice invoice = new Invoice();
-        invoice.setLatStart(21.014332f);
-        invoice.setLngStart(105.857217f);
-        invoice.setLatFinish(21.014543f);
-        invoice.setLngFinish(105.857445f);
-        invoice.setPrice(500f);
-        invoice.setShippingPrice(40f);
-        invoice.setAddressStart("214 Linh Nam");
-        mInvoiceList.add(invoice);
+    private void getListShippingInvoice() {
+        API.getListShipperInvoices(Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<ListInvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListInvoiceData> response) {
+                        mInvoiceList = response.getData().getInvoiceList();
+
+                        // don't need to update UI if list empty
+                        if (mInvoiceList.isEmpty()) {
+                            return;
+                        }
+
+                        updateZoomMap(mMap);
+                        settingRecycleView();
+                        updateInvoiceDescSummary(0);
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    private void updateInvoiceDescSummary(int invoicePos) {
+        Invoice item = mInvoiceList.get(invoicePos);
+        mTextAddressFrom.setText(item.getAddressStart());
+        mTextAddressTo.setText(item.getAddressFinish());
+        mTextInvoiceDesc.setText(item.getInvoiceDesc());
     }
 
     @Override
@@ -127,14 +152,16 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
         enableMyLocation();
         googleMap.setOnMarkerClickListener(this);
-        updateZoomMap(googleMap);
     }
 
     private void updateZoomMap(GoogleMap googleMap) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Invoice item : mInvoiceList) {
-            LatLng latLng = new LatLng(item.getLatFinish(), item.getLngStart());
+            LatLng latLng = new LatLng(item.getLatStart(), item.getLngStart());
             builder.include(latLng);
+            googleMap.addMarker(new MarkerOptions().position(latLng).icon(
+                    BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop))
+            );
         }
         LatLngBounds bounds = builder.build();
 
@@ -194,8 +221,8 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
                             .position(myLocation));
 
                     for (Invoice item : mInvoiceList) {
-                        MapUtils.routing(myLocation, new LatLng(item.getLatFinish(), item.getLngFinish()),
-                                         ShippingFragment.this);
+                        MapUtils.routing(myLocation, new LatLng(item.getLatStart(), item.getLngStart()), ShippingFragment.this);
+
                     }
 
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -253,18 +280,18 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     }
 
     @Override
-    public void onListFragmentInteraction(Invoice invoice) {
-        startActivity(new Intent(getActivity(), OrderDetailActivity.class));
-    }
-
-    @Override
     public boolean onMarkerClick(Marker marker) {
         int makerId = Integer.valueOf(marker.getId().substring(1));
         if (makerId < mInvoiceList.size()) {
-            Invoice invoice = mInvoiceList.get(makerId);
-            mTvOrderDesc.setText(invoice.toString());
+            Invoice item = mInvoiceList.get(makerId);
+            mTextInvoiceDesc.setText(item.toString());
         }
 
         return false;
+    }
+
+    @Override
+    public void onClick(int position) {
+        startActivity(new Intent(getActivity(), OrderDetailActivity.class));
     }
 }

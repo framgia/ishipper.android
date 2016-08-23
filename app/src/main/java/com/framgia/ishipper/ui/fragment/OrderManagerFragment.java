@@ -227,6 +227,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                 break;
             case Order.ORDER_STATUS_TAKE:
                 // TODO invoice id
+                Log.d("hung", "onClickAction: take ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
                 API.putUpdateInvoiceStatus(String.valueOf(invoice.getId()),
                         Invoice.STATUS_SHIPPING,
@@ -248,6 +249,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
                 break;
             case Order.ORDER_STATUS_SHIPPING:
+                Log.d("hung", "onClickAction: shipping ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
                 API.putUpdateInvoiceStatus(String.valueOf(invoice.getId()),
                         Invoice.STATUS_SHIPPING,
@@ -269,6 +271,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
                 break;
             case Order.ORDER_STATUS_DELIVERED:
+                Log.d("hung", "onClickAction: delivered ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
                 API.putUpdateInvoiceStatus(String.valueOf(invoice.getId()),
                         Invoice.STATUS_SHIPPING,

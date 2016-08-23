@@ -116,6 +116,7 @@ public interface APIServices {
             @Path(APIDefinition.PutUpdateInvoice.PATH_ID) String invoiceId,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
+
     /* Filter Invoice */
     @GET(APIDefinition.FilterInvoice.PATH)
     Call<APIResponse<FilterInvoiceData>> filterInvoice(
