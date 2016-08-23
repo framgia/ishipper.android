@@ -15,7 +15,7 @@ import java.util.Random;
  * Created by HungNT on 7/18/16.
  */
 public class Order implements Parcelable {
-    public static final int ORDER_STATUS_WAIT = 0;
+    public static final int ORDER_STATUS_INIT = 0;
     public static final int ORDER_STATUS_TAKE = 1;
     public static final int ORDER_STATUS_SHIPPING = 2;
     public static final int ORDER_STATUS_DELIVERED = 3;

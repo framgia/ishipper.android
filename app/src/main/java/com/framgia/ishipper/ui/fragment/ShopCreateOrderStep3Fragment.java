@@ -60,28 +60,28 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
         params.put(APIDefinition.CreateInvoice.PARAM_ADDRESS_START,
                    ShopCreateOrderActivity.sInvoice.getAddressStart());
         params.put(APIDefinition.CreateInvoice.PARAM_LATITUDE_START,
-                   ShopCreateOrderActivity.sInvoice.getLatStart().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLatStart()));
         params.put(APIDefinition.CreateInvoice.PARAM_LONGITUDE_START,
-                   ShopCreateOrderActivity.sInvoice.getLngStart().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLngStart()));
         params.put(APIDefinition.CreateInvoice.PARAM_ADDRESS_FINISH,
                    ShopCreateOrderActivity.sInvoice.getAddressFinish());
         params.put(APIDefinition.CreateInvoice.PARAM_LATITUDE_FINISH,
-                   ShopCreateOrderActivity.sInvoice.getLatFinish().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLatFinish()));
         params.put(APIDefinition.CreateInvoice.PARAM_LONGITUDE_FINISH,
-                   ShopCreateOrderActivity.sInvoice.getLngFinish().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLngFinish()));
         params.put(APIDefinition.CreateInvoice.PARAM_DELIVERY_TIME,
                    ShopCreateOrderActivity.sInvoice.getDeliveryTime());
         params.put(APIDefinition.CreateInvoice.PARAM_DISTANCE,
-                   ShopCreateOrderActivity.sInvoice.getDistance().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getDistance()));
         params.put(APIDefinition.CreateInvoice.PARAM_DESCRIPTION,
                    ShopCreateOrderActivity.sInvoice.getDescription());
         params.put(APIDefinition.CreateInvoice.PARAM_PRICE,
-                   ShopCreateOrderActivity.sInvoice.getPrice().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getPrice()));
         params.put(APIDefinition.CreateInvoice.PARAM_SHIPPING_PRICE,
-                   ShopCreateOrderActivity.sInvoice.getShippingPrice().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getShippingPrice()));
         params.put(APIDefinition.CreateInvoice.PARAM_STATUS, ShopCreateOrderActivity.sInvoice.getStatus());
         params.put(APIDefinition.CreateInvoice.PARAM_WEIGHT,
-                   ShopCreateOrderActivity.sInvoice.getWeight().toString());
+                   String.valueOf(ShopCreateOrderActivity.sInvoice.getWeight()));
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NAME,
                    ShopCreateOrderActivity.sInvoice.getCustomerName());
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NUMBER,

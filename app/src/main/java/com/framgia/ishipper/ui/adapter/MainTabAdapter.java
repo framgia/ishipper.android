@@ -63,7 +63,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
                 mOrderListFragment =
                         new OrderListFragment().newInstance(
                                                             mContext.getString(R.string.tab_title_shop_order_wait),
-                                                            mInvoiceList);
+                                                            Invoice.STATUS_CODE_INIT);
                 mOrderListFragment.setOnActionClickListener(this);
                 return mOrderListFragment;
             }

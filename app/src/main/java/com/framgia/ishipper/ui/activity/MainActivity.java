@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     public static final int SHOP = 1;
     public static int userType = SHIPPER;
     private User mCurrentUser;
+    private int mSelectedId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity
 
     private void selectItem(int id) {
         mDrawerLayout.closeDrawer(mNavigationView);
+        if (mSelectedId == id) return;
+        else mSelectedId = id;
         Fragment fragment;
         switch (id) {
             case R.id.nav_nearby_order:
