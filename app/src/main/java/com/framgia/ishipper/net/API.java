@@ -7,6 +7,7 @@ import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.FilterInvoiceData;
+import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
@@ -398,7 +399,9 @@ public abstract class API {
                                      final APICallback<APIResponse<FilterInvoiceData>> callback) {
         client.filterInvoice(token, params).enqueue(new Callback<APIResponse<FilterInvoiceData>>() {
             @Override
-            public void onResponse(Call<APIResponse<FilterInvoiceData>> call, Response<APIResponse<FilterInvoiceData>> response) {
+            public void onResponse(
+                    Call<APIResponse<FilterInvoiceData>> call,
+                    Response<APIResponse<FilterInvoiceData>> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isSuccess()) {
                         callback.onResponse(response.body());
@@ -452,5 +455,33 @@ public abstract class API {
                         callback.onFailure(LOCAL_ERROR, t.getMessage());
                     }
                 });
+    }
+
+    /* Get User */
+    public static void getUser(
+            String token,
+            String userId,
+            final APICallback<APIResponse<GetUserData>> callback) {
+        client.getUser(token, userId).enqueue(new Callback<APIResponse<GetUserData>>() {
+            @Override
+            public void onResponse(
+                    Call<APIResponse<GetUserData>> call,
+                    Response<APIResponse<GetUserData>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
+                        callback.onResponse(response.body());
+                    } else {
+                        callback.onFailure(response.body().getCode(), response.body().getMessage());
+                    }
+                } else {
+                    callback.onFailure(response.code(), response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<GetUserData>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
     }
 }
