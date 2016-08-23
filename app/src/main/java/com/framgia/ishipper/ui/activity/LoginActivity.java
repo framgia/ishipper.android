@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.btnRegister:
                 startActivity(new Intent(this, RegisterActivity.class));
-                finish();
                 break;
             case R.id.btnForgotPass:
                 startActivity(new Intent(this, ForgetPasswordActivity.class));

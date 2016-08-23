@@ -166,6 +166,7 @@
     <string name="error_empty_string">Không được để trống</string>
     <string name="all_old_password">Mật khẩu cũ</string>
     <string name="all_ok">Ok</string>
+    <string name="all_confirm">Xác nhận</string>
     <string name="all_cancel">Hủy</string>
     <string name="dialog_receive_order_message">Bạn có muốn nhận đơn hàng không?</string>
     <string name="all_yes">Có</string>
@@ -187,4 +188,6 @@
     <string name="invoice_weight_unit">Kg</string>
     <string name="price_unit">VNĐ</string>
     <string name="fragment_shipping_note">Note:</string>
+    <string name="dialog_report">Report</string>
+    <string name="all_send">Gửi</string>
 </resources>
