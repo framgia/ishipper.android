@@ -17,9 +17,9 @@ public class User {
 
     @SerializedName("address") private String mAddress;
 
-    @SerializedName("latitude") private Float mLatitude;
+    @SerializedName("latitude") private double mLatitude;
 
-    @SerializedName("longitude") private Float mLongitude;
+    @SerializedName("longitude") private double mLongitude;
 
     @SerializedName("phone_number") private String mPhoneNumber;
 
@@ -29,7 +29,7 @@ public class User {
 
     @SerializedName("role") private String mRole;
 
-    @SerializedName("rate") private Float mRate;
+    @SerializedName("rate") private double mRate;
 
     @SerializedName("pin") private String mPin;
 
@@ -70,19 +70,19 @@ public class User {
         mAddress = address;
     }
 
-    public Float getLatitude() {
+    public double getLatitude() {
         return mLatitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(double latitude) {
         mLatitude = latitude;
     }
 
-    public Float getLongitude() {
+    public double getLongitude() {
         return mLongitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(double longitude) {
         mLongitude = longitude;
     }
 
@@ -118,11 +118,11 @@ public class User {
         mRole = role;
     }
 
-    public Float getRate() {
+    public double getRate() {
         return mRate;
     }
 
-    public void setRate(Float rate) {
+    public void setRate(double rate) {
         mRate = rate;
     }
 

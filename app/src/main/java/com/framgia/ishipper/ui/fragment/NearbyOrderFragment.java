@@ -2,6 +2,8 @@ package com.framgia.ishipper.ui.fragment;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.model.WindowOrder;
@@ -44,8 +46,15 @@ import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -78,8 +87,9 @@ public class NearbyOrderFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "NearbyOrderFragment";
-    public static final int TILT_DEGREE = 30;
-    public static final int ZOOM_LEVEL = 15;
+    private static final int TILT_DEGREE = 30;
+    private static final int ZOOM_LEVEL = 15;
+    private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     @BindView(R.id.iv_detail_promotion_label) ImageView mIvPromotionLabel;
     @BindView(R.id.tv_item_order_ship_price) TextView mTvNearbyShipPrice;
     @BindView(R.id.tv_item_order_from) TextView mTvNearbyFrom;
@@ -96,6 +106,7 @@ public class NearbyOrderFragment extends Fragment implements
     @BindView(R.id.window_order_detail) RelativeLayout mWindowOrderDetail;
     @BindView(R.id.ll_order_status) LinearLayout mOrderStatus;
     @BindView(R.id.rating_order_window) RatingBar mRatingOrderWindow;
+    @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -105,6 +116,7 @@ public class NearbyOrderFragment extends Fragment implements
     private Unbinder mUnbinder;
     private Polyline mPolylineRoute;
     private Marker mMakerEndOrder;
+    private Context mContext;
     private User mCurrentUser;
 
     public NearbyOrderFragment() {
@@ -112,8 +124,13 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     public static NearbyOrderFragment newInstance() {
-        NearbyOrderFragment fragment = new NearbyOrderFragment();
-        return fragment;
+        return new NearbyOrderFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -139,6 +156,8 @@ public class NearbyOrderFragment extends Fragment implements
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
         mWindowOrderDetail.setOnClickListener(new View.OnClickListener() {
@@ -168,22 +187,16 @@ public class NearbyOrderFragment extends Fragment implements
             return;
         }
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        markInvoiceNearby();
+        mCurrentUser = Config.getInstance().getUserInfo(getContext());
+        mCurrentUser.setLatitude(mLocation.getLatitude());
+        mCurrentUser.setLongitude(mLocation.getLongitude());
+        markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), 5f);
     }
 
-    private void markInvoiceNearby() {
-        mCurrentUser = Config.getInstance().getUserInfo(getContext());
-        if (mLocation != null ) {
-            mCurrentUser.setLatitude((float) mLocation.getLatitude());
-            mCurrentUser.setLongitude((float) mLocation.getLongitude());
-        } else {
-            mCurrentUser.setLatitude(21.0093f);
-            mCurrentUser.setLongitude(105.855f);
-        }
-        int distance = 5;
+    private void markInvoiceNearby(final double latitude, final double longitude, float distance) {
         Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LAT, String.valueOf(mCurrentUser.getLatitude()));
-        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LNG, String.valueOf(mCurrentUser.getLongitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LAT, String.valueOf(latitude));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LNG, String.valueOf(longitude));
         userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_DISTANCE, String.valueOf(distance));
         API.getInvoiceNearby(mCurrentUser.getAuthenticationToken(), userParams,
                 new API.APICallback<APIResponse<ListInvoiceData>>() {
@@ -195,6 +208,7 @@ public class NearbyOrderFragment extends Fragment implements
                                 response.getMessage(),
                                 Toast.LENGTH_SHORT)
                                 .show();
+                        updateCamera(latitude, longitude);
                         configGoogleMap(response.getData().getInvoiceList());
                     }
 
@@ -206,6 +220,7 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void addListMarker(List<Invoice> invoiceList) {
+        mGoogleMap.clear();
         for (Invoice invoice : invoiceList) {
             addMarkInvoice(invoice);
         }
@@ -242,15 +257,8 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void configGoogleMap(final List<Invoice> invoiceList) {
-        LatLng currentPos = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .tilt(TILT_DEGREE)
-                .zoom(ZOOM_LEVEL)
-                .target(currentPos)
-                .build();
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.setPadding(0, 150, 0, 0);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -300,7 +308,7 @@ public class NearbyOrderFragment extends Fragment implements
                                 mPolylineRoute = mGoogleMap.addPolyline(polyOptions);
 
                                 MapUtils.updateZoomMap(mGoogleMap, Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT,
-                                                       startPoint, endPoint);
+                                        startPoint, endPoint);
                             }
 
                             @Override
@@ -323,8 +331,16 @@ public class NearbyOrderFragment extends Fragment implements
         });
     }
 
+    private void updateCamera(double latitude, double longitude) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .tilt(TILT_DEGREE)
+                .zoom(ZOOM_LEVEL)
+                .target(new LatLng(latitude, longitude))
+                .build();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
 
-    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order})
+    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order, R.id.rl_search_view})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_item_order_show_path:
@@ -332,6 +348,21 @@ public class NearbyOrderFragment extends Fragment implements
                 break;
             case R.id.btn_item_order_register_order:
                 showReceiveDialog();
+                break;
+            case R.id.rl_search_view:
+                try {
+                    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                            .build();
+
+                    Intent searchIntent = new PlaceAutocomplete
+                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .setFilter(typeFilter)
+                            .build(getActivity());
+                    startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
@@ -359,5 +390,25 @@ public class NearbyOrderFragment extends Fragment implements
             startActivity(new Intent(getContext(), FilterOrderActivity.class));
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(mContext, data);
+                Log.d(TAG, "onActivityResult: " + place.getName());
+                mTvSearchArea.setText(place.getName());
+                double latitude = place.getLatLng().latitude;
+                double longitude = place.getLatLng().longitude;
+                markInvoiceNearby(latitude, longitude, 5);
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(mContext, data);
+                Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.d(TAG, " Search Cancel");
+            }
+        }
     }
 }
