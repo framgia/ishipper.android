@@ -6,8 +6,7 @@ import com.framgia.ishipper.common.Config;
  * Created by HungNT on 8/5/16.
  */
 public class APIDefinition {
-
-//            private static final String DEV_URL = "http://ishipper.herokuapp.com";
+    //    public static final String DEV_URL = "http://ishipper.herokuapp.com";
     private static final String DEV_URL = "http://192.168.1.196:3001/";
     private static final String PROD_URL = "";
 
@@ -178,8 +177,17 @@ public class APIDefinition {
     }
 
     public static class GetListInvoice {
-        public static final String PATH = "/api/{usertype}/invoices";
-        public static final String PARAM_USER_TYPE = "usertype";
+        public static final String PATH = "/api/{user_type}/invoices";
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PARAM_STATUS = "status";
+    }
+
+    public static class PutUpdateInvoiceStatus {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PARAM_ID = "id";
+
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/invoices/{" + PARAM_ID + "}";
+
         public static final String PARAM_STATUS = "status";
     }
 

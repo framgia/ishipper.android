@@ -74,9 +74,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         setStatus(holder);
         holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
         holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
-        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
-        holder.mTvItemOrderOrderPrice.setText(formatPrice(holder.mInvoice.getPrice()));
-        holder.mTvNearbyShipPrice.setText(formatPrice(holder.mInvoice.getShippingPrice()));
+//        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
+//        holder.mTvItemOrderOrderPrice.setText(formatPrice(holder.mInvoice.getPrice()));
+//        holder.mTvNearbyShipPrice.setText(formatPrice(holder.mInvoice.getShippingPrice()));
     }
 
     private String formatPrice(double orderPrice) {

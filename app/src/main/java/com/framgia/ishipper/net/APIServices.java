@@ -131,6 +131,15 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> params);
 
+    /* Put update invoice status */
+    @FormUrlEncoded
+    @PUT(APIDefinition.PutUpdateInvoiceStatus.PATH)
+    Call<APIResponse<InvoiceData>> putUpdateInvoiceStatus(
+            @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_USER_TYPE) String userType,
+            @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_ID) String id,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Field(APIDefinition.PutUpdateInvoiceStatus.PARAM_STATUS) String status);
+
     /* Get User */
     @GET(APIDefinition.GetUser.PATH)
     Call<APIResponse<GetUserData>> getUser(
