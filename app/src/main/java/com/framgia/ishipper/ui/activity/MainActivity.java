@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -158,9 +159,9 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onListFragmentInteraction(Order order) {
+    public void onListFragmentInteraction(Invoice invoice) {
         //TODO: GO to Order details
-        Log.d("onClick item fragment", order.getStartingAddress() + "null");
+        Log.d("onClick item fragment", invoice.getAddressStart() + "null");
         startActivity(new Intent(this, OrderDetailActivity.class));
     }
 }

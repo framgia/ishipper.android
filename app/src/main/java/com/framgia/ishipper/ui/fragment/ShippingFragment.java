@@ -26,6 +26,7 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.adapter.OrderShippingAdapter;
@@ -67,7 +68,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap;
-    private List<Order> mListOrders = new ArrayList<>();
+    private List<Invoice> mInvoiceList = new ArrayList<>();
 
     private boolean isCheck = false;
     private int mPosition;
@@ -88,33 +89,15 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     }
 
     private void initData() {
-        Order order = new Order();
-        order.setLatLng(21.014332, 105.857217);
-        order.setGoodPrice(500);
-        order.setShipPrice(40);
-        order.setAddress("214 Linh Nam");
-        mListOrders.add(order);
-
-        order = new Order();
-        order.setLatLng(21.013419, 105.8468813);
-        order.setGoodPrice(100);
-        order.setShipPrice(20);
-        order.setAddress("24 Hang Bong");
-        mListOrders.add(order);
-
-        order = new Order();
-        order.setLatLng(20.994328, 105.836406);
-        order.setGoodPrice(6000);
-        order.setShipPrice(70);
-        order.setAddress("62 Le Thanh Nghi");
-        mListOrders.add(order);
-
-        order = new Order();
-        order.setLatLng(20.988086, 105.8751013);
-        order.setGoodPrice(1200);
-        order.setShipPrice(60);
-        order.setAddress("Hang Bai");
-        mListOrders.add(order);
+        Invoice invoice = new Invoice();
+        invoice.setLatStart(21.014332f);
+        invoice.setLngStart(105.857217f);
+        invoice.setLatFinish(21.014543f);
+        invoice.setLngFinish(105.857445f);
+        invoice.setPrice(500f);
+        invoice.setShippingPrice(40f);
+        invoice.setAddressStart("214 Linh Nam");
+        mInvoiceList.add(invoice);
     }
 
     @Override
@@ -135,10 +118,10 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
 
-        for (Order item : mListOrders) {
+        for (Invoice item : mInvoiceList) {
             googleMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop))
-                    .position(new LatLng(item.getLat(), item.getLng()))
+                    .position(new LatLng(item.getLatStart(), item.getLngStart()))
             );
         }
 
@@ -149,8 +132,8 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
     private void updateZoomMap(GoogleMap googleMap) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Order item : mListOrders) {
-            LatLng latLng = new LatLng(item.getLat(), item.getLng());
+        for (Invoice item : mInvoiceList) {
+            LatLng latLng = new LatLng(item.getLatFinish(), item.getLngStart());
             builder.include(latLng);
         }
         LatLngBounds bounds = builder.build();
@@ -210,8 +193,9 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position))
                             .position(myLocation));
 
-                    for (Order item : mListOrders) {
-                        MapUtils.routing(myLocation, new LatLng(item.getLat(), item.getLng()), ShippingFragment.this);
+                    for (Invoice item : mInvoiceList) {
+                        MapUtils.routing(myLocation, new LatLng(item.getLatFinish(), item.getLngFinish()),
+                                         ShippingFragment.this);
                     }
 
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -263,22 +247,22 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     }
 
     private void settingRecycleView() {
-        mAdapter = new OrderShippingAdapter(mListOrders, this);
+        mAdapter = new OrderShippingAdapter(mInvoiceList, this);
         mRvOrders.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRvOrders.setAdapter(mAdapter);
     }
 
     @Override
-    public void onListFragmentInteraction(Order order) {
+    public void onListFragmentInteraction(Invoice invoice) {
         startActivity(new Intent(getActivity(), OrderDetailActivity.class));
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         int makerId = Integer.valueOf(marker.getId().substring(1));
-        if (makerId < mListOrders.size()) {
-            Order order = mListOrders.get(makerId);
-            mTvOrderDesc.setText(order.toString());
+        if (makerId < mInvoiceList.size()) {
+            Invoice invoice = mInvoiceList.get(makerId);
+            mTvOrderDesc.setText(invoice.toString());
         }
 
         return false;

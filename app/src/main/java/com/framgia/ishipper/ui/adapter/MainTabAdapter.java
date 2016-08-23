@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
 import com.framgia.ishipper.ui.fragment.NearbyOrderFragment;
@@ -24,7 +25,7 @@ import static com.framgia.ishipper.ui.activity.MainActivity.*;
 public class MainTabAdapter extends FragmentPagerAdapter
         implements OrderListFragment.OnActionClickListener {
     private String[] mTitle;
-    private ArrayList<Order> mOrderList;
+    private ArrayList<Invoice> mInvoiceList;
     private Context mContext;
     private OrderListFragment mOrderListFragment;
 
@@ -41,8 +42,9 @@ public class MainTabAdapter extends FragmentPagerAdapter
                     context.getString(R.string.all_nearby_order),
                     context.getString(R.string.all_waiting_order)
             };
-            mOrderList = Order.filterOrder(Order.SampleListOrder(),
-                              Order.ORDER_STATUS_WAIT);
+
+            // TODO: set list invoice status = wait
+            mInvoiceList = new ArrayList<>();
         }
     }
 
@@ -61,7 +63,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
                 mOrderListFragment =
                         new OrderListFragment().newInstance(
                                                             mContext.getString(R.string.tab_title_shop_order_wait),
-                                                            mOrderList);
+                                                            mInvoiceList);
                 mOrderListFragment.setOnActionClickListener(this);
                 return mOrderListFragment;
             }
@@ -79,16 +81,16 @@ public class MainTabAdapter extends FragmentPagerAdapter
     }
 
     @Override
-    public void onClickAction(Order order) {
+    public void onClickAction(Invoice invoice) {
         mContext.startActivity(new Intent(mContext, ListShipperRegActivity.class));
     }
 
     @Override
-    public void onClickCancel(Order order) {
+    public void onClickCancel(Invoice invoice) {
         Toast.makeText(mContext, "Đã huỷ đơn", Toast.LENGTH_SHORT).show();
-        for (int i = 0; i < mOrderList.size(); i++) {
-            if(order.getId() == mOrderList.get(i).getId()) {
-                mOrderList.remove(i);
+        for (int i = 0; i < mInvoiceList.size(); i++) {
+            if(invoice.getId() == mInvoiceList.get(i).getId()) {
+                mInvoiceList.remove(i);
                 mOrderListFragment.getOrderAdapter().notifyDataSetChanged();
             }
         }

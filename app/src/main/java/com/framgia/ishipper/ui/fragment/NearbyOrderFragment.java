@@ -37,9 +37,8 @@ import com.framgia.ishipper.model.WindowOrder;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.InvoiceNearbyData;
+import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.activity.FilterOrderActivity;
-import com.framgia.ishipper.ui.activity.LoginActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.Const;
@@ -174,17 +173,22 @@ public class NearbyOrderFragment extends Fragment implements
 
     private void markInvoiceNearby() {
         mCurrentUser = Config.getInstance().getUserInfo(getContext());
-        mCurrentUser.setLatitude((float) mLocation.getLatitude());
-        mCurrentUser.setLongitude((float) mLocation.getLongitude());
+        if (mLocation != null ) {
+            mCurrentUser.setLatitude((float) mLocation.getLatitude());
+            mCurrentUser.setLongitude((float) mLocation.getLongitude());
+        } else {
+            mCurrentUser.setLatitude(21.0093f);
+            mCurrentUser.setLongitude(105.855f);
+        }
         int distance = 5;
         Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.GetInvoiceNearby.USER_LAT_PARAM, String.valueOf(mCurrentUser.getLatitude()));
-        userParams.put(APIDefinition.GetInvoiceNearby.USER_LNG_PARAM, String.valueOf(mCurrentUser.getLongitude()));
-        userParams.put(APIDefinition.GetInvoiceNearby.USER_DISTANCE_PARAM, String.valueOf(distance));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LAT, String.valueOf(mCurrentUser.getLatitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LNG, String.valueOf(mCurrentUser.getLongitude()));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_DISTANCE, String.valueOf(distance));
         API.getInvoiceNearby(mCurrentUser.getAuthenticationToken(), userParams,
-                new API.APICallback<APIResponse<InvoiceNearbyData>>() {
+                new API.APICallback<APIResponse<ListInvoiceData>>() {
                     @Override
-                    public void onResponse(APIResponse<InvoiceNearbyData> response) {
+                    public void onResponse(APIResponse<ListInvoiceData> response) {
                         Log.d(TAG, "onResponse: " + response.getMessage());
                         addListMarker(response.getData().getInvoiceList());
                         Toast.makeText(getContext(),

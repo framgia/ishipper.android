@@ -7,7 +7,7 @@ import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.InvoiceData;
-import com.framgia.ishipper.net.data.InvoiceNearbyData;
+import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
@@ -245,12 +245,12 @@ public abstract class API {
 
     /* Get Invoice nearby */
     public static void getInvoiceNearby(String token, Map<String, String> userParams,
-                                        final APICallback<APIResponse<InvoiceNearbyData>> callback) {
-        client.getInvoices(token, userParams).enqueue(
-                new Callback<APIResponse<InvoiceNearbyData>>() {
+                                        final APICallback<APIResponse<ListInvoiceData>> callback) {
+        client.getInvoiceNearBy(token, userParams).enqueue(
+                new Callback<APIResponse<ListInvoiceData>>() {
                     @Override
-                    public void onResponse(Call<APIResponse<InvoiceNearbyData>> call,
-                                           Response<APIResponse<InvoiceNearbyData>> response) {
+                    public void onResponse(Call<APIResponse<ListInvoiceData>> call,
+                                           Response<APIResponse<ListInvoiceData>> response) {
                         if (response.body() == null) {
                             Log.d(TAG, SERVER_ERROR);
                         } else if (response.body().isSuccess()) {
@@ -261,7 +261,7 @@ public abstract class API {
                     }
 
                     @Override
-                    public void onFailure(Call<APIResponse<InvoiceNearbyData>> call, Throwable t) {
+                    public void onFailure(Call<APIResponse<ListInvoiceData>> call, Throwable t) {
                         callback.onFailure(LOCAL_ERROR, t.getMessage());
                     }
                 });
@@ -414,6 +414,33 @@ public abstract class API {
                 callback.onFailure(LOCAL_ERROR, t.getMessage());
             }
         });
+    }
 
+    /* Get Invoice */
+    public static void getInvoice(String userType,
+                                  String token,
+                                  Map<String, String> params,
+                                  final APICallback<APIResponse<ListInvoiceData>> callback) {
+        client.getListInvoice(userType, token, params)
+                .enqueue(new Callback<APIResponse<ListInvoiceData>>() {
+                    @Override
+                    public void onResponse(Call<APIResponse<ListInvoiceData>> call,
+                                           Response<APIResponse<ListInvoiceData>> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().isSuccess()) {
+                                callback.onResponse(response.body());
+                            } else {
+                                callback.onFailure(response.body().getCode(), response.body().getMessage());
+                            }
+                        } else {
+                            callback.onFailure(response.code(), response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIResponse<ListInvoiceData>> call, Throwable t) {
+                        callback.onFailure(LOCAL_ERROR, t.getMessage());
+                    }
+                });
     }
 }

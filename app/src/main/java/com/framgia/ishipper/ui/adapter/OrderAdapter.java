@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.fragment.OrderListFragment.OnListFragmentInteractionListener;
@@ -22,16 +23,16 @@ import butterknife.ButterKnife;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
-    private List<Order> mOrderList;
+    private List<Invoice> mInvoiceList;
     private OnListFragmentInteractionListener mListener;
     private OnClickActionListener mClickActionListener;
     private OnClickCancelListener mClickCancelListener;
     private Context mContext;
 
-    public OrderAdapter(Context context, List<Order> orderList,
+    public OrderAdapter(Context context, List<Invoice> invoiceList,
                         OnListFragmentInteractionListener listener) {
         mContext = context;
-        mOrderList = orderList;
+        mInvoiceList = invoiceList;
         mListener = listener;
     }
 
@@ -44,13 +45,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mOrder = mOrderList.get(position);
+        holder.mInvoice = mInvoiceList.get(position);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mOrder);
+                    mListener.onListFragmentInteraction(holder.mInvoice);
                 }
             }
         });
@@ -58,7 +59,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 if (mClickCancelListener != null) {
-                    mClickCancelListener.onClickCancelListener(holder.mOrder);
+                    mClickCancelListener.onClickCancelListener(holder.mInvoice);
                 }
             }
         });
@@ -66,19 +67,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 if (mClickActionListener != null) {
-                    mClickActionListener.onClickActionListener(holder.mOrder);
+                    mClickActionListener.onClickActionListener(holder.mInvoice);
                 }
             }
         });
         setStatus(holder);
-        holder.mTvItemOrderFrom.setText(holder.mOrder.getStartingAddress());
-        holder.mTvItemOrderTo.setText(holder.mOrder.getEndAddress());
-        holder.mTvItemOrderShipTime.setText(getTimeFromOrder(holder.mOrder.getTime()));
-        holder.mTvItemOrderOrderPrice.setText(formatPrice(holder.mOrder.getOrderPrice()));
-        holder.mTvNearbyShipPrice.setText(formatPrice(holder.mOrder.getShipPrice()));
+        holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
+        holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
+        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
+        holder.mTvItemOrderOrderPrice.setText(formatPrice(holder.mInvoice.getPrice()));
+        holder.mTvNearbyShipPrice.setText(formatPrice(holder.mInvoice.getShippingPrice()));
     }
 
-    private String formatPrice(int orderPrice) {
+    private String formatPrice(float orderPrice) {
         StringBuilder builder = new StringBuilder();
         int length = String.valueOf(orderPrice).length();
 
@@ -96,7 +97,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     private void setStatus(ViewHolder holder) {
         String textStatus;
-        int status = holder.mOrder.getStatus();
+        int status = holder.mInvoice.getStatusCode();
         String action = "";
         Drawable drawableStatus;
         int statusColor;
@@ -215,6 +216,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         }
     }
 
+    public List<Invoice> getInvoiceList() {
+        return mInvoiceList;
+    }
+
+    public void setInvoiceList(List<Invoice> invoiceList) {
+        mInvoiceList = invoiceList;
+    }
+
     public OnClickActionListener getClickActionListener() {
         return mClickActionListener;
     }
@@ -233,16 +242,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        if (mOrderList == null)
+        if (mInvoiceList == null)
             return 0;
-        return mOrderList.size();
+        return mInvoiceList.size();
     }
 
     static
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public Order mOrder;
+        public Invoice mInvoice;
         @BindView(R.id.tv_shipping_order_status)
         TextView mTvShippingOrderStatus;
         @BindView(R.id.tv_item_order_shop_name)
@@ -282,10 +291,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     public interface OnClickActionListener {
-        void onClickActionListener(Order order);
+        void onClickActionListener(Invoice invoice);
     }
 
     public interface OnClickCancelListener {
-        void onClickCancelListener(Order order);
+        void onClickCancelListener(Invoice invoice);
     }
 }

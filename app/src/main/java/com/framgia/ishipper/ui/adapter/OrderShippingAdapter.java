@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.ui.fragment.OrderListFragment.OnListFragmentInteractionListener;
 
@@ -18,11 +19,11 @@ import butterknife.OnClick;
 
 public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdapter.ViewHolder> {
 
-    private List<Order> mOrderList;
+    private List<Invoice> mInvoiceList;
     private OnListFragmentInteractionListener mListener;
 
-    public OrderShippingAdapter(List<Order> orderList, OnListFragmentInteractionListener listener) {
-        mOrderList = orderList;
+    public OrderShippingAdapter(List<Invoice> invoiceList, OnListFragmentInteractionListener listener) {
+        mInvoiceList = invoiceList;
         mListener = listener;
     }
 
@@ -34,15 +35,15 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Order order = mOrderList.get(position);
-        holder.mOrderEndAddress.setText(order.getAddress());
-        holder.mOrderPrePay.setText(order.getGoodPrice() + " ");
-        holder.mOrderShippingCost.setText(order.getShipPrice() + " ");
+        Invoice invoice = mInvoiceList.get(position);
+        holder.mOrderEndAddress.setText(invoice.getAddressFinish());
+        holder.mOrderPrePay.setText(invoice.getPrice() + " ");
+        holder.mOrderShippingCost.setText(invoice.getShippingPrice() + " ");
     }
 
     @Override
     public int getItemCount() {
-        return mOrderList.size();
+        return mInvoiceList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +60,7 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onListFragmentInteraction(mOrderList.get(getAdapterPosition()));
+                    mListener.onListFragmentInteraction(mInvoiceList.get(getAdapterPosition()));
                 }
             });
         }
@@ -67,7 +68,7 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
         @OnClick(R.id.btn_nearby_done_order)
         public void doneOrder() {
             int pos = getAdapterPosition();
-            mOrderList.remove(pos);
+            mInvoiceList.remove(pos);
             notifyItemRemoved(pos);
         }
     }
