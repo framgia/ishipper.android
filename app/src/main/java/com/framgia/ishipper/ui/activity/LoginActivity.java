@@ -11,12 +11,11 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
-import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.net.data.SignInData;
+import com.framgia.ishipper.util.Const;
 
 import java.util.HashMap;
 
@@ -32,6 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check login
+        if (Config.getInstance().isLogin(getApplicationContext())) {
+            startMainActivity();
+        }
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -68,8 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(APIResponse<SignInData> response) {
                         Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                         Config.getInstance().setUserInfo(getApplicationContext(), response.getData().getUser());
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+                        startMainActivity();
                     }
 
                     @Override
@@ -79,7 +83,11 @@ public class LoginActivity extends AppCompatActivity {
                 });
                 break;
         }
+    }
 
+    private void startMainActivity() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     private void getConfig() {

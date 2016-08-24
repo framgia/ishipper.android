@@ -20,8 +20,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
@@ -90,7 +92,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             mOrderManagerPagerAdapter.notifyDataSetChanged();
         }
 
-       mListOrderFragment.get(Invoice.STATUS_CODE_INIT).setData(mContext);
+        mListOrderFragment.get(Invoice.STATUS_CODE_INIT).setData(mContext);
 
     }
 
@@ -159,7 +161,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     }
 
     @Override
-    public void onClickAction(Invoice invoice) {
+    public void onClickAction(final Invoice invoice) {
         final Dialog loadingDialog;
         switch (invoice.getStatusCode()) {
             case Order.ORDER_STATUS_INIT:
@@ -167,14 +169,15 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                 break;
             case Order.ORDER_STATUS_TAKE:
                 // TODO invoice id
+                // Take invoice
                 Log.d("hung", "onClickAction: take ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
-                API.putUpdateInvoiceStatus(String.valueOf(invoice.getId()),
-                        Invoice.STATUS_SHIPPING,
-                        new API.APICallback<APIResponse<InvoiceData>>() {
+                API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoice.getId()),
+                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
-//                                order.setStatus(Order.ORDER_STATUS_SHIPPING);
+                                invoice.setStatus(Invoice.STATUS_SHIPPING);
                                 notifyChangeTab(Order.ORDER_STATUS_TAKE);
                                 notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
                                 loadingDialog.dismiss();
@@ -186,39 +189,40 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                                 loadingDialog.dismiss();
                             }
                         });
-
                 break;
             case Order.ORDER_STATUS_SHIPPING:
                 Log.d("hung", "onClickAction: shipping ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
-                API.putUpdateInvoiceStatus(String.valueOf(invoice.getId()),
-                        Invoice.STATUS_SHIPPING,
-                        new API.APICallback<APIResponse<InvoiceData>>() {
+                API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoice.getId()),
+                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        Invoice.STATUS_SHIPPED, new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 loadingDialog.dismiss();
-//                                order.setStatus(Order.ORDER_STATUS_DELIVERED);
+                                invoice.setStatus(Invoice.STATUS_SHIPPED);
                                 notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
                                 notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
+                                loadingDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(int code, String message) {
-                                loadingDialog.dismiss();
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
                             }
                         });
 
                 break;
             case Order.ORDER_STATUS_DELIVERED:
                 Log.d("hung", "onClickAction: delivered ");
+                // Hoan thanh don hang da giao
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
-                API.putUpdateInvoiceStatus(String.valueOf(invoice.getId()),
-                        Invoice.STATUS_SHIPPING,
-                        new API.APICallback<APIResponse<InvoiceData>>() {
+                API.putUpdateInvoiceStatus(User.ROLE_SHOP, String.valueOf(invoice.getId()),
+                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        Invoice.STATUS_FINISHED, new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
-//                                order.setStatus(Order.ORDER_STATUS_SHIPPING);
+                                invoice.setStatus(Invoice.STATUS_FINISHED);
                                 loadingDialog.dismiss();
                                 notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
                                 notifyChangeTab(Order.ORDER_STATUS_FINISHED);
@@ -226,8 +230,8 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
                             @Override
                             public void onFailure(int code, String message) {
-                                loadingDialog.dismiss();
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
                             }
                         });
                 break;

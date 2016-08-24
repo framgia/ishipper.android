@@ -48,6 +48,14 @@ public class Config {
         mUserInfo = new Gson().fromJson(savedUserInfoJson, User.class);
     }
 
+    public boolean isLogin(Context context) {
+        if (context == null) {
+            return false;
+        }
+
+        return StorageUtils.getBooleanValue(context, Storage.KEY_IS_LOGIN) && getUserInfo(context) != null;
+    }
+
     public synchronized boolean setUserInfo(Context context, User userInfo) {
         if (context == null || userInfo == null) {
             return false;
@@ -56,6 +64,7 @@ public class Config {
         mUserInfo = userInfo;
 
         String userInfoJson = new Gson().toJson(userInfo);
+        StorageUtils.setBooleanValue(context, Storage.KEY_IS_LOGIN, true);
         return StorageUtils.setValue(context, Storage.KEY_USER_INFO, userInfoJson);
     }
 }

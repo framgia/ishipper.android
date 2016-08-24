@@ -12,6 +12,7 @@ public class Const {
     public class Storage {
 
         public static final String KEY_USER_INFO = "UserStorageKey";
+        public static final String KEY_IS_LOGIN = "IsLoginKey";
     }
 
 }

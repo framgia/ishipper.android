@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
@@ -26,7 +25,7 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
-import com.framgia.ishipper.ui.view.ReportDialog;
+import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity
                 new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
+                        StorageUtils.clearAll(getApplicationContext());
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         finish();
                     }
