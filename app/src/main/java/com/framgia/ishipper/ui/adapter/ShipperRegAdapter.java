@@ -1,4 +1,5 @@
 package com.framgia.ishipper.ui.adapter;
+
 import android.content.Context;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
@@ -7,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.model.Shipper;
+import com.framgia.ishipper.model.User;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -19,11 +23,11 @@ import butterknife.ButterKnife;
 public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Shipper> mShipperList;
+    private List<User> mShipperList;
     private OnItemClickShipperRegListener mListener;
     private OnClickAcceptShipperListener mAcceptShipperListener;
 
-    public ShipperRegAdapter(Context context, List<Shipper> shipperList) {
+    public ShipperRegAdapter(Context context, List<User> shipperList) {
         mContext = context;
         mShipperList = shipperList;
     }
@@ -31,7 +35,7 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shipper, parent,
-                                                                     false);
+                false);
         return new ViewHolder(view);
     }
 
@@ -55,12 +59,13 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
         });
 
         holder.mTextName.setText(holder.mShipper.getName());
-        holder.mTextCountOrder.setText(holder.mShipper.getSuccessOrder() + "/" +
-                                               holder.mShipper.getTotalOrder());
-        holder.mTextDistance.setText(holder.mShipper.getDistance());
-        holder.mTextRating.setText(holder.mShipper.getRating());
-        holder.mTextCountRating.setText(String.valueOf(holder.mShipper.getCountRating()));
-        holder.mRtbRatingUser.setRating(Float.parseFloat(holder.mShipper.getRating().replace(",", ".")));
+        //TODO update shipper information
+//        holder.mTextCountOrder.setText(holder.mShipper.getSuccessOrder() + "/" +
+//                                               holder.mShipper.getTotalOrder());
+//        holder.mTextDistance.setText(holder.mShipper.getDistance());
+//        holder.mTextRating.setText(holder.mShipper.getRating());
+//        holder.mTextCountRating.setText(String.valueOf(holder.mShipper.getCountRating()));
+        holder.mRtbRatingUser.setRating((float) holder.mShipper.getRate());
 
     }
 
@@ -90,21 +95,14 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public View mView;
-        public Shipper mShipper;
-        @BindView(R.id.text_name)
-        TextView mTextName;
-        @BindView(R.id.text_count_order)
-        TextView mTextCountOrder;
-        @BindView(R.id.text_distance)
-        TextView mTextDistance;
-        @BindView(R.id.text_rating)
-        TextView mTextRating;
-        @BindView(R.id.text_count_rating)
-        TextView mTextCountRating;
-        @BindView(R.id.rtb_rating_user)
-        AppCompatRatingBar mRtbRatingUser;
-        @BindView(R.id.btn_accept_shipper)
-        Button mBtnAcceptShipper;
+        public User mShipper;
+        @BindView(R.id.text_name) TextView mTextName;
+        @BindView(R.id.text_count_order) TextView mTextCountOrder;
+        @BindView(R.id.text_distance) TextView mTextDistance;
+        @BindView(R.id.text_rating) TextView mTextRating;
+        @BindView(R.id.text_count_rating) TextView mTextCountRating;
+        @BindView(R.id.rtb_rating_user) AppCompatRatingBar mRtbRatingUser;
+        @BindView(R.id.btn_accept_shipper) Button mBtnAcceptShipper;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -114,10 +112,10 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
     }
 
     public interface OnItemClickShipperRegListener {
-        void onItemClickShipperRegListener(Shipper shipper);
+        void onItemClickShipperRegListener(User shipper);
     }
 
     public interface OnClickAcceptShipperListener {
-        void onClickAcceptShipperListener(Shipper shipper);
+        void onClickAcceptShipperListener(User shipper);
     }
 }

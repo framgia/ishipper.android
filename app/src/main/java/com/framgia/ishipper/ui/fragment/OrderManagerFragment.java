@@ -165,7 +165,9 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         final Dialog loadingDialog;
         switch (invoice.getStatusCode()) {
             case Order.ORDER_STATUS_INIT:
-                startActivity(new Intent(mContext, ListShipperRegActivity.class));
+                Intent intent = new Intent(mContext, ListShipperRegActivity.class);
+                intent.putExtra(ListShipperRegActivity.KEY_INVOICE_ID, invoice.getId());
+                startActivity(intent);
                 break;
             case Order.ORDER_STATUS_TAKE:
                 // TODO invoice id

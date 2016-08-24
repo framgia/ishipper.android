@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by dinhduc on 20/07/2016.
  */
-public class Shipper {
+public class Shipper extends User {
     private LatLng latLng;
     private String name;
     private String phoneNumber;
@@ -43,19 +43,19 @@ public class Shipper {
             Shipper shipper = new Shipper();
             shipper.setName(Randoms.name(context));
             shipper.setLicensePlate(String.format(Locale.getDefault(),
-                                                  "%s%c%s - %d",
-                                                  Randoms.Integer(1, 99),
-                                                  (char) (new Random().nextInt(26) + 'A'),
-                                                  new Random().nextInt(9) + 1,
-                                                  Randoms.Integer(10000, 99999)));
-            int total = new Random().nextInt(100);
+                    "%s%c%s - %d",
+                    Randoms.Integer(1, 99),
+                    (char) (new Random().nextInt(26) + 'A'),
+                    new Random().nextInt(9) + 1,
+                    Randoms.Integer(10000, 99999)));
+            int total = new Random().nextInt(100) + 1;
             int success = new Random().nextInt(total);
             shipper.setTotalOrder(total);
             shipper.setSuccessOrder(success);
             shipper.setDistance(String.format(Locale.getDefault(), "%d Km", Randoms.Integer(1, 9)));
             shipper.setRating(String.format(Locale.getDefault(),
-                                            "%1$.2f",
-                                            Randoms.Float(1.0f, 5.0f)));
+                    "%1$.2f",
+                    Randoms.Float(1.0f, 5.0f)));
             shipper.setCountRating(Randoms.Integer(100, 500));
             shipperList.add(shipper);
         }
