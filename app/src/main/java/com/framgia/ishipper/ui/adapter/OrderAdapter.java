@@ -3,6 +3,7 @@ package com.framgia.ishipper.ui.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.fragment.OrderListFragment.OnListFragmentInteractionListener;
+import com.framgia.ishipper.util.TextFormatUtils;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,18 +81,32 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             }
         });
         setStatus(holder);
-        holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
-        holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
-//        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
-//        holder.mTvItemOrderOrderPrice.setText(formatPrice(holder.mInvoice.getPrice()));
-//        holder.mTvNearbyShipPrice.setText(formatPrice(holder.mInvoice.getShippingPrice()));
-    }
+        API.getUser(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
+                    String.valueOf(holder.mInvoice.getUserId()),
+                    new API.APICallback<APIResponse<GetUserData>>() {
+                        @Override
+                        public void onResponse(APIResponse<GetUserData> response) {
+                            User user = response.getData().getUser();
+                            holder.mTvNearbyShopName.setText(user.getName());
+                            holder.mRatingOrderWindow.setRating((float) user.getRate());
 
-    private String formatPrice(double orderPrice) {
-        StringBuilder builder = new StringBuilder();
-        int length = String.valueOf(orderPrice).length();
+                            holder.mTvNearbyShopName.setText(holder.mInvoice.getName());
+                            holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
+                            holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
+                            holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
+                            holder.mTvItemOrderOrderPrice.setText(
+                                    TextFormatUtils.formatPrice(holder.mInvoice.getPrice()));
+                            holder.mTvNearbyShipPrice.setText(
+                                    TextFormatUtils.formatPrice(holder.mInvoice.getShippingPrice()));
+                            holder.mTvItemOrderDistance.setText(
+                                    TextFormatUtils.formatDistance(holder.mInvoice.getDistance()));
+                        }
 
-        return String.valueOf(orderPrice);
+                        @Override
+                        public void onFailure(int code, String message) {
+                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
     }
 
     private String getTimeFromOrder(Long time) {
@@ -252,36 +275,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public Invoice mInvoice;
-        @BindView(R.id.tv_shipping_order_status)
-        TextView mTvShippingOrderStatus;
-        @BindView(R.id.tv_item_order_shop_name)
-        TextView mTvNearbyShopName;
-        @BindView(R.id.ll_order_status)
-        LinearLayout mLlOrderStatus;
-        @BindView(R.id.tv_item_order_ship_price)
-        TextView mTvNearbyShipPrice;
-        @BindView(R.id.tv_item_order_from)
-        TextView mTvItemOrderFrom;
-        @BindView(R.id.tv_item_order_to)
-        TextView mTvItemOrderTo;
-        @BindView(R.id.delivery_to_address_box)
-        LinearLayout mDeliveryToAddressBox;
-        @BindView(R.id.action_detail_order)
-        LinearLayout mActionDetailOrder;
-        @BindView(R.id.tv_item_order_distance)
-        TextView mTvItemOrderDistance;
-        @BindView(R.id.tv_item_order_ship_time)
-        TextView mTvItemOrderShipTime;
-        @BindView(R.id.tv_item_order_price)
-        TextView mTvItemOrderOrderPrice;
-        @BindView(R.id.window_order_detail)
-        RelativeLayout mWindowOrderDetail;
-        @BindView(R.id.ll_shop_order_status)
-        LinearLayout mShopOrderStatus;
-        @BindView(R.id.btn_cancel_item_order)
-        TextView mBtnCancelItemOrder;
-        @BindView(R.id.btn_action_item_order)
-        TextView mBtnActionItemOrder;
+        @BindView(R.id.tv_shipping_order_status) TextView mTvShippingOrderStatus;
+        @BindView(R.id.tv_item_order_shop_name) TextView mTvNearbyShopName;
+        @BindView(R.id.ll_order_status) LinearLayout mLlOrderStatus;
+        @BindView(R.id.tv_item_order_ship_price) TextView mTvNearbyShipPrice;
+        @BindView(R.id.tv_item_order_from) TextView mTvItemOrderFrom;
+        @BindView(R.id.tv_item_order_to) TextView mTvItemOrderTo;
+        @BindView(R.id.delivery_to_address_box) LinearLayout mDeliveryToAddressBox;
+        @BindView(R.id.action_detail_order) LinearLayout mActionDetailOrder;
+        @BindView(R.id.tv_item_order_distance) TextView mTvItemOrderDistance;
+        @BindView(R.id.tv_item_order_ship_time) TextView mTvItemOrderShipTime;
+        @BindView(R.id.tv_item_order_price) TextView mTvItemOrderOrderPrice;
+        @BindView(R.id.window_order_detail) RelativeLayout mWindowOrderDetail;
+        @BindView(R.id.ll_shop_order_status) LinearLayout mShopOrderStatus;
+        @BindView(R.id.btn_cancel_item_order) TextView mBtnCancelItemOrder;
+        @BindView(R.id.btn_action_item_order) TextView mBtnActionItemOrder;
+        @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
 
         public ViewHolder(View view) {
             super(view);

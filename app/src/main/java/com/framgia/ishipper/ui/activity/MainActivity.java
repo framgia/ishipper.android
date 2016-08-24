@@ -142,14 +142,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void signOut() {
+        StorageUtils.clearAll(getApplicationContext());
         API.signOut(mCurrentUser.getAuthenticationToken(),
                 mCurrentUser.getPhoneNumber(),
                 new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
-                        StorageUtils.clearAll(getApplicationContext());
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        finish();
+                        Toast.makeText(MainActivity.this, response.getMessage(),
+                                       Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        finish();
     }
 
     @Override
