@@ -7,6 +7,7 @@ import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
@@ -145,4 +146,10 @@ public interface APIServices {
     Call<APIResponse<GetUserData>> getUser(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Path(APIDefinition.GetUser.PARAM_USER_ID) String id);
+
+    /* Get User */
+    @GET(APIDefinition.GetListShipperReceived.PATH)
+    Call<APIResponse<ListShipperData>> getListShipperReceived(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Query(APIDefinition.GetListShipperReceived.PARAM_INVOICE_ID) String id);
 }

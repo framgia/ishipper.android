@@ -10,6 +10,7 @@ import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
@@ -406,6 +407,32 @@ public abstract class API {
             @Override
             public void onFailure(Call<APIResponse<GetUserData>> call, Throwable t) {
                 callback.onFailure(LOCAL_ERROR, t.getMessage());
+            }
+        });
+    }
+
+    /* Get List Shippers Received */
+    public static void getListShipperReceived(String token,
+                                              String invoiceId,
+                                              final APICallback<APIResponse<ListShipperData>> callback) {
+        client.getListShipperReceived(token, invoiceId).enqueue(new Callback<APIResponse<ListShipperData>>() {
+            @Override
+            public void onResponse(Call<APIResponse<ListShipperData>> call, Response<APIResponse<ListShipperData>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
+                        callback.onResponse(response.body());
+                    } else {
+                        callback.onFailure(response.body().getCode(), response.body().getMessage());
+                    }
+                } else {
+                    callback.onFailure(response.code(), response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse<ListShipperData>> call, Throwable t) {
+                callback.onFailure(LOCAL_ERROR, t.getMessage());
+
             }
         });
     }

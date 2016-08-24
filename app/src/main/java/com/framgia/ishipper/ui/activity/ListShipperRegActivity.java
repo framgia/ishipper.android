@@ -1,4 +1,5 @@
 package com.framgia.ishipper.ui.activity;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.model.Shipper;
+import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.ui.adapter.ShipperRegAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,13 +31,16 @@ public class ListShipperRegActivity extends AppCompatActivity implements
         ShipperRegAdapter.OnItemClickShipperRegListener,
         ShipperRegAdapter.OnClickAcceptShipperListener {
 
+    public static final String KEY_INVOICE_ID = "KEY_INVOICE_ID";
+
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private ShipperRegAdapter mShipperRegAdapter;
-    private List<Shipper> mShipperList;
+    private String mInvoiceId;
+    private List<User> mShipperList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +52,7 @@ public class ListShipperRegActivity extends AppCompatActivity implements
     }
 
     private void initData() {
+        mInvoiceId = String.valueOf(getIntent().getIntExtra(KEY_INVOICE_ID, 0));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -65,18 +76,31 @@ public class ListShipperRegActivity extends AppCompatActivity implements
 
     private void fakeListShipper() {
 
-        mShipperList.addAll(Shipper.getSampleListShipper(this));
-        mShipperRegAdapter.notifyDataSetChanged();
+        API.getListShipperReceived(Config.getInstance().getUserInfo(getApplicationContext()).getAuthenticationToken(),
+                mInvoiceId, new API.APICallback<APIResponse<ListShipperData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListShipperData> response) {
+                        for (User item : response.getData().getShippersList()) {
+                            mShipperList.add(item);
+                        }
+                        mShipperRegAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+
+                    }
+                });
     }
 
     @Override
-    public void onItemClickShipperRegListener(Shipper shipper) {
+    public void onItemClickShipperRegListener(User shipper) {
         //TODO : Go to detail Shipper
         Log.d("clicked", shipper.getClass().getName());
     }
 
     @Override
-    public void onClickAcceptShipperListener(Shipper shipper) {
+    public void onClickAcceptShipperListener(User shipper) {
         //TODO: set accept shipper
         Toast.makeText(this, "Đã chọn shipper thành công", Toast.LENGTH_SHORT).show();
         finish();
