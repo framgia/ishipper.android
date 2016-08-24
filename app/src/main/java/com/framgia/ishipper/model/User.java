@@ -41,6 +41,8 @@ public class User {
 
     @SerializedName("id") private String mId;
 
+    @SerializedName("user_invoice_id") private String mUserInvoiceId;
+
     @Override
     public String toString() {
         return new GsonBuilder().create().toJson(this);
@@ -160,5 +162,9 @@ public class User {
 
     public String getId() {
         return mId;
+    }
+
+    public String getUserInvoiceId() {
+        return mUserInvoiceId;
     }
 }

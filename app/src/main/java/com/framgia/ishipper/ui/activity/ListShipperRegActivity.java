@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,10 @@ import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.ui.adapter.ShipperRegAdapter;
+import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class ListShipperRegActivity extends AppCompatActivity implements
         ShipperRegAdapter.OnClickAcceptShipperListener {
 
     public static final String KEY_INVOICE_ID = "KEY_INVOICE_ID";
+    public static final int REQUEST_CODE_RESULT = 888;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -101,9 +105,25 @@ public class ListShipperRegActivity extends AppCompatActivity implements
 
     @Override
     public void onClickAcceptShipperListener(User shipper) {
-        //TODO: set accept shipper
-        Toast.makeText(this, "Đã chọn shipper thành công", Toast.LENGTH_SHORT).show();
-        finish();
+        final Dialog dialog = CommonUtils.showLoadingDialog(this);
+        dialog.show();
+        API.putShopReceiveShipper(Config.getInstance().getUserInfo(getApplicationContext()).getAuthenticationToken(),
+                shipper.getUserInvoiceId(), new API.APICallback<APIResponse<EmptyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<EmptyData> response) {
+                        Toast.makeText(ListShipperRegActivity.this, R.string.accept_shipper_success, Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(ListShipperRegActivity.this, message, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
 
     }
 }

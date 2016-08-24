@@ -193,4 +193,5 @@
     <string name="dialog_review">Đánh giá</string>
     <string name="all_cant_get_location">Can\'t get location</string>
     <string name="all_location_not_available">Location Service is not available</string>
+    <string name="accept_shipper_success">Đã chọn shipper thành công</string>
 </resources>

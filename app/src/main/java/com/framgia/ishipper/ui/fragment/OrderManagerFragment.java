@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -167,7 +168,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             case Order.ORDER_STATUS_INIT:
                 Intent intent = new Intent(mContext, ListShipperRegActivity.class);
                 intent.putExtra(ListShipperRegActivity.KEY_INVOICE_ID, invoice.getId());
-                startActivity(intent);
+                startActivityForResult(intent, ListShipperRegActivity.REQUEST_CODE_RESULT);
                 break;
             case Order.ORDER_STATUS_TAKE:
                 // TODO invoice id
@@ -281,6 +282,15 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         @Override
         public CharSequence getPageTitle(int position) {
             return mListTitle.get(position);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ListShipperRegActivity.REQUEST_CODE_RESULT && resultCode == Activity.RESULT_OK) {
+            // TODO update list when accept success
+//            invoice.setStatus(Invoice.STATUS_SHIPPING);
         }
     }
 
