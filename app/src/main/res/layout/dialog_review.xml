@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_report_white_24dp"
+        android:drawablePadding="@dimen/text_view_margin"
+        android:gravity="bottom"
+        android:padding="@dimen/text_view_margin"
+        android:text="@string/dialog_review"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/all_padding_medium">
+
+
+        <EditText
+            android:id="@+id/edt_dialog_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_view_margin"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="5"/>
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/rating_dialog_review"
+            style="@style/star_rating_bar_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_dialog_review_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_view_margin"
+                android:text="@string/all_send"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_button"/>
+
+            <TextView
+                android:id="@+id/btn_dialog_review_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_view_margin"
+                android:text="@string/all_cancel"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_button"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
