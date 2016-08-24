@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         initView();
         selectItem(R.id.nav_nearby_order);
-        ReviewDialog reviewDialog = new ReviewDialog(this);
-        reviewDialog.show();
     }
 
     private void initView() {

@@ -205,11 +205,12 @@ public class NearbyOrderFragment extends Fragment implements
     private void initMap() {
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
-            Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
             mCurrentUser.setLatitude(mLocation.getLatitude());
             mCurrentUser.setLongitude(mLocation.getLongitude());
             MapUtils.zoomToPosition(mGoogleMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
             markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), RADIUS);
+        } else {
+            Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -469,6 +470,7 @@ public class NearbyOrderFragment extends Fragment implements
                 mTvSearchArea.setText(place.getName());
                 double latitude = place.getLatLng().latitude;
                 double longitude = place.getLatLng().longitude;
+                MapUtils.zoomToPosition(mGoogleMap, new LatLng(latitude, longitude));
                 markInvoiceNearby(latitude, longitude, RADIUS);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(mContext, data);

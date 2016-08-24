@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.directions.route.Route;
 import com.directions.route.RouteException;
@@ -47,16 +48,17 @@ import butterknife.OnFocusChange;
 public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = "ShopCreateOrder1";
     private final int NONE = 1;
     private final int PICK_START_POINT = 2;
     private final int PICK_END_POINT = 3;
 
     @BindView(R.id.layoutMapContainer) FrameLayout mFrameMapContainer;
     @BindView(R.id.imgPickPosition) ImageView mImgPickPosition;
-    @BindView(R.id.img_done_start) ImageView mImgDoneStart;
-    @BindView(R.id.img_done_end) ImageView mImgDoneEnd;
     @BindView(R.id.edt_address_start) EditText mEdtAddressStart;
     @BindView(R.id.edt_address_end) EditText mEdtAddressEnd;
+    @BindView(R.id.btnPickStart) ImageView mBtnPickStart;
+    @BindView(R.id.btnPickEnd) ImageView mBtnPickEnd;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mMap;
@@ -97,34 +99,41 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         Log.d("hung", "onFocusChange: " + hasFocus);
     }
 
-    @OnClick({R.id.btnPickStart, R.id.btnPickEnd, R.id.btnContinue, R.id.img_done_start,
-            R.id.img_done_end})
+    @OnClick({R.id.btnPickStart, R.id.btnPickEnd, R.id.btnContinue})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnPickStart:
                 if (mStatus == PICK_START_POINT) {
-                    return;
+                    addStartLocation();
+                    if (mMakerEnd == null) {
+                        setPickEndLocation();
+                    } else {
+                        setDonePickLocation();
+                    }
+                } else if (mStatus == PICK_END_POINT) {
+                    addEndLocation();
+                    setDonePickLocation();
+                } else {
+                    mImgPickPosition.setImageResource(R.drawable.ic_map_picker_start);
+                    setPickStartLocation();
                 }
-                mImgPickPosition.setImageResource(R.drawable.ic_map_picker_start);
-                setPickStartLocation();
 
                 break;
             case R.id.btnPickEnd:
                 if (mStatus == PICK_END_POINT) {
-                    return;
-                }
-                mImgPickPosition.setImageResource(R.drawable.ic_map_picker_end);
-                setPickEndLocation();
-                break;
-            case R.id.img_done_start:
-                addStartLocation();
-                if (mMakerEnd == null) {
+                    addEndLocation();
+                    setDonePickLocation();
+                } else if (mStatus == PICK_START_POINT) {
+                    addStartLocation();
+                    if (mMakerEnd == null) {
+                        setPickEndLocation();
+                    } else {
+                        setDonePickLocation();
+                    }
+                } else {
+                    mImgPickPosition.setImageResource(R.drawable.ic_map_picker_end);
                     setPickEndLocation();
                 }
-                break;
-            case R.id.img_done_end:
-                addEndLocation();
-                setDonePickLocation();
                 break;
             case R.id.btnContinue:
                 setAttributeInvoiceAtTab1();
@@ -144,6 +153,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     }
 
     private void addEndLocation() {
+        mBtnPickEnd.setImageResource(R.drawable.ic_map_picker_end);
         mLatLngFinish = mMap.getCameraPosition().target;
         mMakerEnd = mMap.addMarker(
                 new MarkerOptions().position(mLatLngFinish)
@@ -154,22 +164,18 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     }
 
     private void addStartLocation() {
+        mBtnPickStart.setImageResource(R.drawable.ic_map_picker_start);
         mLatLngStart = mMap.getCameraPosition().target;
         mMakerStart = mMap.addMarker(
                 new MarkerOptions()
                         .position(mLatLngStart)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
         mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
-        if (mMakerEnd != null) {
-            setDonePickLocation();
-        }
     }
 
     private void setDonePickLocation() {
         mStatus = NONE;
         mImgPickPosition.setImageDrawable(null);
-        mImgDoneStart.setVisibility(View.GONE);
-        mImgDoneEnd.setVisibility(View.GONE);
         MapUtils.routing(mLatLngStart, mLatLngFinish, new RoutingListener() {
             @Override
             public void onRoutingFailure(RouteException e) {
@@ -209,8 +215,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         mStatus = PICK_START_POINT;
         startPickLocation(mMakerStart);
         mImgPickPosition.setImageResource(R.drawable.ic_map_picker_start);
-        mImgDoneStart.setVisibility(View.VISIBLE);
-        mImgDoneEnd.setVisibility(View.GONE);
+        mBtnPickStart.setImageResource(R.drawable.ic_done);
         mEdtAddressStart.requestFocus();
     }
 
@@ -218,8 +223,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         mStatus = PICK_END_POINT;
         startPickLocation(mMakerEnd);
         mImgPickPosition.setImageResource(R.drawable.ic_map_picker_end);
-        mImgDoneStart.setVisibility(View.GONE);
-        mImgDoneEnd.setVisibility(View.VISIBLE);
+        mBtnPickEnd.setImageResource(R.drawable.ic_done);
         mEdtAddressEnd.requestFocus();
     }
 
@@ -246,9 +250,21 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
             MapUtils.zoomToPosition(mMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+            com.framgia.ishipper.common.Log.w(TAG, mLocation.getLatitude() + "");
+            mLatLngStart = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+            mMakerStart = mMap.addMarker(
+                    new MarkerOptions()
+                            .position(mLatLngStart)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
+            mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
+            setPickEndLocation();
+        } else {
+            Toast.makeText(
+                    getContext(),
+                    getString(R.string.all_cant_get_location),
+                    Toast.LENGTH_SHORT).show();
         }
-        addStartLocation();
-        setPickEndLocation();
+
     }
 
     @Override
