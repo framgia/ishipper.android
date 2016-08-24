@@ -28,7 +28,6 @@ import static com.framgia.ishipper.ui.activity.MainActivity.*;
 public class MainTabAdapter extends FragmentPagerAdapter
         implements OrderListFragment.OnActionClickListener {
     private String[] mTitle;
-    private ArrayList<Invoice> mInvoiceList;
     private Context mContext;
     private OrderListFragment mOrderListFragment;
     private SparseArray<Fragment> mFragments = new SparseArray<>();
@@ -46,9 +45,6 @@ public class MainTabAdapter extends FragmentPagerAdapter
                     context.getString(R.string.all_nearby_order),
                     context.getString(R.string.all_waiting_order)
             };
-
-            // TODO: set list invoice status = wait
-            mInvoiceList = new ArrayList<>();
         }
     }
 
@@ -68,6 +64,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
                         new OrderListFragment().newInstance(
                                 mContext.getString(R.string.tab_title_shop_order_wait),
                                 Invoice.STATUS_CODE_INIT);
+                mOrderListFragment.setData(mContext);
                 mOrderListFragment.setOnActionClickListener(this);
                 return mOrderListFragment;
             }
@@ -105,12 +102,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
     @Override
     public void onClickCancel(Invoice invoice) {
         Toast.makeText(mContext, "Đã huỷ đơn", Toast.LENGTH_SHORT).show();
-        for (int i = 0; i < mInvoiceList.size(); i++) {
-            if (invoice.getId() == mInvoiceList.get(i).getId()) {
-                mInvoiceList.remove(i);
-                mOrderListFragment.getOrderAdapter().notifyDataSetChanged();
-            }
-        }
+        mOrderListFragment.notifyChangedData(mContext);
     }
 
     public Fragment getFragment(int position) {

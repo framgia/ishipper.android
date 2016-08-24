@@ -292,6 +292,9 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
     @Override
     public void onClick(int position) {
-        startActivity(new Intent(getActivity(), OrderDetailActivity.class));
+        Intent intent = new Intent(mContext, OrderDetailActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoiceList.get(position).getId());
+        startActivity(intent);
     }
 }

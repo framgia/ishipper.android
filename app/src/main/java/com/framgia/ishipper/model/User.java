@@ -1,12 +1,14 @@
 package com.framgia.ishipper.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by vuduychuong1994 on 8/3/16.
  */
-public class User {
+public class User implements Parcelable {
     public static final String ROLE_ADMIN = "admin";
     public static final String ROLE_SHOP = "shop";
     public static final String ROLE_SHIPPER = "shipper";
@@ -42,6 +44,39 @@ public class User {
     @SerializedName("id") private String mId;
 
     @SerializedName("user_invoice_id") private String mUserInvoiceId;
+
+    public User() {}
+
+    protected User(Parcel in) {
+        mName = in.readString();
+        mEmail = in.readString();
+        mAddress = in.readString();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
+        mPhoneNumber = in.readString();
+        mPlateNumber = in.readString();
+        mStatus = in.readString();
+        mRole = in.readString();
+        mRate = in.readDouble();
+        mPin = in.readString();
+        mAuthenticationToken = in.readString();
+        mIsSignedIn = in.readByte() != 0;
+        mPassword = in.readString();
+        mId = in.readString();
+        mUserInvoiceId = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -166,5 +201,30 @@ public class User {
 
     public String getUserInvoiceId() {
         return mUserInvoiceId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mName);
+        parcel.writeString(mEmail);
+        parcel.writeString(mAddress);
+        parcel.writeDouble(mLatitude);
+        parcel.writeDouble(mLongitude);
+        parcel.writeString(mPhoneNumber);
+        parcel.writeString(mPlateNumber);
+        parcel.writeString(mStatus);
+        parcel.writeString(mRole);
+        parcel.writeDouble(mRate);
+        parcel.writeString(mPin);
+        parcel.writeString(mAuthenticationToken);
+        parcel.writeByte((byte) (mIsSignedIn ? 1 : 0));
+        parcel.writeString(mPassword);
+        parcel.writeString(mId);
+        parcel.writeString(mUserInvoiceId);
     }
 }

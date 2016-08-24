@@ -47,7 +47,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     private List<OrderListFragment> mListOrderFragment;
     private Unbinder mUnbinder;
     private List<String> mOrderTitleList;
-    private ArrayList<Order> mOrderArrayList;
     private Context mContext;
 
     @Override
@@ -67,7 +66,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     }
 
     private void initData() {
-        mOrderArrayList = Order.SampleListOrder();
         mListOrderFragment = new ArrayList<>();
 
         mOrderManagerPagerAdapter =
@@ -75,7 +73,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
         mViewPager.setAdapter(mOrderManagerPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(7);
+//        mViewPager.setOffscreenPageLimit(2);
 
         for (int type = 0; type < 7; type++) {
             //TODO: Fake list Order
@@ -157,7 +155,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
     public void notifyChangeTab(int type) {
         if (mListOrderFragment.size() > type) {
-            mListOrderFragment.get(type).setData(mContext);
+            mListOrderFragment.get(type).notifyChangedData(mContext);
         }
     }
 
@@ -165,12 +163,12 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     public void onClickAction(final Invoice invoice) {
         final Dialog loadingDialog;
         switch (invoice.getStatusCode()) {
-            case Order.ORDER_STATUS_INIT:
+            case Invoice.STATUS_CODE_INIT:
                 Intent intent = new Intent(mContext, ListShipperRegActivity.class);
                 intent.putExtra(ListShipperRegActivity.KEY_INVOICE_ID, invoice.getId());
                 startActivityForResult(intent, ListShipperRegActivity.REQUEST_CODE_RESULT);
                 break;
-            case Order.ORDER_STATUS_TAKE:
+            case Invoice.STATUS_CODE_WAITING:
                 // TODO invoice id
                 // Take invoice
                 Log.d("hung", "onClickAction: take ");
@@ -181,8 +179,8 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 invoice.setStatus(Invoice.STATUS_SHIPPING);
-                                notifyChangeTab(Order.ORDER_STATUS_TAKE);
-                                notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
+                                notifyChangeTab(Invoice.STATUS_CODE_WAITING);
+                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
                                 loadingDialog.dismiss();
                             }
 
@@ -193,7 +191,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             }
                         });
                 break;
-            case Order.ORDER_STATUS_SHIPPING:
+            case Invoice.STATUS_CODE_SHIPPING:
                 Log.d("hung", "onClickAction: shipping ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
                 API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoice.getId()),
@@ -203,8 +201,8 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 loadingDialog.dismiss();
                                 invoice.setStatus(Invoice.STATUS_SHIPPED);
-                                notifyChangeTab(Order.ORDER_STATUS_SHIPPING);
-                                notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
+                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
+                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
                                 loadingDialog.dismiss();
                             }
 
@@ -216,7 +214,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                         });
 
                 break;
-            case Order.ORDER_STATUS_DELIVERED:
+            case Invoice.STATUS_CODE_SHIPPED:
                 Log.d("hung", "onClickAction: delivered ");
                 // Hoan thanh don hang da giao
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
@@ -227,8 +225,8 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 invoice.setStatus(Invoice.STATUS_FINISHED);
                                 loadingDialog.dismiss();
-                                notifyChangeTab(Order.ORDER_STATUS_DELIVERED);
-                                notifyChangeTab(Order.ORDER_STATUS_FINISHED);
+                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
+                                notifyChangeTab(Invoice.STATUS_CODE_FINISHED);
                             }
 
                             @Override
@@ -243,14 +241,8 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
     @Override
     public void onClickCancel(Invoice invoice) {
-        for (Order ord : mOrderArrayList) {
-            if (invoice.getId() == ord.getId()) {
-                int currentStatus = invoice.getStatusCode();
-                ord.setStatus(Order.ORDER_STATUS_CANCELLED);
-                notifyChangeTab(currentStatus);
-                notifyChangeTab(Order.ORDER_STATUS_CANCELLED);
-            }
-        }
+                notifyChangeTab(invoice.getStatusCode());
+                notifyChangeTab(Invoice.STATUS_CODE_CANCEL);
     }
 
     public class OrderManagerPagerAdapter extends FragmentStatePagerAdapter {

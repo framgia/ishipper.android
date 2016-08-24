@@ -84,6 +84,13 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         }
     }
 
+    public void notifyChangedData(Context cotext) {
+        initAdapter(cotext);
+        getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
+                   Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                   mStatusCode);
+    }
+
     private void initAdapter(Context context) {
         if (mInvoiceList == null) {
             mInvoiceList = new ArrayList<>();
@@ -123,12 +130,6 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
 
     public void setInvoiceList(List<Invoice> invoiceList) {
         mInvoiceList = invoiceList;
-    }
-
-    public void notifyChangedData(List<Invoice> invoiceList) {
-        mInvoiceList.clear();
-        mInvoiceList.addAll(invoiceList);
-        mOrderAdapter.notifyDataSetChanged();
     }
 
     public OrderAdapter getOrderAdapter() {

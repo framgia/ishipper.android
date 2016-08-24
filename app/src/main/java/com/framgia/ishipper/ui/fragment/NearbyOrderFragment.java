@@ -126,6 +126,8 @@ public class NearbyOrderFragment extends Fragment implements
     private User mCurrentUser;
     private int mHeightMap;
     private int mWidthMap;
+    private Invoice mInvoice;
+    private User mUser;
 
     public NearbyOrderFragment() {
         // Required empty public constructor
@@ -174,10 +176,7 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady: ");
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+        if (checkPermission()) return;
         mGoogleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
     }
@@ -185,14 +184,7 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected: ");
-        if (ActivityCompat.checkSelfPermission(
-                mContext,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(
-                mContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+        if (checkPermission()) return;
         CommonUtils.checkLocationRequestSetting(
                 getActivity(),
                 mGoogleApiClient,
@@ -205,6 +197,7 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void initMap() {
+        if (checkPermission()) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
             mCurrentUser.setLatitude(mLocation.getLatitude());
@@ -214,6 +207,19 @@ public class NearbyOrderFragment extends Fragment implements
         } else {
             Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean checkPermission() {
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                                               Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(),
+                                                   Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return true;
+        }
+        return false;
     }
 
     private void markInvoiceNearby(final double latitude, final double longitude, float radius) {
@@ -296,28 +302,28 @@ public class NearbyOrderFragment extends Fragment implements
                 mWindowOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
-                final Invoice invoice = invoiceList.get(pos);
-                mBtnNearbyReceiveOrder.setTag(invoice.getStringId());
+                mInvoice = invoiceList.get(pos);
+                mBtnNearbyReceiveOrder.setTag(mInvoice.getStringId());
 
                 /** get shop information */
                 API.getUser(
                         mCurrentUser.getAuthenticationToken(),
-                        String.valueOf(invoice.getUserId()),
+                        String.valueOf(mInvoice.getUserId()),
                         new API.APICallback<APIResponse<GetUserData>>() {
                             @Override
                             public void onResponse(APIResponse<GetUserData> response) {
-                                User user = response.getData().getUser();
-                                mTvItemOrderShopName.setText(user.getName());
-                                mRatingOrderWindow.setRating((float) user.getRate());
+                                mUser = response.getData().getUser();
+                                mTvItemOrderShopName.setText(mUser.getName());
+                                mRatingOrderWindow.setRating((float) mUser.getRate());
                                 mTvNearbyDistance.setText(
-                                        TextFormatUtils.formatDistance(invoice.getDistance()));
-                                mTvNearbyFrom.setText(invoice.getAddressStart());
-                                mTvNearbyTo.setText(invoice.getAddressFinish());
-                                mTvNearbyShipTime.setText(invoice.getDeliveryTime());
+                                        TextFormatUtils.formatDistance(mInvoice.getDistance()));
+                                mTvNearbyFrom.setText(mInvoice.getAddressStart());
+                                mTvNearbyTo.setText(mInvoice.getAddressFinish());
+                                mTvNearbyShipTime.setText(mInvoice.getDeliveryTime());
                                 mTvNearbyShipPrice.setText(
-                                        TextFormatUtils.formatPrice(invoice.getShippingPrice()));
+                                        TextFormatUtils.formatPrice(mInvoice.getShippingPrice()));
                                 mTvNearbyOrderPrice.setText(
-                                        TextFormatUtils.formatPrice(invoice.getPrice()));
+                                        TextFormatUtils.formatPrice(mInvoice.getPrice()));
 
                             }
 
@@ -333,9 +339,9 @@ public class NearbyOrderFragment extends Fragment implements
                 }
 
                 mMakerEndOrder = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(invoice.getLatFinish(), invoice.getLngFinish())));
-                final LatLng startPoint = new LatLng(invoice.getLatStart(), invoice.getLngStart());
-                final LatLng endPoint = new LatLng(invoice.getLatFinish(), invoice.getLngFinish());
+                        .position(new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish())));
+                final LatLng startPoint = new LatLng(mInvoice.getLatStart(), mInvoice.getLngStart());
+                final LatLng endPoint = new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish());
                 MapUtils.routing(startPoint, endPoint,
                         new RoutingListener() {
                             @Override
@@ -411,7 +417,8 @@ public class NearbyOrderFragment extends Fragment implements
         return latLng;
     }
 
-    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order, R.id.rl_search_view})
+    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
+                     R.id.rl_search_view, R.id.window_order_detail})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_item_order_show_path:
@@ -435,6 +442,13 @@ public class NearbyOrderFragment extends Fragment implements
                 } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.window_order_detail:
+                Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                Bundle extras = new Bundle();
+                extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoice.getId());
+                intent.putExtras(extras);
+                startActivity(intent);
                 break;
         }
     }
@@ -475,11 +489,6 @@ public class NearbyOrderFragment extends Fragment implements
             }
         });
         dialog.show();
-    }
-
-    @OnClick(R.id.window_order_detail)
-    public void onClick() {
-        startActivity(new Intent(mContext, OrderDetailActivity.class));
     }
 
     @Override

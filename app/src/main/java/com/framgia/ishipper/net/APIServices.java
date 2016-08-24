@@ -9,6 +9,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
+import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
@@ -169,4 +170,12 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Field(APIDefinition.PostShipperReceiveInvoice.PARAMS_INVOICE_ID) String status
     );
+
+    /* Get Invoice detail */
+    @GET(APIDefinition.ShowInvoice.PATH)
+    Call<APIResponse<ShowInvoiceData>> getInvoiceDetail(
+            @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_USER_TYPE) String userType,
+            @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_ID) String id,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
 }

@@ -25,7 +25,6 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
-import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.StorageUtils;
 import com.framgia.ishipper.util.Const;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -174,7 +173,11 @@ public class MainActivity extends AppCompatActivity
     public void onListFragmentInteraction(Invoice invoice) {
         //TODO: GO to Order details
         Log.d("onClick item fragment", invoice.getAddressStart() + "null");
-        startActivity(new Intent(this, OrderDetailActivity.class));
+        Intent intent = new Intent(MainActivity.this, OrderDetailActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 
     @Override
