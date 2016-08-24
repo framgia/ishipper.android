@@ -61,24 +61,7 @@ public abstract class API {
 
     public static void signUp(Map<String, String> userParams,
                               final APICallback<APIResponse<SignUpData>> callback) {
-        client.signUpUser(userParams).enqueue(new Callback<APIResponse<SignUpData>>() {
-            @Override
-            public void onResponse(Call<APIResponse<SignUpData>> call,
-                                   Response<APIResponse<SignUpData>> response) {
-                if (response.body() == null) {
-                    Log.d(TAG, SERVER_ERROR);
-                } else if (response.body().isSuccess()) {
-                    callback.onResponse(response.body());
-                } else {
-                    callback.onFailure(LOCAL_ERROR, response.body().getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<APIResponse<SignUpData>> call, Throwable t) {
-                callback.onFailure(LOCAL_ERROR, t.getMessage());
-            }
-        });
+        client.signUpUser(userParams).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void confirmationPinInSignUp(String phoneNumber, String pin,
@@ -131,24 +114,7 @@ public abstract class API {
 
     public static void signIn(Map<String, String> params,
                               final APICallback<APIResponse<SignInData>> callback) {
-        client.signIn(params).enqueue(new Callback<APIResponse<SignInData>>() {
-            @Override
-            public void onResponse(Call<APIResponse<SignInData>> call,
-                                   Response<APIResponse<SignInData>> response) {
-                if (response.body() == null) {
-                    Log.d(TAG, SERVER_ERROR);
-                } else if (response.body().isSuccess()) {
-                    callback.onResponse(response.body());
-                } else {
-                    callback.onFailure(LOCAL_ERROR, response.body().getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<APIResponse<SignInData>> call, Throwable t) {
-                callback.onFailure(LOCAL_ERROR, t.getMessage());
-            }
-        });
+        client.signIn(params).enqueue(new RetrofitCallback<>(callback));
 
     }
 
@@ -222,51 +188,13 @@ public abstract class API {
     public static void getShipperNearby(String token,
                                         Map<String, String> userParams,
                                         final APICallback<APIResponse<ShipperNearbyData>> callback) {
-        client.getShipperNearby(token, userParams).enqueue(
-                new Callback<APIResponse<ShipperNearbyData>>() {
-                    @Override
-                    public void onResponse(Call<APIResponse<ShipperNearbyData>> call,
-                                           Response<APIResponse<ShipperNearbyData>> response) {
-
-                        if (response.body() == null) {
-                            Log.d(TAG, SERVER_ERROR);
-                        } else if (response.body().isSuccess()) {
-                            callback.onResponse(response.body());
-                        } else {
-                            callback.onFailure(LOCAL_ERROR, response.body().getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<APIResponse<ShipperNearbyData>> call,
-                                          Throwable t) {
-                        callback.onFailure(LOCAL_ERROR, t.getMessage());
-                    }
-                });
+        client.getShipperNearby(token, userParams).enqueue(new RetrofitCallback<>(callback));
     }
 
     /* Get Invoice nearby */
     public static void getInvoiceNearby(String token, Map<String, String> userParams,
                                         final APICallback<APIResponse<ListInvoiceData>> callback) {
-        client.getInvoiceNearBy(token, userParams).enqueue(
-                new Callback<APIResponse<ListInvoiceData>>() {
-                    @Override
-                    public void onResponse(Call<APIResponse<ListInvoiceData>> call,
-                                           Response<APIResponse<ListInvoiceData>> response) {
-                        if (response.body() == null) {
-                            Log.d(TAG, SERVER_ERROR);
-                        } else if (response.body().isSuccess()) {
-                            callback.onResponse(response.body());
-                        } else {
-                            callback.onFailure(LOCAL_ERROR, response.body().getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<APIResponse<ListInvoiceData>> call, Throwable t) {
-                        callback.onFailure(LOCAL_ERROR, t.getMessage());
-                    }
-                });
+        client.getInvoiceNearBy(token, userParams).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void putUpdateProfile(HashMap<String, String> params,
@@ -451,27 +379,7 @@ public abstract class API {
                                   String token,
                                   Map<String, String> params,
                                   final APICallback<APIResponse<ListInvoiceData>> callback) {
-        client.getListInvoice(userType, token, params)
-                .enqueue(new Callback<APIResponse<ListInvoiceData>>() {
-                    @Override
-                    public void onResponse(Call<APIResponse<ListInvoiceData>> call,
-                                           Response<APIResponse<ListInvoiceData>> response) {
-                        if (response.isSuccessful()) {
-                            if (response.body().isSuccess()) {
-                                callback.onResponse(response.body());
-                            } else {
-                                callback.onFailure(response.body().getCode(), response.body().getMessage());
-                            }
-                        } else {
-                            callback.onFailure(response.code(), response.message());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<APIResponse<ListInvoiceData>> call, Throwable t) {
-                        callback.onFailure(LOCAL_ERROR, t.getMessage());
-                    }
-                });
+        client.getListInvoice(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
     /* Get User */
