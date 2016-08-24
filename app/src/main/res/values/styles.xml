@@ -118,9 +118,15 @@
     </style>
 
     <style name="star_rating_bar_small" parent="@android:style/Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/ratingbar_selector_small</item>
+        <item name="android:progressDrawable">@drawable/rating_bar_selector_small</item>
         <item name="android:minHeight">18dp</item>
         <item name="android:maxHeight">18dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="star_rating_bar_large" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar_selector_large</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:maxHeight">32dp</item>
         <item name="android:gravity">center</item>
     </style>
 

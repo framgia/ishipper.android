@@ -25,6 +25,7 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         initView();
         selectItem(R.id.nav_nearby_order);
+        ReviewDialog reviewDialog = new ReviewDialog(this);
+        reviewDialog.show();
     }
 
     private void initView() {

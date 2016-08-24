@@ -190,4 +190,5 @@
     <string name="fragment_shipping_note">Note:</string>
     <string name="dialog_report">Report</string>
     <string name="all_send">Gửi</string>
+    <string name="dialog_review">Đánh giá</string>
 </resources>
