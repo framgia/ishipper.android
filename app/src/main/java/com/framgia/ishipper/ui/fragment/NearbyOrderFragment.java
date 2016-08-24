@@ -48,6 +48,7 @@ import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
+import com.framgia.ishipper.util.TextFormatUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -304,13 +305,15 @@ public class NearbyOrderFragment extends Fragment implements
                                 User user = response.getData().getUser();
                                 mTvItemOrderShopName.setText(user.getName());
                                 mRatingOrderWindow.setRating((float) user.getRate());
-
-                                mTvNearbyDistance.setText(String.valueOf(invoice.getDistance()) + "km");
+                                mTvNearbyDistance.setText(
+                                        TextFormatUtils.formatDistance(invoice.getDistance()));
                                 mTvNearbyFrom.setText(invoice.getAddressStart());
                                 mTvNearbyTo.setText(invoice.getAddressFinish());
                                 mTvNearbyShipTime.setText(invoice.getDeliveryTime());
-                                mTvNearbyShipPrice.setText(String.valueOf(invoice.getShippingPrice()));
-                                mTvNearbyOrderPrice.setText(String.valueOf(invoice.getPrice()));
+                                mTvNearbyShipPrice.setText(
+                                        TextFormatUtils.formatPrice(invoice.getShippingPrice()));
+                                mTvNearbyOrderPrice.setText(
+                                        TextFormatUtils.formatPrice(invoice.getPrice()));
 
                             }
 
@@ -352,7 +355,9 @@ public class NearbyOrderFragment extends Fragment implements
                                     polyOptions.width(8);
                                     polyOptions.addAll(route.get(i).getPoints());
                                 }
-
+                                if (mPolylineRoute != null && mPolylineRoute.isVisible()) {
+                                    mPolylineRoute.remove();
+                                }
                                 mPolylineRoute = mGoogleMap.addPolyline(polyOptions);
                                 configSizeMap();
                                 LatLng configLatLng = configLatLng(startPoint, endPoint);
@@ -372,10 +377,6 @@ public class NearbyOrderFragment extends Fragment implements
             @Override
             public void onMapClick(LatLng latLng) {
                 mWindowOrderDetail.setVisibility(View.GONE);
-                if (mPolylineRoute != null) {
-                    mPolylineRoute.remove();
-                    mMakerEndOrder.remove();
-                }
             }
         });
     }
