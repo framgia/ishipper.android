@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
@@ -17,6 +19,7 @@ import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShippingFragment;
 
 import java.util.ArrayList;
+
 import static com.framgia.ishipper.ui.activity.MainActivity.*;
 
 /**
@@ -28,6 +31,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
     private ArrayList<Invoice> mInvoiceList;
     private Context mContext;
     private OrderListFragment mOrderListFragment;
+    private SparseArray<Fragment> mFragments = new SparseArray<>();
 
     public MainTabAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -62,8 +66,8 @@ public class MainTabAdapter extends FragmentPagerAdapter
             } else {
                 mOrderListFragment =
                         new OrderListFragment().newInstance(
-                                                            mContext.getString(R.string.tab_title_shop_order_wait),
-                                                            Invoice.STATUS_CODE_INIT);
+                                mContext.getString(R.string.tab_title_shop_order_wait),
+                                Invoice.STATUS_CODE_INIT);
                 mOrderListFragment.setOnActionClickListener(this);
                 return mOrderListFragment;
             }
@@ -86,13 +90,30 @@ public class MainTabAdapter extends FragmentPagerAdapter
     }
 
     @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        mFragments.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        mFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    @Override
     public void onClickCancel(Invoice invoice) {
         Toast.makeText(mContext, "Đã huỷ đơn", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < mInvoiceList.size(); i++) {
-            if(invoice.getId() == mInvoiceList.get(i).getId()) {
+            if (invoice.getId() == mInvoiceList.get(i).getId()) {
                 mInvoiceList.remove(i);
                 mOrderListFragment.getOrderAdapter().notifyDataSetChanged();
             }
         }
+    }
+
+    public Fragment getFragment(int position) {
+        return mFragments.get(position);
     }
 }

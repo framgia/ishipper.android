@@ -27,6 +27,7 @@ import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.StorageUtils;
+import com.framgia.ishipper.util.Const;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
@@ -99,10 +100,12 @@ public class MainActivity extends AppCompatActivity
         if (mSelectedId == id) return;
         else mSelectedId = id;
         Fragment fragment;
+        String tag = null;
         switch (id) {
             case R.id.nav_nearby_order:
                 fragment = new MainContentFragment();
                 mToolbar.setTitle(getString(R.string.nav_nearby_order_item));
+                tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_order_management:
                 //TODO: show order fragment
@@ -111,11 +114,13 @@ public class MainActivity extends AppCompatActivity
                             ShipperOrderManagerFragment.instantiate(MainActivity.this,
                                     ShipperOrderManagerFragment.class.getName(),
                                     null);
+                    tag = ShipperOrderManagerFragment.class.getName();
                 } else {
                     fragment =
                             ShipperOrderManagerFragment.instantiate(MainActivity.this,
                                     ShopOrderManagerFragment.class.getName(),
                                     null);
+                    tag = ShipperOrderManagerFragment.class.getName();
                 }
                 break;
             case R.id.nav_create_order:
@@ -130,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.main_container, fragment)
+                    .replace(R.id.main_container, fragment, tag)
                     .commit();
             mNavigationView.setCheckedItem(id);
         }
@@ -170,5 +175,15 @@ public class MainActivity extends AppCompatActivity
         //TODO: GO to Order details
         Log.d("onClick item fragment", invoice.getAddressStart() + "null");
         startActivity(new Intent(this, OrderDetailActivity.class));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+            getSupportFragmentManager()
+                    .findFragmentByTag(MainContentFragment.class.getName())
+                    .onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

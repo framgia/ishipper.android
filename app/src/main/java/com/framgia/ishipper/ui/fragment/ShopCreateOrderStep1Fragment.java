@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -97,7 +98,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     }
 
     @OnClick({R.id.btnPickStart, R.id.btnPickEnd, R.id.btnContinue, R.id.img_done_start,
-                     R.id.img_done_end})
+            R.id.img_done_end})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnPickStart:
@@ -193,8 +194,8 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 if (mPolylineRoute != null) mPolylineRoute.remove();
                 mPolylineRoute = mMap.addPolyline(polyOptions);
                 MapUtils.updateZoomMap(mMap,
-                                       mFrameMapContainer.getWidth(), mFrameMapContainer.getHeight(),
-                                       mLatLngStart, mLatLngFinish);
+                        mFrameMapContainer.getWidth(), mFrameMapContainer.getHeight(),
+                        mLatLngStart, mLatLngFinish);
             }
 
             @Override
@@ -244,8 +245,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
 
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
-            MapUtils.zoomToPosition(mMap,
-                                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+            MapUtils.zoomToPosition(mMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
         }
         addStartLocation();
         setPickEndLocation();
@@ -275,10 +275,10 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
 
     private boolean checkPermission() {
         if (ActivityCompat.checkSelfPermission(getContext(),
-                                               Manifest.permission.ACCESS_FINE_LOCATION) !=
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(),
-                                                   Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             return true;

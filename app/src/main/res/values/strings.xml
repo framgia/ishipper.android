@@ -191,4 +191,6 @@
     <string name="dialog_report">Report</string>
     <string name="all_send">Gửi</string>
     <string name="dialog_review">Đánh giá</string>
+    <string name="all_cant_get_location">Can\'t get location</string>
+    <string name="all_location_not_available">Location Service is not available</string>
 </resources>

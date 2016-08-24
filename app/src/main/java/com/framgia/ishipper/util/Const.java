@@ -1,9 +1,11 @@
 package com.framgia.ishipper.util;
+
 /**
  * Created by vuduychuong1994 on 8/3/16.
  */
 public class Const {
 
+    public static final int REQUEST_CHECK_SETTINGS = 2;
     public static String VIETNAM_PREFIX = "+84";
 
     public static int SCREEN_WIDTH;
@@ -14,5 +16,8 @@ public class Const {
         public static final String KEY_USER_INFO = "UserStorageKey";
         public static final String KEY_IS_LOGIN = "IsLoginKey";
     }
+
+    public static final int LOCATION_INTERVAL_UPDATE = 10000;
+    public static final int LOCATION_FASTEST_INTERVAL_UPDATE = 5000;
 
 }

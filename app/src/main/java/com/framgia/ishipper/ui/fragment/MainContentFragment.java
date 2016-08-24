@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.adapter.MainTabAdapter;
 import com.framgia.ishipper.ui.view.CustomViewPager;
+import com.framgia.ishipper.util.Const;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,5 +52,15 @@ public class MainContentFragment extends Fragment {
     public void onDestroy() {
         mUnbinder.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+            ((MainTabAdapter) mViewPager.getAdapter())
+                    .getFragment(mViewPager.getCurrentItem())
+                    .onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
