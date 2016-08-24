@@ -122,6 +122,8 @@ public class NearbyOrderFragment extends Fragment implements
     private Marker mMakerEndOrder;
     private Context mContext;
     private User mCurrentUser;
+    private int mHeightMap;
+    private int mWidthMap;
 
     public NearbyOrderFragment() {
         // Required empty public constructor
@@ -254,6 +256,15 @@ public class NearbyOrderFragment extends Fragment implements
         super.onDestroy();
     }
 
+    private void configSizeMap() {
+        mWidthMap = mMapFragment.getView().getWidth();
+        if (mWindowOrderDetail.getVisibility() == View.VISIBLE) {
+            mHeightMap = mMapFragment.getView().getHeight() + 2 * mWindowOrderDetail.getHeight();
+        } else {
+            mHeightMap = mMapFragment.getView().getHeight();
+        }
+    }
+
     private void configGoogleMap(final List<Invoice> invoiceList) {
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.setPadding(0, 150, 0, 0);
@@ -325,9 +336,10 @@ public class NearbyOrderFragment extends Fragment implements
                                 }
 
                                 mPolylineRoute = mGoogleMap.addPolyline(polyOptions);
-
-                                MapUtils.updateZoomMap(mGoogleMap, Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT,
-                                        startPoint, endPoint);
+                                configSizeMap();
+                                LatLng configLatLng = configLatLng(startPoint, endPoint);
+                                MapUtils.updateZoomMap(mGoogleMap, mWidthMap, mHeightMap,
+                                        startPoint, endPoint, configLatLng);
                             }
 
                             @Override
@@ -348,6 +360,32 @@ public class NearbyOrderFragment extends Fragment implements
                 }
             }
         });
+    }
+
+    private LatLng configLatLng(LatLng startPoint, LatLng endPoint) {
+        double diffHeight = startPoint.latitude - endPoint.latitude;
+        double diffWidth = startPoint.longitude - endPoint.longitude;
+        double scale = 1;
+        LatLng latLng;
+        if (Math.abs(diffHeight) > Math.abs(diffWidth)) {
+            if (diffHeight > 0) {
+                latLng = new LatLng(endPoint.latitude - scale * diffHeight - Math.abs(diffWidth) / 2,
+                                    (startPoint.longitude + endPoint.longitude) / 2);
+            } else {
+                latLng = new LatLng(startPoint.latitude + scale * diffHeight  - Math.abs(diffWidth) / 2,
+                                    (startPoint.longitude + endPoint.longitude) / 2);
+            }
+        } else {
+            if (diffWidth > 0) {
+                latLng = new LatLng(startPoint.latitude - scale * diffWidth,
+                                    (startPoint.longitude + endPoint.longitude) / 2);
+            } else {
+                latLng = new LatLng(endPoint.latitude + scale * diffWidth,
+                                    (startPoint.longitude + endPoint.longitude) / 2);
+            }
+
+        }
+        return latLng;
     }
 
     private void updateCamera(double latitude, double longitude) {
