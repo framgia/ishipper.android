@@ -20,7 +20,7 @@ import java.util.Locale;
  * Created by HungNT on 7/18/16.
  */
 public class MapUtils {
-
+    private static final int ZOOM_LEVEL = 15;
     public static void routing(LatLng start, LatLng end, RoutingListener listener) {
         Routing routing = new Routing.Builder()
                 .travelMode(Routing.TravelMode.WALKING)
@@ -44,8 +44,7 @@ public class MapUtils {
     }
 
     public static void zoomToPosition(GoogleMap map, LatLng latLng) {
-        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-        map.moveCamera(center);
+        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL);
         map.animateCamera(center);
     }
 

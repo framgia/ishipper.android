@@ -383,7 +383,6 @@ public abstract class API {
         client.getListInvoice(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Get User */
     public static void getUser(
             String token,
             String userId,
