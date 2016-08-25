@@ -152,4 +152,13 @@ public interface APIServices {
     Call<APIResponse<ListShipperData>> getListShipperReceived(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Query(APIDefinition.GetListShipperReceived.PARAM_INVOICE_ID) String id);
+
+    /* Put shop receive shipper */
+    @FormUrlEncoded
+    @PUT(APIDefinition.PutShopReceiveShipper.PATH)
+    Call<APIResponse<EmptyData>> putShopReceiveShipper(
+            @Field(APIDefinition.PutShopReceiveShipper.PARAMS_STATUS) String status,
+            @Path(APIDefinition.PutShopReceiveShipper.PARAM_USER_INVOICE_ID) String userInvoiceId,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token
+    );
 }
