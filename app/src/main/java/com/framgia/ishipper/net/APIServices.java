@@ -161,4 +161,12 @@ public interface APIServices {
             @Path(APIDefinition.PutShopReceiveShipper.PARAM_USER_INVOICE_ID) String userInvoiceId,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
+
+    /* Post Shipper Receive invoice */
+    @FormUrlEncoded
+    @POST(APIDefinition.PostShipperReceiveInvoice.PATH)
+    Call<APIResponse<EmptyData>> postShipperReceiveInvoice(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Field(APIDefinition.PostShipperReceiveInvoice.PARAMS_INVOICE_ID) String status
+    );
 }

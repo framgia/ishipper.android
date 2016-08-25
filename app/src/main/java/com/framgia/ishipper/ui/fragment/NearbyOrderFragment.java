@@ -3,6 +3,7 @@ package com.framgia.ishipper.ui.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,7 @@ import com.framgia.ishipper.model.WindowOrder;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.LocationSettingCallback;
@@ -295,6 +297,7 @@ public class NearbyOrderFragment extends Fragment implements
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
                 final Invoice invoice = invoiceList.get(pos);
+                mBtnNearbyReceiveOrder.setTag(invoice.getStringId());
 
                 /** get shop information */
                 API.getUser(
@@ -415,7 +418,8 @@ public class NearbyOrderFragment extends Fragment implements
                 getActivity().startActivity(new Intent(getActivity(), RouteActivity.class));
                 break;
             case R.id.btn_item_order_register_order:
-                showReceiveDialog();
+                String invoiceId = (String) view.getTag();
+                showReceiveDialog(invoiceId);
                 break;
             case R.id.rl_search_view:
                 try {
@@ -435,9 +439,41 @@ public class NearbyOrderFragment extends Fragment implements
         }
     }
 
-    private void showReceiveDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(mContext)
-                .setView(R.layout.dialog_nearby_receive_order).create();
+    private void showReceiveDialog(final String invoiceId) {
+        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_nearby_receive_order, null);
+        dialog.setView(view);
+        view.findViewById(R.id.btnPositive).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog loading = CommonUtils.showLoadingDialog(mContext);
+                API.postShipperReceiveInvoice(
+                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        invoiceId,
+                        new API.APICallback<APIResponse<EmptyData>>() {
+                            @Override
+                            public void onResponse(APIResponse<EmptyData> response) {
+                                loading.dismiss();
+                                dialog.dismiss();
+                                Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                loading.dismiss();
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+            }
+        });
+
+        view.findViewById(R.id.btnNegative).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         dialog.show();
     }
 

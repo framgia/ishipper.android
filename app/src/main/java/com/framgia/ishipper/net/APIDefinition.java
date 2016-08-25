@@ -208,4 +208,10 @@ public class APIDefinition {
 
         public static final String PARAMS_STATUS = "status";
     }
+
+    public static class PostShipperReceiveInvoice {
+        public static final String PATH = "/api/shipper/user_invoices";
+
+        public static final String PARAMS_INVOICE_ID = "user_invoice[invoice_id]";
+    }
 }
