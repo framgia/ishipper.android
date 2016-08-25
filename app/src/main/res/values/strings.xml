@@ -195,4 +195,9 @@
     <string name="all_location_not_available">Location Service is not available</string>
     <string name="accept_shipper_success">Đã chọn shipper thành công</string>
     <string name="create_order_distance">Khoảng cách (km)</string>
+    <string name="detail_receive_order">Nhận đơn</string>
+    <string name="detail_cancel_register">Hủy đăng ký</string>
+    <string name="detail_cancel_order">Hủy đơn hàng</string>
+    <string name="dialog_cancel_order_title">Hủy đơn hàng</string>
+    <string name="dialog_cancel_order_message">Bạn có muốn hủy đơn hàng này không</string>
 </resources>

@@ -11,7 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_detail_receive_order"
+        android:layout_above="@+id/ll_detail_btn_action"
         android:layout_below="@+id/appbar">
 
         <LinearLayout
@@ -63,6 +63,7 @@
                                     android:id="@+id/tv_detail_distance"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:gravity="center"
                                     android:paddingTop="5dp"
                                     android:text="40KM"
                                     android:textSize="22sp"/>
@@ -124,6 +125,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="13dp"
                                     android:drawablePadding="15dp"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:text="Minh khai ha noi"
                                     android:textColor="@color/fiveship_common_text"
                                     android:textSize="14sp"/>
@@ -147,6 +150,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:text="13 Nam Du"/>
 
                             </LinearLayout>
@@ -519,12 +524,42 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_detail_receive_order"
+    <LinearLayout
+        android:id="@+id/ll_detail_btn_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorGreenDark"
-        android:text="Nhận đơn"
-        android:textColor="@android:color/white"/>
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btn_detail_receive_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorGreenDark"
+            android:text="@string/detail_receive_order"
+            android:textColor="@android:color/white"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/btn_detail_cancel_register_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorGreenDark"
+            android:text="@string/detail_cancel_register"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_detail_cancel_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorGreenDark"
+            android:text="@string/detail_cancel_order"
+            android:textColor="@android:color/white"
+            android:visibility="visible"/>
+    </LinearLayout>
 </RelativeLayout>

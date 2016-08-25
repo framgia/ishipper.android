@@ -3,12 +3,15 @@ package com.framgia.ishipper.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,8 @@ import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.util.TextFormatUtils;
 
@@ -47,7 +52,11 @@ public class OrderDetailActivity extends AppCompatActivity {
     @BindView(R.id.cardview_detail_shipper_infor) CardView mCardviewDetailShipperInfor;
     @BindView(R.id.tv_detail_customer_name) TextView mDetailCustomerName;
     @BindView(R.id.tv_detail_customer_phone) TextView mDetailCustomerPhone;
-
+    @BindView(R.id.btn_detail_receive_order) Button mBtnDetailReceiveOrder;
+    @BindView(R.id.btn_detail_cancel_register_order) Button mBtnDetailCancelRegisterOrder;
+    @BindView(R.id.btn_detail_cancel_order) Button mBtnDetailCancelOrder;
+    private User mCurrentUser;
+    private Invoice mInvoice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,53 +66,64 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mCurrentUser = Config.getInstance().getUserInfo(this);
 
     }
 
     private void initData() {
         Bundle bundle = getIntent().getExtras();
         API.getInvoiceDetail(
-                 Config.getInstance().getUserInfo(this).getRole(),
-                 String.valueOf(bundle.getInt(KEY_INVOICE_ID)),
-                 Config.getInstance().getUserInfo(this).getAuthenticationToken(),
-                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
-                     @Override
-                     public void onResponse(APIResponse<ShowInvoiceData> response) {
-                         Invoice invoice = response.getData().invoice;
-                         User user = response.getData().user;
-                         if (invoice != null) {
-                             if (user != null && user.getRole().equals(User.ROLE_SHIPPER)) {
-                                 mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
-                                 mCardviewDetailShipperInfor.setVisibility(View.GONE);
-                                 tvDetailShipperName.setText(user.getName());
-                                 tvDetailShipperPhone.setText(user.getPhoneNumber());
-                             } else {
-                                 mCardviewDetailShopInfor.setVisibility(View.GONE);
-                                 tvDetailShopName.setText(user.getName());
-                                 tvDetailShopPhone.setText(user.getPhoneNumber());
-                                 if (invoice.getStatus().equals(Invoice.STATUS_INIT)) {
-                                     mCardviewDetailShipperInfor.setVisibility(View.GONE);
-                                 } else {
-                                     mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
-                                 }
-                             }
-                             tvDetailDistance.setText(TextFormatUtils.formatDistance(invoice.getDistance()));
-                             tvDetailStart.setText(invoice.getAddressStart());
-                             tvDetailEnd.setText(invoice.getAddressFinish());
-                             tvDetailOrderName.setText(invoice.getName());
-                             tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(invoice.getPrice()));
-                             tvDetailShipPrice.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
-                             tvDetailShipTime.setText(invoice.getDeliveryTime());
-                             tvDetailNote.setText(invoice.getDescription());
+                Config.getInstance().getUserInfo(this).getRole(),
+                String.valueOf(bundle.getInt(KEY_INVOICE_ID)),
+                Config.getInstance().getUserInfo(this).getAuthenticationToken(),
+                new API.APICallback<APIResponse<ShowInvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ShowInvoiceData> response) {
+                        mInvoice = response.getData().invoice;
+                        if (mInvoice != null) {
+                            switch (mInvoice.getStatusCode()) {
+                                case Invoice.STATUS_CODE_INIT:
+                                    mBtnDetailReceiveOrder.setVisibility(View.VISIBLE);
+                                    break;
+                                default:
+                                    mBtnDetailCancelOrder.setVisibility(View.VISIBLE);
+                                    break;
 
-                         }
-                     }
+                            }
+                            User user = response.getData().user;
+                            if (user != null) {
+                                if (user.getRole().equals(User.ROLE_SHIPPER)) {
+                                    mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
+                                    mCardviewDetailShipperInfor.setVisibility(View.GONE);
+                                    tvDetailShipperName.setText(user.getName());
+                                    tvDetailShipperPhone.setText(user.getPhoneNumber());
+                                } else {
+                                    mCardviewDetailShopInfor.setVisibility(View.GONE);
+                                    tvDetailShopName.setText(user.getName());
+                                    tvDetailShopPhone.setText(user.getPhoneNumber());
+                                    if (mInvoice.getStatus().equals(Invoice.STATUS_INIT)) {
+                                        mCardviewDetailShipperInfor.setVisibility(View.GONE);
+                                    } else {
+                                        mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                            tvDetailDistance.setText(TextFormatUtils.formatDistance(mInvoice.getDistance()));
+                            tvDetailStart.setText(mInvoice.getAddressStart());
+                            tvDetailEnd.setText(mInvoice.getAddressFinish());
+                            tvDetailOrderName.setText(mInvoice.getName());
+                            tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(mInvoice.getPrice()));
+                            tvDetailShipPrice.setText(TextFormatUtils.formatPrice(mInvoice.getShippingPrice()));
+                            tvDetailShipTime.setText(mInvoice.getDeliveryTime());
+                            tvDetailNote.setText(mInvoice.getDescription());
+                        }
+                    }
 
-                     @Override
-                     public void onFailure(int code, String message) {
-                         Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
-                     }
-                 });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
@@ -120,7 +140,13 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.btn_detail_show_path, R.id.btn_detail_shop_call, R.id.btn_detail_receive_order})
+    @OnClick({
+            R.id.btn_detail_show_path,
+            R.id.btn_detail_shop_call,
+            R.id.btn_detail_receive_order,
+            R.id.btn_detail_cancel_order,
+            R.id.btn_detail_cancel_register_order
+    })
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_detail_show_path:
@@ -129,7 +155,84 @@ public class OrderDetailActivity extends AppCompatActivity {
             case R.id.btn_detail_shop_call:
                 break;
             case R.id.btn_detail_receive_order:
+                showReceiveDialog();
+                break;
+            case R.id.btn_detail_cancel_order:
+                showCancelOrderDialog();
+                break;
+            case R.id.btn_detail_cancel_register_order:
+                // TODO: 25/08/2016 cancel register order
                 break;
         }
+    }
+
+    private void showCancelOrderDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_nearby_receive_order, null);
+        ((TextView) view.findViewById(R.id.confirm_dialog_title)).setText(R.string.dialog_cancel_order_title);
+        ((TextView) view.findViewById(R.id.confirm_dialog_message)).setText(R.string.dialog_cancel_order_message);
+        final AlertDialog dialog = new AlertDialog.Builder(this).setView(view).show();
+        view.findViewById(R.id.confirm_dialog_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                API.putUpdateInvoiceStatus(
+                        mCurrentUser.getRole(),
+                        mInvoice.getStringId(),
+                        mCurrentUser.getAuthenticationToken(),
+                        Invoice.STATUS_CANCEL,
+                        new API.APICallback<APIResponse<InvoiceData>>() {
+                            @Override
+                            public void onResponse(APIResponse<InvoiceData> response) {
+                                finish();
+                                dialog.cancel();
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+            }
+        });
+        view.findViewById(R.id.confirm_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+    }
+
+    private void showReceiveDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_nearby_receive_order, null);
+        dialog.setView(view);
+        view.findViewById(R.id.confirm_dialog_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                API.postShipperReceiveInvoice(
+                        Config.getInstance().getUserInfo(getBaseContext()).getAuthenticationToken(),
+                        mInvoice.getStringId(),
+                        new API.APICallback<APIResponse<EmptyData>>() {
+                            @Override
+                            public void onResponse(APIResponse<EmptyData> response) {
+                                dialog.dismiss();
+                                Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+            }
+        });
+        view.findViewById(R.id.confirm_dialog_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }
