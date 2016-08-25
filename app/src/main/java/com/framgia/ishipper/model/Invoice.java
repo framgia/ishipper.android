@@ -72,6 +72,10 @@ public class Invoice implements Parcelable {
         return mId;
     }
 
+    public String getStringId() {
+        return String.valueOf(mId);
+    }
+
     public void setId(int id) {
         mId = id;
     }
