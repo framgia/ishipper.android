@@ -142,7 +142,7 @@ public class APIDefinition {
     }
 
     public static class CreateInvoice {
-        public static final String PATH = "/api/invoices";
+        public static final String PATH = "/api/shop/invoices";
         public static final String PARAM_NAME = "invoice[name]";
         public static final String PARAM_ADDRESS_START = "invoice[address_start]";
         public static final String PARAM_LATITUDE_START = "invoice[latitude_start]";
@@ -213,5 +213,11 @@ public class APIDefinition {
         public static final String PATH = "/api/shipper/user_invoices";
 
         public static final String PARAMS_INVOICE_ID = "user_invoice[invoice_id]";
+    }
+
+    public static class ShowInvoice {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PARAM_ID = "id";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/invoices/{" + PARAM_ID + "}";
     }
 }

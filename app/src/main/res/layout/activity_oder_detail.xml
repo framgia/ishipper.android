@@ -217,6 +217,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
+
                             android:text="@string/all_ship_price"/>
 
                         <TextView

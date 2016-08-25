@@ -12,6 +12,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
+import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
@@ -202,5 +203,10 @@ public abstract class API {
                                                  final APICallback<APIResponse<EmptyData>> callback) {
         client.postShipperReceiveInvoice(token, invoiceId)
                 .enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void getInvoiceDetail(String userType, String id, String token,
+                                        final APICallback<APIResponse<ShowInvoiceData>> callback) {
+        client.getInvoiceDetail(userType, id, token).enqueue(new RetrofitCallback<>(callback));
     }
 }
