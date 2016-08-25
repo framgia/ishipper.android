@@ -54,13 +54,6 @@
                 android:layout_height="@dimen/_30dp"
                 android:src="@drawable/ic_map_picker_start" />
 
-            <ImageView
-                android:id="@+id/img_done_start"
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
-                android:src="@drawable/ic_done"
-                android:visibility="visible" />
-
         </LinearLayout>
 
         <TextView
@@ -87,19 +80,12 @@
                 android:layout_height="@dimen/_30dp"
                 android:src="@drawable/ic_map_picker_end" />
 
-            <ImageView
-                android:id="@+id/img_done_end"
-                android:layout_width="@dimen/_30dp"
-                android:layout_height="@dimen/_30dp"
-                android:src="@drawable/ic_done"
-                android:visibility="gone" />
-
         </LinearLayout>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/note"
+            android:hint="@string/create_order_distance"
             android:maxLines="5"
             android:textSize="@dimen/text_size_content" />
 

@@ -195,13 +195,13 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/tv_detail_order_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
                             android:text="@string/all_order_name"/>
 
                         <TextView
+                            android:id="@+id/tv_detail_order_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -214,14 +214,13 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/tv_detail_ship_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-
                             android:text="@string/all_ship_price"/>
 
                         <TextView
+                            android:id="@+id/tv_detail_ship_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -233,13 +232,13 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/tv_detail_order_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
                             android:text="@string/all_order_price"/>
 
                         <TextView
+                            android:id="@+id/tv_detail_order_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -251,13 +250,13 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/tv_detail_ship_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
                             android:text="@string/all_ship_time"/>
 
                         <TextView
+                            android:id="@+id/tv_detail_ship_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -269,12 +268,12 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/tv_detail_note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/all_note"/>
 
                         <TextView
+                            android:id="@+id/tv_detail_note"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"

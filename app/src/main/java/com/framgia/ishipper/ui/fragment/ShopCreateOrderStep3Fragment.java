@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
@@ -17,12 +18,15 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
-import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.framgia.ishipper.ui.activity.ShopCreateOrderActivity.sInvoice;
 
 public class ShopCreateOrderStep3Fragment extends Fragment {
 
@@ -30,7 +34,23 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     @BindView(R.id.btn_detail_show_path) TextView mBtnDetailShowPath;
     @BindView(R.id.btn_detail_customer_call) TextView mBtnDetailCustomerCall;
     @BindView(R.id.btn_detail_receive_order) Button mBtnCreateOrder;
-    private User mUser;
+    @BindView(R.id.tv_detail_distance) TextView mTvDetailDistance;
+    @BindView(R.id.tv_detail_start) TextView mTvDetailStart;
+    @BindView(R.id.tv_detail_end) TextView mTvDetailEnd;
+    @BindView(R.id.tv_detail_suggest) TextView mTvDetailSuggest;
+    @BindView(R.id.tv_detail_order_name) TextView mTvDetailOrderName;
+    @BindView(R.id.tv_detail_ship_price) TextView mTvDetailShipPrice;
+    @BindView(R.id.tv_detail_order_price) TextView mTvDetailOrderPrice;
+    @BindView(R.id.tv_detail_ship_time) TextView mTvDetailShipTime;
+    @BindView(R.id.tv_detail_note) TextView mTvDetailNote;
+    @BindView(R.id.tv_detail_shop_name) TextView mTvDetailShopName;
+    @BindView(R.id.tv_detail_shop_phone) TextView mTvDetailShopPhone;
+    @BindView(R.id.tv_detail_shipper_name) TextView mTvDetailShipperName;
+    @BindView(R.id.tv_detail_shipper_phone) TextView mTvDetailShipperPhone;
+    @BindView(R.id.btn_detail_show_shipper) TextView mBtnDetailShowShipper;
+    @BindView(R.id.tv_detail_customer_name) TextView mTvDetailCustomerName;
+    @BindView(R.id.tv_detail_customer_phone) TextView mTvDetailCustomerPhone;
+    private User mCurrentUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,12 +58,26 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_oder_detail, container, false);
         ButterKnife.bind(this, view);
+        initView();
+        return view;
+    }
+
+    private void initView() {
+        mCurrentUser = Config.getInstance().getUserInfo(getContext());
         mToolbar.setVisibility(View.GONE);
         mBtnDetailShowPath.setVisibility(View.GONE);
         mBtnDetailCustomerCall.setVisibility(View.GONE);
         mBtnCreateOrder.setText(R.string.create_order);
-        mUser = Config.getInstance().getUserInfo(getContext());
-        return view;
+        mTvDetailDistance.setText(String.valueOf(sInvoice.getDistance()));
+        mTvDetailStart.setText(sInvoice.getAddressStart());
+        mTvDetailEnd.setText(sInvoice.getAddressFinish());
+        mTvDetailOrderName.setText(sInvoice.getName());
+        mTvDetailShipPrice.setText(String.valueOf(sInvoice.getShippingPrice()));
+        mTvDetailOrderPrice.setText(String.valueOf(sInvoice.getPrice()));
+        mTvDetailShipTime.setText(String.valueOf(sInvoice.getDeliveryTime()));
+        mTvDetailNote.setText(sInvoice.getDescription());
+        mTvDetailCustomerName.setText(sInvoice.getCustomerName());
+        mTvDetailCustomerPhone.setText(sInvoice.getCustomerNumber());
     }
 
     @OnClick(R.id.btn_detail_receive_order)
@@ -52,55 +86,55 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     }
 
     private void onCreateInvoice() {
-        ShopCreateOrderActivity.sInvoice.setDistance(3.0234f);
-        ShopCreateOrderActivity.sInvoice.setStatus(Invoice.STATUS_INIT);
+        sInvoice.setDistance(3.0234f);
+        sInvoice.setStatus(Invoice.STATUS_INIT);
 
         Map<String, String> params = new HashMap<>();
-        params.put(APIDefinition.CreateInvoice.PARAM_NAME, ShopCreateOrderActivity.sInvoice.getName());
+        params.put(APIDefinition.CreateInvoice.PARAM_NAME, sInvoice.getName());
         params.put(APIDefinition.CreateInvoice.PARAM_ADDRESS_START,
-                   ShopCreateOrderActivity.sInvoice.getAddressStart());
+                sInvoice.getAddressStart());
         params.put(APIDefinition.CreateInvoice.PARAM_LATITUDE_START,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLatStart()));
+                String.valueOf(sInvoice.getLatStart()));
         params.put(APIDefinition.CreateInvoice.PARAM_LONGITUDE_START,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLngStart()));
+                String.valueOf(sInvoice.getLngStart()));
         params.put(APIDefinition.CreateInvoice.PARAM_ADDRESS_FINISH,
-                   ShopCreateOrderActivity.sInvoice.getAddressFinish());
+                sInvoice.getAddressFinish());
         params.put(APIDefinition.CreateInvoice.PARAM_LATITUDE_FINISH,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLatFinish()));
+                String.valueOf(sInvoice.getLatFinish()));
         params.put(APIDefinition.CreateInvoice.PARAM_LONGITUDE_FINISH,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getLngFinish()));
+                String.valueOf(sInvoice.getLngFinish()));
         params.put(APIDefinition.CreateInvoice.PARAM_DELIVERY_TIME,
-                   ShopCreateOrderActivity.sInvoice.getDeliveryTime());
+                sInvoice.getDeliveryTime());
         params.put(APIDefinition.CreateInvoice.PARAM_DISTANCE,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getDistance()));
+                String.valueOf(sInvoice.getDistance()));
         params.put(APIDefinition.CreateInvoice.PARAM_DESCRIPTION,
-                   ShopCreateOrderActivity.sInvoice.getDescription());
+                sInvoice.getDescription());
         params.put(APIDefinition.CreateInvoice.PARAM_PRICE,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getPrice()));
+                String.valueOf(sInvoice.getPrice()));
         params.put(APIDefinition.CreateInvoice.PARAM_SHIPPING_PRICE,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getShippingPrice()));
-        params.put(APIDefinition.CreateInvoice.PARAM_STATUS, ShopCreateOrderActivity.sInvoice.getStatus());
+                String.valueOf(sInvoice.getShippingPrice()));
+        params.put(APIDefinition.CreateInvoice.PARAM_STATUS, sInvoice.getStatus());
         params.put(APIDefinition.CreateInvoice.PARAM_WEIGHT,
-                   String.valueOf(ShopCreateOrderActivity.sInvoice.getWeight()));
+                String.valueOf(sInvoice.getWeight()));
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NAME,
-                   ShopCreateOrderActivity.sInvoice.getCustomerName());
+                sInvoice.getCustomerName());
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NUMBER,
-                   ShopCreateOrderActivity.sInvoice.getCustomerNumber());
+                sInvoice.getCustomerNumber());
 
-        API.createInvoice(mUser.getAuthenticationToken(), params,
-                          new API.APICallback<APIResponse<CreateInVoiceData>>() {
-                              @Override
-                              public void onResponse(APIResponse<CreateInVoiceData> response) {
-                                  // TODO: Go to invoice manager
-                                  Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT)
-                                          .show();
-                                  getActivity().finish();
-                              }
+        API.createInvoice(mCurrentUser.getAuthenticationToken(), params,
+                new API.APICallback<APIResponse<CreateInVoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<CreateInVoiceData> response) {
+                        // TODO: Go to invoice manager
+                        Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                        getActivity().finish();
+                    }
 
-                              @Override
-                              public void onFailure(int code, String message) {
-                                  Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                              }
-                          });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
