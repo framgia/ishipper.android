@@ -457,7 +457,7 @@ public class NearbyOrderFragment extends Fragment implements
         final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_nearby_receive_order, null);
         dialog.setView(view);
-        view.findViewById(R.id.btnPositive).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.confirm_dialog_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog loading = CommonUtils.showLoadingDialog(mContext);
@@ -482,7 +482,7 @@ public class NearbyOrderFragment extends Fragment implements
             }
         });
 
-        view.findViewById(R.id.btnNegative).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.confirm_dialog_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

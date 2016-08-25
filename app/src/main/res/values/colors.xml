@@ -36,4 +36,5 @@
     <color name="color_status_finish">#28a277</color>
     <color name="transparent">#00000000</color>
     <color name="shadow_color">#4D000000</color>
+    <color name="background_list_order">#DBDDE2</color>
 </resources>

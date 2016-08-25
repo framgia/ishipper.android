@@ -7,8 +7,7 @@
     android:name="com.framgia.ishipper.ui.fragments.OrderListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:background="@color/background_list_order"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.framgia.ishipper.ui.fragment.OrderListFragment"
-    tools:listitem="@layout/item_order"/>
+    tools:listitem="@layout/order_detail_window"/>

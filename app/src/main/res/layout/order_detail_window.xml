@@ -36,8 +36,7 @@
                 android:id="@+id/ll_shop_order_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:paddingBottom="@dimen/_10dp"
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:paddingRight="@dimen/activity_vertical_margin"
@@ -45,11 +44,10 @@
 
                 <TextView
                     android:id="@+id/tv_item_order_shop_name"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_order_green"
-                    android:drawablePadding="10dp"
+                    android:drawablePadding="@dimen/_10dp"
                     android:gravity="bottom"
                     android:text="Rhodi Shop"
                     android:visibility="visible"/>
@@ -60,6 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
+                    android:layout_marginTop="@dimen/_5dp"
                     android:rating="3.7"
                     android:stepSize="0.1"/>
             </LinearLayout>
@@ -171,6 +170,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="13dp"
                         android:drawablePadding="15dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:text="Minh khai ha noi"/>
                 </LinearLayout>
 
@@ -192,6 +193,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:text="13 Nam Du"/>
 
                 </LinearLayout>

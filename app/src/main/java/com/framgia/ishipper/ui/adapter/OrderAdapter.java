@@ -12,10 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
@@ -23,10 +23,11 @@ import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.fragment.OrderListFragment.OnListFragmentInteractionListener;
 import com.framgia.ishipper.util.TextFormatUtils;
+
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -47,8 +48,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_detail_window,
-                                                                     parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.order_detail_window, parent, false);
         return new ViewHolder(view);
     }
 
@@ -82,31 +83,31 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         });
         setStatus(holder);
         API.getUser(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                    String.valueOf(holder.mInvoice.getUserId()),
-                    new API.APICallback<APIResponse<GetUserData>>() {
-                        @Override
-                        public void onResponse(APIResponse<GetUserData> response) {
-                            User user = response.getData().getUser();
-                            holder.mTvNearbyShopName.setText(user.getName());
-                            holder.mRatingOrderWindow.setRating((float) user.getRate());
+                String.valueOf(holder.mInvoice.getUserId()),
+                new API.APICallback<APIResponse<GetUserData>>() {
+                    @Override
+                    public void onResponse(APIResponse<GetUserData> response) {
+                        User user = response.getData().getUser();
+                        holder.mTvNearbyShopName.setText(user.getName());
+                        holder.mRatingOrderWindow.setRating((float) user.getRate());
 
-                            holder.mTvNearbyShopName.setText(holder.mInvoice.getName());
-                            holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
-                            holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
-                            holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
-                            holder.mTvItemOrderOrderPrice.setText(
-                                    TextFormatUtils.formatPrice(holder.mInvoice.getPrice()));
-                            holder.mTvNearbyShipPrice.setText(
-                                    TextFormatUtils.formatPrice(holder.mInvoice.getShippingPrice()));
-                            holder.mTvItemOrderDistance.setText(
-                                    TextFormatUtils.formatDistance(holder.mInvoice.getDistance()));
-                        }
+                        holder.mTvNearbyShopName.setText(holder.mInvoice.getName());
+                        holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
+                        holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
+                        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
+                        holder.mTvItemOrderOrderPrice.setText(
+                                TextFormatUtils.formatPrice(holder.mInvoice.getPrice()));
+                        holder.mTvNearbyShipPrice.setText(
+                                TextFormatUtils.formatPrice(holder.mInvoice.getShippingPrice()));
+                        holder.mTvItemOrderDistance.setText(
+                                TextFormatUtils.formatDistance(holder.mInvoice.getDistance()));
+                    }
 
-                        @Override
-                        public void onFailure(int code, String message) {
-                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private String getTimeFromOrder(Long time) {
@@ -124,113 +125,101 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         String action = "";
         Drawable drawableStatus;
         int statusColor;
-        boolean canCancel;
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     textStatus = mContext.getString(R.string.order_status_wait);
                     action = "";
-                    canCancel = true;
                 } else {
                     textStatus = mContext.getString(R.string.order_shop_status_wait);
                     action = mContext.getString(R.string.action_shop_wait);
-                    canCancel = true;
                 }
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_status_waiting,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_status_waiting,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.color_status_waiting);
                 break;
             case Invoice.STATUS_CODE_WAITING:
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     textStatus = mContext.getString(R.string.order_status_take);
                     action = mContext.getString(R.string.action_shipper_take);
-                    canCancel = true;
                 } else {
                     textStatus = mContext.getString(R.string.order_shop_status_take);
                     action = "";
-                    canCancel = true;
                 }
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_status_pick,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_status_pick,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.color_status_pick);
                 break;
             case Invoice.STATUS_CODE_SHIPPING:
                 textStatus = mContext.getString(R.string.order_status_shipping);
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     action = mContext.getString(R.string.action_shipper_shipping);
-                    canCancel = true;
                 } else {
                     action = "";
-                    canCancel = false;
                 }
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_status_delivering,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_status_delivering,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.color_status_shipping);
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
                 textStatus = mContext.getString(R.string.order_status_delivered);
                 if (MainActivity.userType == MainActivity.SHIPPER) {
                     action = "";
-                    canCancel = false;
                 } else {
                     action = mContext.getString(R.string.action_shop_delivered);
-                    canCancel = false;
                 }
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_status_delivered,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_status_delivered,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.color_status_delivered);
                 break;
             case Invoice.STATUS_CODE_FINISHED:
                 textStatus = mContext.getString(R.string.order_status_finished);
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    canCancel = false;
-                } else {
-                    canCancel = false;
-                }
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_status_finish,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_status_finish,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.color_status_finish);
                 break;
             case Invoice.STATUS_CODE_CANCEL:
                 textStatus = mContext.getString(R.string.order_status_cancelled);
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    canCancel = false;
-                } else {
-                    canCancel = false;
-                }
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_cancel,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_cancel,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.color_status_cancelled);
                 break;
             default:
                 textStatus = "";
                 action = mContext.getString(R.string.action);
-                canCancel = true;
-                drawableStatus = ResourcesCompat.getDrawable(mContext.getResources(),
-                                                             R.drawable.ic_status_waiting,
-                                                             null);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        mContext.getResources(),
+                        R.drawable.ic_status_waiting,
+                        null
+                );
                 statusColor = mContext.getResources().getColor(R.color.colorAccent);
                 break;
         }
 
-            holder.mShopOrderStatus.setVisibility(View.GONE);
-            holder.mTvShippingOrderStatus.setVisibility(View.VISIBLE);
-            holder.mTvShippingOrderStatus.setText(textStatus);
-            holder.mTvShippingOrderStatus.setTextColor(statusColor);
-            holder.mTvShippingOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
-                                                                                  null, null, null);
-        if (! canCancel) {
-            holder.mBtnCancelItemOrder.setVisibility(View.GONE);
-        } else {
-            holder.mBtnCancelItemOrder.setVisibility(View.VISIBLE);
-            holder.mBtnCancelItemOrder.setText(R.string.cancelled);
-        }
+        holder.mShopOrderStatus.setVisibility(View.GONE);
+        holder.mTvShippingOrderStatus.setVisibility(View.VISIBLE);
+        holder.mTvShippingOrderStatus.setText(textStatus);
+        holder.mTvShippingOrderStatus.setTextColor(statusColor);
+        holder.mTvShippingOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
+                null, null, null);
         if (action.equals("")) {
             holder.mBtnActionItemOrder.setVisibility(View.GONE);
         } else {

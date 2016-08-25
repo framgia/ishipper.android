@@ -50,6 +50,7 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     @BindView(R.id.btn_detail_show_shipper) TextView mBtnDetailShowShipper;
     @BindView(R.id.tv_detail_customer_name) TextView mTvDetailCustomerName;
     @BindView(R.id.tv_detail_customer_phone) TextView mTvDetailCustomerPhone;
+    @BindView(R.id.btn_detail_cancel_order) Button mBtnDetailCancelOrder;
     private User mCurrentUser;
 
     @Override
@@ -64,6 +65,7 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
 
     private void initView() {
         mCurrentUser = Config.getInstance().getUserInfo(getContext());
+        mBtnDetailCancelOrder.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
         mBtnDetailShowPath.setVisibility(View.GONE);
         mBtnDetailCustomerCall.setVisibility(View.GONE);
