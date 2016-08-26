@@ -11,17 +11,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.ui.activity.MainActivity;
-import com.framgia.ishipper.ui.fragment.OrderListFragment.OnListFragmentInteractionListener;
 import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.Calendar;
@@ -34,16 +27,16 @@ import butterknife.ButterKnife;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
     private List<Invoice> mInvoiceList;
-    private OnListFragmentInteractionListener mListener;
     private OnClickActionListener mClickActionListener;
     private OnClickCancelListener mClickCancelListener;
+    private OnclickViewListener mClickViewListener;
     private Context mContext;
 
     public OrderAdapter(Context context, List<Invoice> invoiceList,
-                        OnListFragmentInteractionListener listener) {
+                        OnclickViewListener listener) {
         mContext = context;
         mInvoiceList = invoiceList;
-        mListener = listener;
+        mClickViewListener = listener;
     }
 
     @Override
@@ -60,8 +53,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mInvoice);
+                if (null != mClickViewListener) {
+                    mClickViewListener.onclickViewListener(holder.mInvoice);
                 }
             }
         });
@@ -82,32 +75,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             }
         });
         setStatus(holder);
-        API.getUser(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                String.valueOf(holder.mInvoice.getUserId()),
-                new API.APICallback<APIResponse<GetUserData>>() {
-                    @Override
-                    public void onResponse(APIResponse<GetUserData> response) {
-                        User user = response.getData().getUser();
-                        holder.mTvNearbyShopName.setText(user.getName());
-                        holder.mRatingOrderWindow.setRating((float) user.getRate());
 
-                        holder.mTvNearbyShopName.setText(holder.mInvoice.getName());
-                        holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
-                        holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
-                        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
-                        holder.mTvItemOrderOrderPrice.setText(
-                                TextFormatUtils.formatPrice(holder.mInvoice.getPrice()));
-                        holder.mTvNearbyShipPrice.setText(
-                                TextFormatUtils.formatPrice(holder.mInvoice.getShippingPrice()));
-                        holder.mTvItemOrderDistance.setText(
-                                TextFormatUtils.formatDistance(holder.mInvoice.getDistance()));
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        holder.mTvNearbyShopName.setText(holder.mInvoice.getName());
+        holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
+        holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
+        holder.mTvItemOrderShipTime.setText(holder.mInvoice.getDeliveryTime());
+        holder.mTvItemOrderOrderPrice.setText(
+                TextFormatUtils.formatPrice(holder.mInvoice.getPrice()));
+        holder.mTvNearbyShipPrice.setText(
+                TextFormatUtils.formatPrice(holder.mInvoice.getShippingPrice()));
+        holder.mTvItemOrderDistance.setText(
+                TextFormatUtils.formatDistance(holder.mInvoice.getDistance()));
     }
 
     private String getTimeFromOrder(Long time) {
@@ -252,6 +230,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         mClickCancelListener = clickCancelListener;
     }
 
+    public OnclickViewListener getClickViewListener() {
+        return mClickViewListener;
+    }
+
+    public void setClickViewListener(
+            OnclickViewListener clickViewListener) {
+        mClickViewListener = clickViewListener;
+    }
+
     @Override
     public int getItemCount() {
         if (mInvoiceList == null)
@@ -294,5 +281,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public interface OnClickCancelListener {
         void onClickCancelListener(Invoice invoice);
+    }
+
+    public interface OnclickViewListener {
+        void onclickViewListener(Invoice invoice);
     }
 }

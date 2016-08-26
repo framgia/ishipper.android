@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -24,15 +25,23 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.model.ReviewUser;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
+import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
+import com.framgia.ishipper.ui.activity.OrderDetailActivity;
+import com.framgia.ishipper.ui.view.ReportDialog;
+import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,7 +208,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                         Invoice.STATUS_SHIPPED, new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
-                                loadingDialog.dismiss();
                                 invoice.setStatus(Invoice.STATUS_SHIPPED);
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
@@ -224,9 +232,9 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 invoice.setStatus(Invoice.STATUS_FINISHED);
-                                loadingDialog.dismiss();
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
                                 notifyChangeTab(Invoice.STATUS_CODE_FINISHED);
+                                loadingDialog.dismiss();
                             }
 
                             @Override
@@ -239,13 +247,24 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         }
     }
 
+
     @Override
     public void onClickCancel(Invoice invoice) {
                 notifyChangeTab(invoice.getStatusCode());
                 notifyChangeTab(Invoice.STATUS_CODE_CANCEL);
     }
 
-    public class OrderManagerPagerAdapter extends FragmentStatePagerAdapter {
+    @Override
+    public void onClickView(Invoice invoice) {
+        Log.d("onClick item fragment", invoice.getAddressStart() + "null");
+        Intent intent = new Intent(mContext, OrderDetailActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
+        intent.putExtras(extras);
+        startActivityForResult(intent, OrderDetailActivity.REQUEST_STATUS_CODE);
+    }
+
+    public class OrderManagerPagerAdapter extends FragmentPagerAdapter {
 
         private List<OrderListFragment> mOrderListFragments;
         private List<String> mListTitle;
@@ -280,9 +299,17 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ListShipperRegActivity.REQUEST_CODE_RESULT && resultCode == Activity.RESULT_OK) {
-            // TODO update list when accept success
-//            invoice.setStatus(Invoice.STATUS_SHIPPING);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case ListShipperRegActivity.REQUEST_CODE_RESULT:
+                    // TODO update list when accept success
+                    break;
+                case OrderDetailActivity.REQUEST_STATUS_CODE:
+                    int mStatusCode = data.getIntExtra(OrderDetailActivity.KEY_STATUS_CODE, 0);
+                    mViewPager.setCurrentItem(mStatusCode);
+                    mListOrderFragment.get(mStatusCode).setData(mContext);
+                    break;
+            }
         }
     }
 

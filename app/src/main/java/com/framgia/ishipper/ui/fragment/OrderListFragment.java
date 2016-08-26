@@ -1,6 +1,7 @@
 package com.framgia.ishipper.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,14 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderListFragment extends Fragment implements OrderAdapter.OnClickCancelListener,
-        OrderAdapter.OnClickActionListener {
+        OrderAdapter.OnClickActionListener, OrderAdapter.OnclickViewListener {
     private static final String TAG = "OrderListFragment";
     private static final String LIST_INVOICE = "list invoice";
     private static final String TAB_TITLE = "title";
     private static final String STATUS_CODE = "status";
     private String mTitle;
     private int mStatusCode;
-    private OnListFragmentInteractionListener mListener;
     private OnActionClickListener mOnActionClickListener;
 
     private List<Invoice> mInvoiceList;
@@ -96,7 +96,7 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
             mInvoiceList = new ArrayList<>();
         }
         if (mOrderAdapter == null) {
-            mOrderAdapter = new OrderAdapter(context, mInvoiceList, mListener);
+            mOrderAdapter = new OrderAdapter(context, mInvoiceList, this);
         }
     }
 
@@ -154,18 +154,11 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(
-                    context.toString() + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -182,13 +175,18 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         }
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Invoice invoice);
+    @Override
+    public void onclickViewListener(Invoice invoice) {
+        if (mOnActionClickListener != null) {
+            mOnActionClickListener.onClickView(invoice);
+        }
     }
 
     public interface OnActionClickListener {
         void onClickAction(Invoice invoice);
 
         void onClickCancel(Invoice invoice);
+
+        void onClickView(Invoice invoice);
     }
 }

@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
 //    private static final String DEV_URL = "http://ishipper.herokuapp.com";
-        private static final String DEV_URL = "http://192.168.1.150:3001/";
+        private static final String DEV_URL = "http://192.168.1.151:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -219,5 +219,13 @@ public class APIDefinition {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PARAM_ID = "id";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/invoices/{" + PARAM_ID + "}";
+    }
+
+    public class ReportUser {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE +  "}/reports";
+        public static final String PARAM_INVOICE_ID = "report[invoice_id]";
+        public static final String PARAM_REVIEW_TYPE = "report[review_type]";
+        public static final String PARAM_CONTENT = "report[content]";
     }
 }

@@ -561,5 +561,14 @@
             android:text="@string/detail_cancel_order"
             android:textColor="@android:color/white"
             android:visibility="visible"/>
+        <Button
+            android:id="@+id/btn_report_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorGreenDark"
+            android:text="@string/report"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
     </LinearLayout>
 </RelativeLayout>
