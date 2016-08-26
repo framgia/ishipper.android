@@ -1,12 +1,11 @@
 package com.framgia.ishipper.net.data;
-import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.User;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by vuduychuong1994 on 8/25/16.
  */
 public class ShowInvoiceData {
-    public Invoice invoice;
-    public User user;
+    @SerializedName("invoice") public DetailInvoiceData detailInvoiceData;
 
 }
