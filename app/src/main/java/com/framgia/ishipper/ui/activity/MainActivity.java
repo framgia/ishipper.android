@@ -32,8 +32,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
-        implements OrderListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.main_navigation) NavigationView mNavigationView;
@@ -166,18 +165,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void onListFragmentInteraction(Invoice invoice) {
-        //TODO: GO to Order details
-        Log.d("onClick item fragment", invoice.getAddressStart() + "null");
-        Intent intent = new Intent(MainActivity.this, OrderDetailActivity.class);
-        Bundle extras = new Bundle();
-        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
-        intent.putExtras(extras);
-        startActivity(intent);
     }
 
     @Override

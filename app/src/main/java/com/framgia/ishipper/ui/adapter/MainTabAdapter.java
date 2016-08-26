@@ -105,6 +105,11 @@ public class MainTabAdapter extends FragmentPagerAdapter
         mOrderListFragment.notifyChangedData(mContext);
     }
 
+    @Override
+    public void onClickView(Invoice invoice) {
+
+    }
+
     public Fragment getFragment(int position) {
         return mFragments.get(position);
     }

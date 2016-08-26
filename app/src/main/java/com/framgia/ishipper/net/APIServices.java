@@ -8,6 +8,7 @@ import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ListShipperData;
+import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
@@ -148,7 +149,7 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Path(APIDefinition.GetUser.PARAM_USER_ID) String id);
 
-    /* Get User */
+    /* Get list shipper received */
     @GET(APIDefinition.GetListShipperReceived.PATH)
     Call<APIResponse<ListShipperData>> getListShipperReceived(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
@@ -177,5 +178,20 @@ public interface APIServices {
             @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_USER_TYPE) String userType,
             @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_ID) String id,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
+    /**
+     * Post report user
+     *
+     * @param userType
+     * @param token
+     * @param params
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(APIDefinition.ReportUser.PATH)
+    Call<APIResponse<ReportUserData>> reportUser(
+            @Path(APIDefinition.ReportUser.PARAM_USER_TYPE) String userType,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @FieldMap Map<String, String> params);
 
 }

@@ -18,14 +18,20 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.ReviewUser;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceData;
+import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
+import com.framgia.ishipper.ui.view.ReportDialog;
 import com.framgia.ishipper.util.TextFormatUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +39,8 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends AppCompatActivity {
 
     public static final String KEY_INVOICE_ID = "invoice id";
+    public static final String KEY_STATUS_CODE = "status code";
+    public static final int REQUEST_STATUS_CODE = 300;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.tv_detail_distance) TextView tvDetailDistance;
@@ -55,6 +63,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     @BindView(R.id.btn_detail_receive_order) Button mBtnDetailReceiveOrder;
     @BindView(R.id.btn_detail_cancel_register_order) Button mBtnDetailCancelRegisterOrder;
     @BindView(R.id.btn_detail_cancel_order) Button mBtnDetailCancelOrder;
+    @BindView(R.id.btn_report_user) Button mBtnReportUser;
     private User mCurrentUser;
     private Invoice mInvoice;
     @Override
@@ -87,6 +96,12 @@ public class OrderDetailActivity extends AppCompatActivity {
                                     break;
                                 default:
                                     mBtnDetailCancelOrder.setVisibility(View.VISIBLE);
+                                    break;
+                                case Invoice.STATUS_CODE_WAITING:
+                                    mBtnReportUser.setVisibility(View.VISIBLE);
+                                    break;
+                                case Invoice.STATUS_CODE_CANCEL:
+                                    mBtnReportUser.setVisibility(View.VISIBLE);
                                     break;
 
                             }
@@ -139,13 +154,21 @@ public class OrderDetailActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(KEY_STATUS_CODE, mInvoice.getStatusCode());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
     @OnClick({
             R.id.btn_detail_show_path,
             R.id.btn_detail_shop_call,
             R.id.btn_detail_receive_order,
             R.id.btn_detail_cancel_order,
-            R.id.btn_detail_cancel_register_order
+            R.id.btn_detail_cancel_register_order,
+            R.id.btn_report_user
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -163,9 +186,44 @@ public class OrderDetailActivity extends AppCompatActivity {
             case R.id.btn_detail_cancel_register_order:
                 // TODO: 25/08/2016 cancel register order
                 break;
+            case R.id.btn_report_user:
+                showReportDialog(mInvoice);
+                break;
         }
     }
 
+    private void showReportDialog(final Invoice invoice) {
+        final ReportDialog reportDialog = new ReportDialog(OrderDetailActivity.this);
+        reportDialog.setListener(new ReportDialog.OnReportListener() {
+            @Override
+            public void onReportListener(ReviewUser reviewUser) {
+                Map<String, String> params = new HashMap<>();
+                params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID, String.valueOf(invoice.getId()));
+                params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
+                params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
+                API.reportUser(User.ROLE_SHIPPER,
+                               Config.getInstance().getUserInfo(OrderDetailActivity.this)
+                                       .getAuthenticationToken(),
+                               params,
+                               new API.APICallback<APIResponse<ReportUserData>>() {
+                                   @Override
+                                   public void onResponse(APIResponse<ReportUserData> response) {
+                                       Toast.makeText(OrderDetailActivity.this, response.getMessage(),
+                                                      Toast.LENGTH_SHORT).show();
+                                       initData();
+                                   }
+
+                                   @Override
+                                   public void onFailure(int code, String message) {
+                                       Toast.makeText(OrderDetailActivity.this, message,
+                                                      Toast.LENGTH_SHORT).show();
+                                   }
+                               });
+                reportDialog.cancel();
+            }
+        });
+        reportDialog.show();
+    }
     private void showCancelOrderDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_nearby_receive_order, null);
         ((TextView) view.findViewById(R.id.confirm_dialog_title)).setText(R.string.dialog_cancel_order_title);
