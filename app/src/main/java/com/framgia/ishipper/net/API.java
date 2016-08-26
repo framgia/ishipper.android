@@ -217,4 +217,9 @@ public abstract class API {
                                   final APICallback<APIResponse<ReportUserData>> callback) {
         client.reportUser(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
+
+    public static void postRating(HashMap<String, String> params, String token,
+                                  final APICallback<APIResponse<EmptyData>> callback) {
+        client.postRating(token, params).enqueue(new RetrofitCallback<>(callback));
+    }
 }
