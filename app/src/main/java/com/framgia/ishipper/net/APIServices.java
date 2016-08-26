@@ -179,6 +179,12 @@ public interface APIServices {
             @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_ID) String id,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
+    @FormUrlEncoded
+    @POST(APIDefinition.PostShipperReceiveInvoice.PATH)
+    Call<APIResponse<EmptyData>> postRating(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @FieldMap Map<String, String> params);
+
     /**
      * Post report user
      *
@@ -193,5 +199,4 @@ public interface APIServices {
             @Path(APIDefinition.ReportUser.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @FieldMap Map<String, String> params);
-
 }

@@ -302,6 +302,11 @@ public class NearbyOrderFragment extends Fragment implements
                 mWindowOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
+
+                if (pos >= invoiceList.size()) {
+                    return false;
+                }
+
                 mInvoice = invoiceList.get(pos);
                 mBtnNearbyReceiveOrder.setTag(mInvoice.getStringId());
 
