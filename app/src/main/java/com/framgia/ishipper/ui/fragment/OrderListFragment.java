@@ -1,15 +1,17 @@
 package com.framgia.ishipper.ui.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.RelativeLayout;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
@@ -23,6 +25,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class OrderListFragment extends Fragment implements OrderAdapter.OnClickCancelListener,
         OrderAdapter.OnClickActionListener, OrderAdapter.OnclickViewListener {
@@ -30,12 +35,17 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     private static final String LIST_INVOICE = "list invoice";
     private static final String TAB_TITLE = "title";
     private static final String STATUS_CODE = "status";
+    @BindView(R.id.list) RecyclerView mRecyclerView;
+    @BindView(R.id.layout_loading) RelativeLayout mLayoutLoading;
+    @BindView(R.id.layout_refresh) SwipeRefreshLayout mLayoutRefresh;
     private String mTitle;
     private int mStatusCode;
     private OnActionClickListener mOnActionClickListener;
 
     private List<Invoice> mInvoiceList;
     private OrderAdapter mOrderAdapter;
+    private Unbinder mUnbinder;
+    private Context mContext;
 
     public OrderListFragment() {
     }
@@ -63,26 +73,35 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_order_list, container, false);
-
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            initAdapter(context);
-            mOrderAdapter.setClickCancelListener(this);
-            mOrderAdapter.setClickActionListener(this);
-            recyclerView.setAdapter(mOrderAdapter);
-        }
+        mUnbinder = ButterKnife.bind(this, view);
+        mContext = view.getContext();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        initAdapter(mContext);
+        mRecyclerView.setAdapter(mOrderAdapter);
+        mLayoutRefresh.setColorSchemeColors(Color.GREEN, Color.RED, Color.BLUE);
+        setEvent();
+        setData(mContext);
         return view;
+    }
+
+    private void setEvent() {
+        mOrderAdapter.setClickCancelListener(this);
+        mOrderAdapter.setClickActionListener(this);
+        mLayoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
+                           Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                           mStatusCode);
+            }
+        });
     }
 
     public void setData(Context context) {
         initAdapter(context);
-        if (mInvoiceList.size() == 0) {
-            getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-                       Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                       mStatusCode);
-        }
+        getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
+                   Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                   mStatusCode);
     }
 
     public void notifyChangedData(Context context) {
@@ -102,6 +121,7 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     }
 
     private void getInvoice(String role, String authenticationToken, int statusCode) {
+        showLoading();
         String status = Invoice.getStatusFromCode(statusCode);
         Map<String, String> params = new HashMap<>();
         params.put(APIDefinition.GetListInvoice.PARAM_STATUS, status);
@@ -115,14 +135,29 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
                                mInvoiceList.clear();
                                mInvoiceList.addAll(response.getData().getInvoiceList());
                                mOrderAdapter.notifyDataSetChanged();
+                               dismissLoading();
                            }
 
                            @Override
                            public void onFailure(int code, String message) {
                                Log.d(TAG, "onFailure: " + message);
+                               dismissLoading();
                            }
                        }
         );
+    }
+
+    private void dismissLoading() {
+        mLayoutLoading.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        if (mLayoutRefresh.isRefreshing()) {
+            mLayoutRefresh.setRefreshing(false);
+        }
+    }
+
+    private void showLoading() {
+        mLayoutLoading.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     public List<Invoice> getInvoiceList() {
@@ -160,6 +195,12 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override

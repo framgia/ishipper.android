@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,7 +74,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
         mViewPager.setAdapter(mOrderManagerPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-//        mViewPager.setOffscreenPageLimit(2);
 
         for (int type = 0; type < 7; type++) {
             //TODO: Fake list Order
@@ -92,12 +91,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             mOrderManagerPagerAdapter.notifyDataSetChanged();
         }
 
-        mListOrderFragment.get(Invoice.STATUS_CODE_INIT).setData(mContext);
-
-    }
-
-    private void onSelectTab(int position) {
-        mListOrderFragment.get(position).setData(mContext);
     }
 
     private void initEvent() {
@@ -111,7 +104,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             @Override
             public void onPageSelected(int position) {
                 Log.d(TAG, "onPageSelected: " + position);
-                onSelectTab(position);
             }
 
             @Override
@@ -253,10 +245,10 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         Bundle extras = new Bundle();
         extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
         intent.putExtras(extras);
-        startActivityForResult(intent, OrderDetailActivity.REQUEST_STATUS_CODE);
+        startActivity(intent);
     }
 
-    public class OrderManagerPagerAdapter extends FragmentPagerAdapter {
+    public class OrderManagerPagerAdapter extends FragmentStatePagerAdapter {
 
         private List<OrderListFragment> mOrderListFragments;
         private List<String> mListTitle;
@@ -295,11 +287,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             switch (requestCode) {
                 case ListShipperRegActivity.REQUEST_CODE_RESULT:
                     // TODO update list when accept success
-                    break;
-                case OrderDetailActivity.REQUEST_STATUS_CODE:
-                    int mStatusCode = data.getIntExtra(OrderDetailActivity.KEY_STATUS_CODE, 0);
-                    mViewPager.setCurrentItem(mStatusCode);
-                    mListOrderFragment.get(mStatusCode).setData(mContext);
                     break;
             }
         }
