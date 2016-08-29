@@ -1,17 +1,15 @@
 package com.framgia.ishipper.ui.fragment;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -50,6 +48,7 @@ import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
+import com.framgia.ishipper.util.PermissionUtils;
 import com.framgia.ishipper.util.TextFormatUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -65,6 +64,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -92,6 +92,7 @@ public class NearbyOrderFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "NearbyOrderFragment";
     private static final float RADIUS = 5;
+    @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     @BindView(R.id.iv_detail_promotion_label) ImageView mIvPromotionLabel;
     @BindView(R.id.tv_item_order_ship_price) TextView mTvNearbyShipPrice;
@@ -128,6 +129,9 @@ public class NearbyOrderFragment extends Fragment implements
     private int mWidthMap;
     private Invoice mInvoice;
     private User mUser;
+    private FetchAddressTask task;
+    private ArrayList<Invoice> invoiceList = new ArrayList<>();
+    private boolean autoRefresh = true;
 
     public NearbyOrderFragment() {
         // Required empty public constructor
@@ -176,7 +180,7 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady: ");
-        if (checkPermission()) return;
+        if (PermissionUtils.checkLocationPermission(mContext)) return;
         mGoogleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
     }
@@ -184,7 +188,7 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected: ");
-        if (checkPermission()) return;
+        if (PermissionUtils.checkLocationPermission(mContext)) return;
         CommonUtils.checkLocationRequestSetting(
                 getActivity(),
                 mGoogleApiClient,
@@ -197,29 +201,17 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void initMap() {
-        if (checkPermission()) return;
+        if (PermissionUtils.checkLocationPermission(mContext)) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
             mCurrentUser.setLatitude(mLocation.getLatitude());
             mCurrentUser.setLongitude(mLocation.getLongitude());
             MapUtils.zoomToPosition(mGoogleMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
             markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), RADIUS);
+            configGoogleMap();
         } else {
             Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean checkPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            return true;
-        }
-        return false;
     }
 
     private void markInvoiceNearby(final double latitude, final double longitude, float radius) {
@@ -232,12 +224,12 @@ public class NearbyOrderFragment extends Fragment implements
                     @Override
                     public void onResponse(APIResponse<ListInvoiceData> response) {
                         Log.d(TAG, "onResponse: " + response.getMessage());
-                        addListMarker(response.getData().getInvoiceList());
                         Toast.makeText(mContext,
                                 response.getMessage(),
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        configGoogleMap(response.getData().getInvoiceList());
+                        invoiceList = (ArrayList<Invoice>) response.getData().getInvoiceList();
+                        addListMarker(invoiceList);
                     }
 
                     @Override
@@ -247,6 +239,11 @@ public class NearbyOrderFragment extends Fragment implements
                 });
     }
 
+    /**
+     * add list invoice marker to Map
+     *
+     * @param invoiceList list invoice
+     */
     private void addListMarker(List<Invoice> invoiceList) {
         mGoogleMap.clear();
         for (Invoice invoice : invoiceList) {
@@ -293,16 +290,37 @@ public class NearbyOrderFragment extends Fragment implements
         }
     }
 
-    private void configGoogleMap(final List<Invoice> invoiceList) {
+    private void switchAutoRefresh(boolean status) {
+        autoRefresh = status;
+        mImgPosMarker.setVisibility(status ? View.VISIBLE : View.GONE);
+
+    }
+
+    /**
+     * Config google with setting like camera change listener, marker clicked listener...
+     */
+    private void configGoogleMap() {
+        mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                if (autoRefresh) {
+                    if (task != null) {
+                        task.cancel(true);
+                    }
+                    task = new FetchAddressTask();
+                    task.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                }
+            }
+        });
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.setPadding(0, 150, 0, 0);
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                switchAutoRefresh(false);
                 mWindowOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
-
                 if (pos >= invoiceList.size()) {
                     return false;
                 }
@@ -392,6 +410,7 @@ public class NearbyOrderFragment extends Fragment implements
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                switchAutoRefresh(true);
                 mWindowOrderDetail.setVisibility(View.GONE);
             }
         });
@@ -500,7 +519,7 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_nearby_order, menu);
+        inflater.inflate(R.menu.menu_main_content, menu);
     }
 
     @Override
@@ -522,7 +541,6 @@ public class NearbyOrderFragment extends Fragment implements
                 double latitude = place.getLatLng().latitude;
                 double longitude = place.getLatLng().longitude;
                 MapUtils.zoomToPosition(mGoogleMap, new LatLng(latitude, longitude));
-                markInvoiceNearby(latitude, longitude, RADIUS);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(mContext, data);
                 Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -534,6 +552,35 @@ public class NearbyOrderFragment extends Fragment implements
             if (resultCode == Activity.RESULT_OK) {
                 initMap();
             }
+        }
+    }
+
+    /**
+     * Task fetch address from location in another thread
+     */
+    private class FetchAddressTask extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mTvSearchArea.setText("...");
+        }
+
+        @Override
+        protected String doInBackground(LatLng... latLngs) {
+            double latitude = latLngs[0].latitude;
+            double longitude = latLngs[0].longitude;
+//            markInvoiceNearby(latitude, longitude, RADIUS);
+            return MapUtils.getAddressFromLocation(
+                    mContext,
+                    new LatLng(latitude, longitude)
+            );
+        }
+
+        @Override
+        protected void onPostExecute(String address) {
+            super.onPostExecute(address);
+            mTvSearchArea.setText(address);
         }
     }
 }
