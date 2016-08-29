@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
+import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -123,11 +125,14 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NUMBER,
                 sInvoice.getCustomerNumber());
 
+        final Dialog loadingDialog = CommonUtils.showLoadingDialog(getContext());
+
         API.createInvoice(mCurrentUser.getAuthenticationToken(), params,
                 new API.APICallback<APIResponse<CreateInVoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<CreateInVoiceData> response) {
                         // TODO: Go to invoice manager
+                        loadingDialog.dismiss();
                         Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT)
                                 .show();
                         getActivity().finish();
@@ -135,6 +140,7 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
 
                     @Override
                     public void onFailure(int code, String message) {
+                        loadingDialog.dismiss();
                         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });

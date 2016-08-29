@@ -1,20 +1,22 @@
 package com.framgia.ishipper.ui.view;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.HashMap;
 
@@ -31,9 +33,9 @@ public class ReviewDialog {
 
     private AlertDialog mDialog;
     private Context mContext;
-    private int mInvoiceId;
+    private String mInvoiceId;
 
-    public ReviewDialog(Context context, int invoiceId) {
+    public ReviewDialog(Context context, String invoiceId) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_review, null);
         ButterKnife.bind(this, view);
         mInvoiceId = invoiceId;
@@ -50,21 +52,24 @@ public class ReviewDialog {
             case R.id.btn_dialog_review_send:
                 HashMap<String, String> params = new HashMap<>();
                 params.put(APIDefinition.PostRating.PARAM_CONTENT, mEdtDialogReview.getText().toString());
-                params.put(APIDefinition.PostRating.PARAM_INVOICE_ID, String.valueOf(mInvoiceId));
+                params.put(APIDefinition.PostRating.PARAM_INVOICE_ID, mInvoiceId);
                 params.put(APIDefinition.PostRating.PARAM_RATING_POINT, String.valueOf(mRatingDialogReview.getProgress()));
                 params.put(APIDefinition.PostRating.PARAM_REVIEW_TYPE, APIDefinition.PostRating.REVIEW_TYPE);
-
-                API.postRating(params, Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
+                final Dialog loadingDialog = CommonUtils.showLoadingDialog(mContext);
+                User user = Config.getInstance().getUserInfo(mContext);
+                API.postRating(params, user.getAuthenticationToken(), user.getRole(),
                         new API.APICallback<APIResponse<EmptyData>>() {
                             @Override
                             public void onResponse(APIResponse<EmptyData> response) {
                                 Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
                                 mDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(int code, String message) {
                                 Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
                             }
                         });
                 break;

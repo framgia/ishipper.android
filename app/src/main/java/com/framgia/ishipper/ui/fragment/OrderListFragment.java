@@ -1,7 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
@@ -18,6 +18,7 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.adapter.OrderAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,8 +85,8 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         }
     }
 
-    public void notifyChangedData(Context cotext) {
-        initAdapter(cotext);
+    public void notifyChangedData(Context context) {
+        initAdapter(context);
         getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
                    Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
                    mStatusCode);

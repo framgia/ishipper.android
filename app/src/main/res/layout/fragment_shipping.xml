@@ -7,6 +7,20 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/all_padding_medium">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Hiện chưa có đơn hàng nào, hãy nhận thêm đơn!"
+            android:textSize="@dimen/text_size_content"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/layoutMap"
         android:layout_width="match_parent"
@@ -77,19 +91,19 @@
             android:drawableLeft="@drawable/ic_status_pick"
             android:drawablePadding="5dp"
             android:padding="@dimen/_10dp"
-            android:text="127 Nam du"
             android:singleLine="true"
+            android:text="127 Nam du"
             android:textSize="@dimen/text_size_content"/>
 
 
         <TextView
             android:id="@+id/textAddressTo"
-            android:padding="@dimen/_10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:drawableLeft="@drawable/ic_status_delivering"
             android:drawablePadding="5dp"
+            android:padding="@dimen/_10dp"
+            android:singleLine="true"
             android:text="27 Phố Huế, Hai Bà Trưng"
             android:textSize="@dimen/text_size_content"/>
 

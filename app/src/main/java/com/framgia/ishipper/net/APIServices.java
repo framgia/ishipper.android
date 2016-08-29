@@ -180,8 +180,9 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @FormUrlEncoded
-    @POST(APIDefinition.PostShipperReceiveInvoice.PATH)
+    @POST(APIDefinition.PostRating.PATH)
     Call<APIResponse<EmptyData>> postRating(
+            @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @FieldMap Map<String, String> params);
 
