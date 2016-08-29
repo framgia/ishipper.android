@@ -72,6 +72,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     @BindView(R.id.imgExpandMap) ImageView mImgExpandMap;
     @BindView(R.id.textAddressFrom) TextView mTextAddressFrom;
     @BindView(R.id.textAddressTo) TextView mTextAddressTo;
+    @BindView(R.id.layoutEmpty) View mLayoutEmpty;
 
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap;
@@ -94,12 +95,22 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
         return v;
     }
 
-    private void getListShippingInvoice() {
+    private void checkEmpty() {
+        if (mInvoiceList.isEmpty()) {
+            mLayoutEmpty.setVisibility(View.VISIBLE);
+        } else {
+            mLayoutEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.layoutEmpty)
+    protected void getListShippingInvoice() {
         API.getListShipperInvoices(Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
                 Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<ListInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ListInvoiceData> response) {
                         mInvoiceList = response.getData().getInvoiceList();
+                        checkEmpty();
 
                         // don't need to update UI if list empty
                         if (mInvoiceList.isEmpty()) {
@@ -293,8 +304,9 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     @Override
     public void onClick(int position) {
         Intent intent = new Intent(mContext, OrderDetailActivity.class);
-        Bundle extras = new Bundle();
-        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoiceList.get(position).getId());
+        Bundle bundle = new Bundle();
+        bundle.putString(OrderDetailActivity.KEY_INVOICE_ID, mInvoiceList.get(position).getStringId());
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }

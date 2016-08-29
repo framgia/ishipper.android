@@ -76,14 +76,13 @@ public class OrderDetailActivity extends AppCompatActivity {
         initData();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     private void initData() {
         Bundle bundle = getIntent().getExtras();
         API.getInvoiceDetail(
                 mCurrentUser.getRole(),
-                String.valueOf(bundle.getInt(KEY_INVOICE_ID)),
+                bundle.getString(KEY_INVOICE_ID),
                 mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
@@ -277,6 +276,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         view.findViewById(R.id.confirm_dialog_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 API.postShipperReceiveInvoice(
                         Config.getInstance().getUserInfo(getBaseContext()).getAuthenticationToken(),
                         mDetailInvoiceData.getStringId(),

@@ -211,10 +211,10 @@ public class NearbyOrderFragment extends Fragment implements
 
     private boolean checkPermission() {
         if (ActivityCompat.checkSelfPermission(getContext(),
-                                               Manifest.permission.ACCESS_FINE_LOCATION) !=
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(),
-                                                   Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             return true;
@@ -365,8 +365,9 @@ public class NearbyOrderFragment extends Fragment implements
 
                                 for (int i = 0; i < route.size(); i++) {
 
-                                    polyOptions.color(ContextCompat.getColor(mContext.getApplicationContext()
-                                            , R.color.colorGreen));
+                                    polyOptions.color(ContextCompat.getColor(
+                                            mContext.getApplicationContext(),
+                                            R.color.colorGreen));
                                     polyOptions.width(8);
                                     polyOptions.addAll(route.get(i).getPoints());
                                 }
@@ -423,7 +424,7 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-                     R.id.rl_search_view, R.id.window_order_detail})
+            R.id.rl_search_view, R.id.window_order_detail})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_item_order_show_path:

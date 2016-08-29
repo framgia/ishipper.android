@@ -10,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,24 +23,17 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.Order;
-import com.framgia.ishipper.model.ReviewUser;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
-import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
-import com.framgia.ishipper.ui.view.ReportDialog;
 import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -223,7 +215,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
 
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
-                Log.d("hung", "onClickAction: delivered ");
                 // Hoan thanh don hang da giao
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
                 API.putUpdateInvoiceStatus(User.ROLE_SHOP, String.valueOf(invoice.getId()),
@@ -235,6 +226,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
                                 notifyChangeTab(Invoice.STATUS_CODE_FINISHED);
                                 loadingDialog.dismiss();
+                                new ReviewDialog(getContext(), invoice.getStringId()).show();
                             }
 
                             @Override

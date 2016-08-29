@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.SignInData;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 
 import java.util.HashMap;
@@ -68,9 +70,11 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER, mEdtPhoneNumber.getText().toString());
                 params.put(APIDefinition.SignIn.PARAM_PASSWORD, mEdtPassword.getText().toString());
+                final Dialog loadingDialog = CommonUtils.showLoadingDialog(this);
                 API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
                     @Override
                     public void onResponse(APIResponse<SignInData> response) {
+                        loadingDialog.dismiss();
                         Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                         Config.getInstance().setUserInfo(getApplicationContext(), response.getData().getUser());
                         startMainActivity();
@@ -78,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int code, String message) {
+                        loadingDialog.dismiss();
                         Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });

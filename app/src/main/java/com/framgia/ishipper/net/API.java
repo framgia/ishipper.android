@@ -218,8 +218,8 @@ public abstract class API {
         client.reportUser(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void postRating(HashMap<String, String> params, String token,
+    public static void postRating(HashMap<String, String> params, String token, String userType,
                                   final APICallback<APIResponse<EmptyData>> callback) {
-        client.postRating(token, params).enqueue(new RetrofitCallback<>(callback));
+        client.postRating(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
 }

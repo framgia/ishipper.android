@@ -11,16 +11,14 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.model.Order;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
 import com.framgia.ishipper.ui.fragment.NearbyOrderFragment;
 import com.framgia.ishipper.ui.fragment.NearbyShipperFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShippingFragment;
 
-import java.util.ArrayList;
-
-import static com.framgia.ishipper.ui.activity.MainActivity.*;
+import static com.framgia.ishipper.ui.activity.MainActivity.SHIPPER;
+import static com.framgia.ishipper.ui.activity.MainActivity.userType;
 
 /**
  * Created by dinhduc on 20/07/2016.
@@ -61,7 +59,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
                 return new ShippingFragment();
             } else {
                 mOrderListFragment =
-                        new OrderListFragment().newInstance(
+                        OrderListFragment.newInstance(
                                 mContext.getString(R.string.tab_title_shop_order_wait),
                                 Invoice.STATUS_CODE_INIT);
                 mOrderListFragment.setData(mContext);

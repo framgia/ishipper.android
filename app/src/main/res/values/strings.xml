@@ -201,4 +201,5 @@
     <string name="dialog_cancel_order_title">Hủy đơn hàng</string>
     <string name="dialog_cancel_order_message">Bạn có muốn hủy đơn hàng này không</string>
     <string name="report">BÁO CÁO</string>
+    <string name="message_back_to_exit">Please click BACK again to exit</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,6 +18,7 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
+import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,8 +73,6 @@ public class RegisterActivity extends ToolbarActivity {
     }
 
     private void registerRequest() {
-        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.show();
         mCurrentUser.setPhoneNumber(mEdtPhoneNumber.getText().toString());
         mCurrentUser.setPassword(mEdtPasswordRegister.getText().toString());
         mCurrentUser.setName(mEdtNameRegister.getText().toString());
@@ -86,10 +85,11 @@ public class RegisterActivity extends ToolbarActivity {
         userParams.put(APIDefinition.RegisterUser.PARAM_USER_ROLE, mCurrentUser.getRole());
         userParams.put(APIDefinition.RegisterUser.PARAM_USER_PLATE_NUMBER, mCurrentUser.getPlateNumber());
 
+        final Dialog loadingDialog = CommonUtils.showLoadingDialog(this);
         API.signUp(userParams, new API.APICallback<APIResponse<SignUpData>>() {
             @Override
             public void onResponse(APIResponse<SignUpData> response) {
-                if (progressDialog.isShowing()) progressDialog.hide();
+                loadingDialog.dismiss();
                 Config.getInstance().setUserInfo(getBaseContext(), response.getData().getUser());
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -102,7 +102,7 @@ public class RegisterActivity extends ToolbarActivity {
 
             @Override
             public void onFailure(int code, String message) {
-                if (progressDialog.isShowing()) progressDialog.hide();
+                loadingDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
