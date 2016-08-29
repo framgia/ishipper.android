@@ -40,8 +40,6 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends AppCompatActivity {
 
     public static final String KEY_INVOICE_ID = "invoice id";
-    public static final String KEY_STATUS_CODE = "status code";
-    public static final int REQUEST_STATUS_CODE = 300;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.tv_detail_distance) TextView tvDetailDistance;
@@ -82,7 +80,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         API.getInvoiceDetail(
                 mCurrentUser.getRole(),
-                bundle.getString(KEY_INVOICE_ID),
+                String.valueOf(bundle.getInt(KEY_INVOICE_ID)),
                 mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
@@ -160,14 +158,6 @@ public class OrderDetailActivity extends AppCompatActivity {
             onBackPressed();
         }
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra(KEY_STATUS_CODE, mDetailInvoiceData.getStatusCode());
-        setResult(RESULT_OK, intent);
-        finish();
     }
 
     @OnClick({

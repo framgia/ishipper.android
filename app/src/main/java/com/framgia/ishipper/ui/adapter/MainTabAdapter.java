@@ -2,6 +2,7 @@ package com.framgia.ishipper.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
+import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.fragment.NearbyOrderFragment;
 import com.framgia.ishipper.ui.fragment.NearbyShipperFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
@@ -62,7 +64,6 @@ public class MainTabAdapter extends FragmentPagerAdapter
                         OrderListFragment.newInstance(
                                 mContext.getString(R.string.tab_title_shop_order_wait),
                                 Invoice.STATUS_CODE_INIT);
-                mOrderListFragment.setData(mContext);
                 mOrderListFragment.setOnActionClickListener(this);
                 return mOrderListFragment;
             }
@@ -81,7 +82,9 @@ public class MainTabAdapter extends FragmentPagerAdapter
 
     @Override
     public void onClickAction(Invoice invoice) {
-        mContext.startActivity(new Intent(mContext, ListShipperRegActivity.class));
+        Intent intent = new Intent(mContext, ListShipperRegActivity.class);
+        intent.putExtra(ListShipperRegActivity.KEY_INVOICE_ID, invoice.getId());
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -105,7 +108,11 @@ public class MainTabAdapter extends FragmentPagerAdapter
 
     @Override
     public void onClickView(Invoice invoice) {
-
+        Intent intent = new Intent(mContext, OrderDetailActivity.class);
+        Bundle extras = new Bundle();
+        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
+        intent.putExtras(extras);
+        mContext.startActivity(intent);
     }
 
     public Fragment getFragment(int position) {

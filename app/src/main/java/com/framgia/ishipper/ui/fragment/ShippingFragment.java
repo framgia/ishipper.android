@@ -305,7 +305,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     public void onClick(int position) {
         Intent intent = new Intent(mContext, OrderDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(OrderDetailActivity.KEY_INVOICE_ID, mInvoiceList.get(position).getStringId());
+        bundle.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoiceList.get(position).getId());
         intent.putExtras(bundle);
         startActivity(intent);
     }
