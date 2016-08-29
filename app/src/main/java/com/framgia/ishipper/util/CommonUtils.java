@@ -74,4 +74,8 @@ public class CommonUtils {
             }
         });
     }
+
+    public static float mToKm(int m) {
+        return m / 1000f;
+    }
 }

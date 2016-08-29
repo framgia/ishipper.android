@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.directions.route.Route;
@@ -24,6 +25,7 @@ import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -59,6 +61,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     @BindView(R.id.edt_address_end) EditText mEdtAddressEnd;
     @BindView(R.id.btnPickStart) ImageView mBtnPickStart;
     @BindView(R.id.btnPickEnd) ImageView mBtnPickEnd;
+    @BindView(R.id.tvDistance) TextView mTvDistance;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mMap;
@@ -190,13 +193,20 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
             @Override
             public void onRoutingSuccess(ArrayList<Route> arrayList, int i) {
                 PolylineOptions polyOptions = new PolylineOptions();
+                Route route;
+                int distance = 0;
                 for (int j = 0; j < arrayList.size(); j++) {
-
-                    polyOptions.color(ContextCompat.getColor(getContext().getApplicationContext()
-                            , R.color.colorGreen));
+                    route = arrayList.get(j);
+                    polyOptions.color(ContextCompat.getColor(getContext().getApplicationContext(),
+                            R.color.colorGreen));
                     polyOptions.width(8);
                     polyOptions.addAll(arrayList.get(j).getPoints());
+                    distance += route.getDistanceValue();
                 }
+
+                //Show distance
+                mTvDistance.setText(getString(R.string.text_distance, CommonUtils.mToKm(distance)));
+
                 if (mPolylineRoute != null) mPolylineRoute.remove();
                 mPolylineRoute = mMap.addPolyline(polyOptions);
                 MapUtils.updateZoomMap(mMap,
