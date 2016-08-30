@@ -1,12 +1,11 @@
 package com.framgia.ishipper.ui.fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Context;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +26,7 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.MapUtils;
+import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -34,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -70,6 +71,14 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     private LatLng mLatLngStart;
     private LatLng mLatLngFinish;
     private Polyline mPolylineRoute;
+    private Context mContext;
+    private FetchAddressTask task;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -163,7 +172,6 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                         .icon(BitmapDescriptorFactory.fromResource(
                                 R.drawable.ic_map_picker_end))
         );
-        mEdtAddressEnd.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngFinish));
     }
 
     private void addStartLocation() {
@@ -173,7 +181,6 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 new MarkerOptions()
                         .position(mLatLngStart)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
-        mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
     }
 
     private void setDonePickLocation() {
@@ -248,14 +255,23 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (checkPermission()) return;
-
+        if (PermissionUtils.checkLocationPermission(mContext)) return;
         googleMap.setMyLocationEnabled(true);
+        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                if (task != null) {
+                    task.cancel(true);
+                }
+                task = new FetchAddressTask();
+                task.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
+            }
+        });
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (checkPermission()) return;
+        if (PermissionUtils.checkLocationPermission(mContext)) return;
 
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
@@ -266,7 +282,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     new MarkerOptions()
                             .position(mLatLngStart)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
-            mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
+//            mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
             setPickEndLocation();
         } else {
             Toast.makeText(
@@ -299,16 +315,40 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         super.onDestroy();
     }
 
-    private boolean checkPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            return true;
+    /**
+     * Task fetch address from location in another thread
+     */
+    private class FetchAddressTask extends AsyncTask<LatLng, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            String loading = "...";
+            if (mStatus == PICK_START_POINT) {
+                mEdtAddressStart.setText(loading);
+            } else if (mStatus == PICK_END_POINT) {
+                mEdtAddressEnd.setText(loading);
+            }
         }
-        return false;
+
+        @Override
+        protected String doInBackground(LatLng... latLngs) {
+            double latitude = latLngs[0].latitude;
+            double longitude = latLngs[0].longitude;
+            return MapUtils.getAddressFromLocation(
+                    mContext,
+                    new LatLng(latitude, longitude)
+            );
+        }
+
+        @Override
+        protected void onPostExecute(String address) {
+            super.onPostExecute(address);
+            if (mStatus == PICK_START_POINT) {
+                mEdtAddressStart.setText(address);
+            } else if (mStatus == PICK_END_POINT) {
+                mEdtAddressEnd.setText(address);
+            }
+        }
     }
 }

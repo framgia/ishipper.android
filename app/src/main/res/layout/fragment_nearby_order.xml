@@ -22,6 +22,7 @@
             map:uiZoomGestures="true"/>
 
         <ImageView
+            android:id="@+id/img_nearby_order_pos_marker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

@@ -19,6 +19,7 @@ package com.framgia.ishipper.util;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ public abstract class PermissionUtils {
      * be shown to the user, displays a dialog that triggers the request.
      */
     public static void requestPermission(AppCompatActivity activity, int requestId,
-            String permission, boolean finishActivity) {
+                                         String permission, boolean finishActivity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
             // Display a dialog with rationale.
             PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity)
@@ -58,7 +59,7 @@ public abstract class PermissionUtils {
      * @see android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
      */
     public static boolean isPermissionGranted(String[] grantPermissions, int[] grantResults,
-            String permission) {
+                                              String permission) {
         for (int i = 0; i < grantPermissions.length; i++) {
             if (permission.equals(grantPermissions[i])) {
                 return grantResults[i] == PackageManager.PERMISSION_GRANTED;
@@ -113,7 +114,7 @@ public abstract class PermissionUtils {
     /**
      * A dialog that explains the use of the location permission and requests the necessary
      * permission.
-     * <p>
+     * <p/>
      * The activity should implement
      * {@link android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback}
      * to handle permit or denial of this permission request.
@@ -129,7 +130,7 @@ public abstract class PermissionUtils {
         /**
          * Creates a new instance of a dialog displaying the rationale for the use of the location
          * permission.
-         * <p>
+         * <p/>
          * The permission is requested after clicking 'ok'.
          *
          * @param requestCode    Id of the request that is used to request the permission. It is
@@ -181,5 +182,19 @@ public abstract class PermissionUtils {
                 getActivity().finish();
             }
         }
+
+    }
+
+    public static boolean checkLocationPermission(Context context) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return true;
+        }
+        return false;
     }
 }
