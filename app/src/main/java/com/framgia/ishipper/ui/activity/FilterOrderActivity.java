@@ -1,16 +1,18 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
@@ -18,10 +20,13 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -30,6 +35,7 @@ import butterknife.OnClick;
 
 public class FilterOrderActivity extends ToolbarActivity {
     private static final String TAG = "FilterOrderActivity";
+    public static final String INTENT_FILTER_DATA = "INTENT_FILTER_DATA";
     private User mUser;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.appbar) AppBarLayout mAppbar;
@@ -137,12 +143,18 @@ public class FilterOrderActivity extends ToolbarActivity {
                         new API.APICallback<APIResponse<FilterInvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<FilterInvoiceData> response) {
-                                // TODO: 18/08/2016
+                                Intent intent = getIntent();
+                                String data = new Gson().toJson(response.getData().getInvoiceList(),
+                                        new TypeToken<List<Invoice>>() {}.getType());
+
+                                intent.putExtra(INTENT_FILTER_DATA, data);
+                                setResult(RESULT_OK, intent);
+                                finish();
                             }
 
                             @Override
                             public void onFailure(int code, String message) {
-                                // TODO: 18/08/2016
+                                Toast.makeText(FilterOrderActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         });
                 break;

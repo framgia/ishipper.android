@@ -66,12 +66,10 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     }
 
     private void initView() {
-        mCurrentUser = Config.getInstance().getUserInfo(getContext());
-        mBtnDetailCancelOrder.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
-        mBtnDetailShowPath.setVisibility(View.GONE);
-        mBtnDetailCustomerCall.setVisibility(View.GONE);
+        mCurrentUser = Config.getInstance().getUserInfo(getContext());
         mBtnCreateOrder.setText(R.string.create_order);
+        mBtnCreateOrder.setVisibility(View.VISIBLE);
         mTvDetailDistance.setText(String.valueOf(sInvoice.getDistance()));
         mTvDetailStart.setText(sInvoice.getAddressStart());
         mTvDetailEnd.setText(sInvoice.getAddressFinish());
