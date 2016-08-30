@@ -1,6 +1,8 @@
 package com.framgia.ishipper.model;
+
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -264,7 +266,15 @@ public class Invoice implements Parcelable {
         mName = in.readString();
         mAddressStart = in.readString();
         mAddressFinish = in.readString();
+        mLatStart = in.readDouble();
+        mLatFinish = in.readDouble();
+        mLngStart = in.readDouble();
+        mLngFinish = in.readDouble();
+        mPrice = in.readDouble();
+        mShippingPrice = in.readDouble();
+        mStatus = in.readString();
         mDeliveryTime = in.readString();
+        mDistance = in.readDouble();
         mDescription = in.readString();
         mStatus = in.readString();
         mUserId = in.readInt();

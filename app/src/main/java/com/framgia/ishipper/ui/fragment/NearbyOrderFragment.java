@@ -70,6 +70,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +94,7 @@ public class NearbyOrderFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "NearbyOrderFragment";
     private static final float RADIUS = 5;
+    private static final int REQUEST_FILTER = 0x1234;
     @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     @BindView(R.id.iv_detail_promotion_label) ImageView mIvPromotionLabel;
@@ -525,7 +528,8 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_filter) {
-            startActivity(new Intent(mContext, FilterOrderActivity.class));
+            Intent intent = new Intent(mContext, FilterOrderActivity.class);
+            startActivityForResult(intent, REQUEST_FILTER);
         }
         return true;
     }
@@ -547,11 +551,16 @@ public class NearbyOrderFragment extends Fragment implements
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.d(TAG, " Search Cancel");
             }
-        }
-        if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+        } else if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
                 initMap();
             }
+        } else if (requestCode == REQUEST_FILTER && resultCode == Activity.RESULT_OK) {
+            // Update list invoice in map
+            String jsonData = data.getStringExtra(FilterOrderActivity.INTENT_FILTER_DATA);
+            List<Invoice> listInvoices = new Gson().fromJson(jsonData,
+                    new TypeToken<List<Invoice>>() {}.getType());
+            addListMarker(listInvoices);
         }
     }
 
