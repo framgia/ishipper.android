@@ -24,7 +24,6 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.DetailInvoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
@@ -35,6 +34,7 @@ import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -68,7 +68,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     private User mCurrentUser;
-    private DetailInvoiceData mDetailInvoiceData;
+    private Invoice mInvoice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +89,10 @@ public class OrderDetailActivity extends AppCompatActivity {
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ShowInvoiceData> response) {
-                        mDetailInvoiceData = response.getData().detailInvoiceData;
-                        if (mDetailInvoiceData != null) {
-                            showAction(mDetailInvoiceData.getStatusCode());
-                            User user = mDetailInvoiceData.user;
+                        mInvoice = response.getData().mInvoice;
+                        if (mInvoice != null) {
+                            showAction(mInvoice.getStatusCode());
+                            User user = mInvoice.getUser();
                             if (user != null) {
                                 if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
                                     mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
@@ -101,7 +101,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                                     tvDetailShopPhone.setText(user.getPhoneNumber());
                                 } else {
                                     mCardviewDetailShopInfor.setVisibility(View.GONE);
-                                    if (mDetailInvoiceData.getStatus().equals(
+                                    if (mInvoice.getStatus().equals(
                                             Invoice.STATUS_INIT)) {
                                         mCardviewDetailShipperInfor.setVisibility(View.GONE);
                                     } else {
@@ -112,16 +112,16 @@ public class OrderDetailActivity extends AppCompatActivity {
                                 }
                             }
                             tvDetailDistance.setText(TextFormatUtils.formatDistance(
-                                    mDetailInvoiceData.getDistance()));
-                            tvDetailStart.setText(mDetailInvoiceData.getAddressStart());
-                            tvDetailEnd.setText(mDetailInvoiceData.getAddressFinish());
-                            tvDetailOrderName.setText(mDetailInvoiceData.getName());
+                                    mInvoice.getDistance()));
+                            tvDetailStart.setText(mInvoice.getAddressStart());
+                            tvDetailEnd.setText(mInvoice.getAddressFinish());
+                            tvDetailOrderName.setText(mInvoice.getName());
                             tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(
-                                    mDetailInvoiceData.getPrice()));
+                                    mInvoice.getPrice()));
                             tvDetailShipPrice.setText(TextFormatUtils.formatPrice(
-                                    mDetailInvoiceData.getShippingPrice()));
-                            tvDetailShipTime.setText(mDetailInvoiceData.getDeliveryTime());
-                            tvDetailNote.setText(mDetailInvoiceData.getDescription());
+                                    mInvoice.getShippingPrice()));
+                            tvDetailShipTime.setText(mInvoice.getDeliveryTime());
+                            tvDetailNote.setText(mInvoice.getDescription());
                         }
                     }
 
@@ -137,7 +137,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
             switch (statusCode) {
                 case Invoice.STATUS_CODE_INIT:
-                    if (!mDetailInvoiceData.isReceived()) {
+                    if (!mInvoice.isReceived()) {
                         mBtnDetailReceiveOrder.setVisibility(View.VISIBLE);
                         mBtnDetailCancelOrder.setVisibility(View.GONE);
                     }
@@ -224,7 +224,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void onTakeOrder() {
         final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
-        API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(mDetailInvoiceData.getId()),
+        API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(mInvoice.getId()),
                                    mCurrentUser.getAuthenticationToken(),
                                    Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
@@ -251,7 +251,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             status = Invoice.STATUS_FINISHED;
         }
         API.putUpdateInvoiceStatus(mCurrentUser.getRole(),
-                                   String.valueOf(mDetailInvoiceData.getId()),
+                                   String.valueOf(mInvoice.getId()),
                                    mCurrentUser.getAuthenticationToken(),
                                    status, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
@@ -271,15 +271,15 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
     private void showReportDialog() {
-        final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
         final ReportDialog reportDialog = new ReportDialog(OrderDetailActivity.this);
         reportDialog.setListener(new ReportDialog.OnReportListener() {
             @Override
             public void onReportListener(ReviewUser reviewUser) {
+                final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
                 User user = Config.getInstance().getUserInfo(OrderDetailActivity.this);
                 Map<String, String> params = new HashMap<>();
                 params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID,
-                           String.valueOf(mDetailInvoiceData.getId()));
+                           String.valueOf(mInvoice.getId()));
                 params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
                 params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
 
@@ -316,7 +316,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 API.putUpdateInvoiceStatus(
                         mCurrentUser.getRole(),
-                        mDetailInvoiceData.getStringId(),
+                        mInvoice.getStringId(),
                         mCurrentUser.getAuthenticationToken(),
                         Invoice.STATUS_CANCEL,
                         new API.APICallback<APIResponse<InvoiceData>>() {
@@ -352,7 +352,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
                 API.postShipperReceiveInvoice(
                         Config.getInstance().getUserInfo(getBaseContext()).getAuthenticationToken(),
-                        mDetailInvoiceData.getStringId(),
+                        mInvoice.getStringId(),
                         new API.APICallback<APIResponse<EmptyData>>() {
                             @Override
                             public void onResponse(APIResponse<EmptyData> response) {

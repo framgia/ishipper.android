@@ -334,7 +334,7 @@ public class NearbyOrderFragment extends Fragment implements
                 /** get shop information */
                 API.getUser(
                         mCurrentUser.getAuthenticationToken(),
-                        String.valueOf(mInvoice.getUserId()),
+                        String.valueOf(mInvoice.getUser().getId()),
                         new API.APICallback<APIResponse<GetUserData>>() {
                             @Override
                             public void onResponse(APIResponse<GetUserData> response) {
