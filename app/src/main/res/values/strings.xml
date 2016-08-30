@@ -200,7 +200,8 @@
     <string name="detail_cancel_order">Hủy đơn hàng</string>
     <string name="dialog_cancel_order_title">Hủy đơn hàng</string>
     <string name="dialog_cancel_order_message">Bạn có muốn hủy đơn hàng này không</string>
-    <string name="report">BÁO CÁO</string>
+    <string name="report">Báo cáo</string>
     <string name="message_back_to_exit">Please click BACK again to exit</string>
     <string name="text_distance">"Khoảng cách: %1$.2f km."</string>
+    <string name="finish_order">Hoàn thành</string>
 </resources>
