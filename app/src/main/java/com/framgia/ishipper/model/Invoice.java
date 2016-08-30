@@ -39,13 +39,10 @@ public class Invoice implements Parcelable {
     @SerializedName("shipping_price") private double mShippingPrice;
     @SerializedName("status") private String mStatus;
     @SerializedName("weight") private double mWeight;
-    @SerializedName("user_id") private int mUserId;
+    @SerializedName("user") private User mUser;
     @SerializedName("customer_name") private String mCustomerName;
     @SerializedName("customer_number") private String mCustomerNumber;
     @SerializedName("received") private boolean mReceived;
-
-
-
 
     public Invoice() {
 
@@ -137,6 +134,14 @@ public class Invoice implements Parcelable {
         return mLngFinish;
     }
 
+    public User getUser() {
+        return mUser;
+    }
+
+    public void setUser(User user) {
+        mUser = user;
+    }
+
     public void setLngFinish(double lngFinish) {
         mLngFinish = lngFinish;
     }
@@ -197,14 +202,6 @@ public class Invoice implements Parcelable {
         mWeight = weight;
     }
 
-    public int getUserId() {
-        return mUserId;
-    }
-
-    public void setUserId(int userId) {
-        mUserId = userId;
-    }
-
     public String getCustomerName() {
         return mCustomerName;
     }
@@ -255,7 +252,6 @@ public class Invoice implements Parcelable {
         parcel.writeDouble(mShippingPrice);
         parcel.writeString(mStatus);
         parcel.writeDouble(mWeight);
-        parcel.writeInt(mUserId);
         parcel.writeString(mCustomerName);
         parcel.writeString(mCustomerNumber);
         parcel.writeByte((byte) (mReceived ? 1 : 0));
@@ -277,7 +273,6 @@ public class Invoice implements Parcelable {
         mDistance = in.readDouble();
         mDescription = in.readString();
         mStatus = in.readString();
-        mUserId = in.readInt();
         mCustomerName = in.readString();
         mCustomerNumber = in.readString();
         mReceived = in.readByte() != 0;
