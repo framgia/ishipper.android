@@ -146,9 +146,26 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         mOrderTitleList = orderTitleList;
     }
 
-    public void notifyChangeTab(int type) {
+    public void notifyChangeTab(final int type) {
         if (mListOrderFragment.size() > type) {
-            mListOrderFragment.get(type).notifyChangedData(mContext);
+            mListOrderFragment.get(type).notifyChangedData(mContext, null);
+        }
+    }
+
+    public void notifyChangeTab(final int type, final boolean isShowNewInvoice, final int invoiceId) {
+        if (mListOrderFragment.size() > type) {
+            mListOrderFragment.get(type)
+                    .notifyChangedData(mContext, new OrderListFragment.OnGetInvoiceListener() {
+                        @Override
+                        public void onGetInvoiceSuccess() {
+                            if (isShowNewInvoice) showInvoiceOnScreen(type, invoiceId);
+                        }
+
+                        @Override
+                        public void onGetInvoiceFail() {
+                            //TODO: when error
+                        }
+                    });
         }
     }
 
@@ -173,7 +190,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 invoice.setStatus(Invoice.STATUS_SHIPPING);
                                 notifyChangeTab(Invoice.STATUS_CODE_WAITING);
-                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
+                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPING, true, invoice.getId());
                                 loadingDialog.dismiss();
                             }
 
@@ -194,7 +211,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 invoice.setStatus(Invoice.STATUS_SHIPPED);
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
-                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
+                                notifyChangeTab(Invoice.STATUS_CODE_SHIPPED, true, invoice.getId());
                                 loadingDialog.dismiss();
                             }
 
@@ -216,7 +233,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                             public void onResponse(APIResponse<InvoiceData> response) {
                                 invoice.setStatus(Invoice.STATUS_FINISHED);
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
-                                notifyChangeTab(Invoice.STATUS_CODE_FINISHED);
+                                notifyChangeTab(Invoice.STATUS_CODE_FINISHED, true, invoice.getId());
                                 loadingDialog.dismiss();
                                 new ReviewDialog(getContext(), invoice.getStringId()).show();
                             }
@@ -231,11 +248,15 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         }
     }
 
+    private void showInvoiceOnScreen(int statusCodeShipping, int invoiceId) {
+        mViewPager.setCurrentItem(statusCodeShipping, true);
+        mListOrderFragment.get(statusCodeShipping).moveListToInvoice(invoiceId);
+    }
 
     @Override
     public void onClickCancel(Invoice invoice) {
-                notifyChangeTab(invoice.getStatusCode());
-                notifyChangeTab(Invoice.STATUS_CODE_CANCEL);
+        notifyChangeTab(invoice.getStatusCode());
+        notifyChangeTab(Invoice.STATUS_CODE_CANCEL, true, invoice.getId());
     }
 
     @Override
@@ -286,7 +307,9 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case ListShipperRegActivity.REQUEST_CODE_RESULT:
-                    // TODO update list when accept success
+                    int invoiceId = data.getIntExtra(ListShipperRegActivity.KEY_INVOICE_ID, -1);
+                    notifyChangeTab(Invoice.STATUS_CODE_INIT);
+                    notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
                     break;
             }
         }

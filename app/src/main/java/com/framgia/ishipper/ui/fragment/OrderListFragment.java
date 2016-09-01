@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
@@ -44,7 +45,7 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     private String mTitle;
     private int mStatusCode;
     private OnActionClickListener mOnActionClickListener;
-
+    private LinearLayoutManager mLayoutManager;
     private List<Invoice> mInvoiceList;
     private OrderAdapter mOrderAdapter;
     private Unbinder mUnbinder;
@@ -75,12 +76,13 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         View view = inflater.inflate(R.layout.tab_order_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mContext = view.getContext();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mLayoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         initAdapter(mContext);
         mRecyclerView.setAdapter(mOrderAdapter);
         mLayoutRefresh.setColorSchemeColors(Color.GREEN, Color.RED, Color.BLUE);
         setEvent();
-        setData(mContext);
+        setData(mContext, null);
         return view;
     }
 
@@ -92,23 +94,34 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
             public void onRefresh() {
                 getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
                            Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                           mStatusCode);
+                           mStatusCode, null);
             }
         });
     }
 
-    public void setData(Context context) {
+    public void setData(Context context, OnGetInvoiceListener listener) {
         initAdapter(context);
         getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
                    Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                   mStatusCode);
+                   mStatusCode, listener);
     }
 
-    public void notifyChangedData(Context context) {
+    public void notifyChangedData(Context context, OnGetInvoiceListener listener) {
         initAdapter(context);
         getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
                    Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                   mStatusCode);
+                   mStatusCode, listener);
+    }
+
+    public void moveListToInvoice(int invoiceId) {
+        if (invoiceId < 0) return;
+        for (int i = 0; i < mInvoiceList.size(); i++) {
+            if (invoiceId == mInvoiceList.get(i).getId()) {
+                mLayoutManager.scrollToPosition(i);
+                mOrderAdapter.setPositionHighlight(i);
+                mOrderAdapter.notifyItemChanged(i);
+            }
+        }
     }
 
     private void initAdapter(Context context) {
@@ -120,7 +133,8 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         }
     }
 
-    private void getInvoice(String role, String authenticationToken, int statusCode) {
+    private void getInvoice(String role, String authenticationToken, int statusCode,
+                            final OnGetInvoiceListener callback) {
         showLoading();
         String status = Invoice.getStatusFromCode(statusCode);
         Map<String, String> params = new HashMap<>();
@@ -133,12 +147,16 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
                            public void onResponse(APIResponse<ListInvoiceData> response) {
                                mInvoiceList.clear();
                                mInvoiceList.addAll(response.getData().getInvoiceList());
+                               mOrderAdapter.setPositionHighlight(-1);
                                mOrderAdapter.notifyDataSetChanged();
+                               if (callback != null) callback.onGetInvoiceSuccess();
                                dismissLoading();
                            }
 
                            @Override
                            public void onFailure(int code, String message) {
+                               Log.d(TAG, "onFailure: " + message);
+                               if (callback != null) callback.onGetInvoiceFail();
                                dismissLoading();
                            }
                        }
@@ -228,5 +246,10 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         void onClickCancel(Invoice invoice);
 
         void onClickView(Invoice invoice);
+    }
+
+    public interface OnGetInvoiceListener {
+        void onGetInvoiceSuccess();
+        void onGetInvoiceFail();
     }
 }

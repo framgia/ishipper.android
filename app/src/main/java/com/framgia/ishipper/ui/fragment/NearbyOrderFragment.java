@@ -587,7 +587,9 @@ public class NearbyOrderFragment extends Fragment implements
         @Override
         protected void onPostExecute(String address) {
             super.onPostExecute(address);
-            mTvSearchArea.setText(address);
+            if (mTvSearchArea != null) {
+                mTvSearchArea.setText(address);
+            }
         }
     }
 }
