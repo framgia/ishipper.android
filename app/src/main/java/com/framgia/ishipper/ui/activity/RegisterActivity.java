@@ -68,7 +68,6 @@ public class RegisterActivity extends ToolbarActivity {
 
     @OnClick(R.id.btnDone)
     public void onClick() {
-        // TODO request signUp api
         registerRequest();
     }
 

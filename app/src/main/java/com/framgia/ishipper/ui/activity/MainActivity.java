@@ -3,7 +3,6 @@ package com.framgia.ishipper.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.SyncStateContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -33,9 +32,11 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.main_navigation) NavigationView mNavigationView;
     @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
+
     public static final int SHIPPER = 0;
     public static final int SHOP = 1;
     public static int userType = SHIPPER;
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
                         Toast.makeText(MainActivity.this, response.getMessage(),
-                                       Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // set double click back to exit
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, R.string.message_back_to_exit, Toast.LENGTH_SHORT).show();
 
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, Const.TIME_DELAY_EXIT);
     }

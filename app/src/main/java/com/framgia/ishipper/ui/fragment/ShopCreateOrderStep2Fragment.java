@@ -1,4 +1,5 @@
 package com.framgia.ishipper.ui.fragment;
+
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +12,13 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
 
 import java.util.Calendar;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -56,11 +59,8 @@ public class ShopCreateOrderStep2Fragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.text_time:
-                if (mRgPickTime.getVisibility() == View.VISIBLE) {
-                    mRgPickTime.setVisibility(View.GONE);
-                } else {
-                    mRgPickTime.setVisibility(View.VISIBLE);
-                }
+                mRgPickTime.setVisibility(
+                        mRgPickTime.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 break;
             case R.id.btn_submit:
                 // TODO: Set invoice

@@ -7,11 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,9 +36,11 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     private static final String LIST_INVOICE = "list invoice";
     private static final String TAB_TITLE = "title";
     private static final String STATUS_CODE = "status";
+
     @BindView(R.id.list) RecyclerView mRecyclerView;
     @BindView(R.id.layout_loading) RelativeLayout mLayoutLoading;
     @BindView(R.id.layout_refresh) SwipeRefreshLayout mLayoutRefresh;
+
     private String mTitle;
     private int mStatusCode;
     private OnActionClickListener mOnActionClickListener;
@@ -46,9 +49,6 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     private OrderAdapter mOrderAdapter;
     private Unbinder mUnbinder;
     private Context mContext;
-
-    public OrderListFragment() {
-    }
 
     public static OrderListFragment newInstance(String title, int status) {
         OrderListFragment fragment = new OrderListFragment();
@@ -131,7 +131,6 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
                        new API.APICallback<APIResponse<ListInvoiceData>>() {
                            @Override
                            public void onResponse(APIResponse<ListInvoiceData> response) {
-                               Log.d(TAG, "onResponse: " + response.isSuccess());
                                mInvoiceList.clear();
                                mInvoiceList.addAll(response.getData().getInvoiceList());
                                mOrderAdapter.notifyDataSetChanged();
@@ -140,7 +139,6 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
 
                            @Override
                            public void onFailure(int code, String message) {
-                               Log.d(TAG, "onFailure: " + message);
                                dismissLoading();
                            }
                        }

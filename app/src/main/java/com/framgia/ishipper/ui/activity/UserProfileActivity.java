@@ -31,10 +31,7 @@ public class UserProfileActivity extends ToolbarActivity {
     @BindView(R.id.edt_profile_plate) TextInputEditText mEdtProfilePlate;
     @BindView(R.id.edt_profile_phone) TextInputEditText mEdtProfilePhone;
     @BindView(R.id.edt_profile_address) TextInputEditText mEdtProfileAddress;
-    private User mCurrentUser;
     private TextView mEdtProfilePassword;
-    private TextView mDialogPasswordOk;
-    private TextView mDialogPasswordCancel;
     private AlertDialog mInputPasswordDialog;
 
     @Override
@@ -43,7 +40,6 @@ public class UserProfileActivity extends ToolbarActivity {
         setContentView(R.layout.activity_user_profile);
         ButterKnife.bind(this);
         bindData();
-
     }
 
     @Override
@@ -57,12 +53,12 @@ public class UserProfileActivity extends ToolbarActivity {
     }
 
     private void bindData() {
-        mCurrentUser = Config.getInstance().getUserInfo(getApplicationContext());
-        mEdtProfilePlate.setText(mCurrentUser.getPlateNumber());
-        mEdtProfileName.setText(mCurrentUser.getName());
-        mEdtProfilePhone.setText(mCurrentUser.getPhoneNumber());
-        mEdtProfileAddress.setText(mCurrentUser.getAddress());
-        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
+        User currentUser = Config.getInstance().getUserInfo(getApplicationContext());
+        mEdtProfilePlate.setText(currentUser.getPlateNumber());
+        mEdtProfileName.setText(currentUser.getName());
+        mEdtProfilePhone.setText(currentUser.getPhoneNumber());
+        mEdtProfileAddress.setText(currentUser.getAddress());
+        if (currentUser.getRole().equals(User.ROLE_SHOP)) {
             mEdtProfilePlate.setVisibility(View.GONE);
         }
     }
@@ -83,16 +79,16 @@ public class UserProfileActivity extends ToolbarActivity {
     private void showPasswordDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_input_password, null);
         mEdtProfilePassword = (TextView) view.findViewById(R.id.edt_profile_password);
-        mDialogPasswordOk = (TextView) view.findViewById(R.id.dialog_password_ok);
-        mDialogPasswordCancel = (TextView) view.findViewById(R.id.dialog_password_cancel);
-        mDialogPasswordOk.setOnClickListener(new View.OnClickListener() {
+        TextView dialogPasswordOk = (TextView) view.findViewById(R.id.dialog_password_ok);
+        TextView dialogPasswordCancel = (TextView) view.findViewById(R.id.dialog_password_cancel);
+        dialogPasswordOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 updatePassword();
                 mInputPasswordDialog.cancel();
             }
         });
-        mDialogPasswordCancel.setOnClickListener(new View.OnClickListener() {
+        dialogPasswordCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mInputPasswordDialog.cancel();

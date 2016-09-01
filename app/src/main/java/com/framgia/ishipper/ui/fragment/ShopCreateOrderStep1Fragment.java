@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnFocusChange;
 
 public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -104,11 +102,6 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     .addApi(LocationServices.API)
                     .build();
         }
-    }
-
-    @OnFocusChange({R.id.edt_address_end})
-    public void onFocusChange(View v, boolean hasFocus) {
-        Log.d("hung", "onFocusChange: " + hasFocus);
     }
 
     @OnClick({R.id.btnPickStart, R.id.btnPickEnd, R.id.btnContinue})
@@ -212,7 +205,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 }
 
                 //Show distance
-                mTvDistance.setText(getString(R.string.text_distance, CommonUtils.mToKm(distance)));
+                mTvDistance.setText(getString(R.string.text_distance, CommonUtils.ConvertMetreToKm(distance)));
 
                 if (mPolylineRoute != null) mPolylineRoute.remove();
                 mPolylineRoute = mMap.addPolyline(polyOptions);

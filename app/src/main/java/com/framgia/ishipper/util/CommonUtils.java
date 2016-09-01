@@ -24,6 +24,9 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
  * Created by framgia on 18/08/2016.
  */
 public class CommonUtils {
+    /**
+     * Show loading dialog
+     **/
     public static Dialog showLoadingDialog(Context context) {
         ProgressDialog dialog = new ProgressDialog(context);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -75,7 +78,11 @@ public class CommonUtils {
         });
     }
 
-    public static float mToKm(int m) {
+    /**
+     * @param m value on metre
+     * @return value on km
+     */
+    public static float ConvertMetreToKm(int m) {
         return m / 1000f;
     }
 }

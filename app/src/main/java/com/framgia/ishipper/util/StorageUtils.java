@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
  */
 public class StorageUtils {
 
+
     private static SharedPreferences getSharedPreferences(Context context) {
         if (context == null) {
             return null;
@@ -49,6 +50,9 @@ public class StorageUtils {
         return editor.commit();
     }
 
+    /**
+     * Clear all SharePref saved.
+     */
     public static boolean clearAll(Context context) {
         return getSharedPreferences(context).edit().clear().commit();
     }

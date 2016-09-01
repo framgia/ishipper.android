@@ -66,7 +66,7 @@ public class ListShipperRegActivity extends AppCompatActivity implements
         mShipperRegAdapter.setAcceptShipperListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mShipperRegAdapter);
-        fakeListShipper();
+        getListShipper();
     }
 
     private void initEvent() {
@@ -78,12 +78,14 @@ public class ListShipperRegActivity extends AppCompatActivity implements
         });
     }
 
-    private void fakeListShipper() {
+    private void getListShipper() {
 
         API.getListShipperReceived(Config.getInstance().getUserInfo(getApplicationContext()).getAuthenticationToken(),
                 mInvoiceId, new API.APICallback<APIResponse<ListShipperData>>() {
                     @Override
                     public void onResponse(APIResponse<ListShipperData> response) {
+                        // Update the list
+                        mShipperList.clear();
                         for (User item : response.getData().getShippersList()) {
                             mShipperList.add(item);
                         }
@@ -92,7 +94,7 @@ public class ListShipperRegActivity extends AppCompatActivity implements
 
                     @Override
                     public void onFailure(int code, String message) {
-
+                        Toast.makeText(ListShipperRegActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -106,21 +108,20 @@ public class ListShipperRegActivity extends AppCompatActivity implements
     @Override
     public void onClickAcceptShipperListener(User shipper) {
         final Dialog dialog = CommonUtils.showLoadingDialog(this);
-        dialog.show();
         API.putShopReceiveShipper(Config.getInstance().getUserInfo(getApplicationContext()).getAuthenticationToken(),
                 shipper.getUserInvoiceId(), new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
+                        dialog.dismiss();
                         Toast.makeText(ListShipperRegActivity.this, R.string.accept_shipper_success, Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
-                        dialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(int code, String message) {
-                        Toast.makeText(ListShipperRegActivity.this, message, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        Toast.makeText(ListShipperRegActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
 
