@@ -9,7 +9,7 @@ public class APIDefinition {
 
 //    private static final String DEV_URL = "http://ishipper.herokuapp.com";
 
-    private static final String DEV_URL = "http://192.168.1.189:3001/";
+    private static final String DEV_URL = "http://192.168.1.61:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";

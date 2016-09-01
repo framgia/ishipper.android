@@ -103,7 +103,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
     @Override
     public void onClickCancel(Invoice invoice) {
         Toast.makeText(mContext, "Đã huỷ đơn", Toast.LENGTH_SHORT).show();
-        mOrderListFragment.notifyChangedData(mContext);
+        mOrderListFragment.notifyChangedData(mContext, null);
     }
 
     @Override

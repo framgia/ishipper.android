@@ -1,6 +1,7 @@
 package com.framgia.ishipper.ui.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,7 @@ public class ListShipperRegActivity extends AppCompatActivity implements
     Toolbar mToolbar;
 
     private ShipperRegAdapter mShipperRegAdapter;
-    private String mInvoiceId;
+    private int mInvoiceId;
     private List<User> mShipperList;
 
     @Override
@@ -56,7 +57,7 @@ public class ListShipperRegActivity extends AppCompatActivity implements
     }
 
     private void initData() {
-        mInvoiceId = String.valueOf(getIntent().getIntExtra(KEY_INVOICE_ID, 0));
+        mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -80,23 +81,25 @@ public class ListShipperRegActivity extends AppCompatActivity implements
 
     private void getListShipper() {
 
-        API.getListShipperReceived(Config.getInstance().getUserInfo(getApplicationContext()).getAuthenticationToken(),
-                mInvoiceId, new API.APICallback<APIResponse<ListShipperData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ListShipperData> response) {
-                        // Update the list
-                        mShipperList.clear();
-                        for (User item : response.getData().getShippersList()) {
-                            mShipperList.add(item);
-                        }
-                        mShipperRegAdapter.notifyDataSetChanged();
-                    }
+        API.getListShipperReceived(Config.getInstance().getUserInfo(this).getAuthenticationToken(),
+                                   String.valueOf(mInvoiceId),
+                                   new API.APICallback<APIResponse<ListShipperData>>() {
+                                    @Override
+                                    public void onResponse(APIResponse<ListShipperData> response) {
+                                        // Update the list
+                                        mShipperList.clear();
+                                        for (User item : response.getData().getShippersList()) {
+                                            mShipperList.add(item);
+                                        }
+                                        mShipperRegAdapter.notifyDataSetChanged();
+                                    }
 
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(ListShipperRegActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                    @Override
+                                    public void onFailure(int code, String message) {
+                                        Toast.makeText(ListShipperRegActivity.this, message,
+                                                       Toast.LENGTH_SHORT).show();
+                                    }
+                                });
     }
 
     @Override
@@ -114,7 +117,9 @@ public class ListShipperRegActivity extends AppCompatActivity implements
                     public void onResponse(APIResponse<EmptyData> response) {
                         dialog.dismiss();
                         Toast.makeText(ListShipperRegActivity.this, R.string.accept_shipper_success, Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
+                        Intent intent = new Intent();
+                        intent.putExtra(KEY_INVOICE_ID, mInvoiceId);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
 

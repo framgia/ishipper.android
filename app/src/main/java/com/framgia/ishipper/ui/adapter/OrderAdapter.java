@@ -31,6 +31,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private OnClickCancelListener mClickCancelListener;
     private OnclickViewListener mClickViewListener;
     private Context mContext;
+    private int mPositionHighlight = - 1;
 
     public OrderAdapter(Context context, List<Invoice> invoiceList,
                         OnclickViewListener listener) {
@@ -48,6 +49,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.mView.setSelected(mPositionHighlight == position);
         holder.mInvoice = mInvoiceList.get(position);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -86,15 +88,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                 TextFormatUtils.formatPrice(holder.mInvoice.getShippingPrice()));
         holder.mTvItemOrderDistance.setText(
                 TextFormatUtils.formatDistance(holder.mInvoice.getDistance()));
-    }
-
-    private String getTimeFromOrder(Long time) {
-        StringBuilder builder = new StringBuilder();
-        Calendar currentCal = Calendar.getInstance();
-        Calendar expiredCal = Calendar.getInstance();
-        expiredCal.setTimeInMillis(time);
-        long diffTime = expiredCal.getTimeInMillis() - currentCal.getTimeInMillis();
-        return String.valueOf(TimeUnit.MILLISECONDS.toHours(diffTime) + 1) + "H";
     }
 
     private void setStatus(ViewHolder holder) {
@@ -239,14 +232,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         mClickViewListener = clickViewListener;
     }
 
+    public int getPositionHighlight() {
+        return mPositionHighlight;
+    }
+
+    public void setPositionHighlight(int positionHighlight) {
+        mPositionHighlight = positionHighlight;
+    }
+
     @Override
     public int getItemCount() {
         if (mInvoiceList == null)
             return 0;
         return mInvoiceList.size();
     }
-
-    static
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
