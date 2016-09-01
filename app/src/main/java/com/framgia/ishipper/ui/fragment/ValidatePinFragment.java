@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.util.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,7 +79,7 @@ public class ValidatePinFragment extends Fragment {
                                 }
                             });
                 } else {
-                     /* Signup */
+                     /* Sign up */
                     API.confirmationPinInSignUp(
                             mPhoneNumber,
                             mEdtPhoneNumber.getText().toString(),
@@ -111,8 +113,8 @@ public class ValidatePinFragment extends Fragment {
     }
 
     private void getConfirmationPin() {
-        final ProgressDialog pd = new ProgressDialog(getActivity());
-        pd.show();
+        final Dialog pd = CommonUtils.showLoadingDialog(getContext());
+
         API.getConfirmationPin(mPhoneNumber,
                 new API.APICallback<APIResponse<EmptyData>>() {
                     @Override

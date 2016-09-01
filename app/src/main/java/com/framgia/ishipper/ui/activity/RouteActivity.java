@@ -14,7 +14,7 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.model.Order;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdate;
@@ -34,38 +34,26 @@ import butterknife.ButterKnife;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private Order mOrder;
+    private Invoice mInvoice;
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap;
     private boolean isCheck;
     private LatLng mLatLng;
     private LatLng mMyLatLng;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         ButterKnife.bind(this);
-        initData();
 
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
 
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void initData() {
-        mOrder = new Order();
-        mLatLng = new LatLng(20.988086, 105.8751013);
-        mOrder.setLatLng(20.988086, 105.8751013);
-        mOrder.setGoodPrice(1200);
-        mOrder.setShipPrice(60);
-        mOrder.setAddress("Hang Bai");
     }
 
     @Override
@@ -113,7 +101,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                             PolylineOptions polyOptions = new PolylineOptions();
 
                             for (int i = 0; i < route.size(); i++) {
-
                                 polyOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.colorGreen));
                                 polyOptions.width(8);
                                 polyOptions.addAll(route.get(i).getPoints());

@@ -36,7 +36,8 @@ import butterknife.OnClick;
 public class FilterOrderActivity extends ToolbarActivity {
     private static final String TAG = "FilterOrderActivity";
     public static final String INTENT_FILTER_DATA = "INTENT_FILTER_DATA";
-    private User mUser;
+    private User mCurrentUser;
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.appbar) AppBarLayout mAppbar;
     @BindView(R.id.seekbar_filter_order_price) RangeSeekBar mSeekbarFilterOrderPrice;
@@ -53,7 +54,6 @@ public class FilterOrderActivity extends ToolbarActivity {
         setContentView(R.layout.activity_filter_order);
         ButterKnife.bind(this);
         getWidgetControl();
-        mUser = Config.getInstance().getUserInfo(this);
     }
 
     private void getWidgetControl() {
@@ -137,8 +137,10 @@ public class FilterOrderActivity extends ToolbarActivity {
                             mSeekbarFilterWeight.getSelectedMaxValue() + "");
                 }
 
+                mCurrentUser = Config.getInstance().getUserInfo(this);
+
                 API.filterInvoice(
-                        mUser.getAuthenticationToken(),
+                        mCurrentUser.getAuthenticationToken(),
                         params,
                         new API.APICallback<APIResponse<FilterInvoiceData>>() {
                             @Override

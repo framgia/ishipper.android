@@ -34,7 +34,6 @@ import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.model.WindowOrder;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
@@ -121,7 +120,6 @@ public class NearbyOrderFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mGoogleMap;
-    private ArrayList<WindowOrder> orders = new ArrayList<>();
     private SupportMapFragment mMapFragment;
     private Unbinder mUnbinder;
     private Polyline mPolylineRoute;

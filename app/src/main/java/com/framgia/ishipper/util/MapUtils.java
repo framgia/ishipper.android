@@ -21,6 +21,12 @@ import java.util.Locale;
  */
 public class MapUtils {
     private static final int ZOOM_LEVEL = 15;
+
+    /**
+     * Route between 2 point start & end
+     *
+     * @param listener callback interface
+     */
     public static void routing(LatLng start, LatLng end, RoutingListener listener) {
         Routing routing = new Routing.Builder()
                 .travelMode(Routing.TravelMode.WALKING)
@@ -30,6 +36,13 @@ public class MapUtils {
         routing.execute();
     }
 
+    /**
+     * Update config map zoom can show all points on input.
+     *
+     * @param width  of map
+     * @param height of map
+     * @param points all point will show
+     */
     public static void updateZoomMap(GoogleMap googleMap, int width, int height, LatLng... points) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng item : points) {
@@ -43,11 +56,19 @@ public class MapUtils {
         googleMap.animateCamera(cu);
     }
 
+    /**
+     * Animate camera to a position.
+     */
     public static void zoomToPosition(GoogleMap map, LatLng latLng) {
         CameraUpdate center = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL);
         map.animateCamera(center);
     }
 
+    /**
+     * get a Address from LatLng
+     *
+     * @return Address summary in String. If cannot find address return a empty String.
+     */
     public static String getAddressFromLocation(Context context, LatLng latLng) {
         Geocoder geocoder;
         List<Address> addresses;
@@ -55,7 +76,7 @@ public class MapUtils {
 
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if (addresses.size()>0) {
+            if (addresses.size() > 0) {
                 return addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
             }
         } catch (IOException e) {
@@ -64,12 +85,18 @@ public class MapUtils {
         return "";
     }
 
+    /**
+     * Get LatLng from an String address.
+     *
+     * @param address in String.
+     * @return return LatLng of address, if cannot find return null.
+     */
     public static LatLng getLocationFromAddress(Context context, String address) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocationName(address, 1);
-            if (addresses.size()>0) {
+            if (addresses.size() > 0) {
                 return new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
             }
         } catch (IOException e) {
