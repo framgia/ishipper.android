@@ -19,6 +19,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.util.InputValidate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class RegisterActivity extends ToolbarActivity {
 
     @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
     @BindView(R.id.edtPasswordRegister) EditText mEdtPasswordRegister;
+    @BindView(R.id.edtPasswordConfirm) EditText mEdtPasswordConfirm;
     @BindView(R.id.edtNameRegister) EditText mEdtNameRegister;
     @BindView(R.id.edtPlateNumber) EditText mEdtPlateNumber;
     @BindView(R.id.radioGroupUserType) RadioGroup mRadioGroupUserType;
@@ -72,6 +74,18 @@ public class RegisterActivity extends ToolbarActivity {
     }
 
     private void registerRequest() {
+
+        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)
+                && !InputValidate.notEmpty(mEdtPlateNumber, this)) {
+            return;
+        }
+
+        if (!InputValidate.notEmpty(mEdtPhoneNumber, this)
+                || !InputValidate.notEmpty(mEdtNameRegister, this)
+                || !InputValidate.confirmPassword(mEdtPasswordRegister, mEdtPasswordConfirm, this)) {
+            return;
+        }
+
         mCurrentUser.setPhoneNumber(mEdtPhoneNumber.getText().toString());
         mCurrentUser.setPassword(mEdtPasswordRegister.getText().toString());
         mCurrentUser.setName(mEdtNameRegister.getText().toString());

@@ -86,7 +86,7 @@
                     android:text="@string/all_password_confirm" />
 
                 <EditText
-                    android:id="@+id/edtPasswordRegisterConfirm"
+                    android:id="@+id/edtPasswordConfirm"
                     style="@style/AppTextFieldStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

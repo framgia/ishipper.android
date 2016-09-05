@@ -51,6 +51,7 @@
     <dimen name="text_size_content_plus">16sp</dimen>
     <dimen name="text_size_title">16sp</dimen>
     <dimen name="text_size_15sp">15sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_view_margin">10dp</dimen>
     <dimen name="text_size_tiny_material">10sp</dimen>

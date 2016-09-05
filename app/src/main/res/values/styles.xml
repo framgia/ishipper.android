@@ -80,7 +80,7 @@
     <style name="btn_radius_green_border">
         <item name="android:background">@drawable/btn_radius_green_border_background</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:padding">@dimen/default_button_padding</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/colorGreenDark</item>
     </style>
@@ -138,4 +138,5 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <dimen name="default_button_padding">8dp</dimen>
 </resources>

@@ -192,7 +192,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginLeft="@dimen/dot_layout_margin_left"
                                 android:layout_weight="1.0"
-                                android:background="@drawable/dot_repeate_img"/>
+                                android:background="@drawable/dot_repeat_img"/>
                         </LinearLayout>
 
                         <TextView

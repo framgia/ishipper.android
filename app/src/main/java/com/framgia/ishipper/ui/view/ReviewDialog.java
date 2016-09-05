@@ -50,6 +50,11 @@ public class ReviewDialog {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_dialog_review_send:
+                if (mRatingDialogReview.getProgress() == 0) {
+                    Toast.makeText(mContext, R.string.err_msg_not_rating, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 HashMap<String, String> params = new HashMap<>();
                 params.put(APIDefinition.PostRating.PARAM_CONTENT, mEdtDialogReview.getText().toString());
                 params.put(APIDefinition.PostRating.PARAM_INVOICE_ID, mInvoiceId);
