@@ -133,6 +133,7 @@ public class NearbyOrderFragment extends Fragment implements
     private FetchAddressTask task;
     private ArrayList<Invoice> invoiceList = new ArrayList<>();
     private boolean autoRefresh = true;
+    private HashMap<String, Integer> mHashMap = new HashMap<>();
 
     public NearbyOrderFragment() {
         // Required empty public constructor
@@ -254,9 +255,10 @@ public class NearbyOrderFragment extends Fragment implements
 
     private void addMarkInvoice(Invoice invoice) {
         LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
-        mGoogleMap.addMarker(new MarkerOptions()
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
+        mHashMap.put(marker.getId(), invoiceList.indexOf(invoice));
     }
 
     @Override
@@ -321,11 +323,7 @@ public class NearbyOrderFragment extends Fragment implements
                 switchAutoRefresh(false);
                 mWindowOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();
-                int pos = Integer.parseInt(id.replace("m", ""));
-                if (pos >= invoiceList.size()) {
-                    return false;
-                }
-
+                int pos = mHashMap.get(id);
                 mInvoice = invoiceList.get(pos);
                 mBtnNearbyReceiveOrder.setTag(mInvoice.getStringId());
 
@@ -557,7 +555,8 @@ public class NearbyOrderFragment extends Fragment implements
             // Update list invoice in map
             String jsonData = data.getStringExtra(FilterOrderActivity.INTENT_FILTER_DATA);
             List<Invoice> listInvoices = new Gson().fromJson(jsonData,
-                    new TypeToken<List<Invoice>>() {}.getType());
+                    new TypeToken<List<Invoice>>() {
+                    }.getType());
             addListMarker(listInvoices);
         }
     }
