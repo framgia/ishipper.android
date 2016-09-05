@@ -22,21 +22,39 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
+                android:layout_marginTop="@dimen/all_margin_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/activity_vertical_margin">
+                    android:padding="@dimen/all_padding_medium">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/text_view_margin"
-                        android:text="@string/detail_path"
-                        android:textSize="@dimen/text_size_title"
-                        android:textStyle="bold"/>
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="@dimen/text_view_margin"
+                            android:text="@string/detail_path"
+                            android:textSize="@dimen/text_size_title"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/btn_detail_show_path"
+                            style="@style/btn_radius_green_border"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:padding="4dp"
+                            android:text="@string/all_show_path"
+                            android:textSize="@dimen/text_size_small"/>
+
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:id="@+id/action_detail_order"
@@ -116,7 +134,7 @@
                                         android:layout_width="2dp"
                                         android:layout_height="0dp"
                                         android:layout_weight="1.0"
-                                        android:background="@drawable/dot_repeate_img"/>
+                                        android:background="@drawable/dot_repeat_img"/>
                                 </LinearLayout>
 
                                 <TextView
@@ -166,26 +184,19 @@
                         android:layout_marginBottom="@dimen/text_view_margin"
                         android:text="Bạn có 2 đơn hàng cùng đường"
                         android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/btn_detail_show_path"
-                        style="@style/btn_radius_green_border"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/all_show_path"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
+                android:layout_marginTop="@dimen/all_margin_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/activity_vertical_margin">
+                    android:padding="@dimen/all_padding_medium">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -292,14 +303,14 @@
                 android:id="@+id/cardview_detail_shop_infor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/all_margin_medium"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/activity_vertical_margin">
+                    android:padding="@dimen/all_padding_medium">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -459,14 +470,14 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
+                android:layout_marginBottom="@dimen/all_margin_small"
+                android:layout_marginTop="@dimen/all_margin_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/activity_vertical_margin">
+                    android:padding="@dimen/all_padding_medium">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -531,7 +542,6 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-
         <Button
             android:id="@+id/btn_detail_receive_order"
             android:layout_width="0dp"
@@ -561,6 +571,7 @@
             android:text="@string/detail_cancel_order"
             android:textColor="@android:color/white"
             android:visibility="gone"/>
+
         <Button
             android:id="@+id/btn_report_user"
             android:layout_width="0dp"
@@ -570,6 +581,7 @@
             android:text="@string/report"
             android:textColor="@android:color/white"
             android:visibility="gone"/>
+
         <Button
             android:id="@+id/btn_finished_order"
             android:layout_width="0dp"
@@ -579,6 +591,7 @@
             android:text="@string/finish_order"
             android:textColor="@android:color/white"
             android:visibility="gone"/>
+
         <Button
             android:id="@+id/btn_take_order"
             android:layout_width="0dp"

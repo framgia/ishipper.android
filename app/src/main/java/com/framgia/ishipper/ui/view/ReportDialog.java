@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.ReviewUser;
-import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.util.InputValidate;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +22,12 @@ public class ReportDialog {
     private AlertDialog mAlertDialog;
     private OnReportListener mListener;
     private ReviewUser mReviewUser = new ReviewUser();
+    private Context mContext;
 
     public ReportDialog(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_report, null);
         ButterKnife.bind(this, view);
+        mContext = context;
         mAlertDialog = new AlertDialog.Builder(context)
                 .setView(view)
                 .setCancelable(false)
@@ -36,7 +38,7 @@ public class ReportDialog {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_dialog_report_send:
-                if (mListener != null) {
+                if (mListener != null && InputValidate.notEmpty(mEdtDialogReport, mContext)) {
                     mReviewUser.setContent(mEdtDialogReport.getText().toString());
                     mListener.onReportListener(mReviewUser);
                 }
