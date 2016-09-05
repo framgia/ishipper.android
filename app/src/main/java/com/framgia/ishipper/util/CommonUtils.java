@@ -39,8 +39,8 @@ public class CommonUtils {
 
     private static LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(Const.LOCATION_INTERVAL_UPDATE);
-        mLocationRequest.setFastestInterval(Const.LOCATION_FASTEST_INTERVAL_UPDATE);
+        mLocationRequest.setInterval(Const.LocationRequest.LOCATION_INTERVAL_UPDATE);
+        mLocationRequest.setFastestInterval(Const.LocationRequest.LOCATION_FASTEST_INTERVAL_UPDATE);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }

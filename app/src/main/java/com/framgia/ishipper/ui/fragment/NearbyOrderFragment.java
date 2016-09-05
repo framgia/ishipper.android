@@ -94,8 +94,9 @@ public class NearbyOrderFragment extends Fragment implements
     private static final String TAG = "NearbyOrderFragment";
     private static final float RADIUS = 5;
     private static final int REQUEST_FILTER = 0x1234;
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
     @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
-    private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     @BindView(R.id.iv_detail_promotion_label) ImageView mIvPromotionLabel;
     @BindView(R.id.tv_item_order_ship_price) TextView mTvNearbyShipPrice;
     @BindView(R.id.tv_item_order_from) TextView mTvNearbyFrom;
@@ -109,13 +110,49 @@ public class NearbyOrderFragment extends Fragment implements
     @BindView(R.id.btn_item_order_register_order) TextView mBtnNearbyReceiveOrder;
     @BindView(R.id.action_cancel_accept_order) TextView mActionCancelAcceptOrder;
     @BindView(R.id.action_receive_order) TextView mActionReceiveOrder;
-    @BindView(R.id.window_order_detail) RelativeLayout mWindowOrderDetail;
+    @BindView(R.id.window_order_detail) RelativeLayout mRlOrderDetail;
     @BindView(R.id.ll_order_status) LinearLayout mOrderStatus;
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
     @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
     @BindView(R.id.tv_shipping_order_status) TextView mTvShippingOrderStatus;
     @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
     @BindView(R.id.ll_shop_order_status) LinearLayout mLlShopOrderStatus;
+
+    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
+            R.id.rl_search_view, R.id.window_order_detail})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_item_order_show_path:
+                getActivity().startActivity(new Intent(getActivity(), RouteActivity.class));
+                break;
+            case R.id.btn_item_order_register_order:
+                String invoiceId = (String) view.getTag();
+                showReceiveDialog(invoiceId);
+                break;
+            case R.id.rl_search_view:
+                try {
+                    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                            .build();
+
+                    Intent searchIntent = new PlaceAutocomplete
+                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .setFilter(typeFilter)
+                            .build(getActivity());
+                    startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.window_order_detail:
+                Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                Bundle extras = new Bundle();
+                extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoice.getId());
+                intent.putExtras(extras);
+                startActivity(intent);
+                break;
+        }
+    }
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -130,9 +167,9 @@ public class NearbyOrderFragment extends Fragment implements
     private int mWidthMap;
     private Invoice mInvoice;
     private User mUser;
-    private FetchAddressTask task;
-    private ArrayList<Invoice> invoiceList = new ArrayList<>();
-    private boolean autoRefresh = true;
+    private FetchAddressTask mTask;
+    private ArrayList<Invoice> mInvoices = new ArrayList<>();
+    private boolean mAutoRefresh = true;
     private HashMap<String, Integer> mHashMap = new HashMap<>();
 
     public NearbyOrderFragment() {
@@ -158,8 +195,8 @@ public class NearbyOrderFragment extends Fragment implements
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
+        mRlOrderDetail.setVisibility(View.GONE);
         setHasOptionsMenu(true);
-        mWindowOrderDetail.setVisibility(View.GONE);
         return view;
     }
 
@@ -177,6 +214,12 @@ public class NearbyOrderFragment extends Fragment implements
                     .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
+    }
+
+    @Override
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
     }
 
     @Override
@@ -216,6 +259,13 @@ public class NearbyOrderFragment extends Fragment implements
         }
     }
 
+    /**
+     * mark all invoices near a location on map
+     *
+     * @param latitude  location's latitude
+     * @param longitude location's longitude
+     * @param radius    radius where to find invoice
+     */
     private void markInvoiceNearby(final double latitude, final double longitude, float radius) {
         Map<String, String> userParams = new HashMap<>();
         userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LAT, String.valueOf(latitude));
@@ -230,8 +280,8 @@ public class NearbyOrderFragment extends Fragment implements
                                 response.getMessage(),
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        invoiceList = (ArrayList<Invoice>) response.getData().getInvoiceList();
-                        addListMarker(invoiceList);
+                        mInvoices = (ArrayList<Invoice>) response.getData().getInvoiceList();
+                        addListMarker(mInvoices);
                     }
 
                     @Override
@@ -258,7 +308,8 @@ public class NearbyOrderFragment extends Fragment implements
         Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
-        mHashMap.put(marker.getId(), invoiceList.indexOf(invoice));
+        /** save position of invoice with marker id to hashmap*/
+        mHashMap.put(marker.getId(), mInvoices.indexOf(invoice));
     }
 
     @Override
@@ -272,12 +323,6 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     @Override
-    public void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    @Override
     public void onDestroy() {
         mGoogleApiClient.disconnect();
         mUnbinder.unbind();
@@ -286,15 +331,20 @@ public class NearbyOrderFragment extends Fragment implements
 
     private void configSizeMap() {
         mWidthMap = mMapFragment.getView().getWidth();
-        if (mWindowOrderDetail.getVisibility() == View.VISIBLE) {
-            mHeightMap = mMapFragment.getView().getHeight() + 2 * mWindowOrderDetail.getHeight();
+        if (mRlOrderDetail.getVisibility() == View.VISIBLE) {
+            mHeightMap = mMapFragment.getView().getHeight() + 2 * mRlOrderDetail.getHeight();
         } else {
             mHeightMap = mMapFragment.getView().getHeight();
         }
     }
 
+    /**
+     * turn on/of auto fetch address
+     *
+     * @param status true/false
+     */
     private void switchAutoRefresh(boolean status) {
-        autoRefresh = status;
+        mAutoRefresh = status;
         mImgPosMarker.setVisibility(status ? View.VISIBLE : View.GONE);
 
     }
@@ -303,28 +353,32 @@ public class NearbyOrderFragment extends Fragment implements
      * Config google with setting like camera change listener, marker clicked listener...
      */
     private void configGoogleMap() {
+        mGoogleMap.getUiSettings().setCompassEnabled(false);
+        mGoogleMap.setPadding(
+                Const.MapPadding.LEFT_PADDING,
+                Const.MapPadding.TOP_PADDING,
+                Const.MapPadding.RIGHT_PADDING,
+                Const.MapPadding.BOTTOM_PADDING);
         mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                if (autoRefresh) {
-                    if (task != null) {
-                        task.cancel(true);
+                if (mAutoRefresh) {
+                    if (mTask != null) {
+                        mTask.cancel(true);
                     }
-                    task = new FetchAddressTask();
-                    task.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                    mTask = new FetchAddressTask();
+                    mTask.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
                 }
             }
         });
-        mGoogleMap.getUiSettings().setCompassEnabled(false);
-        mGoogleMap.setPadding(0, 150, 0, 0);
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 switchAutoRefresh(false);
-                mWindowOrderDetail.setVisibility(View.VISIBLE);
+                mRlOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();
                 int pos = mHashMap.get(id);
-                mInvoice = invoiceList.get(pos);
+                mInvoice = mInvoices.get(pos);
                 mBtnNearbyReceiveOrder.setTag(mInvoice.getStringId());
 
                 /** get shop information */
@@ -410,11 +464,18 @@ public class NearbyOrderFragment extends Fragment implements
             @Override
             public void onMapClick(LatLng latLng) {
                 switchAutoRefresh(true);
-                mWindowOrderDetail.setVisibility(View.GONE);
+                mRlOrderDetail.setVisibility(View.GONE);
             }
         });
     }
 
+    /**
+     * place the path in center of screen
+     *
+     * @param startPoint start point of path
+     * @param endPoint   end point of pat
+     * @return
+     */
     private LatLng configLatLng(LatLng startPoint, LatLng endPoint) {
         double diffHeight = startPoint.latitude - endPoint.latitude;
         double diffWidth = startPoint.longitude - endPoint.longitude;
@@ -439,42 +500,6 @@ public class NearbyOrderFragment extends Fragment implements
 
         }
         return latLng;
-    }
-
-    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-            R.id.rl_search_view, R.id.window_order_detail})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_item_order_show_path:
-                getActivity().startActivity(new Intent(getActivity(), RouteActivity.class));
-                break;
-            case R.id.btn_item_order_register_order:
-                String invoiceId = (String) view.getTag();
-                showReceiveDialog(invoiceId);
-                break;
-            case R.id.rl_search_view:
-                try {
-                    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                            .build();
-
-                    Intent searchIntent = new PlaceAutocomplete
-                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .setFilter(typeFilter)
-                            .build(getActivity());
-                    startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.window_order_detail:
-                Intent intent = new Intent(mContext, OrderDetailActivity.class);
-                Bundle extras = new Bundle();
-                extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoice.getId());
-                intent.putExtras(extras);
-                startActivity(intent);
-                break;
-        }
     }
 
     private void showReceiveDialog(final String invoiceId) {
@@ -554,9 +579,11 @@ public class NearbyOrderFragment extends Fragment implements
         } else if (requestCode == REQUEST_FILTER && resultCode == Activity.RESULT_OK) {
             // Update list invoice in map
             String jsonData = data.getStringExtra(FilterOrderActivity.INTENT_FILTER_DATA);
-            List<Invoice> listInvoices = new Gson().fromJson(jsonData,
+            List<Invoice> listInvoices = new Gson().fromJson(
+                    jsonData,
                     new TypeToken<List<Invoice>>() {
-                    }.getType());
+                    }.getType()
+            );
             addListMarker(listInvoices);
         }
     }
@@ -576,7 +603,6 @@ public class NearbyOrderFragment extends Fragment implements
         protected String doInBackground(LatLng... latLngs) {
             double latitude = latLngs[0].latitude;
             double longitude = latLngs[0].longitude;
-//            markInvoiceNearby(latitude, longitude, RADIUS);
             return MapUtils.getAddressFromLocation(
                     mContext,
                     new LatLng(latitude, longitude)

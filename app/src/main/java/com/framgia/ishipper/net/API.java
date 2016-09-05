@@ -50,14 +50,11 @@ public abstract class API {
             .build()
             .create(APIServices.class);
 
-    // **** Common callback interface ***/
     public interface APICallback<T> {
         void onResponse(T response);
 
         void onFailure(int code, String message);
     }
-
-    // ** API ******/
 
     public static void signUp(Map<String, String> userParams,
                               final APICallback<APIResponse<SignUpData>> callback) {
@@ -66,7 +63,7 @@ public abstract class API {
 
     public static void confirmationPinInSignUp(String phoneNumber, String pin,
                                                final APICallback<APIResponse<EmptyData>> callback) {
-        client.confirmationPinInSignup(phoneNumber, pin)
+        client.confirmationPinInSignUp(phoneNumber, pin)
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
@@ -98,14 +95,12 @@ public abstract class API {
         client.resetPassword(params).enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Get shipper nearby */
     public static void getShipperNearby(String token,
                                         Map<String, String> userParams,
                                         final APICallback<APIResponse<ShipperNearbyData>> callback) {
         client.getShipperNearby(token, userParams).enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Get Invoice nearby */
     public static void getInvoiceNearby(String token, Map<String, String> userParams,
                                         final APICallback<APIResponse<ListInvoiceData>> callback) {
         client.getInvoiceNearBy(token, userParams).enqueue(new RetrofitCallback<>(callback));
@@ -120,14 +115,12 @@ public abstract class API {
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Sign out */
     public static void signOut(String token,
                                String phoneNumber,
                                final APICallback<APIResponse<EmptyData>> callback) {
         client.signOut(token, phoneNumber).enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Create Invoice */
     public static void createInvoice(String token,
                                      Map<String, String> params,
                                      final APICallback<APIResponse<CreateInVoiceData>> callback) {
@@ -143,10 +136,6 @@ public abstract class API {
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
-    /**
-     * @param status
-     * @param callback
-     */
     public static void putUpdateInvoiceStatus(String userType, String invoiceId, String token, String status,
                                               final APICallback<APIResponse<InvoiceData>> callback) {
 
@@ -154,14 +143,12 @@ public abstract class API {
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Filter Invoice */
     public static void filterInvoice(String token,
                                      Map<String, String> params,
                                      final APICallback<APIResponse<FilterInvoiceData>> callback) {
         client.filterInvoice(token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Get List Shipper Invoices */
     public static void getListShipperInvoices(String token,
                                               String status,
                                               final APICallback<APIResponse<ListInvoiceData>> callback) {
@@ -170,7 +157,6 @@ public abstract class API {
         getInvoice(User.ROLE_SHIPPER, token, params, callback);
     }
 
-    /* Get Invoice */
     public static void getInvoice(String userType,
                                   String token,
                                   Map<String, String> params,
@@ -185,7 +171,6 @@ public abstract class API {
         client.getUser(token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
-    /* Get List Shippers Received */
     public static void getListShipperReceived(String token,
                                               String invoiceId,
                                               final APICallback<APIResponse<ListShipperData>> callback) {

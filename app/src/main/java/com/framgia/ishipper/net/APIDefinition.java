@@ -23,6 +23,9 @@ public class APIDefinition {
         public static final String PARAM_USER_NAME = "user[name]";
     }
 
+    /**
+     * Confirm Pin when register
+     */
     public static class ConfirmationPin {
         public static final String PATH = "/api/confirmation";
     }
@@ -62,6 +65,9 @@ public class APIDefinition {
         public static final String PARAM_PASSWORD = "user[password]";
     }
 
+    /**
+     * Get Pin when forgot password
+     */
     public static class GetPin {
         public static final String TAG = "Get Pin";
         public static final String PATH = "/api/confirmation";
@@ -69,6 +75,9 @@ public class APIDefinition {
         public static final String PARAM_PHONE = "user[phone_number]";
     }
 
+    /**
+     * Check Pin when reset password
+     */
     public static class GetCheckPin {
         public static final String TAG = "Get Pin";
         public static final String PATH = "/api/password";

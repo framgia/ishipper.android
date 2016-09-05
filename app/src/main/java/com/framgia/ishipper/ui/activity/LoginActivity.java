@@ -42,6 +42,10 @@ public class LoginActivity extends AppCompatActivity{
             startMainActivity();
         }
 
+       initView();
+    }
+
+    private void initView() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -114,6 +118,9 @@ public class LoginActivity extends AppCompatActivity{
         finish();
     }
 
+    /**
+     * Get screen size config
+     */
     private void getConfig() {
         Const.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         Const.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;

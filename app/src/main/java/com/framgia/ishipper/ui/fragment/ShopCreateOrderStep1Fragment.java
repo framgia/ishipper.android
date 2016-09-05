@@ -155,6 +155,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         ShopCreateOrderActivity.sInvoice.setAddressFinish(mEdtAddressEnd.getText().toString());
         ShopCreateOrderActivity.sInvoice.setLatFinish((float) mLatLngFinish.latitude);
         ShopCreateOrderActivity.sInvoice.setLngFinish((float) mLatLngFinish.longitude);
+        ShopCreateOrderActivity.sInvoice.setDistance(Float.parseFloat(mTvDistance.getText().toString()));
     }
 
     private void addEndLocation() {

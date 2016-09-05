@@ -88,11 +88,11 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     }
 
     private void onCreateInvoice() {
-        sInvoice.setDistance(3.0234f);
         sInvoice.setStatus(Invoice.STATUS_INIT);
 
         Map<String, String> params = new HashMap<>();
-        params.put(APIDefinition.CreateInvoice.PARAM_NAME, sInvoice.getName());
+        params.put(APIDefinition.CreateInvoice.PARAM_NAME,
+                sInvoice.getName());
         params.put(APIDefinition.CreateInvoice.PARAM_ADDRESS_START,
                 sInvoice.getAddressStart());
         params.put(APIDefinition.CreateInvoice.PARAM_LATITUDE_START,
@@ -115,7 +115,8 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
                 String.valueOf(sInvoice.getPrice()));
         params.put(APIDefinition.CreateInvoice.PARAM_SHIPPING_PRICE,
                 String.valueOf(sInvoice.getShippingPrice()));
-        params.put(APIDefinition.CreateInvoice.PARAM_STATUS, sInvoice.getStatus());
+        params.put(APIDefinition.CreateInvoice.PARAM_STATUS,
+                sInvoice.getStatus());
         params.put(APIDefinition.CreateInvoice.PARAM_WEIGHT,
                 String.valueOf(sInvoice.getWeight()));
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NAME,
@@ -124,7 +125,6 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
                 sInvoice.getCustomerNumber());
 
         final Dialog loadingDialog = CommonUtils.showLoadingDialog(getContext());
-
         API.createInvoice(mCurrentUser.getAuthenticationToken(), params,
                 new API.APICallback<APIResponse<CreateInVoiceData>>() {
                     @Override
