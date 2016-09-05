@@ -210,4 +210,5 @@
     <string name="edt_password_short">Mật khẩu cần lớn hơn 6 kí tự</string>
     <string name="err_msg_not_empty">Không được để trống</string>
     <string name="err_msg_not_rating">Bạn chưa đánh giá</string>
+    <string name="edt_pin_invalid">Mã pin không đúng</string>
 </resources>

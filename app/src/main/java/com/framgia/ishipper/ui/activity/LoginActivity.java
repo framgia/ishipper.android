@@ -18,6 +18,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
+import com.framgia.ishipper.util.InputValidate;
 
 import java.util.HashMap;
 
@@ -25,16 +26,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";
+
     @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
+
     @BindView(R.id.edtPassword) EditText mEdtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getConfig();
-
         // Check login
         if (Config.getInstance().isLogin(getApplicationContext())) {
             startMainActivity();
@@ -67,28 +69,45 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ForgetPasswordActivity.class));
                 break;
             case R.id.btnLogin:
-                HashMap<String, String> params = new HashMap<>();
-                params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER, mEdtPhoneNumber.getText().toString());
-                params.put(APIDefinition.SignIn.PARAM_PASSWORD, mEdtPassword.getText().toString());
-                final Dialog loadingDialog = CommonUtils.showLoadingDialog(this);
-                API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
-                    @Override
-                    public void onResponse(APIResponse<SignInData> response) {
-                        loadingDialog.dismiss();
-                        Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                        Config.getInstance().setUserInfo(getApplicationContext(), response.getData().getUser());
-                        startMainActivity();
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        loadingDialog.dismiss();
-                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                login();
                 break;
         }
     }
+
+    private void login() {
+
+        if (!InputValidate.checkPhoneNumber(mEdtPhoneNumber, this)) {
+            return;
+        }
+        if (!InputValidate.checkPassword(mEdtPassword, this)) {
+            return;
+        }
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER,
+                   mEdtPhoneNumber.getText().toString());
+        params.put(APIDefinition.SignIn.PARAM_PASSWORD,
+                   mEdtPassword.getText().toString());
+        final Dialog loadingDialog = CommonUtils.showLoadingDialog(this);
+        API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
+            @Override
+            public void onResponse(APIResponse<SignInData> response) {
+                loadingDialog.dismiss();
+                Toast.makeText(getBaseContext(), response.getMessage(),
+                               Toast.LENGTH_SHORT).show();
+                Config.getInstance().setUserInfo(getApplicationContext(),
+                                                 response.getData().getUser());
+                startMainActivity();
+            }
+
+            @Override
+            public void onFailure(int code, String message) {
+                loadingDialog.dismiss();
+                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void startMainActivity() {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -99,4 +118,5 @@ public class LoginActivity extends AppCompatActivity {
         Const.SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         Const.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
     }
+
 }

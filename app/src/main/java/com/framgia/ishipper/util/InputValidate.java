@@ -11,6 +11,11 @@ import com.framgia.ishipper.R;
  * Created by HungNT on 9/5/16.
  */
 public class InputValidate {
+
+    public static boolean checkPhoneNumber(EditText editText, Context context) {
+        return notEmpty(editText, context);
+    }
+
     public static boolean confirmPassword(EditText edtNewPassword, EditText edtConfirmPassword, Context context) {
         if (checkPassword(edtNewPassword, context) && checkPassword(edtConfirmPassword, context)) {
             if (!edtConfirmPassword.getText().toString().equals(edtNewPassword.getText().toString())) {
@@ -25,7 +30,7 @@ public class InputValidate {
         return false;
     }
 
-    private static boolean checkPassword(EditText editText, Context context) {
+    public static boolean checkPassword(EditText editText, Context context) {
         String password = editText.getText().toString();
         if (password.isEmpty()) {
             Toast.makeText(context, R.string.error_password_empty, Toast.LENGTH_SHORT).show();
@@ -33,6 +38,8 @@ public class InputValidate {
         } else if (password.contains(" ")) {
             Toast.makeText(context, R.string.error_password_space, Toast.LENGTH_SHORT).show();
             editText.requestFocus();
+        } else if (password.length() < Const.MIN_PASSWORD_LENGTH) {
+            Toast.makeText(context, R.string.edt_password_short, Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
@@ -48,5 +55,15 @@ public class InputValidate {
 
         return true;
 
+    }
+
+    public static boolean checkPin(EditText edtPin, Context context) {
+        String pin = edtPin.getText().toString();
+        if (pin.length() != Const.PIN_LENGTH) {
+            Toast.makeText(context, R.string.edt_pin_invalid, Toast.LENGTH_SHORT).show();
+        } else {
+            return true;
+        }
+        return false;
     }
 }
