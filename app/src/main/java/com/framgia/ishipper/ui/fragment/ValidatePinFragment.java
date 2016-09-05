@@ -18,6 +18,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.util.InputValidate;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +55,9 @@ public class ValidatePinFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnDone:
+                if (InputValidate.checkPin(mEdtPhoneNumber, getContext())) {
+                    break;
+                }
                 final ProgressDialog pd = new ProgressDialog(getActivity());
                 pd.show();
                 if (mAction == ACTION_FORGOT_PASSWORD) {
