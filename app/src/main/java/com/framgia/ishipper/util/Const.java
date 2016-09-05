@@ -20,7 +20,15 @@ public class Const {
         public static final String KEY_IS_LOGIN = "IsLoginKey";
     }
 
-    public static final int LOCATION_INTERVAL_UPDATE = 10000;
-    public static final int LOCATION_FASTEST_INTERVAL_UPDATE = 5000;
+    public class LocationRequest {
+        public static final int LOCATION_INTERVAL_UPDATE = 10000;
+        public static final int LOCATION_FASTEST_INTERVAL_UPDATE = 5000;
+    }
 
+    public class MapPadding {
+        public static final int TOP_PADDING = 150;
+        public static final int RIGHT_PADDING = 0;
+        public static final int BOTTOM_PADDING = 0;
+        public static final int LEFT_PADDING = 0;
+    }
 }

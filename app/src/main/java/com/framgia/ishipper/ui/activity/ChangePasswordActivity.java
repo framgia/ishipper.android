@@ -51,10 +51,22 @@ public class ChangePasswordActivity extends ToolbarActivity {
     public void onClick() {
         User currentUser = Config.getInstance().getUserInfo(this);
         Map<String, String> params = new HashMap<>();
-        params.put(APIDefinition.ChangePassword.PARAM_PHONE_NUMBER, currentUser.getPhoneNumber());
-        params.put(APIDefinition.ChangePassword.PARAM_CURRENT_PASSWORD, mEdtOldPassword.getText().toString());
-        params.put(APIDefinition.ChangePassword.PARAM_PASSWORD, mEdtNewPassword.getText().toString());
-        params.put(APIDefinition.ChangePassword.PARAM_PASSWORD_CONFIRMATION, mEdtConfirmPassword.getText().toString());
+        params.put(
+                APIDefinition.ChangePassword.PARAM_PHONE_NUMBER,
+                currentUser.getPhoneNumber()
+        );
+        params.put(
+                APIDefinition.ChangePassword.PARAM_CURRENT_PASSWORD,
+                mEdtOldPassword.getText().toString()
+        );
+        params.put(
+                APIDefinition.ChangePassword.PARAM_PASSWORD,
+                mEdtNewPassword.getText().toString()
+        );
+        params.put(
+                APIDefinition.ChangePassword.PARAM_PASSWORD_CONFIRMATION,
+                mEdtConfirmPassword.getText().toString()
+        );
         API.changePassword(
                 currentUser.getAuthenticationToken(),
                 params,
@@ -70,6 +82,7 @@ public class ChangePasswordActivity extends ToolbarActivity {
                     public void onFailure(int code, String message) {
                         Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+        );
     }
 }

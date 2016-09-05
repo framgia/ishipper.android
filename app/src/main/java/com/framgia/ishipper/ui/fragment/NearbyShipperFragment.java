@@ -186,6 +186,13 @@ public class NearbyShipperFragment extends Fragment implements
         }
     }
 
+    /**
+     * mark all shippers near a location on map
+     *
+     * @param latitude  location's latitude
+     * @param longitude location's longitude
+     * @param radius    radius to find shipper
+     */
     private void markShipperNearby(final double latitude, final double longitude, float radius) {
         Map<String, String> userParams = new HashMap<>();
         userParams.put(APIDefinition.GetShipperNearby.PARAM_USER_LAT, String.valueOf(latitude));
@@ -212,6 +219,11 @@ public class NearbyShipperFragment extends Fragment implements
                 });
     }
 
+    /**
+     * add all marker on map
+     *
+     * @param users list users
+     */
     private void addListMarker(List<User> users) {
         mGoogleMap.clear();
         for (User user : users) {
@@ -270,6 +282,12 @@ public class NearbyShipperFragment extends Fragment implements
     }
 
     private void configGoogleMap() {
+        mGoogleMap.getUiSettings().setCompassEnabled(false);
+        mGoogleMap.setPadding(
+                Const.MapPadding.LEFT_PADDING,
+                Const.MapPadding.TOP_PADDING,
+                Const.MapPadding.RIGHT_PADDING,
+                Const.MapPadding.BOTTOM_PADDING);
         mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
@@ -280,8 +298,6 @@ public class NearbyShipperFragment extends Fragment implements
                 task.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
             }
         });
-        mGoogleMap.getUiSettings().setCompassEnabled(false);
-        mGoogleMap.setPadding(0, 150, 0, 0);
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {

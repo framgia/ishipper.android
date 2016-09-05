@@ -38,10 +38,8 @@ public class ListShipperRegActivity extends AppCompatActivity implements
     public static final String KEY_INVOICE_ID = "KEY_INVOICE_ID";
     public static final int REQUEST_CODE_RESULT = 888;
 
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     private ShipperRegAdapter mShipperRegAdapter;
     private int mInvoiceId;
@@ -82,24 +80,24 @@ public class ListShipperRegActivity extends AppCompatActivity implements
     private void getListShipper() {
 
         API.getListShipperReceived(Config.getInstance().getUserInfo(this).getAuthenticationToken(),
-                                   String.valueOf(mInvoiceId),
-                                   new API.APICallback<APIResponse<ListShipperData>>() {
-                                    @Override
-                                    public void onResponse(APIResponse<ListShipperData> response) {
-                                        // Update the list
-                                        mShipperList.clear();
-                                        for (User item : response.getData().getShippersList()) {
-                                            mShipperList.add(item);
-                                        }
-                                        mShipperRegAdapter.notifyDataSetChanged();
-                                    }
+                String.valueOf(mInvoiceId),
+                new API.APICallback<APIResponse<ListShipperData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListShipperData> response) {
+                        // Update the list
+                        mShipperList.clear();
+                        for (User item : response.getData().getShippersList()) {
+                            mShipperList.add(item);
+                        }
+                        mShipperRegAdapter.notifyDataSetChanged();
+                    }
 
-                                    @Override
-                                    public void onFailure(int code, String message) {
-                                        Toast.makeText(ListShipperRegActivity.this, message,
-                                                       Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(ListShipperRegActivity.this, message,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

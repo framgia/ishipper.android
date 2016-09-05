@@ -30,7 +30,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ToolbarActivity {
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -53,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
         selectItem(R.id.nav_nearby_order);
     }
 
+    @Override
+    Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    int getActivityTitle() {
+        return R.string.all_nearby_order;
+    }
+
     private void initView() {
         mCurrentUser = Config.getInstance().getUserInfo(this);
         if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
@@ -60,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             userType = SHOP;
         }
-        setSupportActionBar(mToolbar);
         if (userType == SHOP) {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shop);
         } else {
@@ -81,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        /** Set listener to image icon in drawer */
         View view = mNavigationView.getHeaderView(0);
         CircularImageView imageView = (CircularImageView) view.findViewById(R.id.nav_user_icon);
         imageView.setOnClickListener(new View.OnClickListener() {

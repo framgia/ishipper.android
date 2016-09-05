@@ -82,37 +82,32 @@ public interface APIServices {
 
     @FormUrlEncoded
     @PUT(APIDefinition.ConfirmationPin.PATH)
-    Call<APIResponse<EmptyData>> confirmationPinInSignup(
+    Call<APIResponse<EmptyData>> confirmationPinInSignUp(
             @Field(APIDefinition.GetCheckPin.PARAM_PHONE) String phoneNumber,
             @Field(APIDefinition.GetCheckPin.PARAM_PIN) String pin
     );
 
-    /* Get Shipper nearby */
     @GET(APIDefinition.GetShipperNearby.PATH)
     Call<APIResponse<ShipperNearbyData>> getShipperNearby(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
 
-    /* Get Invoice nearby */
     @GET(APIDefinition.GetInvoiceNearby.PATH)
     Call<APIResponse<ListInvoiceData>> getInvoiceNearBy(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> userParams);
 
-    /* Sign out */
     @DELETE(APIDefinition.SignOut.PATH)
     Call<APIResponse<EmptyData>> signOut(
             @Query(APIDefinition.SignOut.AUTHENTICATE_TOKEN) String token,
             @Query(APIDefinition.SignOut.PARAM_PHONE_NUMBER) String phoneNumber);
 
-    /* Create invoice */
     @FormUrlEncoded
     @POST(APIDefinition.CreateInvoice.PATH)
     Call<APIResponse<CreateInVoiceData>> createInvoice(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @FieldMap Map<String, String> params);
 
-    /* Put update invoice*/
     @FormUrlEncoded
     @PUT(APIDefinition.PutUpdateInvoice.PATH)
     Call<APIResponse<InvoiceData>> putUpdateInvoice(
@@ -121,20 +116,17 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
 
-    /* Filter Invoice */
     @GET(APIDefinition.FilterInvoice.PATH)
     Call<APIResponse<FilterInvoiceData>> filterInvoice(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> params);
 
-    /* Get invoice */
     @GET(APIDefinition.GetListInvoice.PATH)
     Call<APIResponse<ListInvoiceData>> getListInvoice(
             @Path(APIDefinition.GetListInvoice.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @QueryMap Map<String, String> params);
 
-    /* Put update invoice status */
     @FormUrlEncoded
     @PUT(APIDefinition.PutUpdateInvoiceStatus.PATH)
     Call<APIResponse<InvoiceData>> putUpdateInvoiceStatus(
@@ -143,19 +135,16 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Field(APIDefinition.PutUpdateInvoiceStatus.PARAM_STATUS) String status);
 
-    /* Get User */
     @GET(APIDefinition.GetUser.PATH)
     Call<APIResponse<GetUserData>> getUser(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Path(APIDefinition.GetUser.PARAM_USER_ID) String id);
 
-    /* Get list shipper received */
     @GET(APIDefinition.GetListShipperReceived.PATH)
     Call<APIResponse<ListShipperData>> getListShipperReceived(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Query(APIDefinition.GetListShipperReceived.PARAM_INVOICE_ID) String id);
 
-    /* Put shop receive shipper */
     @FormUrlEncoded
     @PUT(APIDefinition.PutShopReceiveShipper.PATH)
     Call<APIResponse<EmptyData>> putShopReceiveShipper(
@@ -164,7 +153,6 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
 
-    /* Post Shipper Receive invoice */
     @FormUrlEncoded
     @POST(APIDefinition.PostShipperReceiveInvoice.PATH)
     Call<APIResponse<EmptyData>> postShipperReceiveInvoice(
@@ -172,7 +160,6 @@ public interface APIServices {
             @Field(APIDefinition.PostShipperReceiveInvoice.PARAMS_INVOICE_ID) String status
     );
 
-    /* Get Invoice detail */
     @GET(APIDefinition.ShowInvoice.PATH)
     Call<APIResponse<ShowInvoiceData>> getInvoiceDetail(
             @Path(APIDefinition.PutUpdateInvoiceStatus.PARAM_USER_TYPE) String userType,
@@ -186,14 +173,6 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @FieldMap Map<String, String> params);
 
-    /**
-     * Post report user
-     *
-     * @param userType
-     * @param token
-     * @param params
-     * @return
-     */
     @FormUrlEncoded
     @POST(APIDefinition.ReportUser.PATH)
     Call<APIResponse<ReportUserData>> reportUser(

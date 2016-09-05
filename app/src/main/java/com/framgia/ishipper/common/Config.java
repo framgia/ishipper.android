@@ -27,6 +27,11 @@ public class Config {
     // User info config
     private User mUserInfo;
 
+    /**
+     * Get user information in share-preference
+     * @param context context
+     * @return current user
+     */
     public User getUserInfo(Context context) {
         if (mUserInfo == null) {
             restoreUserInfoSetting(context);
@@ -48,6 +53,11 @@ public class Config {
         mUserInfo = new Gson().fromJson(savedUserInfoJson, User.class);
     }
 
+    /**
+     * Check if user is logging or not
+     * @param context context
+     * @return true if user is logging, false is not
+     */
     public boolean isLogin(Context context) {
         if (context == null) {
             return false;
@@ -56,6 +66,12 @@ public class Config {
         return StorageUtils.getBooleanValue(context, Storage.KEY_IS_LOGIN) && getUserInfo(context) != null;
     }
 
+    /**
+     * save logged in user information to share-preference
+     * @param context context
+     * @param userInfo user
+     * @return true if save info successfully
+     */
     public synchronized boolean setUserInfo(Context context, User userInfo) {
         if (context == null || userInfo == null) {
             return false;
