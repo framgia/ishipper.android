@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/rl_search_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/activity_vertical_margin"
+              android:background="@drawable/background_shadow"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/searchview_size"
+            android:layout_height="@dimen/searchview_size"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_3dp"
+            android:src="@drawable/ic_search_grey_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_search_area"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/searchview_text_size"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_main_search_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5dp"
+        android:gravity="center"
+        android:text="@string/all_address_sample"/>
+</LinearLayout>
