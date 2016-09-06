@@ -1,5 +1,8 @@
 package com.framgia.ishipper.net;
+
 import com.framgia.ishipper.common.Log;
+import com.framgia.ishipper.util.Const.ErrorMessage;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,12 +29,12 @@ public class RetrofitCallback<T> implements Callback<T> {
         } else if (apiResponse.isSuccess()) {
             mCallback.onResponse(response.body());
         } else {
-            mCallback.onFailure(LOCAL_ERROR, apiResponse.getMessage());
+            mCallback.onFailure(apiResponse.getCode(), apiResponse.getMessage());
         }
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        mCallback.onFailure(LOCAL_ERROR, t.getMessage());
+        mCallback.onFailure(LOCAL_ERROR, ErrorMessage.ERROR_MSG_LOCAL);
     }
 }
