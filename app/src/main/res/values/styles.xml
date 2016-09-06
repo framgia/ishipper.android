@@ -25,6 +25,24 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="AppLayoutInputStyle">
+        <item name="android:background">@drawable/bg_edittext_login</item>
+    </style>
+    <style name="AppSpinner">
+        <item name="android:background">@drawable/bg_edittext_login</item>
+        <item name="android:layout_margin">1dp</item>
+    </style>
+
+    <style name="AppTextFieldEmptyStyle">
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingTop">@dimen/all_padding_medium</item>
+        <item name="android:paddingRight">@dimen/all_padding_medium</item>
+        <item name="android:paddingBottom">@dimen/all_padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="AppTextFieldStyle">
         <item name="android:background">@drawable/bg_edittext_login</item>
         <item name="android:padding">@dimen/all_padding_medium</item>
@@ -32,6 +50,8 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:singleLine">true</item>
     </style>
+
+
 
     <style name="AppLabelTitle">
         <item name="android:layout_width">wrap_content</item>

@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
@@ -26,12 +29,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "LoginActivity";
 
     @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
-
     @BindView(R.id.edtPassword) EditText mEdtPassword;
+    @BindView(R.id.spnPrefixPhoneNumber) Spinner mSpnPrefixPhoneNumber;
+
+    private String mPrefixPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,17 @@ public class LoginActivity extends AppCompatActivity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        setUpSpinner();
+    }
+
+    private void setUpSpinner() {
+        ArrayAdapter<CharSequence> adapter =
+                ArrayAdapter.createFromResource(this,
+                                                R.array.prefix_phone_number,
+                                                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpnPrefixPhoneNumber.setAdapter(adapter);
+        mSpnPrefixPhoneNumber.setOnItemSelectedListener(this);
     }
 
     @OnClick({R.id.btnShop, R.id.btnShipper, R.id.btnRegister, R.id.btnForgotPass, R.id.btnLogin})
@@ -80,6 +96,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private void login() {
 
+        String phoneNumber = mPrefixPhoneNumber + mEdtPhoneNumber.getText().toString();
         if (!InputValidate.checkPhoneNumber(mEdtPhoneNumber, this)) {
             return;
         }
@@ -88,10 +105,8 @@ public class LoginActivity extends AppCompatActivity{
         }
 
         HashMap<String, String> params = new HashMap<>();
-        params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER,
-                   mEdtPhoneNumber.getText().toString());
-        params.put(APIDefinition.SignIn.PARAM_PASSWORD,
-                   mEdtPassword.getText().toString());
+        params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER, phoneNumber);
+        params.put(APIDefinition.SignIn.PARAM_PASSWORD, mEdtPassword.getText().toString());
         final Dialog loadingDialog = CommonUtils.showLoadingDialog(this);
         API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
             @Override
@@ -126,4 +141,13 @@ public class LoginActivity extends AppCompatActivity{
         Const.SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        mPrefixPhoneNumber = adapterView.getItemAtPosition(i).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        mPrefixPhoneNumber = "";
+    }
 }
