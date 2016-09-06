@@ -272,7 +272,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void showReportDialog() {
         final ReportDialog reportDialog = new ReportDialog(OrderDetailActivity.this);
-        reportDialog.setListener(new ReportDialog.OnReportListener() {
+        reportDialog.setOnReportListener(new ReportDialog.OnReportListener() {
             @Override
             public void onReportListener(ReviewUser reviewUser) {
                 final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);

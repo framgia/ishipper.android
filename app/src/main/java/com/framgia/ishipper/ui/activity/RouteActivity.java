@@ -59,7 +59,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mLatLng = new LatLng(21.009015, 105.859972);
         googleMap.addMarker(new MarkerOptions().position(mLatLng));
         enableMyLocation();
 
