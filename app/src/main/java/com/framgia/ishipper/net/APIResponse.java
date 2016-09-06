@@ -16,14 +16,9 @@ public class APIResponse<T> {
         mData = data;
     }
 
-    @SerializedName("code")
-    protected int mCode;
-
-    @SerializedName("message")
-    protected String mMessage;
-
-    @SerializedName("data")
-    protected T mData;
+    @SerializedName("code") protected int mCode;
+    @SerializedName("message") protected String mMessage;
+    @SerializedName("data") protected T mData;
 
     public boolean isSuccess() {
         return mCode == CODE_SUCCESS;

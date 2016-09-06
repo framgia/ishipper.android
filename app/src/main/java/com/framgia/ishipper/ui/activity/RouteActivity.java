@@ -6,7 +6,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class RouteActivity extends ToolbarActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Invoice mInvoice;
     private SupportMapFragment mMapFragment;
@@ -41,7 +40,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private LatLng mLatLng;
     private LatLng mMyLatLng;
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +51,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -147,6 +144,16 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         googleMap.animateCamera(cu);
+    }
+
+    @Override
+    Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    int getActivityTitle() {
+        return R.string.title_activity_route;
     }
 
     @Override

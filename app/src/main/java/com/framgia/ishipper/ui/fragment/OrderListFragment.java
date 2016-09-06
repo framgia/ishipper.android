@@ -34,7 +34,6 @@ import butterknife.Unbinder;
 public class OrderListFragment extends Fragment implements OrderAdapter.OnClickCancelListener,
         OrderAdapter.OnClickActionListener, OrderAdapter.OnclickViewListener {
     private static final String TAG = "OrderListFragment";
-    private static final String LIST_INVOICE = "list invoice";
     private static final String TAB_TITLE = "title";
     private static final String STATUS_CODE = "status";
 

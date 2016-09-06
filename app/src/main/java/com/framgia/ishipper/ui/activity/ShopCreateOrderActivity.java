@@ -14,7 +14,7 @@ import com.framgia.ishipper.ui.fragment.ShopCreateOrderStep1Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ShopCreateOrderActivity extends AppCompatActivity {
+public class ShopCreateOrderActivity extends ToolbarActivity {
     private static final String TAG = "ShopCreateOrderActivity";
     public static Invoice sInvoice = new Invoice();
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -24,10 +24,6 @@ public class ShopCreateOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_create_order);
         ButterKnife.bind(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, new ShopCreateOrderStep1Fragment())
@@ -42,6 +38,16 @@ public class ShopCreateOrderActivity extends AppCompatActivity {
                 .addToBackStack(fragment.getClass().getName())
                 .commit();
         Log.d(TAG, "addFragment: " + fragment.getClass().getName());
+    }
+
+    @Override
+    Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    int getActivityTitle() {
+        return R.string.title_activity_create_invoice;
     }
 
     @Override
