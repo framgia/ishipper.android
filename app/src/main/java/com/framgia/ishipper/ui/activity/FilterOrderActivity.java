@@ -148,7 +148,6 @@ public class FilterOrderActivity extends ToolbarActivity {
                                 Intent intent = getIntent();
                                 String data = new Gson().toJson(response.getData().getInvoiceList(),
                                         new TypeToken<List<Invoice>>() {}.getType());
-
                                 intent.putExtra(INTENT_FILTER_DATA, data);
                                 setResult(RESULT_OK, intent);
                                 finish();
@@ -158,7 +157,8 @@ public class FilterOrderActivity extends ToolbarActivity {
                             public void onFailure(int code, String message) {
                                 Toast.makeText(FilterOrderActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                );
                 break;
         }
     }

@@ -23,6 +23,8 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.framgia.ishipper.ui.view.ReportDialog;
+import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -30,7 +32,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends ToolbarActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -53,17 +55,8 @@ public class MainActivity extends ToolbarActivity {
         selectItem(R.id.nav_nearby_order);
     }
 
-    @Override
-    Toolbar getToolbar() {
-        return mToolbar;
-    }
-
-    @Override
-    int getActivityTitle() {
-        return R.string.all_nearby_order;
-    }
-
     private void initView() {
+        setSupportActionBar(mToolbar);
         mCurrentUser = Config.getInstance().getUserInfo(this);
         if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
             userType = SHIPPER;

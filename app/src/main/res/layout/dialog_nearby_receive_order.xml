@@ -10,26 +10,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/text_view_margin"
         android:background="@color/colorPrimary"
-        android:drawableLeft="@drawable/ic_order_management"
-        android:drawablePadding="@dimen/text_view_margin"
-        android:padding="@dimen/all_padding_medium"
+        android:drawableLeft="@drawable/ic_receive_order_white_24dp"
+        android:drawablePadding="@dimen/activity_horizontal_padding"
+        android:padding="@dimen/activity_horizontal_padding"
         android:text="@string/all_register_order"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_18sp"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/text_size_18sp"/>
 
     <TextView
         android:id="@+id/confirm_dialog_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_view_margin"
+        android:textSize="@dimen/text_size_content_plus"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:text="@string/dialog_receive_order_message"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:orientation="horizontal">
 
@@ -37,16 +36,18 @@
             android:id="@+id/confirm_dialog_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/text_view_margin"
+            android:padding="@dimen/activity_horizontal_padding"
             android:text="@string/all_no"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_button"/>
 
         <TextView
             android:id="@+id/confirm_dialog_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_view_margin"
+            android:padding="@dimen/activity_horizontal_padding"
             android:text="@string/all_yes"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_button"/>
     </LinearLayout>
 </LinearLayout>

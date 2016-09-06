@@ -54,12 +54,13 @@ public class UserProfileActivity extends ToolbarActivity {
 
     private void bindData() {
         User currentUser = Config.getInstance().getUserInfo(getApplicationContext());
-        mEdtProfilePlate.setText(currentUser.getPlateNumber());
         mEdtProfileName.setText(currentUser.getName());
         mEdtProfilePhone.setText(currentUser.getPhoneNumber());
         mEdtProfileAddress.setText(currentUser.getAddress());
         if (currentUser.getRole().equals(User.ROLE_SHOP)) {
             mEdtProfilePlate.setVisibility(View.GONE);
+        } else {
+            mEdtProfilePlate.setText(currentUser.getPlateNumber());
         }
     }
 

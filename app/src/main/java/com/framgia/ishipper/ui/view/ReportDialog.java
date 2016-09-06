@@ -61,7 +61,7 @@ public class ReportDialog {
         return mListener;
     }
 
-    public void setListener(OnReportListener listener) {
+    public void setOnReportListener(OnReportListener listener) {
         mListener = listener;
     }
 
