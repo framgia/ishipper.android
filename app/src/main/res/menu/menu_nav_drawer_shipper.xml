@@ -5,15 +5,15 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_nearby_order"
-            android:icon="@drawable/ic_near_me_black_24dp"
+            android:icon="@drawable/ic_near_me_white_24dp"
             android:title="@string/nav_nearby_order_item"/>
         <item
             android:id="@+id/nav_fb_order"
-            android:icon="@drawable/ic_facebook_logo"
+            android:icon="@drawable/ic_facebook_grey_24dp"
             android:title="@string/nav_fb_order_item"/>
         <item
             android:id="@+id/nav_order_management"
-            android:icon="@drawable/ic_order_management"
+            android:icon="@drawable/ic_order_management_white_24dp"
             android:title="@string/nav_order_management_item"/>
     </group>
     <group
@@ -21,11 +21,11 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_rate_us"
-            android:icon="@drawable/ic_rate_review_black_24dp"
+            android:icon="@drawable/ic_rate_review_white_24dp"
             android:title="@string/nav_rate_us_item"/>
         <item
             android:id="@+id/nav_information"
-            android:icon="@drawable/ic_info_black_24dp"
+            android:icon="@drawable/ic_info_white_24dp"
             android:title="@string/nav_inform_item"/>
     </group>
     <group
@@ -33,7 +33,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_sign_out"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:icon="@drawable/ic_exit_to_app_white_24dp"
             android:title="@string/nav_sign_out_item"/>
     </group>
 </menu>

@@ -137,7 +137,7 @@
                                 android:id="@+id/edt_profile_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_person"
+                                android:drawableLeft="@drawable/ic_person_grey_24dp"
                                 android:drawablePadding="@dimen/tv_drawable_padding"
                                 android:hint="@string/profile_user_name"/>
                         </android.support.design.widget.TextInputLayout>
@@ -150,7 +150,7 @@
                                 android:id="@+id/edt_profile_plate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_plate_24dp"
+                                android:drawableLeft="@drawable/ic_plate_grey_24dp"
                                 android:drawablePadding="@dimen/tv_drawable_padding"
                                 android:hint="@string/profile_plate"/>
                         </android.support.design.widget.TextInputLayout>
@@ -163,7 +163,7 @@
                                 android:id="@+id/edt_profile_phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_phone_24dp"
+                                android:drawableLeft="@drawable/ic_phone_grey_24dp"
                                 android:drawablePadding="@dimen/tv_drawable_padding"
                                 android:hint="@string/profile_phone"/>
                         </android.support.design.widget.TextInputLayout>
@@ -176,7 +176,7 @@
                                 android:id="@+id/edt_profile_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_place_24"
+                                android:drawableLeft="@drawable/ic_place_grey_24dp"
                                 android:drawablePadding="@dimen/tv_drawable_padding"
                                 android:hint="@string/profile_address"/>
                         </android.support.design.widget.TextInputLayout>

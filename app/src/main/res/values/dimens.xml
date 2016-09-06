@@ -67,9 +67,9 @@
     <dimen name="all_padding_small">5dp</dimen>
     <dimen name="register_bg_radius">7dp</dimen>
     <dimen name="nav_contact_icon_border_width">3dp</dimen>
-    <dimen name="searchview_text_size">10sp</dimen>
+    <dimen name="searchview_text_size">12sp</dimen>
     <dimen name="searchview_margin">10dp</dimen>
-    <dimen name="searchview_padding">5dp</dimen>
+    <dimen name="searchview_padding">20dp</dimen>
     <dimen name="all_layout_margin_regular">16dp</dimen>
     <dimen name="fragment_phone_validate_text_size">44sp</dimen>
 
@@ -83,4 +83,5 @@
     <dimen name="linear_profile_padding">10dp</dimen>
     <dimen name="activity_horizontal_padding">16dp</dimen>
     <dimen name="activity_vertical_padding">16dp</dimen>
+    <dimen name="searchview_size">15dp</dimen>
 </resources>
