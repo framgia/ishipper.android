@@ -14,6 +14,10 @@ public class Const {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
+    public class ErrorMessage {
+        public static final String ERROR_MSG_LOCAL = "Có lỗi xảy ra trong quá trình kết nối, hãy thử lại!";
+    }
+
     public class Storage {
 
         public static final String KEY_USER_INFO = "UserStorageKey";
