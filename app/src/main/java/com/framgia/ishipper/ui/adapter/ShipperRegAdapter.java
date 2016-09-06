@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.List;
 
@@ -42,30 +43,12 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mShipper = mShipperList.get(position);
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null)
-                    mListener.onItemClickShipperRegListener(holder.mShipper);
-            }
-        });
-
-        holder.mBtnAcceptShipper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mAcceptShipperListener != null)
-                    mAcceptShipperListener.onClickAcceptShipperListener(holder.mShipper);
-            }
-        });
-
         holder.mTextName.setText(holder.mShipper.getName());
-        //TODO update shipper information
-//        holder.mTextCountOrder.setText(holder.mShipper.getSuccessOrder() + "/" +
-//                                               holder.mShipper.getTotalOrder());
-//        holder.mTextDistance.setText(holder.mShipper.getDistance());
-//        holder.mTextRating.setText(holder.mShipper.getRating());
-//        holder.mTextCountRating.setText(String.valueOf(holder.mShipper.getCountRating()));
+        holder.mTextRating.setText(TextFormatUtils.formatDistance(holder.mShipper.getRate()));
         holder.mRtbRatingUser.setRating((float) holder.mShipper.getRate());
+        //TODO update shipper information
+//        holder.mTextDistance.setText(holder.mShipper.getDistance());
+//        holder.mTextCountRating.setText(String.valueOf(holder.mShipper.getCountRating()));
 
     }
 
@@ -92,7 +75,7 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
         mAcceptShipperListener = acceptShipperListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public View mView;
         public User mShipper;
@@ -108,6 +91,18 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
             super(itemView);
             ButterKnife.bind(this, itemView);
             mView = itemView;
+            mView.setOnClickListener(this);
+            mBtnAcceptShipper.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == mView.getId() && mListener != null) {
+                mListener.onItemClickShipperRegListener(mShipper);
+            }
+            if (view.getId() == R.id.btn_accept_shipper && mAcceptShipperListener != null) {
+                mAcceptShipperListener.onClickAcceptShipperListener(mShipper);
+            }
         }
     }
 

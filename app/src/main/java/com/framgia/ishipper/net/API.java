@@ -30,18 +30,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by HungNT on 8/5/16.
  */
 public abstract class API {
-    private static final String TAG = "API";
-    public static final int LOCAL_ERROR = 1111;
-    public static final String SERVER_ERROR = "Server Error";
-
-    private static OkHttpClient loggingClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        return httpClient.build();
-    }
 
     private static final APIServices client = new Retrofit.Builder()
             .baseUrl(APIDefinition.getBaseUrl())
@@ -50,12 +38,7 @@ public abstract class API {
             .build()
             .create(APIServices.class);
 
-    public interface APICallback<T> {
-        void onResponse(T response);
-
-        void onFailure(int code, String message);
-    }
-
+    //region USER API
     public static void signUp(Map<String, String> userParams,
                               final APICallback<APIResponse<SignUpData>> callback) {
         client.signUpUser(userParams).enqueue(new RetrofitCallback<>(callback));
@@ -63,8 +46,7 @@ public abstract class API {
 
     public static void confirmationPinInSignUp(String phoneNumber, String pin,
                                                final APICallback<APIResponse<EmptyData>> callback) {
-        client.confirmationPinInSignUp(phoneNumber, pin)
-                .enqueue(new RetrofitCallback<>(callback));
+        client.confirmationPinInSignUp(phoneNumber, pin).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void changePassword(
@@ -101,11 +83,6 @@ public abstract class API {
         client.getShipperNearby(token, userParams).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void getInvoiceNearby(String token, Map<String, String> userParams,
-                                        final APICallback<APIResponse<ListInvoiceData>> callback) {
-        client.getInvoiceNearBy(token, userParams).enqueue(new RetrofitCallback<>(callback));
-    }
-
     public static void putUpdateProfile(HashMap<String, String> params,
                                         final APICallback<APIResponse<UpdateProfileData>> callback) {
         client.putUpdateProfile(
@@ -121,6 +98,16 @@ public abstract class API {
         client.signOut(token, phoneNumber).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void getUser(
+            String token,
+            String userId,
+            final APICallback<APIResponse<GetUserData>> callback) {
+        client.getUser(token, userId).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    //endregion
+
+    //region INVOICE API
     public static void createInvoice(String token,
                                      Map<String, String> params,
                                      final APICallback<APIResponse<CreateInVoiceData>> callback) {
@@ -164,11 +151,9 @@ public abstract class API {
         client.getListInvoice(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void getUser(
-            String token,
-            String userId,
-            final APICallback<APIResponse<GetUserData>> callback) {
-        client.getUser(token, userId).enqueue(new RetrofitCallback<>(callback));
+    public static void getInvoiceNearby(String token, Map<String, String> userParams,
+                                        final APICallback<APIResponse<ListInvoiceData>> callback) {
+        client.getInvoiceNearBy(token, userParams).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void getListShipperReceived(String token,
@@ -206,5 +191,20 @@ public abstract class API {
     public static void postRating(HashMap<String, String> params, String token, String userType,
                                   final APICallback<APIResponse<EmptyData>> callback) {
         client.postRating(userType, token, params).enqueue(new RetrofitCallback<>(callback));
+    }
+    //endregion
+
+    private static OkHttpClient loggingClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+        return httpClient.build();
+    }
+
+    public interface APICallback<T> {
+        void onResponse(T response);
+
+        void onFailure(int code, String message);
     }
 }

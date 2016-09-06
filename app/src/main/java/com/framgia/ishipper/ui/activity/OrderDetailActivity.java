@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -39,10 +38,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrderDetailActivity extends AppCompatActivity {
+public class OrderDetailActivity extends ToolbarActivity {
 
     public static final String KEY_INVOICE_ID = "invoice id";
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.tv_detail_distance) TextView tvDetailDistance;
     @BindView(R.id.tv_detail_start) TextView tvDetailStart;
@@ -76,8 +75,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mCurrentUser = Config.getInstance().getUserInfo(this);
         initData();
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initData() {
@@ -174,6 +171,16 @@ public class OrderDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    int getActivityTitle() {
+        return R.string.title_activity_order_detail;
     }
 
     @Override

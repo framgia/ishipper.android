@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -76,8 +76,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         mTabLayout.setupWithViewPager(mViewPager);
 
         for (int type = 0; type < 7; type++) {
-            //TODO: Fake list Order
-            ArrayList<Invoice> invoices = new ArrayList<>();
             String titleTab;
             if (mOrderTitleList.size() > type) {
                 titleTab = mOrderTitleList.get(type);

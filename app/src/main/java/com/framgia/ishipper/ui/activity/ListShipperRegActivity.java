@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * Created by vuduychuong1994 on 7/20/16.
  */
-public class ListShipperRegActivity extends AppCompatActivity implements
+public class ListShipperRegActivity extends ToolbarActivity implements
         ShipperRegAdapter.OnItemClickShipperRegListener,
         ShipperRegAdapter.OnClickAcceptShipperListener {
 
@@ -56,9 +56,6 @@ public class ListShipperRegActivity extends AppCompatActivity implements
 
     private void initData() {
         mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         mShipperList = new ArrayList<>();
         mShipperRegAdapter = new ShipperRegAdapter(this, mShipperList);
         mShipperRegAdapter.setListener(this);
@@ -129,5 +126,15 @@ public class ListShipperRegActivity extends AppCompatActivity implements
                 });
 
 
+    }
+
+    @Override
+    Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    int getActivityTitle() {
+        return R.string.title_activity_list_shipper_reg;
     }
 }

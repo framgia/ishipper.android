@@ -17,9 +17,7 @@ import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.util.TextFormatUtils;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,33 +49,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mView.setSelected(mPositionHighlight == position);
         holder.mInvoice = mInvoiceList.get(position);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mClickViewListener) {
-                    mClickViewListener.onclickViewListener(holder.mInvoice);
-                }
-            }
-        });
-        holder.mBtnCancelItemOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mClickCancelListener != null) {
-                    mClickCancelListener.onClickCancelListener(holder.mInvoice);
-                }
-            }
-        });
-        holder.mBtnActionItemOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mClickActionListener != null) {
-                    mClickActionListener.onClickActionListener(holder.mInvoice);
-                }
-            }
-        });
         setStatus(holder);
+        displayData(holder);
+    }
 
+    private void displayData(ViewHolder holder) {
         holder.mTvNearbyShopName.setText(holder.mInvoice.getName());
         holder.mTvItemOrderFrom.setText(holder.mInvoice.getAddressStart());
         holder.mTvItemOrderTo.setText(holder.mInvoice.getAddressFinish());
@@ -247,7 +223,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         return mInvoiceList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public Invoice mInvoice;
         @BindView(R.id.tv_shipping_order_status) TextView mTvShippingOrderStatus;
@@ -271,6 +247,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             super(view);
             ButterKnife.bind(this, view);
             mView = view;
+            mView.setOnClickListener(this);
+            mBtnActionItemOrder.setOnClickListener(this);
+            mBtnCancelItemOrder.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == mView.getId() && mClickViewListener != null) {
+                    mClickViewListener.onclickViewListener(mInvoice);
+            }
+            if (view.getId() == R.id.btn_cancel_item_order && mClickCancelListener != null) {
+                    mClickCancelListener.onClickCancelListener(mInvoice);
+            }
+            if (view.getId() == R.id.btn_action_item_order && mClickActionListener != null) {
+                    mClickActionListener.onClickActionListener(mInvoice);
+            }
         }
     }
 

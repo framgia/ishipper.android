@@ -14,35 +14,20 @@ public class User implements Parcelable {
     public static final String ROLE_SHIPPER = "shipper";
 
     @SerializedName("name") private String mName;
-
     @SerializedName("email") private String mEmail;
-
     @SerializedName("address") private String mAddress;
-
     @SerializedName("latitude") private double mLatitude;
-
     @SerializedName("longitude") private double mLongitude;
-
     @SerializedName("phone_number") private String mPhoneNumber;
-
     @SerializedName("plate_number") private String mPlateNumber;
-
     @SerializedName("status") private String mStatus;
-
     @SerializedName("role") private String mRole;
-
     @SerializedName("rate") private double mRate;
-
     @SerializedName("pin") private String mPin;
-
     @SerializedName("authentication_token") private String mAuthenticationToken;
-
     @SerializedName("signed_in") private boolean mIsSignedIn;
-
     @SerializedName("password") private String mPassword;
-
     @SerializedName("id") private String mId;
-
     @SerializedName("user_invoice_id") private String mUserInvoiceId;
 
     public User() {}

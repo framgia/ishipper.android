@@ -211,4 +211,7 @@
     <string name="err_msg_not_empty">Không được để trống</string>
     <string name="err_msg_not_rating">Bạn chưa đánh giá</string>
     <string name="edt_pin_invalid">Mã pin không đúng</string>
+    <string name="title_activity_order_detail">Chi tiết đơn hàng</string>
+    <string name="title_activity_route">Chỉ đường</string>
+    <string name="title_activity_create_invoice">Tạo đơn hàng</string>
 </resources>
