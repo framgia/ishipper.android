@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <FrameLayout
         android:id="@+id/container"
@@ -39,7 +39,7 @@
                         android:background="@drawable/bg_radio_shipper"
                         android:button="@color/transparent"
                         android:checked="true"
-                        android:text="@string/shipper" />
+                        android:text="@string/shipper"/>
 
                     <RadioButton
                         android:id="@+id/radioShop"
@@ -49,28 +49,44 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_radio_shop"
                         android:button="@color/transparent"
-                        android:text="@string/shop" />
+                        android:text="@string/shop"/>
 
                 </RadioGroup>
 
                 <TextView
                     style="@style/AppLabelTitle"
                     android:layout_marginTop="@dimen/all_margin_medium"
-                    android:text="@string/all_phone_number" />
+                    android:text="@string/all_phone_number"/>
 
-                <EditText
-                    android:id="@+id/edtPhoneNumber"
-                    style="@style/AppTextFieldStyle"
+                <LinearLayout
+                    style="@style/AppLayoutInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/all_margin_small"
-                    android:hint="@string/all_phone_sample"
-                    android:inputType="phone" />
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spnRegisterPrefix"
+                        style="@style/AppSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/back_ground_grey"/>
+
+                    <EditText
+                        android:id="@+id/edtPhoneNumber"
+                        style="@style/AppTextFieldEmptyStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:gravity="center_vertical"
+                        android:inputType="phone"
+                        android:textSize="@dimen/text_size_content" />
+                </LinearLayout>
 
                 <TextView
                     style="@style/AppLabelTitle"
                     android:layout_marginTop="@dimen/all_margin_medium"
-                    android:text="@string/all_password" />
+                    android:text="@string/all_password"/>
 
                 <EditText
                     android:id="@+id/edtPasswordRegister"
@@ -78,12 +94,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_small"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"/>
 
                 <TextView
                     style="@style/AppLabelTitle"
                     android:layout_marginTop="@dimen/all_margin_medium"
-                    android:text="@string/all_password_confirm" />
+                    android:text="@string/all_password_confirm"/>
 
                 <EditText
                     android:id="@+id/edtPasswordConfirm"
@@ -91,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_small"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"/>
 
                 <TextView
                     android:id="@+id/tvTitleName"
@@ -99,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_medium"
-                    android:text="@string/name" />
+                    android:text="@string/name"/>
 
                 <EditText
                     android:id="@+id/edtNameRegister"
@@ -107,7 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_small"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapWords"/>
 
                 <LinearLayout
                     android:id="@+id/layoutPlate"
@@ -120,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/all_margin_medium"
-                        android:text="@string/plate" />
+                        android:text="@string/plate"/>
 
                     <EditText
                         android:id="@+id/edtPlateNumber"
@@ -129,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/all_margin_small"
                         android:hint="@string/all_plate_sample"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"/>
                 </LinearLayout>
 
                 <TextView
@@ -138,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/all_margin_large"
-                    android:text="@string/register" />
+                    android:text="@string/register"/>
 
             </LinearLayout>
         </ScrollView>
