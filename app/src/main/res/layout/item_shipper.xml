@@ -22,30 +22,27 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/btn_normal_background"
+                android:layout_weight="1.5"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:layout_width="@dimen/shipper_item_avatar_size"
+                    android:layout_height="@dimen/shipper_item_avatar_size"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_person_black_36dp"
-                    android:tint="@android:color/darker_gray" />
-
-                <TextView
-                    android:id="@+id/text_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="(3.5)" />
+                    android:src="@drawable/avatar_sample"
+                    android:tint="@android:color/darker_gray"
+                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_width="@dimen/nav_contact_icon_border_width"
+                    app:civ_shadow="true"
+                    app:civ_shadow_color="@android:color/black"
+                    app:civ_shadow_radius="5"/>
 
                 <android.support.v7.widget.AppCompatRatingBar
                     android:id="@+id/rtb_rating_user"
-                    style="?android:attr/ratingBarStyleSmall"
+                    style="@style/star_rating_bar_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -64,28 +61,29 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="20"
-                        android:textSize="@dimen/text_size_tiny_material" />
+                        android:textSize="@dimen/text_size_tiny_material"/>
 
                     <ImageView
                         android:layout_width="@dimen/_10dp"
                         android:layout_height="@dimen/_10dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_person_grey_24dp" />
+                        android:src="@drawable/ic_person_grey_24dp"/>
                 </LinearLayout>
 
             </LinearLayout>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/margin_4"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/menu_divider"/>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:orientation="vertical">
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:padding="@dimen/_5dp">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -95,12 +93,13 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="Họ tên :" />
+                        android:text="Họ tên :"/>
 
                     <TextView
                         android:id="@+id/text_name"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
+                        android:gravity="right"
                         android:text="Phạm Tuấn Anh"
                         />
                 </TableRow>
@@ -108,18 +107,18 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/btn_normal_background"
                     android:padding="@dimen/padding_4">
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="Khoảng cách :" />
+                        android:text="Khoảng cách :"/>
 
                     <TextView
                         android:id="@+id/text_distance"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
+                        android:gravity="right"
                         android:text="2 Km"
                         />
                 </TableRow>
@@ -131,29 +130,31 @@
 
                     <TextView
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="Số đơn thành công :" />
+                        android:layout_weight="1"
+                        android:text="Đơn hàng thành công:"/>
 
                     <TextView
                         android:id="@+id/text_count_order"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
+                        android:gravity="right"
                         android:text="20/25"
                         />
                 </TableRow>
 
-                <Button
+
+                <TextView
                     android:id="@+id/btn_accept_shipper"
-                    android:layout_width="@dimen/button_accept_shipper_width"
-                    android:layout_height="@dimen/_30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_5dp"
                     android:background="@drawable/btn_assign_accept_selector"
                     android:gravity="center"
+                    android:padding="@dimen/default_button_padding"
                     android:text="@string/accept"
-                    android:textColor="@android:color/white" />
-
+                    android:textColor="@android:color/white"/>
             </LinearLayout>
         </LinearLayout>
 

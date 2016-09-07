@@ -4,9 +4,13 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +43,10 @@ public class RegisterActivity extends ToolbarActivity {
     @BindView(R.id.layoutPlate) LinearLayout mLayoutPlate;
     @BindView(R.id.tvTitleName) TextView mTvTitleName;
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.spnRegisterPrefix) Spinner mSpnPrefixPhoneNumber;
 
-    User mCurrentUser = new User();
+    private User mCurrentUser = new User();
+    private String mPrefixPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,27 @@ public class RegisterActivity extends ToolbarActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         configUserType();
+        setUpSpinner();
+    }
+
+    private void setUpSpinner() {
+        ArrayAdapter<CharSequence> adapter =
+                ArrayAdapter.createFromResource(this,
+                        R.array.prefix_phone_number,
+                        android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpnPrefixPhoneNumber.setAdapter(adapter);
+        mSpnPrefixPhoneNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mPrefixPhoneNumber = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                mPrefixPhoneNumber = "";
+            }
+        });
     }
 
     private void configUserType() {
@@ -86,7 +113,7 @@ public class RegisterActivity extends ToolbarActivity {
             return;
         }
 
-        mCurrentUser.setPhoneNumber(mEdtPhoneNumber.getText().toString());
+        mCurrentUser.setPhoneNumber(mPrefixPhoneNumber + mEdtPhoneNumber.getText().toString());
         mCurrentUser.setPassword(mEdtPasswordRegister.getText().toString());
         mCurrentUser.setName(mEdtNameRegister.getText().toString());
         mCurrentUser.setPlateNumber(mEdtPlateNumber.getText().toString());
