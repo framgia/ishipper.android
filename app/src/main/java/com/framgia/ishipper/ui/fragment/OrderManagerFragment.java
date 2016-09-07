@@ -177,7 +177,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                 startActivityForResult(intent, ListShipperRegActivity.REQUEST_CODE_RESULT);
                 break;
             case Invoice.STATUS_CODE_WAITING:
-                // TODO invoice id
                 // Take invoice
                 Log.d("hung", "onClickAction: take ");
                 loadingDialog = CommonUtils.showLoadingDialog(getActivity());
@@ -211,6 +210,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
                                 notifyChangeTab(Invoice.STATUS_CODE_SHIPPED, true, invoice.getId());
                                 loadingDialog.dismiss();
+                                new ReviewDialog(getContext(), invoice.getStringId()).show();
                             }
 
                             @Override
