@@ -214,6 +214,9 @@
     <string name="title_activity_order_detail">Chi tiết đơn hàng</string>
     <string name="title_activity_route">Chỉ đường</string>
     <string name="title_activity_create_invoice">Tạo đơn hàng</string>
+    <string name="all_rating">Rating</string>
+    <string name="all_report">Report</string>
+    <string name="message_report_dialog">Bạn có muốn report không?</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

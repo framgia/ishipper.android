@@ -44,7 +44,6 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mShipper = mShipperList.get(position);
         holder.mTextName.setText(holder.mShipper.getName());
-        holder.mTextRating.setText(TextFormatUtils.formatDistance(holder.mShipper.getRate()));
         holder.mRtbRatingUser.setRating((float) holder.mShipper.getRate());
         //TODO update shipper information
 //        holder.mTextDistance.setText(holder.mShipper.getDistance());
@@ -82,7 +81,6 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
         @BindView(R.id.text_name) TextView mTextName;
         @BindView(R.id.text_count_order) TextView mTextCountOrder;
         @BindView(R.id.text_distance) TextView mTextDistance;
-        @BindView(R.id.text_rating) TextView mTextRating;
         @BindView(R.id.text_count_rating) TextView mTextCountRating;
         @BindView(R.id.rtb_rating_user) AppCompatRatingBar mRtbRatingUser;
         @BindView(R.id.btn_accept_shipper) Button mBtnAcceptShipper;

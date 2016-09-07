@@ -1,6 +1,7 @@
 package com.framgia.ishipper.ui.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -9,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.ui.view.ReportDialog;
+import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.TextFormatUtils;
 
@@ -161,16 +164,12 @@ public class OrderDetailActivity extends ToolbarActivity {
                 case Invoice.STATUS_CODE_CANCEL:
                     mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnReportUser.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -184,9 +183,30 @@ public class OrderDetailActivity extends ToolbarActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_invoice_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mInvoice.getStatusCode() != Invoice.STATUS_CODE_SHIPPED ||
+                mInvoice.getStatusCode() != Invoice.STATUS_CODE_FINISHED) {
+            menu.getItem(R.id.menu_rating).setEnabled(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.menu_rating:
+                new ReviewDialog(this, mInvoice.getStringId()).show();
+                break;
         }
         return true;
     }
@@ -218,7 +238,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                 // TODO: 25/08/2016 cancel register order
                 break;
             case R.id.btn_report_user:
-                showReportDialog();
+                confirmShowReportDialog();
                 break;
             case R.id.btn_finished_order:
                 onFinishedOrder();
@@ -277,6 +297,26 @@ public class OrderDetailActivity extends ToolbarActivity {
                 });
     }
 
+    private void confirmShowReportDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+        builder.setMessage(R.string.message_report_dialog);
+        builder.setPositiveButton(R.string.all_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showReportDialog();
+                dialogInterface.cancel();
+            }
+        });
+        builder.setNegativeButton(R.string.all_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void showReportDialog() {
         final ReportDialog reportDialog = new ReportDialog(OrderDetailActivity.this);
         reportDialog.setOnReportListener(new ReportDialog.OnReportListener() {
@@ -313,6 +353,7 @@ public class OrderDetailActivity extends ToolbarActivity {
         });
         reportDialog.show();
     }
+
     private void showCancelOrderDialog() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_nearby_receive_order, null);
         ((TextView) view.findViewById(R.id.confirm_dialog_title)).setText(R.string.dialog_cancel_order_title);
@@ -329,7 +370,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                         new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
-                                showReportDialog();
+                                confirmShowReportDialog();
                                 dialog.cancel();
                             }
 
