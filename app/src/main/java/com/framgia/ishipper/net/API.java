@@ -192,6 +192,12 @@ public abstract class API {
                                   final APICallback<APIResponse<EmptyData>> callback) {
         client.postRating(userType, token, params).enqueue(new RetrofitCallback<>(callback));
     }
+
+    public static void getSearchInvoice(String status, String query, String token,
+                                        final APICallback<APIResponse<ListInvoiceData>> callback) {
+        client.getSearchInvoice(status, query, token).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     private static OkHttpClient loggingClient() {

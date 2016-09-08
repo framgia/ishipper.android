@@ -7,9 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.framgia.ishipper.R;
@@ -40,6 +44,8 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     @BindView(R.id.list) RecyclerView mRecyclerView;
     @BindView(R.id.layout_loading) RelativeLayout mLayoutLoading;
     @BindView(R.id.layout_refresh) SwipeRefreshLayout mLayoutRefresh;
+    @BindView(R.id.edtSearch) EditText mEdtSearch;
+    @BindView(R.id.imgSearch) ImageView mImgSearch;
 
     private String mTitle;
     private int mStatusCode;
@@ -92,24 +98,50 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
             @Override
             public void onRefresh() {
                 getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-                           Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                           mStatusCode, null);
+                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        mStatusCode, null);
+            }
+        });
+        mEdtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (mEdtSearch.getText().toString().equals("")) {
+                    mImgSearch.setVisibility(View.VISIBLE);
+                } else {
+                    mImgSearch.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mInvoiceList.clear();
+
+                searchInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
+                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        mStatusCode, mEdtSearch.getText().toString(), null);
+
             }
         });
     }
 
+
     public void setData(Context context, OnGetInvoiceListener listener) {
         initAdapter(context);
         getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-                   Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                   mStatusCode, listener);
+                Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                mStatusCode, listener);
     }
 
     public void notifyChangedData(Context context, OnGetInvoiceListener listener) {
         initAdapter(context);
         getInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
-                   Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
-                   mStatusCode, listener);
+                Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                mStatusCode, listener);
     }
 
     public void moveListToInvoice(int invoiceId) {
@@ -139,26 +171,55 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
         Map<String, String> params = new HashMap<>();
         params.put(APIDefinition.GetListInvoice.PARAM_STATUS, status);
         API.getInvoice(role,
-                       authenticationToken,
-                       params,
-                       new API.APICallback<APIResponse<ListInvoiceData>>() {
-                           @Override
-                           public void onResponse(APIResponse<ListInvoiceData> response) {
-                               mInvoiceList.clear();
-                               mInvoiceList.addAll(response.getData().getInvoiceList());
-                               mOrderAdapter.setPositionHighlight(-1);
-                               mOrderAdapter.notifyDataSetChanged();
-                               if (callback != null) callback.onGetInvoiceSuccess();
-                               dismissLoading();
-                           }
+                authenticationToken,
+                params,
+                new API.APICallback<APIResponse<ListInvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListInvoiceData> response) {
+                        mInvoiceList.clear();
+                        mInvoiceList.addAll(response.getData().getInvoiceList());
+                        mOrderAdapter.setPositionHighlight(-1);
+                        mOrderAdapter.notifyDataSetChanged();
+                        if (callback != null) callback.onGetInvoiceSuccess();
+                        dismissLoading();
+                    }
 
-                           @Override
-                           public void onFailure(int code, String message) {
-                               Log.d(TAG, "onFailure: " + message);
-                               if (callback != null) callback.onGetInvoiceFail();
-                               dismissLoading();
-                           }
-                       }
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Log.d(TAG, "onFailure: " + message);
+                        if (callback != null) callback.onGetInvoiceFail();
+                        dismissLoading();
+                    }
+                }
+        );
+    }
+
+    private void searchInvoice(String role, String authenticationToken, int statusCode, String nameSearch,
+                               final OnGetInvoiceListener callback) {
+        showLoading();
+        String status = Invoice.getStatusFromCode(statusCode);
+        Map<String, String> params = new HashMap<>();
+        params.put(APIDefinition.GetListInvoice.PARAM_STATUS, status);
+        params.put(APIDefinition.GetListInvoice.PARAM_QUERY, nameSearch);
+        API.getInvoice(role,
+                authenticationToken,
+                params,
+                new API.APICallback<APIResponse<ListInvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListInvoiceData> response) {
+                        mInvoiceList.clear();
+                        mInvoiceList.addAll(response.getData().getInvoiceList());
+                        mOrderAdapter.notifyDataSetChanged();
+                        if (callback != null) callback.onGetInvoiceSuccess();
+                        dismissLoading();
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        if (callback != null) callback.onGetInvoiceFail();
+                        dismissLoading();
+                    }
+                }
         );
     }
 
@@ -249,6 +310,7 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
 
     public interface OnGetInvoiceListener {
         void onGetInvoiceSuccess();
+
         void onGetInvoiceFail();
     }
 }
