@@ -105,6 +105,30 @@
         <item name="android:textColor">@color/colorGreenDark</item>
     </style>
 
+    <style name="btn_circle_green_border">
+        <item name="android:background">@drawable/btn_circle_green_border_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/default_button_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorGreenDark</item>
+    </style>
+
+    <style name="btn_circle_grey_border">
+        <item name="android:background">@drawable/btn_circle_grey_border_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/default_button_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="btn_circle_red_border">
+        <item name="android:background">@drawable/btn_circle_red_border_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/default_button_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="rb_create_order">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
