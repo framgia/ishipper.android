@@ -190,6 +190,7 @@ public class APIDefinition {
         public static final String PATH = "/api/{user_type}/invoices";
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PARAM_STATUS = "status";
+        public static final String PARAM_QUERY = "query";
     }
 
     public static class PutUpdateInvoiceStatus {
@@ -242,11 +243,17 @@ public class APIDefinition {
 
     }
 
-    public class ReportUser {
+    public static class ReportUser {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/reports";
         public static final String PARAM_INVOICE_ID = "report[invoice_id]";
         public static final String PARAM_REVIEW_TYPE = "report[review_type]";
         public static final String PARAM_CONTENT = "report[content]";
+    }
+
+    public static class GetSearchInvoice {
+        public static final String PATH = "/api/shop/invoices";
+        public static final String PARAM_STATUS = "status";
+        public static final String PARAM_QUERY = "query";
     }
 }

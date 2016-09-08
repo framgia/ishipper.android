@@ -179,4 +179,10 @@ public interface APIServices {
             @Path(APIDefinition.ReportUser.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @FieldMap Map<String, String> params);
+
+    @GET(APIDefinition.GetSearchInvoice.PATH)
+    Call<APIResponse<ListInvoiceData>> getSearchInvoice(
+            @Path(APIDefinition.GetSearchInvoice.PARAM_STATUS) String status,
+            @Path(APIDefinition.GetSearchInvoice.PARAM_QUERY) String query,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 }
