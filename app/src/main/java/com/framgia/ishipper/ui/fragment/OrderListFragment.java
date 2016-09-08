@@ -163,16 +163,16 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnClickC
     }
 
     private void dismissLoading() {
-        mLayoutLoading.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        if (mLayoutRefresh.isRefreshing()) {
+        if (mLayoutLoading != null) mLayoutLoading.setVisibility(View.GONE);
+        if (mRecyclerView != null) mRecyclerView.setVisibility(View.VISIBLE);
+        if (mLayoutRefresh!= null && mLayoutRefresh.isRefreshing()) {
             mLayoutRefresh.setRefreshing(false);
         }
     }
 
     private void showLoading() {
-        mLayoutLoading.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        if (mLayoutLoading != null) mLayoutLoading.setVisibility(View.VISIBLE);
+        if (mRecyclerView != null) mRecyclerView.setVisibility(View.GONE);
     }
 
     public List<Invoice> getInvoiceList() {

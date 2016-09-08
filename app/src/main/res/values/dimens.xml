@@ -85,4 +85,5 @@
     <dimen name="activity_vertical_padding">16dp</dimen>
     <dimen name="searchview_size">15dp</dimen>
     <dimen name="shipper_item_avatar_size">60dp</dimen>
+    <dimen name="text_size_10sp">10sp</dimen>
 </resources>

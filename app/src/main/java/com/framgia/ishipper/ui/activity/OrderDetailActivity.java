@@ -3,8 +3,10 @@ package com.framgia.ishipper.ui.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,10 +68,12 @@ public class OrderDetailActivity extends ToolbarActivity {
     @BindView(R.id.tv_detail_customer_phone) TextView mDetailCustomerPhone;
     @BindView(R.id.btn_detail_receive_order) Button mBtnDetailReceiveOrder;
     @BindView(R.id.btn_detail_cancel_register_order) Button mBtnDetailCancelRegisterOrder;
-    @BindView(R.id.btn_detail_cancel_order) Button mBtnDetailCancelOrder;
+    @BindView(R.id.btn_detail_cancel_order) ImageButton mBtnDetailCancelOrder;
     @BindView(R.id.btn_report_user) Button mBtnReportUser;
     @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
+    @BindView(R.id.tv_shipping_order_status) TextView tvOrderStatus;
+
     private User mCurrentUser;
     private Invoice mInvoice;
     @Override
@@ -82,6 +87,7 @@ public class OrderDetailActivity extends ToolbarActivity {
 
     private void initData() {
         Bundle bundle = getIntent().getExtras();
+        if (bundle == null) return;
         API.getInvoiceDetail(
                 mCurrentUser.getRole(),
                 String.valueOf(bundle.getInt(KEY_INVOICE_ID)),
@@ -90,39 +96,39 @@ public class OrderDetailActivity extends ToolbarActivity {
                     @Override
                     public void onResponse(APIResponse<ShowInvoiceData> response) {
                         mInvoice = response.getData().mInvoice;
-                        if (mInvoice != null) {
-                            showAction(mInvoice.getStatusCode());
-                            User user = mInvoice.getUser();
-                            if (user != null) {
-                                if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
-                                    mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
-                                    mCardviewDetailShipperInfor.setVisibility(View.GONE);
-                                    tvDetailShopName.setText(user.getName());
-                                    tvDetailShopPhone.setText(user.getPhoneNumber());
-                                } else {
-                                    mCardviewDetailShopInfor.setVisibility(View.GONE);
-                                    if (mInvoice.getStatus().equals(
-                                            Invoice.STATUS_INIT)) {
-                                        mCardviewDetailShipperInfor.setVisibility(View.GONE);
-                                    } else {
-                                        mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
-                                    }
-                                    tvDetailShipperName.setText(user.getName());
-                                    tvDetailShipperPhone.setText(user.getPhoneNumber());
-                                }
+                        if (mInvoice == null) return;
+                        invalidateOptionsMenu();
+                        setStatus(mInvoice);
+                        showAction(mInvoice.getStatusCode());
+                        User user = mInvoice.getUser();
+                        if (user == null) return;
+                        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
+                            mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
+                            mCardviewDetailShipperInfor.setVisibility(View.GONE);
+                            tvDetailShopName.setText(user.getName());
+                            tvDetailShopPhone.setText(user.getPhoneNumber());
+                        } else {
+                            mCardviewDetailShopInfor.setVisibility(View.GONE);
+                            if (mInvoice.getStatus().equals(
+                                    Invoice.STATUS_INIT)) {
+                                mCardviewDetailShipperInfor.setVisibility(View.GONE);
+                            } else {
+                                mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
                             }
-                            tvDetailDistance.setText(TextFormatUtils.formatDistance(
-                                    mInvoice.getDistance()));
-                            tvDetailStart.setText(mInvoice.getAddressStart());
-                            tvDetailEnd.setText(mInvoice.getAddressFinish());
-                            tvDetailOrderName.setText(mInvoice.getName());
-                            tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(
-                                    mInvoice.getPrice()));
-                            tvDetailShipPrice.setText(TextFormatUtils.formatPrice(
-                                    mInvoice.getShippingPrice()));
-                            tvDetailShipTime.setText(mInvoice.getDeliveryTime());
-                            tvDetailNote.setText(mInvoice.getDescription());
+                            tvDetailShipperName.setText(user.getName());
+                            tvDetailShipperPhone.setText(user.getPhoneNumber());
                         }
+                        tvDetailDistance.setText(TextFormatUtils.formatDistance(
+                                mInvoice.getDistance()));
+                        tvDetailStart.setText(mInvoice.getAddressStart());
+                        tvDetailEnd.setText(mInvoice.getAddressFinish());
+                        tvDetailOrderName.setText(mInvoice.getName());
+                        tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(
+                                mInvoice.getPrice()));
+                        tvDetailShipPrice.setText(TextFormatUtils.formatPrice(
+                                mInvoice.getShippingPrice()));
+                        tvDetailShipTime.setText(mInvoice.getDeliveryTime());
+                        tvDetailNote.setText(mInvoice.getDescription());
                     }
 
                     @Override
@@ -130,6 +136,87 @@ public class OrderDetailActivity extends ToolbarActivity {
                         Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void setStatus(Invoice invoice) {
+        String textStatus;
+        int status = invoice.getStatusCode();
+        String action = "";
+        Drawable drawableStatus;
+        int statusColor;
+        switch (status) {
+            case Invoice.STATUS_CODE_INIT:
+                if (MainActivity.userType == MainActivity.SHIPPER) {
+                    textStatus = getString(R.string.order_status_wait);
+                } else {
+                    textStatus = getString(R.string.order_shop_status_wait);
+                }
+                drawableStatus = ResourcesCompat.getDrawable(getResources(),
+                                                             R.drawable.ic_status_waiting,
+                                                             null
+                );
+                statusColor = getResources().getColor(R.color.color_status_waiting);
+                break;
+            case Invoice.STATUS_CODE_WAITING:
+                if (MainActivity.userType == MainActivity.SHIPPER) {
+                    textStatus = getString(R.string.order_status_take);
+                } else {
+                    textStatus = getString(R.string.order_shop_status_take);
+                }
+                drawableStatus = ResourcesCompat.getDrawable(
+                        getResources(),
+                        R.drawable.ic_status_pick,
+                        null
+                );
+                statusColor = getResources().getColor(R.color.color_status_pick);
+                break;
+            case Invoice.STATUS_CODE_SHIPPING:
+                textStatus = getString(R.string.order_status_shipping);
+                drawableStatus = ResourcesCompat.getDrawable(getResources(),
+                                                             R.drawable.ic_status_delivering,
+                                                             null
+                );
+                statusColor = getResources().getColor(R.color.color_status_shipping);
+                break;
+            case Invoice.STATUS_CODE_SHIPPED:
+                textStatus = getString(R.string.order_status_delivered);
+                drawableStatus = ResourcesCompat.getDrawable(getResources(),
+                                                             R.drawable.ic_status_delivered,
+                                                             null
+                );
+                statusColor = getResources().getColor(R.color.color_status_delivered);
+                break;
+            case Invoice.STATUS_CODE_FINISHED:
+                textStatus = getString(R.string.order_status_finished);
+                drawableStatus = ResourcesCompat.getDrawable(getResources(),
+                                                             R.drawable.ic_status_finish,
+                                                             null
+                );
+                statusColor = getResources().getColor(R.color.color_status_finish);
+                break;
+            case Invoice.STATUS_CODE_CANCEL:
+                textStatus = getString(R.string.order_status_cancelled);
+                drawableStatus = ResourcesCompat.getDrawable(
+                        getResources(),
+                        R.drawable.ic_cancel,
+                        null
+                );
+                statusColor = getResources().getColor(R.color.color_status_cancelled);
+                break;
+            default:
+                textStatus = "";
+                drawableStatus = ResourcesCompat.getDrawable(
+                        getResources(),
+                        R.drawable.ic_status_waiting,
+                        null
+                );
+                statusColor = getResources().getColor(R.color.colorAccent);
+                break;
+        }
+        tvOrderStatus.setText(textStatus);
+        tvOrderStatus.setTextColor(statusColor);
+        tvOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
+                                                              null, null, null);
     }
 
     private void showAction(int statusCode) {
@@ -191,10 +278,14 @@ public class OrderDetailActivity extends ToolbarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (mInvoice.getStatusCode() != Invoice.STATUS_CODE_SHIPPED ||
-                mInvoice.getStatusCode() != Invoice.STATUS_CODE_FINISHED) {
-            menu.getItem(R.id.menu_rating).setEnabled(false);
+        if (mInvoice == null) return super.onPrepareOptionsMenu(menu);
+        if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_SHIPPED ||
+                mInvoice.getStatusCode() == Invoice.STATUS_CODE_FINISHED) {
+            return super.onPrepareOptionsMenu(menu);
         }
+        MenuItem menuItem = menu.findItem(R.id.menu_rating);
+        if (menuItem == null) return super.onPrepareOptionsMenu(menu);
+        menuItem.setVisible(false);
         return true;
     }
 

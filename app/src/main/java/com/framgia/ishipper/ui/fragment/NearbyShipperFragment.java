@@ -214,7 +214,7 @@ public class NearbyShipperFragment extends Fragment implements
                     @Override
                     public void onFailure(int code, String message) {
                         Log.d(TAG, "onFailure: " + message);
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

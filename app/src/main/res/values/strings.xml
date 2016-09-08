@@ -217,6 +217,7 @@
     <string name="all_rating">Rating</string>
     <string name="all_report">Report</string>
     <string name="message_report_dialog">Bạn có muốn report không?</string>
+    <string name="all_invoice_status"><u>Trạng thái đơn hàng</u></string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
