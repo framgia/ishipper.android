@@ -44,8 +44,8 @@
                 android:id="@+id/edt_address_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hint="@string/fragment_create_step1_start_point_hint"
                 android:layout_weight="1"
-                android:text="434 Trần Khát Chân, Hai Bà Trưng"
                 android:textSize="@dimen/text_size_content"/>
 
             <ImageView
@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Nhập điểm cuối"
+                android:hint="@string/fragment_create_step1_end_point_hint"
                 android:textSize="@dimen/text_size_content"/>
 
             <ImageView
@@ -97,8 +97,5 @@
             android:layout_height="wrap_content"
             android:text="Tiếp tục"
             android:textAllCaps="true"/>
-
     </LinearLayout>
-
-
 </LinearLayout>
