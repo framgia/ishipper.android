@@ -278,7 +278,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     new MarkerOptions()
                             .position(mLatLngStart)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
-//            mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
+            mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
             setPickEndLocation();
         } else {
             Toast.makeText(

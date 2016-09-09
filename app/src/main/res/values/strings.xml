@@ -219,6 +219,8 @@
     <string name="message_report_dialog">Bạn có muốn report không?</string>
     <string name="all_invoice_status"><u>Trạng thái đơn hàng</u></string>
     <string name="search_hint">&#160;&#160;&#160;&#160;&#160;Tìm kiếm</string>
+    <string name="fragment_create_step1_end_point_hint">Nhập điểm cuối</string>
+    <string name="fragment_create_step1_start_point_hint">Nhập điểm đầu</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
