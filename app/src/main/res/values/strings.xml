@@ -217,10 +217,16 @@
     <string name="all_rating">Rating</string>
     <string name="all_report">Report</string>
     <string name="message_report_dialog">Bạn có muốn report không?</string>
-    <string name="all_invoice_status"><u>Trạng thái đơn hàng</u></string>
+    <string name="all_invoice_status"><u>Trạng thái</u></string>
     <string name="search_hint">&#160;&#160;&#160;&#160;&#160;Tìm kiếm</string>
     <string name="fragment_create_step1_end_point_hint">Nhập điểm cuối</string>
     <string name="fragment_create_step1_start_point_hint">Nhập điểm đầu</string>
+    <string name="reason_dialog_title">Lý do hủy</string>
+    <string name="reason_shipper_not_come">Shipper không đến</string>
+    <string name="reason_not_have_good">Không có hàng cho shipper</string>
+    <string name="reason_not_have_shipper">Không có shipper nhận</string>
+    <string name="reason_good_break">Hàng bị hỏng</string>
+    <string name="reason_other">Lý do khác:</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

@@ -32,7 +32,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
-import com.framgia.ishipper.ui.view.ReportDialog;
+import com.framgia.ishipper.ui.view.CancelDialog;
 import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.TextFormatUtils;
@@ -76,6 +76,7 @@ public class OrderDetailActivity extends ToolbarActivity {
 
     private User mCurrentUser;
     private Invoice mInvoice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,8 +153,8 @@ public class OrderDetailActivity extends ToolbarActivity {
                     textStatus = getString(R.string.order_shop_status_wait);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
-                                                             R.drawable.ic_status_waiting,
-                                                             null
+                        R.drawable.ic_status_waiting,
+                        null
                 );
                 statusColor = getResources().getColor(R.color.color_status_waiting);
                 break;
@@ -173,24 +174,24 @@ public class OrderDetailActivity extends ToolbarActivity {
             case Invoice.STATUS_CODE_SHIPPING:
                 textStatus = getString(R.string.order_status_shipping);
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
-                                                             R.drawable.ic_status_delivering,
-                                                             null
+                        R.drawable.ic_status_delivering,
+                        null
                 );
                 statusColor = getResources().getColor(R.color.color_status_shipping);
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
                 textStatus = getString(R.string.order_status_delivered);
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
-                                                             R.drawable.ic_status_delivered,
-                                                             null
+                        R.drawable.ic_status_delivered,
+                        null
                 );
                 statusColor = getResources().getColor(R.color.color_status_delivered);
                 break;
             case Invoice.STATUS_CODE_FINISHED:
                 textStatus = getString(R.string.order_status_finished);
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
-                                                             R.drawable.ic_status_finish,
-                                                             null
+                        R.drawable.ic_status_finish,
+                        null
                 );
                 statusColor = getResources().getColor(R.color.color_status_finish);
                 break;
@@ -216,7 +217,7 @@ public class OrderDetailActivity extends ToolbarActivity {
         tvOrderStatus.setText(textStatus);
         tvOrderStatus.setTextColor(statusColor);
         tvOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
-                                                              null, null, null);
+                null, null, null);
     }
 
     private void showAction(int statusCode) {
@@ -236,6 +237,9 @@ public class OrderDetailActivity extends ToolbarActivity {
                 case Invoice.STATUS_CODE_SHIPPING:
                     mBtnFinishedOrder.setVisibility(View.VISIBLE);
                     break;
+                case Invoice.STATUS_CODE_FINISHED:
+                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    break;
                 case Invoice.STATUS_CODE_CANCEL:
                     mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
@@ -248,10 +252,12 @@ public class OrderDetailActivity extends ToolbarActivity {
                 case Invoice.STATUS_CODE_SHIPPED:
                     mBtnFinishedOrder.setVisibility(View.VISIBLE);
                     break;
+                case Invoice.STATUS_CODE_FINISHED:
+                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    break;
                 case Invoice.STATUS_CODE_CANCEL:
                     mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
-                    mBtnReportUser.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -323,7 +329,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                 showReceiveDialog();
                 break;
             case R.id.btn_detail_cancel_order:
-                showCancelOrderDialog();
+                showReportDialog();
                 break;
             case R.id.btn_detail_cancel_register_order:
                 // TODO: 25/08/2016 cancel register order
@@ -343,8 +349,8 @@ public class OrderDetailActivity extends ToolbarActivity {
     private void onTakeOrder() {
         final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
         API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(mInvoice.getId()),
-                                   mCurrentUser.getAuthenticationToken(),
-                                   Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
+                mCurrentUser.getAuthenticationToken(),
+                Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
                         loadingDialog.dismiss();
@@ -369,13 +375,13 @@ public class OrderDetailActivity extends ToolbarActivity {
             status = Invoice.STATUS_FINISHED;
         }
         API.putUpdateInvoiceStatus(mCurrentUser.getRole(),
-                                   String.valueOf(mInvoice.getId()),
-                                   mCurrentUser.getAuthenticationToken(),
-                                   status, new API.APICallback<APIResponse<InvoiceData>>() {
+                String.valueOf(mInvoice.getId()),
+                mCurrentUser.getAuthenticationToken(),
+                status, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
                         Toast.makeText(OrderDetailActivity.this, response.getMessage(),
-                                       Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();
                         loadingDialog.dismiss();
                         finish();
                     }
@@ -409,77 +415,40 @@ public class OrderDetailActivity extends ToolbarActivity {
     }
 
     private void showReportDialog() {
-        final ReportDialog reportDialog = new ReportDialog(OrderDetailActivity.this);
-        reportDialog.setOnReportListener(new ReportDialog.OnReportListener() {
+        final CancelDialog cancelDialog = new CancelDialog(OrderDetailActivity.this);
+        cancelDialog.setOnReportListener(new CancelDialog.OnReportListener() {
             @Override
             public void onReportListener(ReviewUser reviewUser) {
                 final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
                 User user = Config.getInstance().getUserInfo(OrderDetailActivity.this);
                 Map<String, String> params = new HashMap<>();
                 params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID,
-                           String.valueOf(mInvoice.getId()));
+                        String.valueOf(mInvoice.getId()));
                 params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
                 params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
 
                 API.reportUser(user.getRole(),
-                               user.getAuthenticationToken(),
-                               params,
-                               new API.APICallback<APIResponse<ReportUserData>>() {
-                                   @Override
-                                   public void onResponse(APIResponse<ReportUserData> response) {
-                                       Toast.makeText(OrderDetailActivity.this, response.getMessage(),
-                                                      Toast.LENGTH_SHORT).show();
-                                       loadingDialog.dismiss();
-                                       finish();
-                                   }
-
-                                   @Override
-                                   public void onFailure(int code, String message) {
-                                       Toast.makeText(OrderDetailActivity.this, message,
-                                                      Toast.LENGTH_SHORT).show();
-                                       loadingDialog.dismiss();
-                                   }
-                               });
-            }
-        });
-        reportDialog.show();
-    }
-
-    private void showCancelOrderDialog() {
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_nearby_receive_order, null);
-        ((TextView) view.findViewById(R.id.confirm_dialog_title)).setText(R.string.dialog_cancel_order_title);
-        ((TextView) view.findViewById(R.id.confirm_dialog_message)).setText(R.string.dialog_cancel_order_message);
-        final AlertDialog dialog = new AlertDialog.Builder(this).setView(view).show();
-        view.findViewById(R.id.confirm_dialog_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                API.putUpdateInvoiceStatus(
-                        mCurrentUser.getRole(),
-                        mInvoice.getStringId(),
-                        mCurrentUser.getAuthenticationToken(),
-                        Invoice.STATUS_CANCEL,
-                        new API.APICallback<APIResponse<InvoiceData>>() {
+                        user.getAuthenticationToken(),
+                        params,
+                        new API.APICallback<APIResponse<ReportUserData>>() {
                             @Override
-                            public void onResponse(APIResponse<InvoiceData> response) {
-                                dialog.cancel();
-                                if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT) return;
-                                confirmShowReportDialog();
+                            public void onResponse(APIResponse<ReportUserData> response) {
+                                Toast.makeText(OrderDetailActivity.this, response.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
+                                finish();
                             }
 
                             @Override
                             public void onFailure(int code, String message) {
-                                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(OrderDetailActivity.this, message,
+                                        Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismiss();
                             }
-                        }
-                );
+                        });
             }
         });
-        view.findViewById(R.id.confirm_dialog_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
+        cancelDialog.show();
     }
 
     private void showReceiveDialog() {

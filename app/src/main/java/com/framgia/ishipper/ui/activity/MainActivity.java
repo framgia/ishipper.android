@@ -45,16 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            selectItem(R.id.nav_nearby_order);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -107,17 +97,17 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int id) {
         mDrawerLayout.closeDrawer(mNavigationView);
         if (mSelectedId == id) return;
-        else mSelectedId = id;
         Fragment fragment;
         String tag = null;
         switch (id) {
             case R.id.nav_nearby_order:
+                mSelectedId = id;
                 fragment = new MainContentFragment();
                 mToolbar.setTitle(getString(R.string.nav_nearby_order_item));
                 tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_order_management:
-                //TODO: show order fragment
+                mSelectedId = id;
                 if (userType == SHIPPER) {
                     fragment =
                             ShipperOrderManagerFragment.instantiate(MainActivity.this,
@@ -133,9 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.nav_create_order:
-                fragment = null;
                 startActivity(new Intent(this, ShopCreateOrderActivity.class));
-                break;
+                return;
             case R.id.nav_sign_out:
                 signOut();
             default:
@@ -146,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.main_container, fragment, tag)
                     .commit();
-            mNavigationView.setCheckedItem(id);
         }
     }
 
