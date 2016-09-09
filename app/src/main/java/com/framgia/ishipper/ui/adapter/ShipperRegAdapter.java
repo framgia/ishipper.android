@@ -83,7 +83,7 @@ public class ShipperRegAdapter extends RecyclerView.Adapter<ShipperRegAdapter.Vi
         @BindView(R.id.text_distance) TextView mTextDistance;
         @BindView(R.id.text_count_rating) TextView mTextCountRating;
         @BindView(R.id.rtb_rating_user) AppCompatRatingBar mRtbRatingUser;
-        @BindView(R.id.btn_accept_shipper) Button mBtnAcceptShipper;
+        @BindView(R.id.btn_accept_shipper) TextView mBtnAcceptShipper;
 
         public ViewHolder(View itemView) {
             super(itemView);

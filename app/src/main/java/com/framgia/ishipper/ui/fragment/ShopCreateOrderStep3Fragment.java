@@ -1,6 +1,8 @@
 package com.framgia.ishipper.ui.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +22,9 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
+import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,11 +54,17 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     @BindView(R.id.tv_detail_shop_phone) TextView mTvDetailShopPhone;
     @BindView(R.id.tv_detail_shipper_name) TextView mTvDetailShipperName;
     @BindView(R.id.tv_detail_shipper_phone) TextView mTvDetailShipperPhone;
-    @BindView(R.id.btn_detail_show_shipper) TextView mBtnDetailShowShipper;
     @BindView(R.id.tv_detail_customer_name) TextView mTvDetailCustomerName;
     @BindView(R.id.tv_detail_customer_phone) TextView mTvDetailCustomerPhone;
-    @BindView(R.id.btn_detail_cancel_order) Button mBtnDetailCancelOrder;
+    @BindView(R.id.btn_detail_cancel_order) ImageButton mBtnDetailCancelOrder;
     private User mCurrentUser;
+    private Context mContext;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,10 +78,10 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
 
     private void initView() {
         mToolbar.setVisibility(View.GONE);
-        mCurrentUser = Config.getInstance().getUserInfo(getContext());
+        mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mBtnCreateOrder.setText(R.string.create_order);
         mBtnCreateOrder.setVisibility(View.VISIBLE);
-        mTvDetailDistance.setText(String.valueOf(sInvoice.getDistance()));
+        mTvDetailDistance.setText(TextFormatUtils.formatDistance(sInvoice.getDistance()));
         mTvDetailStart.setText(sInvoice.getAddressStart());
         mTvDetailEnd.setText(sInvoice.getAddressFinish());
         mTvDetailOrderName.setText(sInvoice.getName());
@@ -80,11 +91,6 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
         mTvDetailNote.setText(sInvoice.getDescription());
         mTvDetailCustomerName.setText(sInvoice.getCustomerName());
         mTvDetailCustomerPhone.setText(sInvoice.getCustomerNumber());
-    }
-
-    @OnClick(R.id.btn_detail_receive_order)
-    public void onClick(View view) {
-        onCreateInvoice();
     }
 
     private void onCreateInvoice() {
@@ -124,14 +130,14 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NUMBER,
                 sInvoice.getCustomerNumber());
 
-        final Dialog loadingDialog = CommonUtils.showLoadingDialog(getContext());
+        final Dialog loadingDialog = CommonUtils.showLoadingDialog(mContext);
         API.createInvoice(mCurrentUser.getAuthenticationToken(), params,
                 new API.APICallback<APIResponse<CreateInVoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<CreateInVoiceData> response) {
                         // TODO: Go to invoice manager
                         loadingDialog.dismiss();
-                        Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT)
+                        Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT)
                                 .show();
                         getActivity().finish();
                     }
@@ -139,8 +145,30 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
                     @Override
                     public void onFailure(int code, String message) {
                         loadingDialog.dismiss();
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @OnClick({
+            R.id.btn_detail_show_path,
+            R.id.btn_detail_shop_call,
+            R.id.btn_detail_show_shop,
+            R.id.btn_detail_receive_order
+    })
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_detail_show_path:
+                startActivity(new Intent(mContext, RouteActivity.class));
+                break;
+            case R.id.btn_detail_shop_call:
+                break;
+            case R.id.btn_detail_show_shop:
+                break;
+            case R.id.btn_detail_receive_order:
+                onCreateInvoice();
+                break;
+
+        }
     }
 }
