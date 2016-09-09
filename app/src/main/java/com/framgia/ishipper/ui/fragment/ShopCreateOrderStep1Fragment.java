@@ -71,6 +71,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     private Polyline mPolylineRoute;
     private Context mContext;
     private FetchAddressTask task;
+    private float mDistance;
 
     @Override
     public void onAttach(Context context) {
@@ -155,7 +156,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         ShopCreateOrderActivity.sInvoice.setAddressFinish(mEdtAddressEnd.getText().toString());
         ShopCreateOrderActivity.sInvoice.setLatFinish((float) mLatLngFinish.latitude);
         ShopCreateOrderActivity.sInvoice.setLngFinish((float) mLatLngFinish.longitude);
-        ShopCreateOrderActivity.sInvoice.setDistance(Float.parseFloat(mTvDistance.getText().toString()));
+        ShopCreateOrderActivity.sInvoice.setDistance(mDistance);
     }
 
     private void addEndLocation() {
@@ -206,7 +207,8 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 }
 
                 //Show distance
-                mTvDistance.setText(getString(R.string.text_distance, CommonUtils.ConvertMetreToKm(distance)));
+                mDistance = CommonUtils.ConvertMetreToKm(distance);
+                mTvDistance.setText(getString(R.string.text_distance, mDistance));
 
                 if (mPolylineRoute != null) mPolylineRoute.remove();
                 mPolylineRoute = mMap.addPolyline(polyOptions);

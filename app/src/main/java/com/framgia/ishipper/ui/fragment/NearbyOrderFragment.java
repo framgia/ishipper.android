@@ -166,7 +166,6 @@ public class NearbyOrderFragment extends Fragment implements
     private int mHeightMap;
     private int mWidthMap;
     private Invoice mInvoice;
-    private User mUser;
     private FetchAddressTask mTask;
     private ArrayList<Invoice> mInvoices = new ArrayList<>();
     private boolean mAutoRefresh = true;
@@ -381,33 +380,18 @@ public class NearbyOrderFragment extends Fragment implements
                 mInvoice = mInvoices.get(pos);
                 mBtnNearbyReceiveOrder.setTag(mInvoice.getStringId());
 
-                /** get shop information */
-                API.getUser(
-                        mCurrentUser.getAuthenticationToken(),
-                        String.valueOf(mInvoice.getUser().getId()),
-                        new API.APICallback<APIResponse<GetUserData>>() {
-                            @Override
-                            public void onResponse(APIResponse<GetUserData> response) {
-                                mUser = response.getData().getUser();
-                                mTvItemOrderShopName.setText(mUser.getName());
-                                mRatingOrderWindow.setRating((float) mUser.getRate());
-                                mTvNearbyDistance.setText(
-                                        TextFormatUtils.formatDistance(mInvoice.getDistance()));
-                                mTvNearbyFrom.setText(mInvoice.getAddressStart());
-                                mTvNearbyTo.setText(mInvoice.getAddressFinish());
-                                mTvNearbyShipTime.setText(mInvoice.getDeliveryTime());
-                                mTvNearbyShipPrice.setText(
-                                        TextFormatUtils.formatPrice(mInvoice.getShippingPrice()));
-                                mTvNearbyOrderPrice.setText(
-                                        TextFormatUtils.formatPrice(mInvoice.getPrice()));
-
-                            }
-
-                            @Override
-                            public void onFailure(int code, String message) {
-                                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                User mUser = mInvoice.getUser();
+                mTvItemOrderShopName.setText(mUser.getName());
+                mRatingOrderWindow.setRating((float) mUser.getRate());
+                mTvNearbyDistance.setText(
+                        TextFormatUtils.formatDistance(mInvoice.getDistance()));
+                mTvNearbyFrom.setText(mInvoice.getAddressStart());
+                mTvNearbyTo.setText(mInvoice.getAddressFinish());
+                mTvNearbyShipTime.setText(mInvoice.getDeliveryTime());
+                mTvNearbyShipPrice.setText(
+                        TextFormatUtils.formatPrice(mInvoice.getShippingPrice()));
+                mTvNearbyOrderPrice.setText(
+                        TextFormatUtils.formatPrice(mInvoice.getPrice()));
 
                 if (mPolylineRoute != null) {
                     mPolylineRoute.remove();
@@ -503,15 +487,15 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     private void showReceiveDialog(final String invoiceId) {
-        final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_nearby_receive_order, null);
+        final AlertDialog dialog = new AlertDialog.Builder(mContext).create();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_nearby_receive_order, null);
         dialog.setView(view);
         view.findViewById(R.id.confirm_dialog_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog loading = CommonUtils.showLoadingDialog(mContext);
                 API.postShipperReceiveInvoice(
-                        Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+                        Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
                         invoiceId,
                         new API.APICallback<APIResponse<EmptyData>>() {
                             @Override
@@ -524,6 +508,7 @@ public class NearbyOrderFragment extends Fragment implements
                             @Override
                             public void onFailure(int code, String message) {
                                 loading.dismiss();
+                                dialog.dismiss();
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                             }
                         }
