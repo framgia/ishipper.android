@@ -461,8 +461,9 @@ public class OrderDetailActivity extends ToolbarActivity {
                         new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<InvoiceData> response) {
-                                confirmShowReportDialog();
                                 dialog.cancel();
+                                if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT) return;
+                                confirmShowReportDialog();
                             }
 
                             @Override

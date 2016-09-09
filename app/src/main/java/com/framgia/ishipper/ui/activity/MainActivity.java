@@ -45,6 +45,16 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            selectItem(R.id.nav_nearby_order);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
