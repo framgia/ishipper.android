@@ -69,7 +69,7 @@ public class OrderDetailActivity extends ToolbarActivity {
     @BindView(R.id.btn_detail_receive_order) Button mBtnDetailReceiveOrder;
     @BindView(R.id.btn_detail_cancel_register_order) Button mBtnDetailCancelRegisterOrder;
     @BindView(R.id.btn_detail_cancel_order) ImageButton mBtnDetailCancelOrder;
-    @BindView(R.id.btn_report_user) Button mBtnReportUser;
+    @BindView(R.id.btn_report_user) ImageButton mBtnReportUser;
     @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     @BindView(R.id.tv_shipping_order_status) TextView tvOrderStatus;
@@ -102,6 +102,14 @@ public class OrderDetailActivity extends ToolbarActivity {
                         setStatus(mInvoice);
                         showAction(mInvoice.getStatusCode());
                         User user = mInvoice.getUser();
+                        tvDetailDistance.setText(TextFormatUtils.formatDistance(mInvoice.getDistance()));
+                        tvDetailStart.setText(mInvoice.getAddressStart());
+                        tvDetailEnd.setText(mInvoice.getAddressFinish());
+                        tvDetailOrderName.setText(mInvoice.getName());
+                        tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(mInvoice.getPrice()));
+                        tvDetailShipPrice.setText(TextFormatUtils.formatPrice(mInvoice.getShippingPrice()));
+                        tvDetailShipTime.setText(mInvoice.getDeliveryTime());
+                        tvDetailNote.setText(mInvoice.getDescription());
                         if (user == null) return;
                         if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
                             mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
@@ -119,17 +127,6 @@ public class OrderDetailActivity extends ToolbarActivity {
                             tvDetailShipperName.setText(user.getName());
                             tvDetailShipperPhone.setText(user.getPhoneNumber());
                         }
-                        tvDetailDistance.setText(TextFormatUtils.formatDistance(
-                                mInvoice.getDistance()));
-                        tvDetailStart.setText(mInvoice.getAddressStart());
-                        tvDetailEnd.setText(mInvoice.getAddressFinish());
-                        tvDetailOrderName.setText(mInvoice.getName());
-                        tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(
-                                mInvoice.getPrice()));
-                        tvDetailShipPrice.setText(TextFormatUtils.formatPrice(
-                                mInvoice.getShippingPrice()));
-                        tvDetailShipTime.setText(mInvoice.getDeliveryTime());
-                        tvDetailNote.setText(mInvoice.getDescription());
                     }
 
                     @Override
@@ -256,7 +253,6 @@ public class OrderDetailActivity extends ToolbarActivity {
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
-                    mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 default:
@@ -335,7 +331,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                 // TODO: 25/08/2016 cancel register order
                 break;
             case R.id.btn_report_user:
-                confirmShowReportDialog();
+                showReportDialog();
                 break;
             case R.id.btn_finished_order:
                 onFinishedOrder();
@@ -418,25 +414,42 @@ public class OrderDetailActivity extends ToolbarActivity {
         final CancelDialog cancelDialog = new CancelDialog(OrderDetailActivity.this);
         cancelDialog.setOnReportListener(new CancelDialog.OnReportListener() {
             @Override
-            public void onReportListener(ReviewUser reviewUser) {
+            public void onReportListener(final ReviewUser reviewUser) {
                 final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
-                User user = Config.getInstance().getUserInfo(OrderDetailActivity.this);
-                Map<String, String> params = new HashMap<>();
-                params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID,
-                        String.valueOf(mInvoice.getId()));
-                params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
-                params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
-
-                API.reportUser(user.getRole(),
-                        user.getAuthenticationToken(),
-                        params,
-                        new API.APICallback<APIResponse<ReportUserData>>() {
+                API.putUpdateInvoiceStatus(
+                        mCurrentUser.getRole(),
+                        mInvoice.getStringId(),
+                        mCurrentUser.getAuthenticationToken(),
+                        Invoice.STATUS_CANCEL,
+                        new API.APICallback<APIResponse<InvoiceData>>() {
                             @Override
-                            public void onResponse(APIResponse<ReportUserData> response) {
-                                Toast.makeText(OrderDetailActivity.this, response.getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                                loadingDialog.dismiss();
-                                finish();
+                            public void onResponse(APIResponse<InvoiceData> response) {
+                                // Report User
+                                User user = Config.getInstance().getUserInfo(OrderDetailActivity.this);
+                                Map<String, String> params = new HashMap<>();
+                                params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID,
+                                           String.valueOf(mInvoice.getId()));
+                                params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
+                                params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
+                                API.reportUser(user.getRole(),
+                                               user.getAuthenticationToken(),
+                                               params,
+                                               new API.APICallback<APIResponse<ReportUserData>>() {
+                                                   @Override
+                                                   public void onResponse(APIResponse<ReportUserData> response) {
+                                                       Toast.makeText(OrderDetailActivity.this, response.getMessage(),
+                                                                      Toast.LENGTH_SHORT).show();
+                                                       loadingDialog.dismiss();
+                                                       finish();
+                                                   }
+
+                                                   @Override
+                                                   public void onFailure(int code, String message) {
+                                                       Toast.makeText(OrderDetailActivity.this, message,
+                                                                      Toast.LENGTH_SHORT).show();
+                                                       loadingDialog.dismiss();
+                                                   }
+                                               });
                             }
 
                             @Override
