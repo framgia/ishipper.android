@@ -86,4 +86,7 @@
     <dimen name="searchview_size">15dp</dimen>
     <dimen name="shipper_item_avatar_size">60dp</dimen>
     <dimen name="text_size_10sp">10sp</dimen>
+    <dimen name="tv_btn_padding">16dp</dimen>
+    <dimen name="info_dialog_viewpager">200dp</dimen>
+    <dimen name="info_dialog_width">400dp</dimen>
 </resources>

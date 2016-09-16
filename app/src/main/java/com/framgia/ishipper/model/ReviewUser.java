@@ -12,7 +12,7 @@ public class ReviewUser {
     @SerializedName("recipient_id") private int mRecipientId;
     @SerializedName("invoice_id") private int mInvoiceId;
     @SerializedName("review_type") private String mReviewType;
-    @SerializedName("rating_point") private String mRatingpoint;
+    @SerializedName("rating_point") private String mRatingPoint;
     @SerializedName("content") private String mContent;
 
 
@@ -56,12 +56,12 @@ public class ReviewUser {
         mReviewType = reviewType;
     }
 
-    public String getRatingpoint() {
-        return mRatingpoint;
+    public String getRatingPoint() {
+        return mRatingPoint;
     }
 
-    public void setRatingpoint(String ratingpoint) {
-        mRatingpoint = ratingpoint;
+    public void setRatingPoint(String ratingPoint) {
+        mRatingPoint = ratingPoint;
     }
 
     public String getContent() {

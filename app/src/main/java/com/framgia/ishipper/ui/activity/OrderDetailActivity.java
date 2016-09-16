@@ -32,6 +32,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
+import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
 import com.framgia.ishipper.ui.view.CancelDialog;
 import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
@@ -305,6 +306,7 @@ public class OrderDetailActivity extends ToolbarActivity {
     }
 
     @OnClick({
+            R.id.btn_detail_show_shipper,
             R.id.btn_detail_show_path,
             R.id.btn_detail_shop_call,
             R.id.btn_detail_receive_order,
@@ -316,6 +318,10 @@ public class OrderDetailActivity extends ToolbarActivity {
     })
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btn_detail_show_shipper:
+                UserInfoDialogFragment dialogFragment = UserInfoDialogFragment.newInstance();
+                dialogFragment.show(getSupportFragmentManager(), "dialog");
+                break;
             case R.id.btn_detail_show_path:
                 startActivity(new Intent(OrderDetailActivity.this, RouteActivity.class));
                 break;
@@ -428,28 +434,28 @@ public class OrderDetailActivity extends ToolbarActivity {
                                 User user = Config.getInstance().getUserInfo(OrderDetailActivity.this);
                                 Map<String, String> params = new HashMap<>();
                                 params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID,
-                                           String.valueOf(mInvoice.getId()));
+                                        String.valueOf(mInvoice.getId()));
                                 params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
                                 params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
                                 API.reportUser(user.getRole(),
-                                               user.getAuthenticationToken(),
-                                               params,
-                                               new API.APICallback<APIResponse<ReportUserData>>() {
-                                                   @Override
-                                                   public void onResponse(APIResponse<ReportUserData> response) {
-                                                       Toast.makeText(OrderDetailActivity.this, response.getMessage(),
-                                                                      Toast.LENGTH_SHORT).show();
-                                                       loadingDialog.dismiss();
-                                                       finish();
-                                                   }
+                                        user.getAuthenticationToken(),
+                                        params,
+                                        new API.APICallback<APIResponse<ReportUserData>>() {
+                                            @Override
+                                            public void onResponse(APIResponse<ReportUserData> response) {
+                                                Toast.makeText(OrderDetailActivity.this, response.getMessage(),
+                                                        Toast.LENGTH_SHORT).show();
+                                                loadingDialog.dismiss();
+                                                finish();
+                                            }
 
-                                                   @Override
-                                                   public void onFailure(int code, String message) {
-                                                       Toast.makeText(OrderDetailActivity.this, message,
-                                                                      Toast.LENGTH_SHORT).show();
-                                                       loadingDialog.dismiss();
-                                                   }
-                                               });
+                                            @Override
+                                            public void onFailure(int code, String message) {
+                                                Toast.makeText(OrderDetailActivity.this, message,
+                                                        Toast.LENGTH_SHORT).show();
+                                                loadingDialog.dismiss();
+                                            }
+                                        });
                             }
 
                             @Override
