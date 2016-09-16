@@ -227,6 +227,9 @@
     <string name="reason_not_have_shipper">Không có shipper nhận</string>
     <string name="reason_good_break">Hàng bị hỏng</string>
     <string name="reason_other">Lý do khác:</string>
+    <string name="all_close">Đóng</string>
+    <string name="info_dialog_total_order">Tổng đơn</string>
+    <string name="info_dialog_success_order">Thành công</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

@@ -23,6 +23,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -91,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getBaseContext(), UserProfileActivity.class));
             }
         });
+
+        UserInfoDialogFragment dialogFragment = UserInfoDialogFragment.newInstance();
+        dialogFragment.show(getSupportFragmentManager().beginTransaction(), "dialog");
 
     }
 
