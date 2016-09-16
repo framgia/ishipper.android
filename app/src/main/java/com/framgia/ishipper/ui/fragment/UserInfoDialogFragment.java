@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.ui.adapter.UserInfoTabAdapter;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -24,6 +25,8 @@ import butterknife.OnClick;
  */
 public class UserInfoDialogFragment extends DialogFragment {
 
+    private static final String KEY_USER = "User";
+    private User mUser;
     @BindView(R.id.img_info_dialog_avatar) CircularImageView mImgAvatar;
     @BindView(R.id.tv_info_dialog_name) TextView mTvName;
     @BindView(R.id.rtb_info_dialog_) AppCompatRatingBar mRatingBar;
@@ -32,8 +35,18 @@ public class UserInfoDialogFragment extends DialogFragment {
     @BindView(R.id.tbl_info_dialog) TabLayout mTabLayout;
     @BindView(R.id.vpg_info_dialog) ViewPager mViewPager;
 
-    public static UserInfoDialogFragment newInstance() {
-        return new UserInfoDialogFragment();
+    public static UserInfoDialogFragment newInstance(User user) {
+        UserInfoDialogFragment dialogFragment = new UserInfoDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(KEY_USER, user);
+        dialogFragment.setArguments(bundle);
+        return dialogFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUser = getArguments().getParcelable(KEY_USER);
     }
 
     @Nullable
@@ -41,15 +54,21 @@ public class UserInfoDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_info_dialog, container, false);
         ButterKnife.bind(this, view);
+        initView();
+        return view;
+    }
+
+    private void initView() {
+        mRatingBar.setRating((float) mUser.getRate());
+        mTvName.setText(mUser.getName());
         setUpViewPager();
         mTabLayout.setupWithViewPager(mViewPager);
-        return view;
     }
 
     private void setUpViewPager() {
         UserInfoTabAdapter adapter = new UserInfoTabAdapter(getChildFragmentManager());
-        adapter.addFragment(new UserInfoFragment(), "Thông tin");
-        adapter.addFragment(new UserReviewFragment(), "Đánh giá");
+        adapter.addFragment(UserInfoFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_info_tab));
+        adapter.addFragment(UserReviewFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_review));
         mViewPager.setAdapter(adapter);
     }
 

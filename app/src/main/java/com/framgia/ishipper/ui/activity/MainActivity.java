@@ -93,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        UserInfoDialogFragment dialogFragment = UserInfoDialogFragment.newInstance();
-        dialogFragment.show(getSupportFragmentManager().beginTransaction(), "dialog");
-
     }
 
     private void selectItem(int id) {

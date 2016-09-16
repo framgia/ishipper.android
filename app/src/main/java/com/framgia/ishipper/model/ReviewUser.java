@@ -14,6 +14,7 @@ public class ReviewUser {
     @SerializedName("review_type") private String mReviewType;
     @SerializedName("rating_point") private String mRatingPoint;
     @SerializedName("content") private String mContent;
+    @SerializedName("date") private String mDate;
 
 
     public int getId() {
@@ -70,5 +71,13 @@ public class ReviewUser {
 
     public void setContent(String content) {
         mContent = content;
+    }
+
+    public String getDate() {
+        return mDate;
+    }
+
+    public void setDate(String date) {
+        mDate = date;
     }
 }
