@@ -236,6 +236,9 @@
     <string name="success_invoice">Đơn hàng thành công:</string>
     <string name="full_name">Họ tên :</string>
     <string name="distance">Khoảng cách :</string>
+    <string name="fragment_setting_receive_notification">Nhận thông báo</string>
+    <string name="fragment_setting_invoice_radius">Bán kính nhận đơn: %1$d km</string>
+    <string name="nav_setting_item">Cài đặt</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

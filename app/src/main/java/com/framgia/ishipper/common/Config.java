@@ -80,7 +80,7 @@ public class Config {
         mUserInfo = userInfo;
 
         String userInfoJson = new Gson().toJson(userInfo);
-        StorageUtils.setBooleanValue(context, Storage.KEY_IS_LOGIN, true);
+        StorageUtils.setValue(context, Storage.KEY_IS_LOGIN, true);
         return StorageUtils.setValue(context, Storage.KEY_USER_INFO, userInfoJson);
     }
 }

@@ -25,6 +25,7 @@ public class RetrofitCallback<T> implements Callback<T> {
     public void onResponse(Call<T> call, Response<T> response) {
         APIResponse apiResponse = (APIResponse) response.body();
         if (apiResponse == null) {
+            mCallback.onFailure(LOCAL_ERROR, ErrorMessage.ERROR_MSG_LOCAL);
             Log.d(TAG, SERVER_ERROR);
         } else if (apiResponse.isSuccess()) {
             mCallback.onResponse(response.body());

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/all_padding_medium">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/all_margin_medium">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/fragment_setting_receive_notification"
+                android:textSize="@dimen/text_size_title"/>
+
+            <CheckBox
+                android:id="@+id/cbReceiveNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/all_divider_height"
+            android:layout_marginBottom="@dimen/all_margin_medium"
+            android:layout_marginLeft="@dimen/all_margin_medium"
+            android:layout_marginRight="@dimen/all_margin_medium"
+            android:background="@color/menu_divider"/>
+
+        <TextView
+            android:id="@+id/tvInvoiceRadius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/all_margin_small"
+            android:text="@string/fragment_setting_invoice_radius"
+            android:textSize="@dimen/text_size_title"/>
+
+        <SeekBar
+            android:id="@+id/seekbar_invoice_radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

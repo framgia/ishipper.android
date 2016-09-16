@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-
         /** Set listener to image icon in drawer */
         View view = mNavigationView.getHeaderView(0);
         CircularImageView imageView = (CircularImageView) view.findViewById(R.id.nav_user_icon);
@@ -135,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
             case R.id.nav_sign_out:
                 signOut();
+                return;
+            case R.id.nav_setting:
+                startActivity(new Intent(this, SettingActivity.class));
+                return;
             default:
                 return;
         }
