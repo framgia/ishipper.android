@@ -256,4 +256,8 @@ public class APIDefinition {
         public static final String PARAM_STATUS = "status";
         public static final String PARAM_QUERY = "query";
     }
+
+    public class ShowBlackListShipper {
+        public static final String PATH = "/api/shop/black_lists";
+    }
 }

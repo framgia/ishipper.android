@@ -105,6 +105,11 @@ public abstract class API {
         client.getUser(token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void getBlackListShipper(String token,
+                                           final APICallback<APIResponse<ListShipperData>> callback) {
+        client.getBlackListShipper(token).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     //region INVOICE API

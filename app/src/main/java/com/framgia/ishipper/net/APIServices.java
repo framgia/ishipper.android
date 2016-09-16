@@ -185,4 +185,8 @@ public interface APIServices {
             @Path(APIDefinition.GetSearchInvoice.PARAM_STATUS) String status,
             @Path(APIDefinition.GetSearchInvoice.PARAM_QUERY) String query,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
+    @GET(APIDefinition.ShowBlackListShipper.PATH)
+    Call<APIResponse<ListShipperData>> getBlackListShipper(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 }
