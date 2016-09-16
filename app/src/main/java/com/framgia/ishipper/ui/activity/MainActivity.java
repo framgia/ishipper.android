@@ -21,6 +21,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
+import com.framgia.ishipper.ui.fragment.ShipperManageFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
@@ -125,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
                                     null);
                     tag = ShipperOrderManagerFragment.class.getName();
                 }
+                break;
+            case R.id.nav_shipper_management:
+                fragment = ShipperManageFragment.newInstance();
                 break;
             case R.id.nav_create_order:
                 startActivity(new Intent(this, ShopCreateOrderActivity.class));

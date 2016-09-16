@@ -230,6 +230,12 @@
     <string name="all_close">Đóng</string>
     <string name="info_dialog_total_order">Tổng đơn</string>
     <string name="info_dialog_success_order">Thành công</string>
+    <string name="title_shipper_management">Quản lý Shipper</string>
+    <string name="title_black_list_shipper">Black list shipper</string>
+    <string name="title_favorite_list_shipper">Favorite list shipper</string>
+    <string name="success_invoice">Đơn hàng thành công:</string>
+    <string name="full_name">Họ tên :</string>
+    <string name="distance">Khoảng cách :</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
