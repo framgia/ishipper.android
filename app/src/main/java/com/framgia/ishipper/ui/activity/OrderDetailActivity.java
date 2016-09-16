@@ -309,6 +309,7 @@ public class OrderDetailActivity extends ToolbarActivity {
 
     @OnClick({
             R.id.btn_detail_show_shipper,
+            R.id.btn_detail_show_shop,
             R.id.btn_detail_show_path,
             R.id.btn_detail_shop_call,
             R.id.btn_detail_receive_order,
@@ -320,8 +321,8 @@ public class OrderDetailActivity extends ToolbarActivity {
     })
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btn_detail_show_shop:
             case R.id.btn_detail_show_shipper:
-
                 UserInfoDialogFragment dialogFragment = UserInfoDialogFragment.newInstance(mInvoiceUser);
                 dialogFragment.show(getSupportFragmentManager(), "dialog");
                 break;

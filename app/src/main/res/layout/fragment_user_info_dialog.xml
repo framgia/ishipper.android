@@ -26,7 +26,6 @@
         style="@style/star_rating_bar_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rating="4.5"
         android:layout_marginTop="@dimen/_5dp"
         android:isIndicator="true"/>
 
@@ -60,8 +59,7 @@
             <TextView
                 android:id="@+id/tv_info_dialog_order_number"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30"/>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <View
@@ -84,8 +82,7 @@
             <TextView
                 android:id="@+id/tv_info_dialog_success_order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="25"/>
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -110,6 +107,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/all_padding_medium"
         android:layout_gravity="right"
+        android:textSize="@dimen/text_size_button"
         android:text="@string/all_close"
         android:textColor="@color/colorPrimary"/>
 </LinearLayout>
