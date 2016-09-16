@@ -10,6 +10,7 @@ import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.net.data.ListReviewData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
@@ -201,6 +202,13 @@ public abstract class API {
     public static void getSearchInvoice(String status, String query, String token,
                                         final APICallback<APIResponse<ListInvoiceData>> callback) {
         client.getSearchInvoice(status, query, token).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void getListReviews(
+            String token,
+            String userId,
+            APICallback<APIResponse<ListReviewData>> callback){
+        client.getListReview(userId, token).enqueue(new RetrofitCallback<>(callback));
     }
 
     //endregion

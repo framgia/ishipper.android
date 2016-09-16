@@ -42,6 +42,7 @@ public class ReviewUserAdapter extends RecyclerView.Adapter<ReviewUserAdapter.Vi
         ReviewUser reviewUser = mReviewUsers.get(position);
         holder.mRatingBar.setRating(Float.parseFloat(reviewUser.getRatingPoint()));
         holder.mTvContent.setText(reviewUser.getContent());
+        holder.mTvDate.setText(reviewUser.getDate());
     }
 
     @Override

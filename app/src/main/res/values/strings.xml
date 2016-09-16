@@ -239,6 +239,8 @@
     <string name="fragment_setting_receive_notification">Nhận thông báo</string>
     <string name="fragment_setting_invoice_radius">Bán kính nhận đơn: %1$d km</string>
     <string name="nav_setting_item">Cài đặt</string>
+    <string name="info_dialog_info_tab">Thông tin</string>
+    <string name="info_dialog_review">Đánh giá</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

@@ -76,6 +76,7 @@ public class OrderDetailActivity extends ToolbarActivity {
     @BindView(R.id.tv_shipping_order_status) TextView tvOrderStatus;
 
     private User mCurrentUser;
+    private User mInvoiceUser;
     private Invoice mInvoice;
 
     @Override
@@ -97,6 +98,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ShowInvoiceData> response) {
+                        mInvoiceUser = response.getData().mInvoice.getUser();
                         mInvoice = response.getData().mInvoice;
                         if (mInvoice == null) return;
                         invalidateOptionsMenu();
@@ -319,7 +321,8 @@ public class OrderDetailActivity extends ToolbarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_detail_show_shipper:
-                UserInfoDialogFragment dialogFragment = UserInfoDialogFragment.newInstance();
+
+                UserInfoDialogFragment dialogFragment = UserInfoDialogFragment.newInstance(mInvoiceUser);
                 dialogFragment.show(getSupportFragmentManager(), "dialog");
                 break;
             case R.id.btn_detail_show_path:
