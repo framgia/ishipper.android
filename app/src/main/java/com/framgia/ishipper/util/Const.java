@@ -4,24 +4,27 @@ package com.framgia.ishipper.util;
  * Created by vuduychuong1994 on 8/3/16.
  */
 public class Const {
-
     public static final int REQUEST_CHECK_SETTINGS = 2;
     public static final long TIME_DELAY_EXIT = 2000;
     public static final int MIN_PASSWORD_LENGTH = 6;
     public static final int PIN_LENGTH = 8;
+    public static final int SETTING_MAX_INVOICE_RADIUS = 14;
+    public static final int SETTING_MIN_INVOICE_RADIUS = 1;
+    public static final int SETTING_INVOICE_RADIUS_DEFAULT = 5;
     public static String VIETNAM_PREFIX = "+84";
-
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
     public class ErrorMessage {
-        public static final String ERROR_MSG_LOCAL = "Có lỗi xảy ra trong quá trình kết nối, hãy thử lại!";
+        public static final String ERROR_MSG_LOCAL =
+            "Có lỗi xảy ra trong quá trình kết nối, hãy thử lại!";
     }
 
     public class Storage {
-
         public static final String KEY_USER_INFO = "UserStorageKey";
         public static final String KEY_IS_LOGIN = "IsLoginKey";
+        public static final String KEY_SETTING_NOTIFICATION = "SettingNotification";
+        public static final String KEY_SETTING_INVOICE_RADIUS = "SettingInvoiceRadius";
     }
 
     public class LocationRequest {

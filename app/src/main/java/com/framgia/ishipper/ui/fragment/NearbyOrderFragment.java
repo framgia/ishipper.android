@@ -38,7 +38,6 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.LocationSettingCallback;
 import com.framgia.ishipper.ui.activity.FilterOrderActivity;
@@ -48,6 +47,7 @@ import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
+import com.framgia.ishipper.util.StorageUtils;
 import com.framgia.ishipper.util.TextFormatUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -251,7 +251,9 @@ public class NearbyOrderFragment extends Fragment implements
             mCurrentUser.setLatitude(mLocation.getLatitude());
             mCurrentUser.setLongitude(mLocation.getLongitude());
             MapUtils.zoomToPosition(mGoogleMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
-            markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), RADIUS);
+            markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(),
+                    StorageUtils.getIntValue(getContext(), Const.Storage.KEY_SETTING_INVOICE_RADIUS,
+                    Const.SETTING_INVOICE_RADIUS_DEFAULT));
             configGoogleMap();
         } else {
             Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
