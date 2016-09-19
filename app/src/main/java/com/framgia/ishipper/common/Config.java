@@ -39,6 +39,10 @@ public class Config {
         return mUserInfo;
     }
 
+    public boolean isShop(Context context) {
+        return getUserInfo(context).getRole().equals(User.ROLE_SHOP);
+    }
+
     public void restoreUserInfoSetting(Context context) {
         if (context == null) {
             return;
