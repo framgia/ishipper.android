@@ -241,6 +241,10 @@
     <string name="nav_setting_item">Cài đặt</string>
     <string name="info_dialog_info_tab">Thông tin</string>
     <string name="info_dialog_review">Đánh giá</string>
+    <string name="activity_fb_pin_invoice">Đơn hàng đã ghim</string>
+    <string name="inbox">Inbox</string>
+    <string name="comment">Bình Luận</string>
+    <string name="call">Gọi điện</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

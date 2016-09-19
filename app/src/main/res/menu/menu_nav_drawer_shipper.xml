@@ -21,8 +21,9 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_setting"
             android:icon="@drawable/ic_nav_setting_24dp"
+            android:checkable="false"
+            android:id="@+id/nav_setting"
             android:title="@string/nav_setting_item"/>
 
         <item

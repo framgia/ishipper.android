@@ -20,6 +20,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperManageFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
@@ -119,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
                             null);
                     tag = ShipperOrderManagerFragment.class.getName();
                 }
+                break;
+            case R.id.nav_fb_order:
+                mSelectedId = id;
+                fragment = FacebookInvoiceFragment.instantiate(MainActivity.this,
+                        FacebookInvoiceFragment.class.getName());
+                tag = FacebookInvoiceFragment.class.getName();
                 break;
             case R.id.nav_shipper_management:
                 mSelectedId = id;

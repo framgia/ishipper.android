@@ -89,4 +89,6 @@
     <dimen name="tv_btn_padding">16dp</dimen>
     <dimen name="info_dialog_viewpager">200dp</dimen>
     <dimen name="info_dialog_width">400dp</dimen>
+    <dimen name="search_layout_height">40dp</dimen>
+    <dimen name="search_icon_size">13dp</dimen>
 </resources>
