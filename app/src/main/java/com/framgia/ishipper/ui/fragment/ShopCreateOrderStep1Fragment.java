@@ -207,7 +207,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 }
 
                 //Show distance
-                mDistance = CommonUtils.ConvertMetreToKm(distance);
+                mDistance = CommonUtils.convertMetreToKm(distance);
                 mTvDistance.setText(getString(R.string.text_distance, mDistance));
 
                 if (mPolylineRoute != null) mPolylineRoute.remove();

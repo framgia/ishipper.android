@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.framgia.ishipper">
+<manifest package="com.framgia.ishipper"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -44,8 +45,8 @@
         <activity android:name=".ui.activity.ForgetPasswordActivity"/>
         <activity android:name=".ui.activity.UserProfileActivity"/>
         <activity android:name=".ui.activity.SettingActivity"/>
-        <activity android:name=".ui.activity.ChangePasswordActivity">
-        </activity>
+        <activity android:name=".ui.activity.SearchUserActivity"/>
+        <activity android:name=".ui.activity.ChangePasswordActivity"/>
         <activity
             android:name=".ui.activity.FilterOrderActivity"
             android:windowSoftInputMode="stateHidden">

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.framgia.ishipper.ui.activity.SearchUserActivity">
+
+    <RelativeLayout
+        android:padding="@dimen/all_padding_small"
+        android:id="@+id/layoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_layout_height"
+            android:background="@color/white"
+            android:hint="@string/search_hint"
+            android:paddingLeft="@dimen/all_padding_medium"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_content"/>
+
+        <ImageView
+            android:id="@+id/imgSearch"
+            android:layout_width="@dimen/search_icon_size"
+            android:layout_height="@dimen/search_icon_size"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/all_margin_medium"
+            android:clickable="false"
+            android:focusable="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_search_black_24dp"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvResult"
+        android:paddingLeft="@dimen/all_padding_medium"
+        android:paddingRight="@dimen/all_padding_medium"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutSearch"
+        android:layout_marginTop="@dimen/all_margin_small"/>
+</RelativeLayout>
