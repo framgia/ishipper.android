@@ -2,14 +2,12 @@ package com.framgia.ishipper.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
@@ -17,7 +15,6 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
 import java.util.ArrayList;
@@ -26,21 +23,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class BlacklistShipperFragment extends Fragment {
-    private static final String TAG = "BlacklistShipperFragment";
+public class FavoriteFragment extends Fragment {
+    private static final String TAG = "FavoriteFragment";
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
     private Unbinder mUnbinder;
     private Context mContext;
-    private BlackListAdapter mBlackListAdapter;
+    private BlackListAdapter mFavoriteListAdapter;
     private List<User> mShipperList;
     private User mUser;
 
-    public BlacklistShipperFragment() {
+    public FavoriteFragment() {
     }
 
-    public static BlacklistShipperFragment newInstance() {
-        return new BlacklistShipperFragment();
+    public static FavoriteFragment newInstance() {
+        return new FavoriteFragment();
     }
 
     @Override
@@ -68,21 +65,21 @@ public class BlacklistShipperFragment extends Fragment {
     private void setAdapter(RecyclerView recyclerView) {
         if (mShipperList == null)
             mShipperList = new ArrayList<>();
-        if (mBlackListAdapter == null)
-            mBlackListAdapter = new BlackListAdapter(mContext, mShipperList);
-        mRecyclerView.setAdapter(mBlackListAdapter);
+        if (mFavoriteListAdapter == null)
+            mFavoriteListAdapter = new BlackListAdapter(mContext, mShipperList);
+        mRecyclerView.setAdapter(mFavoriteListAdapter);
         getBlackListShipper();
     }
 
     private void getBlackListShipper() {
-        API.getBlackListShipper(mUser.getAuthenticationToken(),
+        API.getFavoriteListShipper(mUser.getAuthenticationToken(),
                                 new API.APICallback<APIResponse<ListUserData>>() {
                                     @Override
                                     public void onResponse(APIResponse<ListUserData> response) {
                                         Log.d(TAG, response.getMessage());
                                         mShipperList.clear();
                                         mShipperList.addAll(response.getData().getShippersList());
-                                        mBlackListAdapter.notifyDataSetChanged();
+                                        mFavoriteListAdapter.notifyDataSetChanged();
                                     }
 
                                     @Override
