@@ -63,6 +63,10 @@ public class User implements Parcelable {
         }
     };
 
+    public boolean isShop() {
+        return mRole.equals(ROLE_SHOP);
+    }
+
     @Override
     public String toString() {
         return new GsonBuilder().create().toJson(this);

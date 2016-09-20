@@ -24,7 +24,6 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperManageFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
-import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -34,11 +33,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.main_navigation) NavigationView mNavigationView;
     @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
-
     public static final int SHIPPER = 0;
     public static final int SHOP = 1;
     public static int userType = SHIPPER;
@@ -68,19 +65,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shipper);
         }
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                selectItem(item.getItemId());
-                return true;
-            }
-        });
+        mNavigationView.setNavigationItemSelectedListener(
+            new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem item) {
+                    selectItem(item.getItemId());
+                    return true;
+                }
+            });
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                mToolbar,
-                R.string.drawer_open,
-                R.string.drawer_close);
+            this,
+            mDrawerLayout,
+            mToolbar,
+            R.string.drawer_open,
+            R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         /** Set listener to image icon in drawer */
@@ -92,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getBaseContext(), UserProfileActivity.class));
             }
         });
-
     }
 
     private void selectItem(int id) {
@@ -111,19 +108,20 @@ public class MainActivity extends AppCompatActivity {
                 mSelectedId = id;
                 if (userType == SHIPPER) {
                     fragment =
-                            ShipperOrderManagerFragment.instantiate(MainActivity.this,
-                                    ShipperOrderManagerFragment.class.getName(),
-                                    null);
+                        ShipperOrderManagerFragment.instantiate(MainActivity.this,
+                            ShipperOrderManagerFragment.class.getName(),
+                            null);
                     tag = ShipperOrderManagerFragment.class.getName();
                 } else {
                     fragment =
-                            ShipperOrderManagerFragment.instantiate(MainActivity.this,
-                                    ShopOrderManagerFragment.class.getName(),
-                                    null);
+                        ShipperOrderManagerFragment.instantiate(MainActivity.this,
+                            ShopOrderManagerFragment.class.getName(),
+                            null);
                     tag = ShipperOrderManagerFragment.class.getName();
                 }
                 break;
             case R.id.nav_shipper_management:
+                mSelectedId = id;
                 fragment = ShipperManageFragment.newInstance();
                 break;
             case R.id.nav_create_order:
@@ -133,35 +131,37 @@ public class MainActivity extends AppCompatActivity {
                 signOut();
                 return;
             case R.id.nav_setting:
-                startActivity(new Intent(this, SettingActivity.class));
+                mNavigationView.setCheckedItem(mSelectedId);
+                startActivityForResult(new Intent(this, SettingActivity.class),
+                    Const.REQUEST_SETTING);
                 return;
             default:
                 return;
         }
         if (fragment != null) {
             getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_container, fragment, tag)
-                    .commit();
+                .beginTransaction()
+                .replace(R.id.main_container, fragment, tag)
+                .commit();
         }
     }
 
     private void signOut() {
         StorageUtils.clearAll(getApplicationContext());
         API.signOut(mCurrentUser.getAuthenticationToken(),
-                mCurrentUser.getPhoneNumber(),
-                new API.APICallback<APIResponse<EmptyData>>() {
-                    @Override
-                    public void onResponse(APIResponse<EmptyData> response) {
-                        Toast.makeText(MainActivity.this, response.getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
+            mCurrentUser.getPhoneNumber(),
+            new API.APICallback<APIResponse<EmptyData>>() {
+                @Override
+                public void onResponse(APIResponse<EmptyData> response) {
+                    Toast.makeText(MainActivity.this, response.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+                }
 
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                @Override
+                public void onFailure(int code, String message) {
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         finish();
     }
@@ -181,8 +181,17 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
             getSupportFragmentManager()
-                    .findFragmentByTag(MainContentFragment.class.getName())
-                    .onActivityResult(requestCode, resultCode, data);
+                .findFragmentByTag(MainContentFragment.class.getName())
+                .onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == Const.REQUEST_SETTING) {
+            if (!Config.getInstance().getUserInfo(getApplicationContext()).isShop()) {
+                if (mSelectedId == R.id.nav_nearby_order) {
+                    // Dont need to update nearby invoice if user is shop
+                    getSupportFragmentManager()
+                        .findFragmentByTag(MainContentFragment.class.getName())
+                        .onActivityResult(requestCode, resultCode, data);
+                }
+            }
         }
     }
 
@@ -192,13 +201,10 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         }
-
         // set double click back to exit
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, R.string.message_back_to_exit, Toast.LENGTH_SHORT).show();
-
         new Handler().postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 doubleBackToExitPressedOnce = false;
