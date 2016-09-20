@@ -9,6 +9,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ListReviewData;
 import com.framgia.ishipper.net.data.ListShipperData;
+import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
@@ -188,7 +189,11 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @GET(APIDefinition.ShowBlackListShipper.PATH)
-    Call<APIResponse<ListShipperData>> getBlackListShipper(
+    Call<APIResponse<ListUserData>> getBlackListShipper(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
+    @GET(APIDefinition.FavoriteListShipper.PATH)
+    Call<APIResponse<ListUserData>> getFavoriteListShipper(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @GET(APIDefinition.GetListReview.PATH)

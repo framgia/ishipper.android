@@ -11,6 +11,7 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
 import java.util.List;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by vuduychuong1994 on 9/15/16.
@@ -62,6 +63,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
 
         public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

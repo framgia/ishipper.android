@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
 //        private static final String DEV_URL = "http://ishipper.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.51:3001/";
+    private static final String DEV_URL = "http://192.168.1.68:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -264,5 +264,9 @@ public class APIDefinition {
     public static class GetListReview {
         public static final String PATH = "";
         public static final String PARAMS_USER_ID = "";
+    }
+
+    public class FavoriteListShipper {
+        public static final String PATH = "/api/shop/favorite_lists";
     }
 }

@@ -62,7 +62,7 @@ public class ShipperManageFragment extends Fragment {
                 case 0:
                     return BlacklistShipperFragment.newInstance();
                 case 1:
-                    return BlacklistShipperFragment.newInstance();
+                    return FavoriteFragment.newInstance();
                 default:
                     return BlacklistShipperFragment.newInstance();
             }
