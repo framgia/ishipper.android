@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * Created by dinhduc on 14/09/2016.
  */
-public class UserInfoTabAdapter extends FragmentPagerAdapter {
-    List<Fragment> mFragments = new ArrayList<>();
-    List<String> mTitles = new ArrayList<>();
+public class GeneralFragmentPagerAdapter extends FragmentPagerAdapter {
+    private List<Fragment> mFragments = new ArrayList<>();
+    private List<String> mTitles = new ArrayList<>();
 
-    public UserInfoTabAdapter(FragmentManager fm) {
+    public GeneralFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
