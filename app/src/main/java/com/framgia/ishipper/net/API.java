@@ -116,6 +116,15 @@ public abstract class API {
         client.getFavoriteListShipper(token).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void getBlackListShop(String token,
+                                           final APICallback<APIResponse<ListUserData>> callback) {
+        client.getBlackListShop(token).enqueue(new RetrofitCallback<>(callback));
+    }
+    public static void getFavoriteListShop(String token,
+                                              final APICallback<APIResponse<ListUserData>> callback) {
+        client.getFavoriteListShop(token).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     //region INVOICE API

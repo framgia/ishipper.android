@@ -26,21 +26,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FavoriteFragment extends Fragment {
-    private static final String TAG = "FavoriteFragment";
+public class BlacklistFragment extends Fragment {
+    private static final String TAG = "BlacklistFragment";
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
     private Unbinder mUnbinder;
     private Context mContext;
-    private BlackListAdapter mFavoriteListAdapter;
-    private List<User> mFavoriteList;
+    private BlackListAdapter mBlackListAdapter;
+    private List<User> mBlackListUser;
     private User mUser;
 
-    public FavoriteFragment() {
+    public BlacklistFragment() {
     }
 
-    public static FavoriteFragment newInstance() {
-        return new FavoriteFragment();
+    public static BlacklistFragment newInstance() {
+        return new BlacklistFragment();
     }
 
     @Override
@@ -62,31 +62,30 @@ public class FavoriteFragment extends Fragment {
         mUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         setUpRecycleView(mRecyclerView);
-
     }
 
     private void setUpRecycleView(RecyclerView recyclerView) {
-        if (mFavoriteList == null)
-            mFavoriteList = new ArrayList<>();
-        if (mFavoriteListAdapter == null)
-            mFavoriteListAdapter = new BlackListAdapter(mContext, mFavoriteList);
-        recyclerView.setAdapter(mFavoriteListAdapter);
+        if (mBlackListUser == null)
+            mBlackListUser = new ArrayList<>();
+        if (mBlackListAdapter == null)
+            mBlackListAdapter = new BlackListAdapter(mContext, mBlackListUser);
+        recyclerView.setAdapter(mBlackListAdapter);
         if (mUser.getRole().equals(User.ROLE_SHOP)) {
-            getFavoriteListShipper();
-        } else {
-            getFavoriteListShop();
+            getBlackListShipper();
+        }else {
+            getBlackListShop();
         }
     }
 
-    private void getFavoriteListShop() {
-        API.getFavoriteListShop(mUser.getAuthenticationToken(),
+    private void getBlackListShop() {
+        API.getBlackListShop(mUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
                         Log.d(TAG, response.getMessage());
-                        mFavoriteList.clear();
-                        mFavoriteList.addAll(response.getData().getShippersList());
-                        mFavoriteListAdapter.notifyDataSetChanged();
+                        mBlackListUser.clear();
+                        mBlackListUser.addAll(response.getData().getShippersList());
+                        mBlackListAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -96,15 +95,15 @@ public class FavoriteFragment extends Fragment {
                 });
     }
 
-    private void getFavoriteListShipper() {
-        API.getFavoriteListShipper(mUser.getAuthenticationToken(),
+    private void getBlackListShipper() {
+        API.getBlackListShipper(mUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
                         Log.d(TAG, response.getMessage());
-                        mFavoriteList.clear();
-                        mFavoriteList.addAll(response.getData().getShippersList());
-                        mFavoriteListAdapter.notifyDataSetChanged();
+                        mBlackListUser.clear();
+                        mBlackListUser.addAll(response.getData().getShippersList());
+                        mBlackListAdapter.notifyDataSetChanged();
                     }
 
                     @Override

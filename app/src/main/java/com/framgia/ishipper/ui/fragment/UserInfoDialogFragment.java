@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.ui.adapter.UserInfoTabAdapter;
+import com.framgia.ishipper.ui.adapter.GeneralFragmentPagerAdapter;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
@@ -66,7 +66,7 @@ public class UserInfoDialogFragment extends DialogFragment {
     }
 
     private void setUpViewPager() {
-        UserInfoTabAdapter adapter = new UserInfoTabAdapter(getChildFragmentManager());
+        GeneralFragmentPagerAdapter adapter = new GeneralFragmentPagerAdapter(getChildFragmentManager());
         adapter.addFragment(UserInfoFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_info_tab));
         adapter.addFragment(UserReviewFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_review));
         mViewPager.setAdapter(adapter);

@@ -22,7 +22,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
-import com.framgia.ishipper.ui.fragment.ShipperManageFragment;
+import com.framgia.ishipper.ui.fragment.UserManageFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.util.Const;
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectItem(int id) {
+        mNavigationView.setCheckedItem(id);
         mDrawerLayout.closeDrawer(mNavigationView);
         if (mSelectedId == id) return;
         Fragment fragment;
@@ -129,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_shipper_management:
                 mSelectedId = id;
-                fragment = ShipperManageFragment.newInstance();
+                fragment = UserManageFragment.newInstance();
+                tag = UserManageFragment.class.getName();
                 break;
             case R.id.nav_create_order:
                 startActivity(new Intent(this, ShopCreateOrderActivity.class));
