@@ -16,9 +16,7 @@ import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
-
 import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -31,6 +29,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import static com.framgia.ishipper.net.APIDefinition.AddShipperToBlackList.*;
 
 /**
  * Created by HungNT on 8/5/16.
@@ -43,32 +42,27 @@ public interface APIServices {
 
     @GET(APIDefinition.GetPin.PATH)
     Call<APIResponse<EmptyData>> getConfirmationPin(
-            @Query(APIDefinition.GetPin.PARAM_PHONE) String phoneNumber
-    );
+            @Query(APIDefinition.GetPin.PARAM_PHONE) String phoneNumber);
 
     @GET(APIDefinition.GetCheckPin.PATH)
     Call<APIResponse<EmptyData>> getCheckPin(
             @Query(APIDefinition.GetCheckPin.PARAM_PHONE) String phoneNumber,
-            @Query(APIDefinition.GetCheckPin.PARAM_PIN) String pin
-    );
+            @Query(APIDefinition.GetCheckPin.PARAM_PIN) String pin);
 
     @GET(APIDefinition.GetUserInformation.PATH)
     Call<APIResponse> getUserInformation(
-            @Header(APIDefinition.HEADER_AUTHORIZE) String authorization
-    );
+            @Header(APIDefinition.HEADER_AUTHORIZE) String authorization);
 
     @FormUrlEncoded
     @POST(APIDefinition.PutResetPassword.PATH)
     Call<APIResponse<EmptyData>> resetPassword(
-            @FieldMap Map<String, String> params
-    );
+            @FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @PUT(APIDefinition.ChangePassword.PATH)
     Call<APIResponse<ChangePasswordData>> changePassword(
             @FieldMap Map<String, String> params,
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token
-    );
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @FormUrlEncoded
     @POST(APIDefinition.SignIn.PATH)
@@ -79,15 +73,13 @@ public interface APIServices {
     Call<APIResponse<UpdateProfileData>> putUpdateProfile(
             @FieldMap Map<String, String> params,
             @Path(APIDefinition.PutUpdateProfile.PATH_ID) String userId,
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token
-    );
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @FormUrlEncoded
     @PUT(APIDefinition.ConfirmationPin.PATH)
     Call<APIResponse<EmptyData>> confirmationPinInSignUp(
             @Field(APIDefinition.GetCheckPin.PARAM_PHONE) String phoneNumber,
-            @Field(APIDefinition.GetCheckPin.PARAM_PIN) String pin
-    );
+            @Field(APIDefinition.GetCheckPin.PARAM_PIN) String pin);
 
     @GET(APIDefinition.GetShipperNearby.PATH)
     Call<APIResponse<ShipperNearbyData>> getShipperNearby(
@@ -115,8 +107,7 @@ public interface APIServices {
     Call<APIResponse<InvoiceData>> putUpdateInvoice(
             @FieldMap Map<String, String> params,
             @Path(APIDefinition.PutUpdateInvoice.PATH_ID) String invoiceId,
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token
-    );
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @GET(APIDefinition.FilterInvoice.PATH)
     Call<APIResponse<FilterInvoiceData>> filterInvoice(
@@ -152,15 +143,13 @@ public interface APIServices {
     Call<APIResponse<EmptyData>> putShopReceiveShipper(
             @Field(APIDefinition.PutShopReceiveShipper.PARAMS_STATUS) String status,
             @Path(APIDefinition.PutShopReceiveShipper.PARAM_USER_INVOICE_ID) String userInvoiceId,
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token
-    );
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @FormUrlEncoded
     @POST(APIDefinition.PostShipperReceiveInvoice.PATH)
     Call<APIResponse<EmptyData>> postShipperReceiveInvoice(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
-            @Field(APIDefinition.PostShipperReceiveInvoice.PARAMS_INVOICE_ID) String status
-    );
+            @Field(APIDefinition.PostShipperReceiveInvoice.PARAMS_INVOICE_ID) String status);
 
     @GET(APIDefinition.ShowInvoice.PATH)
     Call<APIResponse<ShowInvoiceData>> getInvoiceDetail(

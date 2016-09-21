@@ -53,6 +53,7 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -65,7 +66,6 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void invalidView(View view) {
-        setHasOptionsMenu(true);
         mContext = view.getContext();
         mUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -123,15 +123,17 @@ public class FavoriteFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.menu_user_manage, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -140,6 +142,7 @@ public class FavoriteFragment extends Fragment {
                     SearchUserActivity.startIntent(mContext, Const.RequestCode.REQUEST_SEARCH_FAVORITE),
                     Const.RequestCode.REQUEST_SEARCH_FAVORITE
             );
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
