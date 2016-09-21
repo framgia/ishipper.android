@@ -245,6 +245,7 @@
     <string name="inbox">Inbox</string>
     <string name="comment">Bình Luận</string>
     <string name="call">Gọi điện</string>
+    <string name="nav_shop_management_item">Quản lý cửa hàng</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

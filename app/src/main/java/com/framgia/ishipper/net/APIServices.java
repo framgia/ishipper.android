@@ -1,5 +1,6 @@
 package com.framgia.ishipper.net;
 
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
@@ -207,5 +208,10 @@ public interface APIServices {
     @GET(APIDefinition.GetListReview.PATH)
     Call<APIResponse<ListReviewData>> getListReview(
             @Path(APIDefinition.GetListReview.PARAMS_USER_ID) String userId,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
+    @GET(APIDefinition.GetSearchUser.PATH)
+    Call<APIResponse<User>> getSearchUser(
+            @Path(APIDefinition.GetSearchUser.PARAMS_SEARCH) String searchString,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 }

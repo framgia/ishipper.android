@@ -124,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_fb_order:
                 mSelectedId = id;
-                fragment = FacebookInvoiceFragment.instantiate(MainActivity.this,
-                        FacebookInvoiceFragment.class.getName());
+                fragment = FacebookInvoiceFragment.newInstance(true);
                 tag = FacebookInvoiceFragment.class.getName();
                 break;
             case R.id.nav_shipper_management:
@@ -206,6 +205,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+            return;
+        }
+
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;
