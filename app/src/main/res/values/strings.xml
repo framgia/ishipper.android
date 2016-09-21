@@ -40,6 +40,7 @@
     <string name="all_shipping_order">Đang giao</string>
     <string name="nav_user_name_example">Nguyen Dinh Duc</string>
     <string name="all_search_hint">Tìm kiếm</string>
+    <string name="activity_search_title">Tìm kiếm</string>
 
     <string name="suggest_path">Gợi ý đường đi</string>
     <string name="all_waiting_order">Đang chờ</string>
@@ -247,6 +248,7 @@
     <string name="call">Gọi điện</string>
     <string name="nav_shop_management_item">Quản lý cửa hàng</string>
     <string name="all_add">Add</string>
+    <string name="add">Thêm</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

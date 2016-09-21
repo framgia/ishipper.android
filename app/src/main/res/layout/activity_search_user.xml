@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.framgia.ishipper.ui.activity.SearchUserActivity">
 
+    <include layout="@layout/toolbar"/>
+
     <RelativeLayout
-        android:padding="@dimen/all_padding_small"
         android:id="@+id/layoutSearch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/all_padding_small">
 
         <EditText
             android:id="@+id/edtSearch"
@@ -36,11 +39,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvResult"
-        android:paddingLeft="@dimen/all_padding_medium"
-        android:paddingRight="@dimen/all_padding_medium"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutSearch"
-        android:layout_marginTop="@dimen/all_margin_small"/>
-</RelativeLayout>
+        android:layout_marginTop="@dimen/all_margin_small"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/all_padding_medium"
+        android:paddingRight="@dimen/all_padding_medium"/>
+</LinearLayout>

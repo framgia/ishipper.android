@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
 //        private static final String DEV_URL = "http://ishipper.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.64:3001/";
+    private static final String DEV_URL = "http://192.168.1.150:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -273,9 +273,18 @@ public class APIDefinition {
         public static final String PATH = "/api/shop/favorite_lists";
     }
 
-    public class AddShopBlackList {
-        public static final String PATH = "/api/shipper/favorite_lists";
-        public static final String PARAMS_FAVORITE_USER_ID= "favorite_list[favorite_list_user_id]";
+    public class PostAddFavorite {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/favorite_lists";
+
+        public static final String PARAMS_FAVORITE_USER_ID = "favorite_list[favorite_list_user_id]";
+    }
+
+    public class PostAddBlacklist {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/black_lists";
+
+        public static final String PARAMS_BLACKLIST_USER_ID = "black_list[black_list_user_id]";
     }
 
     public static class GetListReview {
