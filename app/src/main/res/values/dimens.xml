@@ -91,4 +91,5 @@
     <dimen name="info_dialog_width">400dp</dimen>
     <dimen name="search_layout_height">40dp</dimen>
     <dimen name="search_icon_size">13dp</dimen>
+    <dimen name="avatar_search_size">50dp</dimen>
 </resources>

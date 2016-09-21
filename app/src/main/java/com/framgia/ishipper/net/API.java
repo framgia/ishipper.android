@@ -238,6 +238,13 @@ public abstract class API {
         client.getListReview(userId, token).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void getSearchUser(
+            String token,
+            String stringSearch,
+            APICallback<APIResponse<ListUserData>> callback){
+        client.getSearchUser(stringSearch, token).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     private static OkHttpClient loggingClient() {
