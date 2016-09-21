@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
     <group
         android:id="@+id/nav_shipper_main_group"
         android:checkableBehavior="single">
@@ -16,7 +17,7 @@
             android:icon="@drawable/ic_order_management_white_24dp"
             android:title="@string/nav_order_management_item"/>
         <item
-            android:id="@+id/nav_shipper_management"
+            android:id="@+id/nav_user_management"
             android:icon="@drawable/ic_shop_white_24dp"
             android:title="@string/nav_shop_management_item"/>
     </group>

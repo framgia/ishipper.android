@@ -107,22 +107,35 @@ public abstract class API {
         client.getUser(token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void getBlackListShipper(String token,
-                                           final APICallback<APIResponse<ListUserData>> callback) {
+    public static void getBlackListShipper(
+            String token,
+            final APICallback<APIResponse<ListUserData>> callback) {
         client.getBlackListShipper(token).enqueue(new RetrofitCallback<>(callback));
     }
-    public static void getFavoriteListShipper(String token,
-                                           final APICallback<APIResponse<ListUserData>> callback) {
+
+    public static void getFavoriteListShipper(
+            String token,
+            final APICallback<APIResponse<ListUserData>> callback) {
         client.getFavoriteListShipper(token).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void getBlackListShop(String token,
-                                           final APICallback<APIResponse<ListUserData>> callback) {
+    public static void getBlackListShop(
+            String token,
+            final APICallback<APIResponse<ListUserData>> callback) {
         client.getBlackListShop(token).enqueue(new RetrofitCallback<>(callback));
     }
-    public static void getFavoriteListShop(String token,
-                                              final APICallback<APIResponse<ListUserData>> callback) {
+
+    public static void getFavoriteListShop(
+            String token,
+            final APICallback<APIResponse<ListUserData>> callback) {
         client.getFavoriteListShop(token).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void addShopBlackList(
+            String token,
+            String userId,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.addShopBlackList(token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
     //endregion
@@ -221,7 +234,7 @@ public abstract class API {
     public static void getListReviews(
             String token,
             String userId,
-            APICallback<APIResponse<ListReviewData>> callback){
+            APICallback<APIResponse<ListReviewData>> callback) {
         client.getListReview(userId, token).enqueue(new RetrofitCallback<>(callback));
     }
 

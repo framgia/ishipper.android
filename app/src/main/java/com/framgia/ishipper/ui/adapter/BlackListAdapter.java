@@ -29,7 +29,7 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_black_list_shipper, parent, false);
         return new ViewHolder(view);
     }

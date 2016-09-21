@@ -1,11 +1,16 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -17,7 +22,10 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListUserData;
+import com.framgia.ishipper.ui.activity.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
+import com.framgia.ishipper.ui.adapter.GeneralFragmentPagerAdapter;
+import com.framgia.ishipper.util.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +66,7 @@ public class BlacklistFragment extends Fragment {
     }
 
     private void invalidView(View view) {
+        setHasOptionsMenu(true);
         mContext = view.getContext();
         mUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -72,7 +81,7 @@ public class BlacklistFragment extends Fragment {
         recyclerView.setAdapter(mBlackListAdapter);
         if (mUser.getRole().equals(User.ROLE_SHOP)) {
             getBlackListShipper();
-        }else {
+        } else {
             getBlackListShop();
         }
     }
@@ -114,8 +123,38 @@ public class BlacklistFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.favorite_add) {
+            startActivityForResult(
+                    new Intent(mContext, SearchUserActivity.class),
+                    Const.RequestCode.REQUEST_CODE_SEARCH_USER
+            );
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.RequestCode.REQUEST_CODE_SEARCH_USER) {
+            if (resultCode == Activity.RESULT_OK) {
+                User user = data.getParcelableExtra(Const.KEY_USER);
+                if (user != null) {
+                    mBlackListUser.add(user);
+                    mBlackListAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 }
