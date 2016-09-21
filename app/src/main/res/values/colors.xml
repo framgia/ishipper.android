@@ -40,4 +40,5 @@
     <color name="invoice_change_status">#ffe0b2</color>
     <color name="grey">#bdbdbd</color>
     <color name="red">#FF0000</color>
+    <color name="border_rounded_imageview">#EEEEEE</color>
 </resources>

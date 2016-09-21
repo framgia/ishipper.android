@@ -34,7 +34,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/avatar_sample"
                     android:tint="@android:color/darker_gray"
-                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_color="@color/border_rounded_imageview"
                     app:civ_border_width="@dimen/nav_contact_icon_border_width"
                     app:civ_shadow="true"
                     app:civ_shadow_color="@android:color/black"
