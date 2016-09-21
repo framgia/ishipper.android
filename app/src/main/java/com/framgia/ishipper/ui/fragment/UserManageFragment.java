@@ -1,12 +1,14 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,14 +28,16 @@ public class UserManageFragment extends Fragment {
     @BindView(R.id.tab_layout) TabLayout mTabLayout;
     @BindView(R.id.viewpager) ViewPager mViewpager;
     private Unbinder mUnbinder;
+    private Context mContext;
 
     public static UserManageFragment newInstance() {
         return new UserManageFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -52,10 +56,22 @@ public class UserManageFragment extends Fragment {
                 BlacklistFragment.newInstance(),
                 getString(R.string.title_black_list_shipper));
         pagerAdapter.addFragment(
-                BlacklistFragment.newInstance(),
+                FavoriteFragment.newInstance(),
                 getString(R.string.title_favorite_list_shipper));
         mViewpager.setAdapter(pagerAdapter);
         mTabLayout.setupWithViewPager(mViewpager);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_user_manage, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

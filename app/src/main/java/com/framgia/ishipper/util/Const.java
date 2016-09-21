@@ -4,6 +4,7 @@ package com.framgia.ishipper.util;
  * Created by vuduychuong1994 on 8/3/16.
  */
 public class Const {
+    public static final String KEY_USER = "user";
     public static final int REQUEST_CHECK_SETTINGS = 2;
     public static final int REQUEST_SETTING = 3;
     public static final long TIME_DELAY_EXIT = 2000;
@@ -16,9 +17,13 @@ public class Const {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
+    public class RequestCode {
+        public static final int REQUEST_CODE_SEARCH_USER = 1;
+    }
+
     public class ErrorMessage {
         public static final String ERROR_MSG_LOCAL =
-            "Có lỗi xảy ra trong quá trình kết nối, hãy thử lại!";
+                "Có lỗi xảy ra trong quá trình kết nối, hãy thử lại!";
     }
 
     public class Storage {

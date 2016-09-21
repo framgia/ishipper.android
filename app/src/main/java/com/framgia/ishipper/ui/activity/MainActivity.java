@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = FacebookInvoiceFragment.newInstance(true);
                 tag = FacebookInvoiceFragment.class.getName();
                 break;
-            case R.id.nav_shipper_management:
+            case R.id.nav_user_management:
                 mSelectedId = id;
                 fragment = UserManageFragment.newInstance();
                 tag = UserManageFragment.class.getName();
