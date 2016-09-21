@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    //        private static final String DEV_URL = "http://ishipper.herokuapp.com";
+//        private static final String DEV_URL = "http://ishipper.herokuapp.com";
     private static final String DEV_URL = "http://192.168.1.63:3001/";
     private static final String PROD_URL = "";
 
@@ -278,4 +278,8 @@ public class APIDefinition {
         public static final String PARAMS_USER_ID = "";
     }
 
+    public static class GetSearchUser {
+        public static final String PATH = "api/users";
+        public static final String PARAMS_SEARCH = "user[search]";
+    }
 }
