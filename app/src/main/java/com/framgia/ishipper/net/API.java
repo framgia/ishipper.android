@@ -131,11 +131,12 @@ public abstract class API {
         client.getFavoriteListShop(token).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void addShopBlackList(
+    public static void addFavoriteUser(
+            String userType,
             String token,
             String userId,
             APICallback<APIResponse<EmptyData>> callback) {
-        client.addShopBlackList(token, userId).enqueue(new RetrofitCallback<>(callback));
+        client.addFavorite(userType, token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
     //endregion

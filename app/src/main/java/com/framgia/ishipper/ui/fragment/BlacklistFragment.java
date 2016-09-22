@@ -24,7 +24,6 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
-import com.framgia.ishipper.ui.adapter.GeneralFragmentPagerAdapter;
 import com.framgia.ishipper.util.Const;
 
 import java.util.ArrayList;
@@ -123,6 +122,12 @@ public class BlacklistFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -130,24 +135,18 @@ public class BlacklistFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.favorite_add) {
+            // Blacklist tab
             startActivityForResult(
-                    new Intent(mContext, SearchUserActivity.class),
-                    Const.RequestCode.REQUEST_CODE_SEARCH_USER
-            );
+                    SearchUserActivity.startIntent(mContext, Const.RequestCode.REQUEST_SEARCH_BLACKLIST),
+                    Const.RequestCode.REQUEST_SEARCH_BLACKLIST);
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.RequestCode.REQUEST_CODE_SEARCH_USER) {
+        if (requestCode == Const.RequestCode.REQUEST_SEARCH_BLACKLIST) {
             if (resultCode == Activity.RESULT_OK) {
                 User user = data.getParcelableExtra(Const.KEY_USER);
                 if (user != null) {

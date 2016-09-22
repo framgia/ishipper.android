@@ -205,10 +205,18 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @FormUrlEncoded
-    @POST(APIDefinition.AddShopBlackList.PATH)
-    Call<APIResponse<EmptyData>> addShopBlackList(
+    @POST(APIDefinition.PostAddFavorite.PATH)
+    Call<APIResponse<EmptyData>> addFavorite(
+                    @Path(APIDefinition.PostAddFavorite.PARAM_USER_TYPE) String userType,
+                    @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+                    @Field(APIDefinition.PostAddFavorite.PARAMS_FAVORITE_USER_ID) String userId);
+
+    @FormUrlEncoded
+    @POST(APIDefinition.PostAddBlacklist.PATH)
+    Call<APIResponse<EmptyData>> addBlacklist(
+            @Path(APIDefinition.PostAddBlacklist.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
-            @Field(APIDefinition.AddShopBlackList.PARAMS_FAVORITE_USER_ID) String userId);
+            @Field(APIDefinition.PostAddBlacklist.PARAMS_BLACKLIST_USER_ID) String userId);
 
     @GET(APIDefinition.GetListReview.PATH)
     Call<APIResponse<ListReviewData>> getListReview(

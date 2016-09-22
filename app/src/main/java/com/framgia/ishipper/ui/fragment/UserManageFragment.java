@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +27,7 @@ public class UserManageFragment extends Fragment {
     @BindView(R.id.tab_layout) TabLayout mTabLayout;
     @BindView(R.id.viewpager) ViewPager mViewpager;
     private Unbinder mUnbinder;
+    private GeneralFragmentPagerAdapter mPagerAdapter;
     private Context mContext;
 
     public static UserManageFragment newInstance() {
@@ -50,15 +50,14 @@ public class UserManageFragment extends Fragment {
     }
 
     private void initView() {
-        GeneralFragmentPagerAdapter pagerAdapter =
-                new GeneralFragmentPagerAdapter(getFragmentManager());
-        pagerAdapter.addFragment(
+        mPagerAdapter = new GeneralFragmentPagerAdapter(getFragmentManager());
+        mPagerAdapter.addFragment(
                 BlacklistFragment.newInstance(),
                 getString(R.string.title_black_list_shipper));
-        pagerAdapter.addFragment(
+        mPagerAdapter.addFragment(
                 FavoriteFragment.newInstance(),
                 getString(R.string.title_favorite_list_shipper));
-        mViewpager.setAdapter(pagerAdapter);
+        mViewpager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewpager);
         setHasOptionsMenu(true);
     }
@@ -67,11 +66,6 @@ public class UserManageFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_user_manage, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

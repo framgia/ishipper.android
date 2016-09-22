@@ -88,7 +88,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
             mListOrderFragment.add(orderListFragment);
             mOrderManagerPagerAdapter.notifyDataSetChanged();
         }
-
     }
 
     private void initEvent() {

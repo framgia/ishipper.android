@@ -18,7 +18,8 @@ public class Const {
     public static int SCREEN_HEIGHT;
 
     public class RequestCode {
-        public static final int REQUEST_CODE_SEARCH_USER = 1;
+        public static final int REQUEST_SEARCH_BLACKLIST = 1;
+        public static final int REQUEST_SEARCH_FAVORITE = 2;
     }
 
     public class ErrorMessage {
