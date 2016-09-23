@@ -254,6 +254,12 @@
     <string name="delete_all_dialog_message">Do you want to delete all?</string>
     <string name="delete_all_dialog_title">Delete</string>
     <string name="toast_delete_all">Deleted All</string>
+    <string name="item_user_unblock">Xoá</string>
+    <string name="dialog_remove_user_from_blacklist">Xoá khỏi blacklist?</string>
+    <string name="dialog_remove">Xoá</string>
+    <string name="dialog_cancel">Huỷ</string>
+    <string name="dialog_remove_user_from_favorite">Xoá khỏi favorite?</string>
+    <string name="dialog_delete_message">Xoá</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

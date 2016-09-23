@@ -263,6 +263,22 @@ public abstract class API {
         client.getSearchUser(stringSearch, token).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void deleteUserFavorite(
+            String token,
+            String userType,
+            String favoriteId,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.deleteUserFavorite(token, userType, favoriteId).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void deleteUserBlacklist(
+            String token,
+            String userType,
+            String blacklistId,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.deleteUserBlacklist(token, userType, blacklistId).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     private static OkHttpClient loggingClient() {

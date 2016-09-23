@@ -8,6 +8,12 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:paddingLeft="@dimen/all_padding_medium"
+        android:paddingRight="@dimen/all_padding_medium"
+        android:paddingTop="@dimen/all_padding_small"
+        android:paddingBottom="@dimen/all_padding_small"
+        android:background="@color/white"
+        android:layout_marginBottom="@dimen/all_divider_height"
         android:id="@+id/itemSearchUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

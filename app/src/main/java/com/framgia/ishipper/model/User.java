@@ -29,7 +29,8 @@ public class User implements Parcelable {
     @SerializedName("password") private String mPassword;
     @SerializedName("id") private String mId;
     @SerializedName("user_invoice_id") private String mUserInvoiceId;
-    @SerializedName("black_list_user_id") private String mBlackListUserId;
+    @SerializedName("black_list_id") private String mBlackListUserId;
+    @SerializedName("favorite_list_id") private String mFavoriteListId;
 
     public User() {}
 
@@ -230,5 +231,9 @@ public class User implements Parcelable {
         parcel.writeString(mId);
         parcel.writeString(mUserInvoiceId);
         parcel.writeString(mBlackListUserId);
+    }
+
+    public String getFavoriteListId() {
+        return mFavoriteListId;
     }
 }

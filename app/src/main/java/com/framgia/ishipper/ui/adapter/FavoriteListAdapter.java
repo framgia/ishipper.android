@@ -1,6 +1,5 @@
 package com.framgia.ishipper.ui.adapter;
 
-
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -28,13 +27,13 @@ import butterknife.OnClick;
 /**
  * Created by vuduychuong1994 on 9/15/16.
  */
-public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.ViewHolder> {
+public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapter.ViewHolder> {
 
     private Context mContext;
     private List<User> mUserList;
 
 
-    public BlackListAdapter(Context context, List<User> userList) {
+    public FavoriteListAdapter(Context context, List<User> userList) {
         mContext = context;
         mUserList = userList;
     }
@@ -71,8 +70,8 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
         @OnClick(R.id.btnRemove)
         public void onClick() {
             new ConfirmDialog(mContext)
+                    .setMessage(mContext.getString(R.string.dialog_remove_user_from_favorite))
                     .setTitle(mContext.getString(R.string.dialog_delete_message))
-                    .setMessage(mContext.getString(R.string.dialog_remove_user_from_blacklist))
                     .setIcon(R.drawable.ic_delete_white_24dp)
                     .setButtonCallback(new ConfirmDialog.ConfirmDialogCallback() {
                         @Override
@@ -91,10 +90,10 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
         private void deleteUserFromList(final int position) {
             User currentUser = Config.getInstance().getUserInfo(mContext);
             final Dialog loadingDialog = CommonUtils.showLoadingDialog(mContext);
-            API.deleteUserBlacklist(
+            API.deleteUserFavorite(
                     currentUser.getAuthenticationToken(),
                     currentUser.getUserType(),
-                    mUserList.get(position).getBlackListUserId(),
+                    mUserList.get(position).getFavoriteListId(),
                     new API.APICallback<APIResponse<EmptyData>>() {
                         @Override
                         public void onResponse(APIResponse<EmptyData> response) {
