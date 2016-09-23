@@ -53,6 +53,10 @@ public class User implements Parcelable {
         mBlackListUserId = in.readString();
     }
 
+    public String getUserType() {
+        return mRole;
+    }
+
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {

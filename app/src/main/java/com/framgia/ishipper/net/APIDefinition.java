@@ -270,7 +270,7 @@ public class APIDefinition {
     }
 
     public class FavoriteListShop {
-        public static final String PATH = "/api/shop/favorite_lists";
+        public static final String PATH = "/api/shipper/favorite_lists";
     }
 
     public class PostAddFavorite {

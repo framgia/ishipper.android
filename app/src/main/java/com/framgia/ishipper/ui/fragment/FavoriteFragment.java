@@ -1,6 +1,7 @@
 package com.framgia.ishipper.ui.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +22,11 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 
 import java.util.ArrayList;
@@ -134,7 +137,6 @@ public class FavoriteFragment extends Fragment {
         mUnbinder.unbind();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.favorite_add) {
@@ -152,10 +154,27 @@ public class FavoriteFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.RequestCode.REQUEST_SEARCH_FAVORITE) {
             if (resultCode == Activity.RESULT_OK) {
-                User user = data.getParcelableExtra(Const.KEY_USER);
+                final User user = data.getParcelableExtra(Const.KEY_USER);
                 if (user != null) {
-                    mFavoriteList.add(user);
-                    mFavoriteListAdapter.notifyDataSetChanged();
+                    final Dialog loading = CommonUtils.showLoadingDialog(getContext());
+                    API.addFavoriteUser(mUser.getUserType(),
+                            mUser.getAuthenticationToken(),
+                            user.getId(),
+                            new API.APICallback<APIResponse<EmptyData>>() {
+                                @Override
+                                public void onResponse(APIResponse<EmptyData> response) {
+                                    loading.dismiss();
+                                    mFavoriteList.add(0, user);
+                                    mFavoriteListAdapter.notifyItemInserted(0);
+                                }
+
+                                @Override
+                                public void onFailure(int code, String message) {
+                                    loading.dismiss();
+                                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                 }
             }
         }
