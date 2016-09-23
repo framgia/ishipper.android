@@ -1,4 +1,5 @@
 package com.framgia.ishipper.ui.adapter;
+
 import android.content.Context;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.CardView;
@@ -7,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
