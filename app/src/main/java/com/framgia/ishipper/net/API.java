@@ -143,6 +143,12 @@ public abstract class API {
                                           final APICallback<APIResponse<EmptyData>> callback) {
         client.addBlacklist(userType, token, blackListUserId).enqueue(new RetrofitCallback<>(callback));
     }
+    public static void deleteAllBlackList(
+            String userType,
+            String token,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.deleteAllBlackList(userType, token).enqueue(new RetrofitCallback<>(callback));
+    }
 
     //endregion
 
@@ -247,7 +253,7 @@ public abstract class API {
     public static void getSearchUser(
             String token,
             String stringSearch,
-            APICallback<APIResponse<ListUserData>> callback){
+            APICallback<APIResponse<ListUserData>> callback) {
         client.getSearchUser(stringSearch, token).enqueue(new RetrofitCallback<>(callback));
     }
 

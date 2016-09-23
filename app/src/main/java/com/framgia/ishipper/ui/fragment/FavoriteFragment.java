@@ -139,7 +139,7 @@ public class FavoriteFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.favorite_add) {
+        if (item.getItemId() == R.id.menu_favorite_add) {
             startActivityForResult(
                     SearchUserActivity.startIntent(mContext, Const.RequestCode.REQUEST_SEARCH_FAVORITE),
                     Const.RequestCode.REQUEST_SEARCH_FAVORITE

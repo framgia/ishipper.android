@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
@@ -25,10 +26,13 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
+import com.framgia.ishipper.ui.view.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -42,7 +46,7 @@ public class BlacklistFragment extends Fragment {
     private Context mContext;
     private BlackListAdapter mBlackListAdapter;
     private List<User> mBlackListUser;
-    private User mUser;
+    private User mCurrentUser;
 
     public BlacklistFragment() {
     }
@@ -68,26 +72,24 @@ public class BlacklistFragment extends Fragment {
 
     private void invalidView(View view) {
         mContext = view.getContext();
-        mUser = Config.getInstance().getUserInfo(mContext);
+        mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         setUpRecycleView(mRecyclerView);
-    }
-
-    private void setUpRecycleView(RecyclerView recyclerView) {
-        if (mBlackListUser == null)
-            mBlackListUser = new ArrayList<>();
-        if (mBlackListAdapter == null)
-            mBlackListAdapter = new BlackListAdapter(mContext, mBlackListUser);
-        recyclerView.setAdapter(mBlackListAdapter);
-        if (mUser.getRole().equals(User.ROLE_SHOP)) {
+        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
             getBlackListShipper();
         } else {
             getBlackListShop();
         }
     }
 
+    private void setUpRecycleView(RecyclerView recyclerView) {
+        mBlackListUser = new ArrayList<>();
+        mBlackListAdapter = new BlackListAdapter(mContext, mBlackListUser);
+        recyclerView.setAdapter(mBlackListAdapter);
+    }
+
     private void getBlackListShop() {
-        API.getBlackListShop(mUser.getAuthenticationToken(),
+        API.getBlackListShop(mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
@@ -105,7 +107,7 @@ public class BlacklistFragment extends Fragment {
     }
 
     private void getBlackListShipper() {
-        API.getBlackListShipper(mUser.getAuthenticationToken(),
+        API.getBlackListShipper(mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
@@ -136,11 +138,48 @@ public class BlacklistFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.favorite_add) {
-            // Blacklist tab
+        if (item.getItemId() == R.id.menu_favorite_add) {
             startActivityForResult(
                     SearchUserActivity.startIntent(mContext, Const.RequestCode.REQUEST_SEARCH_BLACKLIST),
                     Const.RequestCode.REQUEST_SEARCH_BLACKLIST);
+            return true;
+        } else if (item.getItemId() == R.id.menu_delete_all) {
+            new ConfirmDialog(mContext)
+                    .setIcon(R.drawable.ic_delete_white_24dp)
+                    .setMessage(getString(R.string.delete_all_dialog_message))
+                    .setTitle(getString(R.string.delete_all_dialog_title))
+                    .setButtonCallback(new ConfirmDialog.ConfirmDialogCallback() {
+                        @Override
+                        public void onPositiveButtonClick(final ConfirmDialog confirmDialog) {
+                            API.deleteAllBlackList(
+                                    mCurrentUser.getRole(),
+                                    mCurrentUser.getAuthenticationToken(),
+                                    new API.APICallback<APIResponse<EmptyData>>() {
+                                        @Override
+                                        public void onResponse(APIResponse<EmptyData> response) {
+                                            mBlackListUser.clear();
+                                            mBlackListAdapter.notifyDataSetChanged();
+                                            confirmDialog.cancel();
+                                            Toast.makeText(
+                                                    mContext,
+                                                    R.string.toast_delete_all,
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(int code, String message) {
+                                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onNegativeButtonClick(ConfirmDialog confirmDialog) {
+                            confirmDialog.cancel();
+                        }
+                    })
+                    .show();
             return true;
         }
         return onOptionsItemSelected(item);
@@ -150,36 +189,39 @@ public class BlacklistFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.RequestCode.REQUEST_SEARCH_BLACKLIST) {
-            final User user = data.getParcelableExtra(Const.KEY_USER);
-            if (user == null || resultCode != Activity.RESULT_OK) {
+            if (resultCode != Activity.RESULT_OK) {
                 Toast.makeText(mContext, R.string.add_action_fail, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            final User user = data.getParcelableExtra(Const.KEY_USER);
+            if (user == null) {
                 return;
             }
             final Dialog dialog = CommonUtils.showLoadingDialog(mContext);
             dialog.show();
-            API.addUserToBlackList(Config.getInstance().getUserInfo(mContext).getRole(),
-                                   Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                                   user.getId(),
-                                   new API.APICallback<APIResponse<EmptyData>>() {
-                @Override
-                public void onResponse(
-                        APIResponse<EmptyData> response) {
-                    Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT).show();
-                    mBlackListUser.add(user);
-                    mBlackListAdapter.notifyDataSetChanged();
-                    if (dialog.isShowing()) {
-                        dialog.cancel();
-                    }
-                }
+            API.addUserToBlackList(mCurrentUser.getRole(),
+                    mCurrentUser.getAuthenticationToken(),
+                    user.getId(),
+                    new API.APICallback<APIResponse<EmptyData>>() {
+                        @Override
+                        public void onResponse(
+                                APIResponse<EmptyData> response) {
+                            Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT).show();
+                            mBlackListUser.add(user);
+                            mBlackListAdapter.notifyDataSetChanged();
+                            if (dialog.isShowing()) {
+                                dialog.cancel();
+                            }
+                        }
 
-                @Override
-                public void onFailure(int code, String message) {
-                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                    if (dialog.isShowing()) {
-                        dialog.cancel();
-                    }
-                }
-            });
+                        @Override
+                        public void onFailure(int code, String message) {
+                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                            if (dialog.isShowing()) {
+                                dialog.cancel();
+                            }
+                        }
+                    });
         }
     }
 }

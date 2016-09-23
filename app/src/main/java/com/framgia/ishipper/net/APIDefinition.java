@@ -7,7 +7,7 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-//        private static final String DEV_URL = "http://ishipper.herokuapp.com";
+    //        private static final String DEV_URL = "http://ishipper.herokuapp.com";
     private static final String DEV_URL = "http://192.168.1.150:3001/";
     private static final String PROD_URL = "";
 
@@ -261,7 +261,7 @@ public class APIDefinition {
         public static final String PATH = "/api/shop/black_lists";
     }
 
-    public class FavoriteListShipper {
+    public class GetFavoriteListShipper {
         public static final String PATH = "/api/shop/favorite_lists";
     }
 
@@ -269,11 +269,11 @@ public class APIDefinition {
         public static final String PATH = "/api/shipper/black_lists";
     }
 
-    public class FavoriteListShop {
+    public class GetFavoriteListShop {
         public static final String PATH = "/api/shipper/favorite_lists";
     }
 
-    public class PostAddFavorite {
+    public class PostAddFavoriteList {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/favorite_lists";
 
@@ -289,6 +289,11 @@ public class APIDefinition {
     public class AddUserToBlackList {
         public static final String PATH = "/api/{user_type}/favorite_lists";
         public static final String PARAM_BLACK_LIST_USER_ID = "black_list[black_list_user_id]";
+    }
+
+    public class DeleteAllBlackList {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/destroy_all_black_lists";
     }
 
     public static class GetListReview {

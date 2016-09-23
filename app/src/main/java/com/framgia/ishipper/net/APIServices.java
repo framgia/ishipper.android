@@ -181,7 +181,7 @@ public interface APIServices {
     Call<APIResponse<ListUserData>> getBlackListShipper(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
-    @GET(APIDefinition.FavoriteListShipper.PATH)
+    @GET(APIDefinition.GetFavoriteListShipper.PATH)
     Call<APIResponse<ListUserData>> getFavoriteListShipper(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
@@ -189,16 +189,16 @@ public interface APIServices {
     Call<APIResponse<ListUserData>> getBlackListShop(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
-    @GET(APIDefinition.FavoriteListShop.PATH)
+    @GET(APIDefinition.GetFavoriteListShop.PATH)
     Call<APIResponse<ListUserData>> getFavoriteListShop(
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
     @FormUrlEncoded
-    @POST(APIDefinition.PostAddFavorite.PATH)
+    @POST(APIDefinition.PostAddFavoriteList.PATH)
     Call<APIResponse<EmptyData>> addFavorite(
-                    @Path(APIDefinition.PostAddFavorite.PARAM_USER_TYPE) String userType,
-                    @Header(APIDefinition.HEADER_AUTHORIZE) String token,
-                    @Field(APIDefinition.PostAddFavorite.PARAMS_FAVORITE_USER_ID) String userId);
+            @Path(APIDefinition.PostAddFavoriteList.PARAM_USER_TYPE) String userType,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Field(APIDefinition.PostAddFavoriteList.PARAMS_FAVORITE_USER_ID) String userId);
 
     @FormUrlEncoded
     @POST(APIDefinition.PostAddBlacklist.PATH)
@@ -206,6 +206,12 @@ public interface APIServices {
             @Path(APIDefinition.PostAddBlacklist.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Field(APIDefinition.PostAddBlacklist.PARAMS_BLACKLIST_USER_ID) String userId);
+
+    @GET(APIDefinition.DeleteAllBlackList.PATH)
+    Call<APIResponse<EmptyData>> deleteAllBlackList(
+            @Path(APIDefinition.DeleteAllBlackList.PARAM_USER_TYPE) String userType,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token
+    );
 
     @GET(APIDefinition.GetListReview.PATH)
     Call<APIResponse<ListReviewData>> getListReview(
