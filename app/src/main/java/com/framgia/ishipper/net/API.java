@@ -149,6 +149,12 @@ public abstract class API {
             APICallback<APIResponse<EmptyData>> callback) {
         client.deleteAllBlackList(userType, token).enqueue(new RetrofitCallback<>(callback));
     }
+    public static void deleteAllFavoriteList(
+            String userType,
+            String token,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.deleteAllFavoriteList(userType, token).enqueue(new RetrofitCallback<>(callback));
+    }
 
     //endregion
 

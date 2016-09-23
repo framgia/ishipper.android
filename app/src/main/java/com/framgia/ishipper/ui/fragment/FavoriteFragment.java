@@ -26,6 +26,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
+import com.framgia.ishipper.ui.view.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 
@@ -44,7 +45,7 @@ public class FavoriteFragment extends Fragment {
     private Context mContext;
     private BlackListAdapter mFavoriteListAdapter;
     private List<User> mFavoriteList;
-    private User mUser;
+    private User mCurrentUser;
 
     public FavoriteFragment() {
     }
@@ -70,7 +71,7 @@ public class FavoriteFragment extends Fragment {
 
     private void invalidView(View view) {
         mContext = view.getContext();
-        mUser = Config.getInstance().getUserInfo(mContext);
+        mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         setUpRecycleView(mRecyclerView);
 
@@ -82,7 +83,7 @@ public class FavoriteFragment extends Fragment {
         if (mFavoriteListAdapter == null)
             mFavoriteListAdapter = new BlackListAdapter(mContext, mFavoriteList);
         recyclerView.setAdapter(mFavoriteListAdapter);
-        if (mUser.getRole().equals(User.ROLE_SHOP)) {
+        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
             getFavoriteListShipper();
         } else {
             getFavoriteListShop();
@@ -90,7 +91,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void getFavoriteListShop() {
-        API.getFavoriteListShop(mUser.getAuthenticationToken(),
+        API.getFavoriteListShop(mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
@@ -108,7 +109,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void getFavoriteListShipper() {
-        API.getFavoriteListShipper(mUser.getAuthenticationToken(),
+        API.getFavoriteListShipper(mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
@@ -145,6 +146,44 @@ public class FavoriteFragment extends Fragment {
                     Const.RequestCode.REQUEST_SEARCH_FAVORITE
             );
             return true;
+        }else if (item.getItemId() == R.id.menu_delete_all) {
+            new ConfirmDialog(mContext)
+                    .setIcon(R.drawable.ic_delete_white_24dp)
+                    .setMessage(getString(R.string.delete_all_dialog_message))
+                    .setTitle(getString(R.string.delete_all_dialog_title))
+                    .setButtonCallback(new ConfirmDialog.ConfirmDialogCallback() {
+                        @Override
+                        public void onPositiveButtonClick(final ConfirmDialog confirmDialog) {
+                            API.deleteAllFavoriteList(
+                                    mCurrentUser.getRole(),
+                                    mCurrentUser.getAuthenticationToken(),
+                                    new API.APICallback<APIResponse<EmptyData>>() {
+                                        @Override
+                                        public void onResponse(APIResponse<EmptyData> response) {
+                                            mFavoriteList.clear();
+                                            mFavoriteListAdapter.notifyDataSetChanged();
+                                            confirmDialog.cancel();
+                                            Toast.makeText(
+                                                    mContext,
+                                                    R.string.toast_delete_all,
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+                                        }
+
+                                        @Override
+                                        public void onFailure(int code, String message) {
+                                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onNegativeButtonClick(ConfirmDialog confirmDialog) {
+                            confirmDialog.cancel();
+                        }
+                    })
+                    .show();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -157,8 +196,8 @@ public class FavoriteFragment extends Fragment {
                 final User user = data.getParcelableExtra(Const.KEY_USER);
                 if (user != null) {
                     final Dialog loading = CommonUtils.showLoadingDialog(getContext());
-                    API.addFavoriteUser(mUser.getUserType(),
-                            mUser.getAuthenticationToken(),
+                    API.addFavoriteUser(mCurrentUser.getUserType(),
+                            mCurrentUser.getAuthenticationToken(),
                             user.getId(),
                             new API.APICallback<APIResponse<EmptyData>>() {
                                 @Override

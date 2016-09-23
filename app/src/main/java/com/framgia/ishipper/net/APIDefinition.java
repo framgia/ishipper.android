@@ -295,6 +295,10 @@ public class APIDefinition {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/destroy_all_black_lists";
     }
+    public class DeleteAllFavoriteList {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/destroy_all_favorite_lists";
+    }
 
     public static class GetListReview {
         public static final String PATH = "";
