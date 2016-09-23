@@ -61,6 +61,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_manager, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         initData();
         initEvent();
         return view;
@@ -108,22 +109,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                 Log.d(TAG, "onPageScrollStateChanged: " + state);
             }
         });
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_order_manager, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
     }
 
     @Override

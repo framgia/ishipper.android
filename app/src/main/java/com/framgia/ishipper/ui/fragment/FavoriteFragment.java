@@ -67,6 +67,7 @@ public class FavoriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_blacklist_shipper, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         invalidView(view);
+        getFavoriteList();
         return view;
     }
 
@@ -81,33 +82,12 @@ public class FavoriteFragment extends Fragment {
     private void setUpRecycleView(RecyclerView recyclerView) {
         mFavoriteListAdapter = new FavoriteListAdapter(mContext, mFavoriteList);
         recyclerView.setAdapter(mFavoriteListAdapter);
-        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
-            getFavoriteListShipper();
-        } else {
-            getFavoriteListShop();
-        }
     }
 
-    private void getFavoriteListShop() {
-        API.getFavoriteListShop(mCurrentUser.getAuthenticationToken(),
-                new API.APICallback<APIResponse<ListUserData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ListUserData> response) {
-                        Log.d(TAG, response.getMessage());
-                        mFavoriteList.clear();
-                        mFavoriteList.addAll(response.getData().getShippersList());
-                        mFavoriteListAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void getFavoriteListShipper() {
-        API.getFavoriteListShipper(mCurrentUser.getAuthenticationToken(),
+    private void getFavoriteList() {
+        API.getFavoriteList(
+                mCurrentUser.getAuthenticationToken(),
+                mCurrentUser.getRole(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
@@ -140,7 +120,7 @@ public class FavoriteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_favorite_add) {
             startActivityForResult(
-                    SearchUserActivity.startIntent(mContext, Const.RequestCode.REQUEST_SEARCH_FAVORITE),
+                    new Intent(mContext, SearchUserActivity.class),
                     Const.RequestCode.REQUEST_SEARCH_FAVORITE
             );
             return true;
@@ -201,12 +181,13 @@ public class FavoriteFragment extends Fragment {
                                 @Override
                                 public void onResponse(APIResponse<AddFavoriteListData> response) {
                                     loading.dismiss();
-                                    user.setFavoriteListId(
-                                            String.valueOf(response.getData()
-                                                    .getResponse().getFavoritelistId()));
-                                    mFavoriteListAdapter.add(user);
-//                                    mFavoriteList.add(0, user);
-//                                    mFavoriteListAdapter.notifyItemInserted(0);
+                                    mFavoriteList.add(user);
+                                    mFavoriteListAdapter.notifyDataSetChanged();
+                                    Toast.makeText(
+                                            mContext,
+                                            response.getMessage(),
+                                            Toast.LENGTH_SHORT
+                                    ).show();
                                 }
 
                                 @Override

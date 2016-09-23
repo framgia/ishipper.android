@@ -109,28 +109,17 @@ public abstract class API {
         client.getUser(token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
-    public static void getBlackListShipper(
+    public static void getBlackList(
             String token,
-            final APICallback<APIResponse<ListUserData>> callback) {
-        client.getBlackListShipper(token).enqueue(new RetrofitCallback<>(callback));
+            String userType,
+            APICallback<APIResponse<ListUserData>> callback) {
+        client.getBlackList(token, userType).enqueue(new RetrofitCallback<>(callback));
     }
-
-    public static void getFavoriteListShipper(
+    public static void getFavoriteList(
             String token,
-            final APICallback<APIResponse<ListUserData>> callback) {
-        client.getFavoriteListShipper(token).enqueue(new RetrofitCallback<>(callback));
-    }
-
-    public static void getBlackListShop(
-            String token,
-            final APICallback<APIResponse<ListUserData>> callback) {
-        client.getBlackListShop(token).enqueue(new RetrofitCallback<>(callback));
-    }
-
-    public static void getFavoriteListShop(
-            String token,
-            final APICallback<APIResponse<ListUserData>> callback) {
-        client.getFavoriteListShop(token).enqueue(new RetrofitCallback<>(callback));
+            String userType,
+            APICallback<APIResponse<ListUserData>> callback) {
+        client.getFavoriteList(token, userType).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void addFavoriteUser(
@@ -145,12 +134,14 @@ public abstract class API {
                                           final APICallback<APIResponse<AddBlacklistData>> callback) {
         client.addBlacklist(userType, token, blackListUserId).enqueue(new RetrofitCallback<>(callback));
     }
+
     public static void deleteAllBlackList(
             String userType,
             String token,
             APICallback<APIResponse<EmptyData>> callback) {
         client.deleteAllBlackList(userType, token).enqueue(new RetrofitCallback<>(callback));
     }
+
     public static void deleteAllFavoriteList(
             String userType,
             String token,

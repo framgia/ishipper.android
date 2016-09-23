@@ -5,6 +5,7 @@ package com.framgia.ishipper.util;
  */
 public class Const {
     public static final String KEY_USER = "user";
+    public static final int REQUEST_LOCATION_DELAY_TIME = 2000;
     public static final int REQUEST_CHECK_SETTINGS = 2;
     public static final int REQUEST_SETTING = 3;
     public static final long TIME_DELAY_EXIT = 2000;

@@ -3,9 +3,12 @@ package com.framgia.ishipper.util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
+import com.framgia.ishipper.ui.activity.MainActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +24,7 @@ import java.util.Locale;
  */
 public class MapUtils {
     private static final int ZOOM_LEVEL = 15;
+    private static final String TAG = "MapUtils";
 
     /**
      * Route between 2 point start & end
@@ -61,7 +65,12 @@ public class MapUtils {
      */
     public static void zoomToPosition(GoogleMap map, LatLng latLng) {
         CameraUpdate center = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL);
-        map.animateCamera(center);
+        if (MainActivity.firstTime) {
+            map.animateCamera(center);
+            MainActivity.firstTime = false;
+        } else {
+            map.moveCamera(center);
+        }
     }
 
     /**
@@ -80,6 +89,7 @@ public class MapUtils {
                 return addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
             }
         } catch (IOException e) {
+            Log.d(TAG, "getAddressFromLocation: " + e.getMessage());
             e.printStackTrace();
         }
         return "";

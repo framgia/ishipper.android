@@ -180,21 +180,17 @@ public interface APIServices {
             @Path(APIDefinition.GetSearchInvoice.PARAM_QUERY) String query,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 
-    @GET(APIDefinition.GetBlackListShipper.PATH)
-    Call<APIResponse<ListUserData>> getBlackListShipper(
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+    @GET(APIDefinition.GetBlackList.PATH)
+    Call<APIResponse<ListUserData>> getBlackList(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.GetBlackList.PARAM_USER_TYPE) String userType
+    );
 
-    @GET(APIDefinition.GetFavoriteListShipper.PATH)
-    Call<APIResponse<ListUserData>> getFavoriteListShipper(
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
-
-    @GET(APIDefinition.GetBlackListShop.PATH)
-    Call<APIResponse<ListUserData>> getBlackListShop(
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
-
-    @GET(APIDefinition.GetFavoriteListShop.PATH)
-    Call<APIResponse<ListUserData>> getFavoriteListShop(
-            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+    @GET(APIDefinition.GetFavoriteList.PATH)
+    Call<APIResponse<ListUserData>> getFavoriteList(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.GetFavoriteList.PARAM_USER_TYPE) String userType
+    );
 
     @FormUrlEncoded
     @POST(APIDefinition.PostAddFavoriteList.PATH)

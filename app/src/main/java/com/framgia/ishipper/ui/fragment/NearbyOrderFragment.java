@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -91,9 +92,10 @@ public class NearbyOrderFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "NearbyOrderFragment";
-    private static final float RADIUS = 5;
     private static final int REQUEST_FILTER = 0x1234;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private static final int RADIUS = 5;
+
     @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
     @BindView(R.id.iv_detail_promotion_label) ImageView mIvPromotionLabel;
     @BindView(R.id.tv_item_order_ship_price) TextView mTvNearbyShipPrice;
@@ -558,7 +560,12 @@ public class NearbyOrderFragment extends Fragment implements
             }
         } else if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
-                initMap();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initMap();
+                    }
+                }, Const.REQUEST_LOCATION_DELAY_TIME);
             }
         } else if (requestCode == Const.REQUEST_SETTING) {
             if (resultCode == Activity.RESULT_OK) {
@@ -592,6 +599,7 @@ public class NearbyOrderFragment extends Fragment implements
         protected String doInBackground(LatLng... latLngs) {
             double latitude = latLngs[0].latitude;
             double longitude = latLngs[0].longitude;
+            markInvoiceNearby(latitude, longitude, RADIUS);
             return MapUtils.getAddressFromLocation(
                     mContext,
                     new LatLng(latitude, longitude)

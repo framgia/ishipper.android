@@ -33,6 +33,7 @@ public class UserProfileActivity extends ToolbarActivity {
     @BindView(R.id.edt_profile_address) TextInputEditText mEdtProfileAddress;
     private TextView mEdtProfilePassword;
     private AlertDialog mInputPasswordDialog;
+    private User mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +54,14 @@ public class UserProfileActivity extends ToolbarActivity {
     }
 
     private void bindData() {
-        User currentUser = Config.getInstance().getUserInfo(getApplicationContext());
-        mEdtProfileName.setText(currentUser.getName());
-        mEdtProfilePhone.setText(currentUser.getPhoneNumber());
-        mEdtProfileAddress.setText(currentUser.getAddress());
-        if (currentUser.getRole().equals(User.ROLE_SHOP)) {
+        mCurrentUser = Config.getInstance().getUserInfo(getApplicationContext());
+        mEdtProfileName.setText(mCurrentUser.getName());
+        mEdtProfilePhone.setText(mCurrentUser.getPhoneNumber());
+        mEdtProfileAddress.setText(mCurrentUser.getAddress());
+        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
             mEdtProfilePlate.setVisibility(View.GONE);
         } else {
-            mEdtProfilePlate.setText(currentUser.getPlateNumber());
+            mEdtProfilePlate.setText(mCurrentUser.getPlateNumber());
         }
     }
 
@@ -112,7 +113,9 @@ public class UserProfileActivity extends ToolbarActivity {
         API.putUpdateProfile(params, new API.APICallback<APIResponse<UpdateProfileData>>() {
             @Override
             public void onResponse(APIResponse<UpdateProfileData> response) {
-                Config.getInstance().setUserInfo(getApplicationContext(), response.getData().user);
+                User updatedUser = response.getData().user;
+                updatedUser.setAuthenticationToken(mCurrentUser.getAuthenticationToken());
+                Config.getInstance().setUserInfo(getApplicationContext(), updatedUser);
                 Toast.makeText(UserProfileActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
