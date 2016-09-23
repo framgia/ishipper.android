@@ -16,7 +16,9 @@ import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
+
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -29,6 +31,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+
 import static com.framgia.ishipper.net.APIDefinition.AddShipperToBlackList.*;
 
 /**
@@ -210,6 +213,12 @@ public interface APIServices {
     @GET(APIDefinition.DeleteAllBlackList.PATH)
     Call<APIResponse<EmptyData>> deleteAllBlackList(
             @Path(APIDefinition.DeleteAllBlackList.PARAM_USER_TYPE) String userType,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token
+    );
+
+    @GET(APIDefinition.DeleteAllFavoriteList.PATH)
+    Call<APIResponse<EmptyData>> deleteAllFavoriteList(
+            @Path(APIDefinition.DeleteAllFavoriteList.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token
     );
 
