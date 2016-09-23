@@ -27,6 +27,7 @@ import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.BlackListAdapter;
 import com.framgia.ishipper.ui.view.ConfirmDialog;
+import com.framgia.ishipper.ui.adapter.FavoriteListAdapter;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 
@@ -43,7 +44,7 @@ public class FavoriteFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
     private Unbinder mUnbinder;
     private Context mContext;
-    private BlackListAdapter mFavoriteListAdapter;
+    private FavoriteListAdapter mFavoriteListAdapter;
     private List<User> mFavoriteList;
     private User mCurrentUser;
 
@@ -81,7 +82,7 @@ public class FavoriteFragment extends Fragment {
         if (mFavoriteList == null)
             mFavoriteList = new ArrayList<>();
         if (mFavoriteListAdapter == null)
-            mFavoriteListAdapter = new BlackListAdapter(mContext, mFavoriteList);
+            mFavoriteListAdapter = new FavoriteListAdapter(mContext, mFavoriteList);
         recyclerView.setAdapter(mFavoriteListAdapter);
         if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
             getFavoriteListShipper();

@@ -32,8 +32,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
-import static com.framgia.ishipper.net.APIDefinition.AddShipperToBlackList.*;
-
 /**
  * Created by HungNT on 8/5/16.
  */
@@ -231,4 +229,16 @@ public interface APIServices {
     Call<APIResponse<ListUserData>> getSearchUser(
             @Query(APIDefinition.GetSearchUser.PARAMS_SEARCH) String searchString,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
+    @DELETE(APIDefinition.DeleteUserFavoriteList.PATH)
+    Call<APIResponse<EmptyData>> deleteUserFavorite(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.DeleteUserFavoriteList.PARAM_USER_TYPE) String userType,
+            @Path(APIDefinition.DeleteUserFavoriteList.PARAM_ID) String favoriteId);
+
+    @DELETE(APIDefinition.DeleteUserBlackList.PATH)
+    Call<APIResponse<EmptyData>> deleteUserBlacklist(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.DeleteUserBlackList.PARAM_USER_TYPE) String userType,
+            @Path(APIDefinition.DeleteUserBlackList.PARAM_ID) String blacklistId);
 }

@@ -1,145 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<LinearLayout
+    android:id="@+id/layout_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_4"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_4"
-    app:cardCornerRadius="@dimen/cardview_default_radius"
-    app:cardElevation="@dimen/cardview_default_elevation">
+    android:orientation="vertical">
 
     <LinearLayout
+        android:paddingLeft="@dimen/all_padding_medium"
+        android:paddingRight="@dimen/all_padding_medium"
+        android:paddingTop="@dimen/all_padding_small"
+        android:paddingBottom="@dimen/all_padding_small"
+        android:layout_marginBottom="@dimen/all_divider_height"
+        android:id="@+id/itemSearchUser"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="@dimen/avatar_search_size"
+            android:layout_height="@dimen/avatar_search_size"
+            android:layout_gravity="center"
+            android:src="@drawable/avatar_sample"
+            android:tint="@android:color/darker_gray"
+            app:civ_border_color="@color/border_rounded_imageview"
+            app:civ_border_width="@dimen/nav_contact_icon_border_width"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@android:color/black"
+            app:civ_shadow_radius="5"/>
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/all_margin_medium"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:layout_width="@dimen/shipper_item_avatar_size"
-                    android:layout_height="@dimen/shipper_item_avatar_size"
-                    android:layout_gravity="center"
-                    android:src="@drawable/avatar_sample"
-                    android:tint="@android:color/darker_gray"
-                    app:civ_border_color="#EEEEEE"
-                    app:civ_border_width="@dimen/nav_contact_icon_border_width"
-                    app:civ_shadow="true"
-                    app:civ_shadow_color="@android:color/black"
-                    app:civ_shadow_radius="5" />
-
-                <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/rtb_rating_user"
-                    style="@style/star_rating_bar_small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:numStars="5"
-                    android:rating="2" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/text_count_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="20"
-                        android:textSize="@dimen/text_size_tiny_material" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_10dp"
-                        android:layout_height="@dimen/_10dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_person_grey_24dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/margin_4"
-                android:background="@color/menu_divider" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="vertical"
-                android:padding="@dimen/_5dp">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_4">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="@string/full_name" />
-
-                    <TextView
-                        android:id="@+id/text_name"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="right" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_4">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="@string/distance" />
-
-                    <TextView
-                        android:id="@+id/text_distance"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="right"
-                        />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_4">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/success_invoice" />
-
-                    <TextView
-                        android:id="@+id/text_count_order"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="3"
-                        android:gravity="right" />
-                </TableRow>
-
-            </LinearLayout>
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/btnRemove"
+            style="@style/AppButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/all_padding_small"
+            android:text="@string/item_user_unblock"
+            android:textSize="@dimen/text_size_tiny_material"/>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</LinearLayout>

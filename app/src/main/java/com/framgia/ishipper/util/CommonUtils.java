@@ -2,9 +2,11 @@ package com.framgia.ishipper.util;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -106,4 +108,17 @@ public class CommonUtils {
         }
         context.startActivity(intent);
     }
+
+    public static Dialog showOkCancelDialog(Context context, String message,
+                                            String namePositiveButton, String nameNegativeButton,
+                                            DialogInterface.OnClickListener okClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setPositiveButton(namePositiveButton, okClickListener);
+        builder.setNegativeButton(nameNegativeButton, okClickListener);
+        builder.setCancelable(false);
+        builder.show();
+        return builder.create();
+    }
+
 }
