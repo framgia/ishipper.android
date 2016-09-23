@@ -29,6 +29,7 @@ public class User implements Parcelable {
     @SerializedName("password") private String mPassword;
     @SerializedName("id") private String mId;
     @SerializedName("user_invoice_id") private String mUserInvoiceId;
+    @SerializedName("black_list_user_id") private String mBlackListUserId;
 
     public User() {}
 
@@ -49,6 +50,7 @@ public class User implements Parcelable {
         mPassword = in.readString();
         mId = in.readString();
         mUserInvoiceId = in.readString();
+        mBlackListUserId = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -192,6 +194,14 @@ public class User implements Parcelable {
         return mUserInvoiceId;
     }
 
+    public String getBlackListUserId() {
+        return mBlackListUserId;
+    }
+
+    public void setBlackListUserId(String blackListUserId) {
+        mBlackListUserId = blackListUserId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -215,5 +225,6 @@ public class User implements Parcelable {
         parcel.writeString(mPassword);
         parcel.writeString(mId);
         parcel.writeString(mUserInvoiceId);
+        parcel.writeString(mBlackListUserId);
     }
 }

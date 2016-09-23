@@ -139,6 +139,11 @@ public abstract class API {
         client.addFavorite(userType, token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void addUserToBlackList(String userType, String token, String blackListUserId,
+                                          final APICallback<APIResponse<EmptyData>> callback) {
+        client.addBlacklist(userType, token, blackListUserId).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     //region INVOICE API
