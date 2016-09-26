@@ -3,6 +3,8 @@ package com.framgia.ishipper.net;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.net.data.AddBlacklistData;
+import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
@@ -135,12 +137,12 @@ public abstract class API {
             String userType,
             String token,
             String userId,
-            APICallback<APIResponse<EmptyData>> callback) {
+            APICallback<APIResponse<AddFavoriteListData>> callback) {
         client.addFavorite(userType, token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void addUserToBlackList(String userType, String token, String blackListUserId,
-                                          final APICallback<APIResponse<EmptyData>> callback) {
+                                          final APICallback<APIResponse<AddBlacklistData>> callback) {
         client.addBlacklist(userType, token, blackListUserId).enqueue(new RetrofitCallback<>(callback));
     }
     public static void deleteAllBlackList(

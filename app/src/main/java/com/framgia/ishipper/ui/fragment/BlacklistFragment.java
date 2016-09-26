@@ -22,6 +22,7 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.AddBlacklistData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
@@ -202,13 +203,15 @@ public class BlacklistFragment extends Fragment {
             API.addUserToBlackList(mCurrentUser.getRole(),
                     mCurrentUser.getAuthenticationToken(),
                     user.getId(),
-                    new API.APICallback<APIResponse<EmptyData>>() {
+                    new API.APICallback<APIResponse<AddBlacklistData>>() {
                         @Override
                         public void onResponse(
-                                APIResponse<EmptyData> response) {
+                                APIResponse<AddBlacklistData> response) {
                             Toast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT).show();
-                            mBlackListUser.add(user);
-                            mBlackListAdapter.notifyDataSetChanged();
+                            user.setBlackListUserId(
+                                    String.valueOf(response.getData().getResponse().getBlacklistId()));
+                            mBlackListUser.add(0, user);
+                            mBlackListAdapter.notifyItemInserted(0);
                             if (dialog.isShowing()) {
                                 dialog.cancel();
                             }
