@@ -52,6 +52,11 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
 
     }
 
+    public void add(User user) {
+        mUserList.add(0, user);
+        notifyItemInserted(0);
+    }
+
     @Override
     public int getItemCount() {
         if (mUserList != null) return mUserList.size();

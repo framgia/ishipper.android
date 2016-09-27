@@ -22,12 +22,12 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.activity.SearchUserActivity;
-import com.framgia.ishipper.ui.adapter.BlackListAdapter;
-import com.framgia.ishipper.ui.view.ConfirmDialog;
 import com.framgia.ishipper.ui.adapter.FavoriteListAdapter;
+import com.framgia.ishipper.ui.view.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 
@@ -45,7 +45,7 @@ public class FavoriteFragment extends Fragment {
     private Unbinder mUnbinder;
     private Context mContext;
     private FavoriteListAdapter mFavoriteListAdapter;
-    private List<User> mFavoriteList;
+    private List<User> mFavoriteList = new ArrayList<>();
     private User mCurrentUser;
 
     public FavoriteFragment() {
@@ -79,10 +79,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void setUpRecycleView(RecyclerView recyclerView) {
-        if (mFavoriteList == null)
-            mFavoriteList = new ArrayList<>();
-        if (mFavoriteListAdapter == null)
-            mFavoriteListAdapter = new FavoriteListAdapter(mContext, mFavoriteList);
+        mFavoriteListAdapter = new FavoriteListAdapter(mContext, mFavoriteList);
         recyclerView.setAdapter(mFavoriteListAdapter);
         if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
             getFavoriteListShipper();
@@ -147,7 +144,7 @@ public class FavoriteFragment extends Fragment {
                     Const.RequestCode.REQUEST_SEARCH_FAVORITE
             );
             return true;
-        }else if (item.getItemId() == R.id.menu_delete_all) {
+        } else if (item.getItemId() == R.id.menu_delete_all) {
             new ConfirmDialog(mContext)
                     .setIcon(R.drawable.ic_delete_white_24dp)
                     .setMessage(getString(R.string.delete_all_dialog_message))
@@ -200,12 +197,16 @@ public class FavoriteFragment extends Fragment {
                     API.addFavoriteUser(mCurrentUser.getUserType(),
                             mCurrentUser.getAuthenticationToken(),
                             user.getId(),
-                            new API.APICallback<APIResponse<EmptyData>>() {
+                            new API.APICallback<APIResponse<AddFavoriteListData>>() {
                                 @Override
-                                public void onResponse(APIResponse<EmptyData> response) {
+                                public void onResponse(APIResponse<AddFavoriteListData> response) {
                                     loading.dismiss();
-                                    mFavoriteList.add(0, user);
-                                    mFavoriteListAdapter.notifyItemInserted(0);
+                                    user.setFavoriteListId(
+                                            String.valueOf(response.getData()
+                                                    .getResponse().getFavoritelistId()));
+                                    mFavoriteListAdapter.add(user);
+//                                    mFavoriteList.add(0, user);
+//                                    mFavoriteListAdapter.notifyItemInserted(0);
                                 }
 
                                 @Override
@@ -214,7 +215,6 @@ public class FavoriteFragment extends Fragment {
                                     Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                                 }
                             });
-
                 }
             }
         }

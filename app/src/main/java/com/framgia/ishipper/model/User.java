@@ -236,4 +236,8 @@ public class User implements Parcelable {
     public String getFavoriteListId() {
         return mFavoriteListId;
     }
+
+    public void setFavoriteListId(String favoriteListId) {
+        mFavoriteListId = favoriteListId;
+    }
 }

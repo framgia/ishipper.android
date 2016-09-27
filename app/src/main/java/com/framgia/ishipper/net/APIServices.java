@@ -1,5 +1,7 @@
 package com.framgia.ishipper.net;
 
+import com.framgia.ishipper.net.data.AddBlacklistData;
+import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.ChangePasswordData;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.net.data.EmptyData;
@@ -196,14 +198,14 @@ public interface APIServices {
 
     @FormUrlEncoded
     @POST(APIDefinition.PostAddFavoriteList.PATH)
-    Call<APIResponse<EmptyData>> addFavorite(
+    Call<APIResponse<AddFavoriteListData>> addFavorite(
             @Path(APIDefinition.PostAddFavoriteList.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Field(APIDefinition.PostAddFavoriteList.PARAMS_FAVORITE_USER_ID) String userId);
 
     @FormUrlEncoded
     @POST(APIDefinition.PostAddBlacklist.PATH)
-    Call<APIResponse<EmptyData>> addBlacklist(
+    Call<APIResponse<AddBlacklistData>> addBlacklist(
             @Path(APIDefinition.PostAddBlacklist.PARAM_USER_TYPE) String userType,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Field(APIDefinition.PostAddBlacklist.PARAMS_BLACKLIST_USER_ID) String userId);
