@@ -64,6 +64,11 @@ public class ShopCreateOrderStep2Fragment extends Fragment
                 break;
             case R.id.btn_submit:
                 // TODO: Set invoice
+                if (mEdtOrderName.getText().toString().length() == 0) return;
+                if (mEdtOrderWeight.getText().toString().length() == 0) return;
+                if (mEdtOrderPrice.getText().toString().length() == 0) return;
+                if (mEdtShipPrice.getText().toString().length() == 0) return;
+                if (mTextTime.getText().toString().length() == 0) return;
                 ShopCreateOrderActivity.sInvoice.setName(mEdtOrderName.getText().toString());
                 ShopCreateOrderActivity.sInvoice.setWeight(
                         Float.valueOf(mEdtOrderWeight.getText().toString()));

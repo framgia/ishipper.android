@@ -9,13 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_submit"
-        android:layout_alignParentTop="true"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/back_ground_title_grey"
+                android:padding="@dimen/_5dp"
+                android:text="@string/all_invoice"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,7 +37,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_order_grey_24dp"/>
+                    android:src="@drawable/ic_order_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -43,11 +50,11 @@
                         android:layout_gravity="center_vertical"
                         android:background="@null"
                         android:hint="@string/text_order_name"
-                        android:inputType="text"/>
+                        android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +69,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_weight_grey_24dp"/>
+                    android:src="@drawable/ic_weight_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
@@ -76,7 +83,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@null"
                         android:hint="@string/text_order_weight"
-                        android:inputType="numberDecimal"/>
+                        android:inputType="numberDecimal" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -84,10 +91,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/invoice_weight_unit"/>
+                    android:text="@string/invoice_weight_unit" />
             </LinearLayout>
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,7 +109,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_money_grey_24dp"/>
+                    android:src="@drawable/ic_money_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
@@ -116,7 +123,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@null"
                         android:hint="@string/text_order_price"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -124,11 +131,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/price_unit"/>
+                    android:text="@string/price_unit" />
 
             </LinearLayout>
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
 
             <LinearLayout
@@ -144,7 +151,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_money_grey_24dp"/>
+                    android:src="@drawable/ic_money_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
@@ -158,7 +165,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@null"
                         android:hint="@string/text_ship_price"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -166,10 +173,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/price_unit"/>
+                    android:text="@string/price_unit" />
             </LinearLayout>
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,7 +191,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_time_grey_24dp"/>
+                    android:src="@drawable/ic_time_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -197,11 +204,11 @@
                         android:background="@color/bg_edt_create_order_step2"
                         android:gravity="center_vertical"
                         android:text="@string/time_order"
-                        android:textSize="@dimen/abc_text_size_medium_material"/>
+                        android:textSize="@dimen/abc_text_size_medium_material" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
             <RadioGroup
                 android:id="@+id/rg_pick_time"
@@ -216,66 +223,74 @@
                 <RadioButton
                     android:id="@+id/rb_now"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_now"/>
+                    android:text="@string/pick_time_now" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_today_morning"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_today_morning"/>
+                    android:text="@string/pick_time_today_morning" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_today_afternoon"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_today_afternoon"/>
+                    android:text="@string/pick_time_today_afternoon" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_today_evening"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_today_evening"/>
+                    android:text="@string/pick_time_today_evening" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_today_select"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_today_select"/>
+                    android:text="@string/pick_time_today_select" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_tomorrow_morning"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_tomorrow_morning"/>
+                    android:text="@string/pick_time_tomorrow_morning" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_tomorrow_afternoon"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_tomorrow_afternoon"/>
+                    android:text="@string/pick_time_tomorrow_afternoon" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_tomorrow_evening"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_tomorrow_evening"/>
+                    android:text="@string/pick_time_tomorrow_evening" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
 
                 <RadioButton
                     android:id="@+id/rb_tomorrow_select"
                     style="@style/rb_create_order"
-                    android:text="@string/pick_time_tomorrow_select"/>
+                    android:text="@string/pick_time_tomorrow_select" />
 
-                <View style="@style/divider_pick_time_create_order"/>
+                <View style="@style/divider_pick_time_create_order" />
             </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/back_ground_title_grey"
+                android:padding="@dimen/_5dp"
+                android:text="@string/all_customer"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -290,7 +305,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_person_grey_24dp"/>
+                    android:src="@drawable/ic_person_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -304,12 +319,12 @@
                         android:background="@null"
                         android:hint="@string/all_customer_name"
                         android:inputType="textPersonName"
-                        android:textSize="@dimen/abc_text_size_medium_material"/>
+                        android:textSize="@dimen/abc_text_size_medium_material" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -324,7 +339,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_phone"/>
+                    android:src="@drawable/ic_phone" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -338,12 +353,12 @@
                         android:background="@null"
                         android:hint="@string/all_customer_phone"
                         android:inputType="phone"
-                        android:textSize="@dimen/abc_text_size_medium_material"/>
+                        android:textSize="@dimen/abc_text_size_medium_material" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
 
-            <View style="@style/divider_item_create_order"/>
+            <View style="@style/divider_item_create_order" />
 
 
             <LinearLayout
@@ -359,7 +374,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginRight="@dimen/_10dp"
                     android:paddingLeft="@dimen/_3dp"
-                    android:src="@drawable/ic_note_grey_24dp"/>
+                    android:src="@drawable/ic_note_grey_24dp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -373,7 +388,7 @@
                         android:background="@null"
                         android:hint="@string/all_note"
                         android:inputType="text"
-                        android:textSize="@dimen/abc_text_size_medium_material"/>
+                        android:textSize="@dimen/abc_text_size_medium_material" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
@@ -388,5 +403,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="@string/submit_create_order_fragment"/>
+        android:text="@string/submit_create_order_fragment" />
 </RelativeLayout>
