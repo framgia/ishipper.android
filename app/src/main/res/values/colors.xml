@@ -41,4 +41,5 @@
     <color name="grey">#bdbdbd</color>
     <color name="red">#FF0000</color>
     <color name="border_rounded_imageview">#EEEEEE</color>
+    <color name="back_ground_title_grey">#bdbdbd</color>
 </resources>

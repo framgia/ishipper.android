@@ -260,6 +260,8 @@
     <string name="dialog_cancel">Huỷ</string>
     <string name="dialog_remove_user_from_favorite">Xoá khỏi favorite?</string>
     <string name="dialog_delete_message">Xoá</string>
+    <string name="all_customer">Khách hàng</string>
+    <string name="all_invoice">Đơn hàng</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
