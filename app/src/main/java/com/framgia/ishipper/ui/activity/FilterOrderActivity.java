@@ -104,6 +104,14 @@ public class FilterOrderActivity extends ToolbarActivity {
                         getBaseContext(),
                         mEdtAddressStart.getText().toString());
                 Map<String, String> params = new HashMap<>();
+
+                if (mSeekbarFilterRadius.getVisibility() == View.VISIBLE) {
+                    if (currentLatLng == null) {
+                        Toast.makeText(this, R.string.activity_filter_msg_start_address, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                
                 if (currentLatLng != null) {
                     params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LAT,
                             currentLatLng.latitude + "");
@@ -138,6 +146,10 @@ public class FilterOrderActivity extends ToolbarActivity {
                 }
 
                 mCurrentUser = Config.getInstance().getUserInfo(this);
+
+                if (params.size() == 0) {
+                    Toast.makeText(this, R.string.activity_filter_msg_more_info, Toast.LENGTH_SHORT).show();
+                }
 
                 API.filterInvoice(
                         mCurrentUser.getAuthenticationToken(),

@@ -376,6 +376,10 @@ public class NearbyOrderFragment extends Fragment implements
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                // Check if marker is not in list of marker invoices, don't need to do anything
+                if (!mHashMap.containsKey(marker.getId())) {
+                    return false;
+                }
                 switchAutoRefresh(false);
                 mRlOrderDetail.setVisibility(View.VISIBLE);
                 String id = marker.getId();

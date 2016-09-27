@@ -2,6 +2,7 @@ package com.framgia.ishipper.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,8 +77,12 @@ public class FacebookInvoicesAdapter extends RecyclerView.Adapter<FacebookInvoic
                     //TODO Goto facebook post
                     break;
                 case R.id.btnCall:
+                    // TODO Get a phone call
                     String phoneNumber = mInvoiceList.get(getAdapterPosition()).getPhoneNumber();
-                    CommonUtils.makePhoneCall(mContext, phoneNumber);
+                    if (!TextUtils.isEmpty(phoneNumber)) {
+                        CommonUtils.makePhoneCall(mContext, phoneNumber);
+                    }
+
                     break;
             }
         }
