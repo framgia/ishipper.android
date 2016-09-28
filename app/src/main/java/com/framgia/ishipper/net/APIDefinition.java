@@ -281,11 +281,6 @@ public class APIDefinition {
         public static final String PARAMS_BLACKLIST_USER_ID = "black_list[black_list_user_id]";
     }
 
-    public class AddUserToBlackList {
-        public static final String PATH = "/api/{user_type}/favorite_lists";
-        public static final String PARAM_BLACK_LIST_USER_ID = "black_list[black_list_user_id]";
-    }
-
     public class DeleteAllBlackList {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/destroy_all_black_lists";
@@ -304,11 +299,6 @@ public class APIDefinition {
     public static class GetSearchUser {
         public static final String PATH = "/api/users";
         public static final String PARAMS_SEARCH = "user[search]";
-    }
-
-    public class AddShipperToBlackList {
-        public static final String PATH = "/api/shop/black_lists";
-        public static final String PARAM_BLACK_LIST_USER_ID = "black_list[black_list_user_id]";
     }
 
     public class DeleteUserFavoriteList {
