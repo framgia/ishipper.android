@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int SHIPPER = 0;
     public static final int SHOP = 1;
     public static int userType = SHIPPER;
+    public static boolean firstTime = true;
     private User mCurrentUser;
     private int mSelectedId;
     private boolean doubleBackToExitPressedOnce;

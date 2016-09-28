@@ -257,20 +257,14 @@ public class APIDefinition {
         public static final String PARAM_QUERY = "query";
     }
 
-    public class GetBlackListShipper {
-        public static final String PATH = "/api/shop/black_lists";
+    public class GetBlackList {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/black_lists";
     }
 
-    public class GetFavoriteListShipper {
-        public static final String PATH = "/api/shop/favorite_lists";
-    }
-
-    public class GetBlackListShop {
-        public static final String PATH = "/api/shipper/black_lists";
-    }
-
-    public class GetFavoriteListShop {
-        public static final String PATH = "/api/shipper/favorite_lists";
+    public class GetFavoriteList {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/favorite_lists";
     }
 
     public class PostAddFavoriteList {
@@ -296,6 +290,7 @@ public class APIDefinition {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/destroy_all_black_lists";
     }
+
     public class DeleteAllFavoriteList {
         public static final String PARAM_USER_TYPE = "user_type";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/destroy_all_favorite_lists";

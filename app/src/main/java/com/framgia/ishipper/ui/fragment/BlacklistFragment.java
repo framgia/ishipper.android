@@ -68,6 +68,7 @@ public class BlacklistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_blacklist_shipper, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         invalidView(view);
+        getBlackList();
         return view;
     }
 
@@ -76,11 +77,6 @@ public class BlacklistFragment extends Fragment {
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         setUpRecycleView(mRecyclerView);
-        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
-            getBlackListShipper();
-        } else {
-            getBlackListShop();
-        }
     }
 
     private void setUpRecycleView(RecyclerView recyclerView) {
@@ -89,26 +85,10 @@ public class BlacklistFragment extends Fragment {
         recyclerView.setAdapter(mBlackListAdapter);
     }
 
-    private void getBlackListShop() {
-        API.getBlackListShop(mCurrentUser.getAuthenticationToken(),
-                new API.APICallback<APIResponse<ListUserData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ListUserData> response) {
-                        Log.d(TAG, response.getMessage());
-                        mBlackListUser.clear();
-                        mBlackListUser.addAll(response.getData().getShippersList());
-                        mBlackListAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void getBlackListShipper() {
-        API.getBlackListShipper(mCurrentUser.getAuthenticationToken(),
+    private void getBlackList() {
+        API.getBlackList(
+                mCurrentUser.getAuthenticationToken(),
+                mCurrentUser.getRole(),
                 new API.APICallback<APIResponse<ListUserData>>() {
                     @Override
                     public void onResponse(APIResponse<ListUserData> response) {
@@ -133,7 +113,6 @@ public class BlacklistFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_user_manage, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -141,7 +120,7 @@ public class BlacklistFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_favorite_add) {
             startActivityForResult(
-                    SearchUserActivity.startIntent(mContext, Const.RequestCode.REQUEST_SEARCH_BLACKLIST),
+                    new Intent(mContext, SearchUserActivity.class),
                     Const.RequestCode.REQUEST_SEARCH_BLACKLIST);
             return true;
         } else if (item.getItemId() == R.id.menu_delete_all) {
@@ -183,7 +162,7 @@ public class BlacklistFragment extends Fragment {
                     .show();
             return true;
         }
-        return onOptionsItemSelected(item);
+        return false;
     }
 
     @Override
@@ -215,6 +194,11 @@ public class BlacklistFragment extends Fragment {
                             if (dialog.isShowing()) {
                                 dialog.cancel();
                             }
+                            Toast.makeText(
+                                    mContext,
+                                    response.getMessage(),
+                                    Toast.LENGTH_SHORT
+                            ).show();
                         }
 
                         @Override
