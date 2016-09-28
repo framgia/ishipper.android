@@ -35,4 +35,15 @@ public class FbInvoice {
     public boolean isPinned() {
         return isPinned;
     }
+
+    public static FbInvoice getSample() {
+        FbInvoice invoice = new FbInvoice();
+        invoice.mUserName = "Nguyen Van Nam";
+        invoice.mPhoneNumber = "0987667788";
+        invoice.mContent = "Em cần ship luôn 1 file tài liệu từ 98 hoàng quốc việt đi Số 15 lô B " +
+                "khu đô thị mới Đại Kim đường Nguyễn Cảnh Dị cạnh cây xăng. " +
+                "K ứng ship 50k. Ai đi đc giúp em ko ạ.";
+        invoice.mCreatedTime = "14:30";
+        return invoice;
+    }
 }

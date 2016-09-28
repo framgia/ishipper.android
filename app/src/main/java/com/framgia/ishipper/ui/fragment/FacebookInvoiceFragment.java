@@ -26,7 +26,7 @@ public class FacebookInvoiceFragment extends Fragment {
     @BindView(R.id.btnPinnedInvoice) RelativeLayout mBtnPinnedInvoice;
     @BindView(R.id.btnBackToFacebook) RelativeLayout mBtnBackToFacebook;
     private FacebookInvoicesAdapter mAdapter;
-    private List<FbInvoice> mListInvoices;
+    private List<FbInvoice> mListInvoices = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +41,7 @@ public class FacebookInvoiceFragment extends Fragment {
             mBtnBackToFacebook.setVisibility(View.VISIBLE);
         }
 
-        mListInvoices = new ArrayList<>();
+        getSampleData();
         mAdapter = new FacebookInvoicesAdapter(getContext(), mListInvoices);
         mRvInvoices.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
@@ -75,4 +75,9 @@ public class FacebookInvoiceFragment extends Fragment {
     }
 
 
+    public void getSampleData() {
+        for (int i = 0; i < 30; i++) {
+            mListInvoices.add(FbInvoice.getSample());
+        }
+    }
 }

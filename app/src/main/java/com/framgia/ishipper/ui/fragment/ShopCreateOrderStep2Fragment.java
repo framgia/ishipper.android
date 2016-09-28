@@ -15,6 +15,7 @@ import android.widget.TimePicker;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
+import com.framgia.ishipper.util.NumberFormatTextWatcher;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -47,6 +48,8 @@ public class ShopCreateOrderStep2Fragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shop_create_order_step2, container, false);
         ButterKnife.bind(this, view);
+        mEdtOrderPrice.addTextChangedListener(new NumberFormatTextWatcher(mEdtOrderPrice));
+        mEdtShipPrice.addTextChangedListener(new NumberFormatTextWatcher(mEdtShipPrice));
         setEvent();
         return view;
     }
@@ -73,9 +76,9 @@ public class ShopCreateOrderStep2Fragment extends Fragment
                 ShopCreateOrderActivity.sInvoice.setWeight(
                         Float.valueOf(mEdtOrderWeight.getText().toString()));
                 ShopCreateOrderActivity.sInvoice.setPrice(
-                        Float.valueOf(mEdtOrderPrice.getText().toString()));
+                        NumberFormatTextWatcher.getValueFromText(mEdtOrderPrice.getText().toString()));
                 ShopCreateOrderActivity.sInvoice.setShippingPrice(
-                        Float.valueOf(mEdtShipPrice.getText().toString()));
+                        NumberFormatTextWatcher.getValueFromText(mEdtShipPrice.getText().toString()));
                 ShopCreateOrderActivity.sInvoice.setDeliveryTime(mTextTime.getText().toString());
                 ShopCreateOrderActivity.sInvoice.setCustomerName(mEdtCustomerName.getText().toString());
                 ShopCreateOrderActivity.sInvoice.setCustomerNumber(mEdtCustomerPhone.getText().toString());

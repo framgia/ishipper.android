@@ -122,6 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:background="@null"
+                        android:maxLength="11"
                         android:hint="@string/text_order_price"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
@@ -164,6 +165,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:background="@null"
+                        android:maxLength="11"
                         android:hint="@string/text_ship_price"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
