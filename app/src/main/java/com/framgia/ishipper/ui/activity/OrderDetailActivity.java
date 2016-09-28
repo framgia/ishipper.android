@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +49,7 @@ import butterknife.OnClick;
 public class OrderDetailActivity extends ToolbarActivity {
 
     public static final String KEY_INVOICE_ID = "invoice id";
+    public static final int REQUEST_INVOICE_ID = 1;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.tv_detail_distance) TextView tvDetailDistance;
@@ -454,6 +456,9 @@ public class OrderDetailActivity extends ToolbarActivity {
                                                 Toast.makeText(OrderDetailActivity.this, response.getMessage(),
                                                         Toast.LENGTH_SHORT).show();
                                                 loadingDialog.dismiss();
+                                                Intent intent = new Intent();
+                                                intent.putExtra(KEY_INVOICE_ID, mInvoice.getId());
+                                                setResult(Activity.RESULT_OK, intent);
                                                 finish();
                                             }
 

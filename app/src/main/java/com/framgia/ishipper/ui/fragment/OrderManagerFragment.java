@@ -248,7 +248,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         Bundle extras = new Bundle();
         extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
         intent.putExtras(extras);
-        startActivity(intent);
+        startActivityForResult(intent, OrderDetailActivity.REQUEST_INVOICE_ID);
     }
 
     public class OrderManagerPagerAdapter extends FragmentStatePagerAdapter {
@@ -286,13 +286,34 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case ListShipperRegActivity.REQUEST_CODE_RESULT:
-                    int invoiceId = data.getIntExtra(ListShipperRegActivity.KEY_INVOICE_ID, -1);
+        switch (requestCode) {
+            case ListShipperRegActivity.REQUEST_CODE_RESULT:
+                if (resultCode == Activity.RESULT_OK) {
+                    int invoiceId = data.getIntExtra(ListShipperRegActivity.KEY_INVOICE_ID, - 1);
                     notifyChangeTab(Invoice.STATUS_CODE_INIT);
                     notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
-                    break;
+                }
+                break;
+            case OrderDetailActivity.REQUEST_INVOICE_ID:
+                if ( resultCode == Activity.RESULT_OK) {
+                    if (data == null) return;
+                    int id = data.getIntExtra(OrderDetailActivity.KEY_INVOICE_ID, -1);
+                    if (id == -1) return;
+                    onDeleteInvoice(id);
+                }
+                break;
+        }
+    }
+
+    private void onDeleteInvoice(int invoiceId) {
+        OrderListFragment listFragment = mListOrderFragment.get(mViewPager.getCurrentItem());
+        if (listFragment == null) return;
+        int size = listFragment.getInvoiceList().size();
+        for (int i = 0; i < size; i++) {
+            if (listFragment.getInvoiceList().get(i).getId() == invoiceId) {
+                listFragment.getInvoiceList().remove(i);
+                listFragment.getOrderAdapter().notifyDataSetChanged();
+                return;
             }
         }
     }
