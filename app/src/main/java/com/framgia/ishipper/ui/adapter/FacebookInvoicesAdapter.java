@@ -31,22 +31,21 @@ public class FacebookInvoicesAdapter extends RecyclerView.Adapter<FacebookInvoic
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_facebook_invoice, parent, false);
+                .inflate(R.layout.item_facebook_invoice, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-//        FbInvoice item = mInvoiceList.get(position);
-//        holder.bindData(item);
+        FbInvoice item = mInvoiceList.get(position);
+        holder.bindData(item);
     }
 
     @Override
     public int getItemCount() {
-//        if (mInvoiceList == null)
-//            return 0;
-//        return mInvoiceList.size();
-        return 100;
+        if (mInvoiceList == null)
+            return 0;
+        return mInvoiceList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -78,9 +77,9 @@ public class FacebookInvoicesAdapter extends RecyclerView.Adapter<FacebookInvoic
                     break;
                 case R.id.btnCall:
                     // TODO Get a phone call
-                    String phoneNumber = mInvoiceList.get(getAdapterPosition()).getPhoneNumber();
-                    if (!TextUtils.isEmpty(phoneNumber)) {
-                        CommonUtils.makePhoneCall(mContext, phoneNumber);
+                    FbInvoice item = mInvoiceList.get(getAdapterPosition());
+                    if (!TextUtils.isEmpty(item.getPhoneNumber())) {
+                        CommonUtils.makePhoneCall(mContext, item.getPhoneNumber());
                     }
 
                     break;
