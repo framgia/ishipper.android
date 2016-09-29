@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     @BindView(R.id.tv_detail_customer_name) TextView mTvDetailCustomerName;
     @BindView(R.id.tv_detail_customer_phone) TextView mTvDetailCustomerPhone;
     @BindView(R.id.btn_detail_cancel_order) ImageButton mBtnDetailCancelOrder;
+    @BindView(R.id.layoutInvoiceStatus) CardView mLayoutInvoiceStatus;
     private User mCurrentUser;
     private Context mContext;
 
@@ -77,6 +79,7 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     }
 
     private void initView() {
+        mLayoutInvoiceStatus.setVisibility(View.GONE);
         mToolbar.setVisibility(View.GONE);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mBtnCreateOrder.setText(R.string.create_order);

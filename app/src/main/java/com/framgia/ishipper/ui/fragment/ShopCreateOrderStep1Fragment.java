@@ -142,6 +142,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 }
                 break;
             case R.id.btnContinue:
+                setDonePickLocation();
                 setAttributeInvoiceAtTab1();
                 ((ShopCreateOrderActivity) getActivity()).addFragment(
                         new ShopCreateOrderStep2Fragment());
@@ -215,6 +216,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                 MapUtils.updateZoomMap(mMap,
                         mFrameMapContainer.getWidth(), mFrameMapContainer.getHeight(),
                         mLatLngStart, mLatLngFinish);
+
             }
 
             @Override

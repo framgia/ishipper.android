@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
     //        private static final String DEV_URL = "http://ishipper.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.132:3001/";
+    private static final String DEV_URL = "http://192.168.1.136:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -114,7 +114,7 @@ public class APIDefinition {
         public static final String PATH = "/api/invoices";
         public static final String PARAM_USER_LAT = "user[latitude]";
         public static final String PARAM_USER_LNG = "user[longitude]";
-        public static final String PARAM_USER_DISTANCE = "user[distance]";
+        public static final String PARAM_USER_DISTANCE = "user[distance_invoice]";
     }
 
     public static class SignOut {
@@ -160,7 +160,7 @@ public class APIDefinition {
         public static final String PARAM_LATITUDE_FINISH = "invoice[latitude_finish]";
         public static final String PARAM_LONGITUDE_FINISH = "invoice[longitude_finish]";
         public static final String PARAM_DELIVERY_TIME = "invoice[delivery_time]";
-        public static final String PARAM_DISTANCE = "invoice[distance]";
+        public static final String PARAM_DISTANCE = "invoice[distance_invoice]";
         public static final String PARAM_DESCRIPTION = "invoice[description]";
         public static final String PARAM_PRICE = "invoice[price]";
         public static final String PARAM_SHIPPING_PRICE = "invoice[shipping_price]";
@@ -176,8 +176,8 @@ public class APIDefinition {
         public static final String PARAM_MAX_ORDER_PRICE = "invoice[price][max]";
         public static final String PARAM_MIN_SHIP_PRICE = "invoice[shipping_price][min]";
         public static final String PARAM_MAX_SHIP_PRICE = "invoice[shipping_price][max]";
-        public static final String PARAM_MIN_DISTANCE = "invoice[distance][min]";
-        public static final String PARAM_MAX_DISTANCE = "invoice[distance][max]";
+        public static final String PARAM_MIN_DISTANCE = "invoice[distance_invoice][min]";
+        public static final String PARAM_MAX_DISTANCE = "invoice[distance_invoice][max]";
         public static final String PARAM_MIN_WEIGHT = "invoice[weight][min]";
         public static final String PARAM_MAX_WEIGHT = "invoice[weight][max]";
         public static final String PARAM_CURRENT_LAT = "invoice[latitude]";

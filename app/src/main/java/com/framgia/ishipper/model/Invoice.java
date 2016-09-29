@@ -33,7 +33,7 @@ public class Invoice implements Parcelable {
     @SerializedName("latitude_finish") private double mLatFinish;
     @SerializedName("longitude_finish") private double mLngFinish;
     @SerializedName("delivery_time") private String mDeliveryTime;
-    @SerializedName("distance") private double mDistance;
+    @SerializedName("distance_invoice") private double mDistance;
     @SerializedName("description") private String mDescription;
     @SerializedName("price") private double mPrice;
     @SerializedName("shipping_price") private double mShippingPrice;
