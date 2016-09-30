@@ -28,6 +28,7 @@
     <style name="AppLayoutInputStyle">
         <item name="android:background">@drawable/bg_edittext_login</item>
     </style>
+
     <style name="AppSpinner">
         <item name="android:background">@drawable/bg_edittext_login</item>
         <item name="android:layout_margin">1dp</item>
@@ -52,7 +53,6 @@
     </style>
 
 
-
     <style name="AppLabelTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -64,9 +64,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ButtonShippingOrderAct">
         <item name="android:textSize">14.0sp</item>
@@ -85,15 +85,15 @@
     <style name="order_detail_label">
         <item name="android:singleLine">true</item>
         <item name="android:textSize">10sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/grey_DA_light</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="order_detail_content">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/grey_DA_light</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">5dp</item>
     </style>
 
@@ -167,6 +167,7 @@
         <item name="android:maxHeight">18dp</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="star_rating_bar_large" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/rating_bar_selector_large</item>
         <item name="android:minHeight">32dp</item>

@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginLeft="@dimen/_5dp"
+    android:layout_marginRight="@dimen/_5dp"
     android:background="@drawable/background_state"
     android:visibility="visible">
 
@@ -27,10 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_car_green"
-                android:drawablePadding="10dp"
-                android:padding="10dp"
-                android:text="Đang giao hàng"
-                android:visibility="gone"/>
+                android:drawablePadding="@dimen/_10dp"
+                android:padding="@dimen/_10dp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/ll_shop_order_status"
@@ -40,7 +39,7 @@
                 android:paddingBottom="@dimen/_10dp"
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:paddingRight="@dimen/activity_vertical_margin"
-                android:paddingTop="@dimen/_10dp">
+                android:paddingTop="@dimen/_3dp">
 
                 <TextView
                     android:id="@+id/tv_item_order_shop_name"
@@ -49,18 +48,17 @@
                     android:drawableLeft="@drawable/ic_order_green"
                     android:drawablePadding="@dimen/_10dp"
                     android:gravity="bottom"
-                    android:text="Rhodi Shop"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <android.support.v7.widget.AppCompatRatingBar
                     android:id="@+id/rating_order_window"
                     style="@style/star_rating_bar_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:isIndicator="true"
                     android:layout_marginTop="@dimen/_5dp"
+                    android:isIndicator="true"
                     android:rating="3.7"
-                    android:stepSize="0.1"/>
+                    android:stepSize="0.1" />
             </LinearLayout>
 
         </LinearLayout>
@@ -68,7 +66,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#f0f0f0"/>
+            android:background="#f0f0f0" />
 
         <LinearLayout
             android:id="@+id/action_detail_order"
@@ -78,13 +76,13 @@
             android:padding="@dimen/_10dp">
 
             <LinearLayout
-                android:layout_width="65dp"
+                android:layout_width="@dimen/_65"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="65dp"
+                    android:layout_width="@dimen/_65"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -92,11 +90,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:singleLine="true"
                         android:text="@string/all_ship_price"
                         android:textAllCaps="true"
-                        android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:textSize="@dimen/text_size_small"
+                        android:maxLines="1" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -108,19 +105,18 @@
                             android:id="@+id/tv_item_order_ship_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="5dp"
-                            android:text="40K"
+                            android:paddingTop="@dimen/_5dp"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="16sp"/>
+                            android:textSize="@dimen/text_size_title" />
 
                         <ImageView
                             android:id="@+id/iv_detail_promotion_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginLeft="@dimen/_7dp"
+                            android:layout_marginTop="@dimen/_3dp"
                             android:src="@drawable/ic_promotion_label"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -129,9 +125,9 @@
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/menu_divider"/>
+                android:layout_marginLeft="@dimen/_15dp"
+                android:layout_marginRight="@dimen/_15dp"
+                android:background="@color/menu_divider" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,8 +142,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="@dimen/margin_4"
+                        android:layout_marginRight="@dimen/_10dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -155,24 +151,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_detail_from"/>
+                            android:src="@drawable/ic_detail_from" />
 
                         <View
-                            android:layout_width="2dp"
+                            android:layout_width="@dimen/_3dp"
                             android:layout_height="0dp"
                             android:layout_weight="1.0"
-                            android:background="@drawable/dot_repeat_img"/>
+                            android:background="@drawable/dot_repeat_img" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_item_order_from"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="13dp"
-                        android:drawablePadding="15dp"
+                        android:layout_marginBottom="@dimen/_10dp"
+                        android:drawablePadding="@dimen/_15dp"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="Minh khai ha noi"/>
+                        android:maxLines="1" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -186,16 +181,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_detail_to"/>
+                        android:src="@drawable/ic_detail_to" />
 
                     <TextView
                         android:id="@+id/tv_item_order_to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="@dimen/_10dp"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="13 Nam Du"/>
+                        android:maxLines="1" />
 
                 </LinearLayout>
 
@@ -213,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:orientation="vertical"
-                android:paddingLeft="15dp"
+                android:paddingLeft="@dimen/_15dp"
                 android:paddingRight="0dp"
                 android:visibility="visible">
 
@@ -221,14 +215,13 @@
                     style="@style/order_detail_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/all_distance"/>
+                    android:text="@string/all_distance" />
 
                 <TextView
                     android:id="@+id/tv_item_order_distance"
                     style="@style/order_detail_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="2 KM"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -236,22 +229,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="@dimen/_10dp"
                 android:paddingRight="0dp">
 
                 <TextView
                     style="@style/order_detail_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@string/all_ship_time"/>
+                    android:text="@string/all_ship_time"
+                    android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/tv_item_order_ship_time"
                     style="@style/order_detail_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="13 year ago"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -259,21 +251,22 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="@dimen/_10dp"
                 android:paddingRight="0dp">
 
                 <TextView
                     style="@style/order_detail_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/all_order_price"/>
+                    android:text="@string/all_order_price" />
 
                 <TextView
                     android:id="@+id/tv_item_order_price"
                     style="@style/order_detail_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="150K"/>
+                    android:textColor="@color/red"
+                    android:textStyle="normal" />
             </LinearLayout>
         </LinearLayout>
 
@@ -281,7 +274,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_10dp">
+            android:paddingBottom="@dimen/_3dp"
+            android:paddingLeft="@dimen/_10dp"
+            android:paddingRight="@dimen/_10dp"
+            android:paddingTop="@dimen/_10dp">
 
             <TextView
                 android:id="@+id/btn_item_order_show_path"
@@ -289,7 +285,7 @@
                 android:background="@drawable/btn_clean_radius_background"
                 android:text="@string/all_show_path"
                 android:textColor="#959595"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btn_item_order_register_order"
@@ -297,7 +293,7 @@
                 android:background="@drawable/btn_assign_accept_selector"
                 android:text="@string/all_register_order"
                 android:textColor="@drawable/title_order_accept_selector"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/action_cancel_accept_order"
@@ -305,7 +301,7 @@
                 android:background="@drawable/btn_green_radius_background"
                 android:text="@string/all_cancel_receive_order"
                 android:textColor="@drawable/title_order_accept_selector"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/action_call_order"
@@ -313,7 +309,7 @@
                 android:background="@drawable/btn_clean_radius_background"
                 android:text="@string/all_call_order"
                 android:textColor="#959595"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/action_receive_order"
@@ -321,7 +317,7 @@
                 android:background="@drawable/btn_green_radius_background"
                 android:text="@string/all_receive_order"
                 android:textColor="@drawable/title_order_accept_selector"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btn_nearby_done_order"
@@ -329,7 +325,7 @@
                 android:background="@drawable/btn_green_radius_background"
                 android:text="@string/all_done_order"
                 android:textColor="@android:color/white"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btn_cancel_item_order"
@@ -337,7 +333,7 @@
                 android:background="@drawable/btn_clean_radius_background"
                 android:text="@string/cancelled"
                 android:textColor="#959595"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btn_action_item_order"
@@ -345,7 +341,7 @@
                 android:background="@drawable/btn_assign_accept_selector"
                 android:text="@string/action_shipper_take"
                 android:textColor="@android:color/white"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>

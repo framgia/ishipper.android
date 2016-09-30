@@ -94,4 +94,6 @@
     <dimen name="avatar_search_size">50dp</dimen>
     <dimen name="confirm_dialog_padding">16dp</dimen>
     <dimen name="tv_body_size">14sp</dimen>
+    <dimen name="_65">65dp</dimen>
+    <dimen name="_7dp">7dp</dimen>
 </resources>
