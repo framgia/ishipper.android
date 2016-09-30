@@ -216,8 +216,12 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission((AppCompatActivity) getActivity(), LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, false);
+            PermissionUtils.requestPermission(
+                    (AppCompatActivity) getActivity(),
+                    LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    false
+            );
         } else if (mMap != null) {
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {

@@ -34,7 +34,7 @@ public class ShopCreateOrderActivity extends ToolbarActivity {
     public void addFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment)
+                .add(R.id.container, fragment)
                 .addToBackStack(fragment.getClass().getName())
                 .commit();
         Log.d(TAG, "addFragment: " + fragment.getClass().getName());

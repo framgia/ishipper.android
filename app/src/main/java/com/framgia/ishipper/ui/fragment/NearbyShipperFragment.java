@@ -111,7 +111,7 @@ public class NearbyShipperFragment extends Fragment implements
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_nearby_shipper);
         mMapFragment.getMapAsync(this);
         if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+            mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
@@ -151,12 +151,12 @@ public class NearbyShipperFragment extends Fragment implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(getContext(), "Suspended", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Suspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -203,7 +203,7 @@ public class NearbyShipperFragment extends Fragment implements
                     @Override
                     public void onResponse(APIResponse<ShipperNearbyData> response) {
                         Log.d(TAG, "onResponse: " + response.getCode());
-                        Toast.makeText(getContext(),
+                        Toast.makeText(mContext,
                                 response.getMessage(),
                                 Toast.LENGTH_SHORT)
                                 .show();
