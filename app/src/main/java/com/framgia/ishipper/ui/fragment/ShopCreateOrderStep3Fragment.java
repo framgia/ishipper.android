@@ -88,8 +88,8 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
         mTvDetailStart.setText(sInvoice.getAddressStart());
         mTvDetailEnd.setText(sInvoice.getAddressFinish());
         mTvDetailOrderName.setText(sInvoice.getName());
-        mTvDetailShipPrice.setText(String.valueOf(sInvoice.getShippingPrice()));
-        mTvDetailOrderPrice.setText(String.valueOf(sInvoice.getPrice()));
+        mTvDetailShipPrice.setText(TextFormatUtils.formatPrice(sInvoice.getShippingPrice()));
+        mTvDetailOrderPrice.setText(TextFormatUtils.formatPrice(sInvoice.getPrice()));
         mTvDetailShipTime.setText(String.valueOf(sInvoice.getDeliveryTime()));
         mTvDetailNote.setText(sInvoice.getDescription());
         mTvDetailCustomerName.setText(sInvoice.getCustomerName());
