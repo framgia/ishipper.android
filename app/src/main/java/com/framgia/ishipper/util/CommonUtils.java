@@ -121,4 +121,11 @@ public class CommonUtils {
         return builder.create();
     }
 
+    public static boolean stringIsValid(String str) {
+        if (str != null && !str.trim().equals("")
+            && !str.toLowerCase().equals("null")) {
+            return true;
+        }
+        return false;
+    }
 }

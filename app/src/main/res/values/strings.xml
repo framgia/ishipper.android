@@ -264,6 +264,8 @@
     <string name="all_invoice">Đơn hàng</string>
     <string name="activity_filter_msg_start_address">Bạn cần điền thông tin điểm đầu</string>
     <string name="activity_filter_msg_more_info">Bạn cần điền thêm thông tin</string>
+    <string name="all_na">Chưa xác định</string>
+    <string name="all_symbol_loading">...</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

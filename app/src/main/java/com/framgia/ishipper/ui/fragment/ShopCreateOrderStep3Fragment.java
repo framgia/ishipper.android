@@ -39,8 +39,8 @@ import static com.framgia.ishipper.ui.activity.ShopCreateOrderActivity.sInvoice;
 public class ShopCreateOrderStep3Fragment extends Fragment {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.btn_detail_show_path) TextView mBtnDetailShowPath;
-    @BindView(R.id.btn_detail_customer_call) TextView mBtnDetailCustomerCall;
+    @BindView(R.id.btn_detail_show_path) View mBtnDetailShowPath;
+    @BindView(R.id.btn_detail_customer_call) View mBtnDetailCustomerCall;
     @BindView(R.id.btn_detail_receive_order) Button mBtnCreateOrder;
     @BindView(R.id.tv_detail_distance) TextView mTvDetailDistance;
     @BindView(R.id.tv_detail_start) TextView mTvDetailStart;

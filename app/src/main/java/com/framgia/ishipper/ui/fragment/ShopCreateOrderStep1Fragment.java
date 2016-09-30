@@ -72,6 +72,8 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     private Context mContext;
     private FetchAddressTask task;
     private float mDistance;
+    private AsyncTask mGetDistanceTask;
+
 
     @Override
     public void onAttach(Context context) {
@@ -221,7 +223,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     distance += route.getDistanceValue();
                 }
 
-                //Show distance
+                // Show distance
                 mDistance = CommonUtils.convertMetreToKm(distance);
                 mTvDistance.setText(getString(R.string.text_distance, mDistance));
 
@@ -231,6 +233,37 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                         mFrameMapContainer.getWidth(), mFrameMapContainer.getHeight(),
                         mLatLngStart, mLatLngFinish);
 
+            }
+
+            @Override
+            public void onRoutingCancelled() {
+
+            }
+        });
+    }
+
+    private void getDistance(LatLng start, LatLng end) {
+        if (start == null || end == null) return;
+        if (mGetDistanceTask != null && !mGetDistanceTask.isCancelled()) mGetDistanceTask.cancel(true);
+
+        mGetDistanceTask = MapUtils.routing(start, end, new RoutingListener() {
+            @Override
+            public void onRoutingFailure(RouteException e) {
+
+            }
+
+            @Override
+            public void onRoutingStart() {
+                mTvDistance.setText(R.string.all_symbol_loading);
+            }
+
+            @Override
+            public void onRoutingSuccess(ArrayList<Route> arrayList, int i) {
+                int distance = arrayList.get(0).getDistanceValue();
+
+                // Show distance
+                mDistance = CommonUtils.convertMetreToKm(distance);
+                mTvDistance.setText(getString(R.string.text_distance, mDistance));
             }
 
             @Override
@@ -272,11 +305,19 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
+                LatLng position = new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude);
+                if (mStatus == PICK_START_POINT) {
+                    mLatLngStart = position;
+                } else if (mStatus == PICK_END_POINT) {
+                    mLatLngFinish = position;
+                }
+
                 if (task != null) {
                     task.cancel(true);
                 }
                 task = new FetchAddressTask();
-                task.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                task.execute(position);
+                getDistance(mLatLngStart, mLatLngFinish);
             }
         });
     }

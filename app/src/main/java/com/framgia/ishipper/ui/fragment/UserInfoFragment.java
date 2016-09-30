@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.util.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +58,13 @@ public class UserInfoFragment extends Fragment {
         } else {
             mTvPlate.setVisibility(View.GONE);
         }
+
+        if (CommonUtils.stringIsValid(mUser.getAddress())) {
+            mTvAddress.setText(String.valueOf(mUser.getAddress()));
+        } else {
+            mTvAddress.setText(R.string.all_na);
+        }
+
     }
 
 }
