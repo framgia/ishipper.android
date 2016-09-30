@@ -91,11 +91,11 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         mapFragment.getMapAsync(this);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.layoutMapContainer, mapFragment).commit();
-        moveCurrentLocation();
+        connectToGoogleApi();
         return view;
     }
 
-    private void moveCurrentLocation() {
+    private void connectToGoogleApi() {
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                     .addConnectionCallbacks(this)
@@ -109,26 +109,39 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnPickStart:
+                // if user is picking start point
                 if (mStatus == PICK_START_POINT) {
                     addStartLocation();
+                    // if user haven't pick end point
                     if (mMakerEnd == null) {
                         setPickEndLocation();
                     } else {
                         setDonePickLocation();
                     }
+                    // if user is picking end point
                 } else if (mStatus == PICK_END_POINT) {
                     addEndLocation();
                     setDonePickLocation();
+                    // if user isn't picking start point or end point
                 } else {
                     mImgPickPosition.setImageResource(R.drawable.ic_map_picker_start);
+                    // if user haven't pick end point then reset
+                    if (mMakerEnd != null) {
+                        mMakerEnd = null;
+                        mEdtAddressEnd.setText("");
+                        mTvDistance.setText("");
+                        mMap.clear();
+                    }
                     setPickStartLocation();
                 }
 
                 break;
             case R.id.btnPickEnd:
+                // if user is picking end point
                 if (mStatus == PICK_END_POINT) {
                     addEndLocation();
                     setDonePickLocation();
+                    // if user is picking start point
                 } else if (mStatus == PICK_START_POINT) {
                     addStartLocation();
                     if (mMakerEnd == null) {
@@ -136,6 +149,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     } else {
                         setDonePickLocation();
                     }
+                    // if user isn't picking start point or end point
                 } else {
                     mImgPickPosition.setImageResource(R.drawable.ic_map_picker_end);
                     setPickEndLocation();
@@ -276,12 +290,8 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
             MapUtils.zoomToPosition(mMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
             com.framgia.ishipper.common.Log.w(TAG, mLocation.getLatitude() + "");
             mLatLngStart = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-            mMakerStart = mMap.addMarker(
-                    new MarkerOptions()
-                            .position(mLatLngStart)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
             mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
-            setPickEndLocation();
+            setPickStartLocation();
         } else {
             Toast.makeText(
                     getContext(),
