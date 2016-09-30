@@ -106,8 +106,8 @@ public class FavoriteFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_user_manage, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_user_manage, menu);
     }
 
     @Override
@@ -125,6 +125,9 @@ public class FavoriteFragment extends Fragment {
             );
             return true;
         } else if (item.getItemId() == R.id.menu_delete_all) {
+            if (mFavoriteList == null ||  mFavoriteList.size() == 0) {
+                return false;
+            }
             new ConfirmDialog(mContext)
                     .setIcon(R.drawable.ic_delete_white_24dp)
                     .setMessage(getString(R.string.delete_all_dialog_message))

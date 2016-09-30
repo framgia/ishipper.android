@@ -55,9 +55,18 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
 
     @Override
     public int getItemCount() {
-        if (mUserList != null) return mUserList.size();
+        if (mUserList != null)
+            return mUserList.size();
 
         return 0;
+    }
+
+    public List<User> getUserList() {
+        return mUserList;
+    }
+
+    public void setUserList(List<User> userList) {
+        mUserList = userList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

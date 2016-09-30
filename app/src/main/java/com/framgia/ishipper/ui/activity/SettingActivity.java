@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -8,15 +9,14 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Storage;
 import com.framgia.ishipper.util.StorageUtils;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by HungNT on 9/16/16.
@@ -49,8 +49,8 @@ public class SettingActivity extends ToolbarActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Set Progress from [1, Max_Progress + 1]
                 mInvoiceRadius = progress + 1;
-                tvInvoiceRadius
-                    .setText(getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
+                tvInvoiceRadius.setText(
+                        getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
             }
 
             @Override
@@ -65,19 +65,18 @@ public class SettingActivity extends ToolbarActivity {
 
     public void saveSetting() {
         StorageUtils.setValue(this, Storage.KEY_SETTING_NOTIFICATION,
-            cbReceiveNotification.isChecked());
-        StorageUtils.setValue(this, Storage.KEY_SETTING_INVOICE_RADIUS,
-            mInvoiceRadius);
+                              cbReceiveNotification.isChecked());
+        StorageUtils.setValue(this, Storage.KEY_SETTING_INVOICE_RADIUS, mInvoiceRadius);
     }
 
     private void initView() {
-        mInvoiceRadius = StorageUtils.getIntValue(this,
-            Storage.KEY_SETTING_INVOICE_RADIUS, Const.SETTING_INVOICE_RADIUS_DEFAULT);
-        cbReceiveNotification.setChecked(StorageUtils.getBooleanValue(this,
-            Storage.KEY_SETTING_NOTIFICATION, true));
+        mInvoiceRadius = StorageUtils.getIntValue(this, Storage.KEY_SETTING_INVOICE_RADIUS,
+                                                  Const.SETTING_INVOICE_RADIUS_DEFAULT);
+        cbReceiveNotification.setChecked(
+                StorageUtils.getBooleanValue(this, Storage.KEY_SETTING_NOTIFICATION, true));
         seekbarInvoiceRadius.setProgress(mInvoiceRadius - 1);
-        tvInvoiceRadius
-            .setText(getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
+        tvInvoiceRadius.setText(
+                getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
     }
 
     @Override
@@ -103,5 +102,11 @@ public class SettingActivity extends ToolbarActivity {
         saveSetting();
         setResult(RESULT_OK);
         super.onBackPressed();
+    }
+
+    @OnClick(R.id.layout_blacklist)
+    public void onClick() {
+        Intent intent = new Intent(SettingActivity.this, BlackListActivity.class);
+        startActivity(intent);
     }
 }
