@@ -21,8 +21,8 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
+import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
-import com.framgia.ishipper.ui.fragment.UserManageFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.util.Const;
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_order_management:
                 mSelectedId = id;
+                mToolbar.setTitle(getString(R.string.title_activity_order_manager));
                 if (userType == SHIPPER) {
                     fragment =
                         ShipperOrderManagerFragment.instantiate(MainActivity.this,
@@ -130,8 +131,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_user_management:
                 mSelectedId = id;
-                fragment = UserManageFragment.newInstance();
-                tag = UserManageFragment.class.getName();
+                mToolbar.setTitle(getString(R.string.title_favorite_list_shipper));
+                fragment = FavoriteFragment.newInstance();
+                tag = FavoriteFragment.class.getName();
                 break;
             case R.id.nav_create_order:
                 startActivity(new Intent(this, ShopCreateOrderActivity.class));
