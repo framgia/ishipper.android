@@ -3,6 +3,7 @@ package com.framgia.ishipper.util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,13 +32,13 @@ public class MapUtils {
      *
      * @param listener callback interface
      */
-    public static void routing(LatLng start, LatLng end, RoutingListener listener) {
+    public static AsyncTask routing(LatLng start, LatLng end, RoutingListener listener) {
         Routing routing = new Routing.Builder()
                 .travelMode(Routing.TravelMode.WALKING)
                 .withListener(listener)
                 .waypoints(start, end)
                 .build();
-        routing.execute();
+        return routing.execute();
     }
 
     /**
