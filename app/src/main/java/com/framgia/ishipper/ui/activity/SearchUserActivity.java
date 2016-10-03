@@ -73,7 +73,6 @@ public class SearchUserActivity extends ToolbarActivity
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mListUsers.clear();
                 mAdapter.notifyDataSetChanged();
 
                 if (editable.length() == 0) return;
@@ -88,6 +87,7 @@ public class SearchUserActivity extends ToolbarActivity
 
     @Override
     public void onResponse(APIResponse<ListUserData> response) {
+        mListUsers.clear();
         mListUsers.addAll(response.getData().getShippersList());
         mAdapter.notifyDataSetChanged();
     }

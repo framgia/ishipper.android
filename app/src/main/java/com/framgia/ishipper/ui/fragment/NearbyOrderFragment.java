@@ -292,11 +292,6 @@ public class NearbyOrderFragment extends Fragment implements
                 new API.APICallback<APIResponse<ListInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ListInvoiceData> response) {
-                        Log.d(TAG, "onResponse: " + response.getMessage());
-                        Toast.makeText(mContext,
-                                response.getMessage(),
-                                Toast.LENGTH_SHORT)
-                                .show();
                         mInvoices = (ArrayList<Invoice>) response.getData().getInvoiceList();
                         addListMarker(mInvoices);
                     }
