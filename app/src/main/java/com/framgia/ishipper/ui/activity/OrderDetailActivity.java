@@ -71,8 +71,8 @@ public class OrderDetailActivity extends ToolbarActivity {
     @BindView(R.id.tv_detail_customer_phone) TextView mDetailCustomerPhone;
     @BindView(R.id.btn_detail_receive_order) Button mBtnDetailReceiveOrder;
     @BindView(R.id.btn_detail_cancel_register_order) Button mBtnDetailCancelRegisterOrder;
-    @BindView(R.id.btn_detail_cancel_order) ImageButton mBtnDetailCancelOrder;
-    @BindView(R.id.btn_report_user) ImageButton mBtnReportUser;
+    @BindView(R.id.btn_detail_cancel_order) View mBtnDetailCancelOrder;
+    @BindView(R.id.btn_report_user) View mBtnReportUser;
     @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     @BindView(R.id.tv_shipping_order_status) TextView tvOrderStatus;

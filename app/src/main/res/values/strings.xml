@@ -183,8 +183,8 @@
     <string name="filter_order_detail">Thông tin đơn hàng</string>
     <string name="filter_order_price">Tiền hàng (k)</string>
     <string name="filter_ship_price">Tiền ship (k)</string>
-    <string name="filter_distance">Quãng đương (km)</string>
-    <string name="filter_weight">Cân nang (kg)</string>
+    <string name="filter_distance">Quãng đường (km)</string>
+    <string name="filter_weight">Cân nặng (kg)</string>
     <string name="dialog_loading_message">Loading. Please wait...</string>
     <string name="invoice_weight_unit">Kg</string>
     <string name="price_unit">VNĐ</string>
