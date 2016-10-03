@@ -21,6 +21,7 @@ public class Const {
     public class RequestCode {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
         public static final int REQUEST_SEARCH_FAVORITE = 2;
+        public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     }
 
     public class ErrorMessage {

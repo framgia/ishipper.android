@@ -2,6 +2,7 @@ package com.framgia.ishipper.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,13 @@ public class MainContentFragment extends Fragment {
     public void onDestroy() {
         mUnbinder.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        ((MainTabAdapter) mViewPager.getAdapter())
+                .getFragment(mViewPager.getCurrentItem())
+                .onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 
     @Override

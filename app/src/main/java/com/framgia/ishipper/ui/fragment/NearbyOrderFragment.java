@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -203,7 +205,6 @@ public class NearbyOrderFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         mMapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_nearby_order);
-        mMapFragment.getMapAsync(this);
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                     .addConnectionCallbacks(this)
@@ -227,23 +228,37 @@ public class NearbyOrderFragment extends Fragment implements
         if (PermissionUtils.checkLocationPermission(mContext)) return;
         mGoogleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
+        initMap();
     }
 
+    //google api client connected
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected: ");
-        if (PermissionUtils.checkLocationPermission(mContext)) return;
-        CommonUtils.checkLocationRequestSetting(
-                getActivity(),
-                mGoogleApiClient,
-                new LocationSettingCallback() {
-                    @Override
-                    public void onSuccess() {
-                        initMap();
-                    }
-                });
+        //check location permission
+        if (!PermissionUtils.checkLocationPermission(mContext)) {
+            // check location setting
+            CommonUtils.checkLocationRequestSetting(
+                    getActivity(),
+                    mGoogleApiClient,
+                    new LocationSettingCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mMapFragment.getMapAsync(NearbyOrderFragment.this);
+                        }
+                    });
+        } else {
+            // request permission
+            PermissionUtils.requestPermission(
+                    (AppCompatActivity) getActivity(),
+                    Const.RequestCode.LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    false
+            );
+        }
     }
 
+    // initialize map
     private void initMap() {
         if (PermissionUtils.checkLocationPermission(mContext)) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -563,15 +578,17 @@ public class NearbyOrderFragment extends Fragment implements
                 Log.d(TAG, " Search Cancel");
             }
         } else if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+            // location setting is set up
             if (resultCode == Activity.RESULT_OK) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        initMap();
+                        mMapFragment.getMapAsync(NearbyOrderFragment.this);
                     }
                 }, Const.REQUEST_LOCATION_DELAY_TIME);
             }
         } else if (requestCode == Const.REQUEST_SETTING) {
+            // setting app is set up
             if (resultCode == Activity.RESULT_OK) {
                 initMap();
             }
@@ -584,6 +601,24 @@ public class NearbyOrderFragment extends Fragment implements
                     }.getType()
             );
             addListMarker(listInvoices);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (PermissionUtils.isPermissionGranted(
+                permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            CommonUtils.checkLocationRequestSetting(
+                    getActivity(),
+                    mGoogleApiClient,
+                    new LocationSettingCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mMapFragment.getMapAsync(NearbyOrderFragment.this);
+                        }
+                    });
         }
     }
 
