@@ -325,7 +325,6 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (PermissionUtils.checkLocationPermission(mContext)) return;
-
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
             MapUtils.zoomToPosition(mMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));

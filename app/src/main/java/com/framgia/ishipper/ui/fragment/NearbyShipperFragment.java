@@ -1,14 +1,17 @@
 package com.framgia.ishipper.ui.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +100,10 @@ public class NearbyShipperFragment extends Fragment implements
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nearby_shipper, null);
         mUnbinder = ButterKnife.bind(this, view);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
@@ -108,8 +114,8 @@ public class NearbyShipperFragment extends Fragment implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_nearby_shipper);
-        mMapFragment.getMapAsync(this);
+        mMapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map_nearby_shipper);
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                     .addConnectionCallbacks(this)
@@ -130,23 +136,33 @@ public class NearbyShipperFragment extends Fragment implements
         }
         mGoogleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
+        initMap();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected: ");
-        if (PermissionUtils.checkLocationPermission(mContext)) {
-            return;
+        // check location permission
+        if (!PermissionUtils.checkLocationPermission(mContext)) {
+            // check location setting
+            CommonUtils.checkLocationRequestSetting(
+                    getActivity(),
+                    mGoogleApiClient,
+                    new LocationSettingCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mMapFragment.getMapAsync(NearbyShipperFragment.this);
+                        }
+                    });
+        } else {
+            // request location permission
+            PermissionUtils.requestPermission(
+                    (AppCompatActivity) getActivity(),
+                    Const.RequestCode.LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    false
+            );
         }
-        CommonUtils.checkLocationRequestSetting(
-                getActivity(),
-                mGoogleApiClient,
-                new LocationSettingCallback() {
-                    @Override
-                    public void onSuccess() {
-                        initMap();
-                    }
-                });
     }
 
     @Override
@@ -172,13 +188,18 @@ public class NearbyShipperFragment extends Fragment implements
         super.onDestroy();
     }
 
+    // initialize map
     private void initMap() {
         if (PermissionUtils.checkLocationPermission(mContext)) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
             mCurrentUser.setLatitude(mLocation.getLatitude());
             mCurrentUser.setLongitude(mLocation.getLongitude());
-            MapUtils.zoomToPosition(mGoogleMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+            MapUtils.zoomToPosition(
+                    mGoogleMap,
+                    new LatLng(mLocation.getLatitude(),
+                            mLocation.getLongitude())
+            );
             markShipperNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), RADIUS);
             configGoogleMap();
         } else {
@@ -257,8 +278,14 @@ public class NearbyShipperFragment extends Fragment implements
             }
         }
         if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+ //            location setting is set up
             if (resultCode == Activity.RESULT_OK) {
-                initMap();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMapFragment.getMapAsync(NearbyShipperFragment.this);
+                    }
+                }, Const.REQUEST_LOCATION_DELAY_TIME);
             }
         }
     }
@@ -295,7 +322,10 @@ public class NearbyShipperFragment extends Fragment implements
                     task.cancel(true);
                 }
                 task = new FetchAddressTask();
-                task.execute(new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                task.execute(
+                        new LatLng(cameraPosition.target.latitude,
+                                cameraPosition.target.longitude)
+                );
             }
         });
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -336,6 +366,27 @@ public class NearbyShipperFragment extends Fragment implements
                 // TODO: 30/08/2016  
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (PermissionUtils.isPermissionGranted(
+                permissions,
+                grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        )) {
+            CommonUtils.checkLocationRequestSetting(
+                    getActivity(),
+                    mGoogleApiClient,
+                    new LocationSettingCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mMapFragment.getMapAsync(NearbyShipperFragment.this);
+                        }
+                    });
+        }
     }
 
     /**

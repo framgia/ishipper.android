@@ -34,6 +34,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.adapter.OrderShippingAdapter;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdate;
@@ -58,7 +59,6 @@ import butterknife.OnClick;
 public class ShippingFragment extends Fragment implements OnMapReadyCallback, RoutingListener,
         GoogleMap.OnMarkerClickListener, OrderShippingAdapter.OnItemClickListener {
 
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int POLY_LINE_WIDTH = 8;
     private static final int[] COLORS = new int[]{
             Color.RED, Color.BLUE,
@@ -215,13 +215,6 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            PermissionUtils.requestPermission(
-                    (AppCompatActivity) getActivity(),
-                    LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    false
-            );
         } else if (mMap != null) {
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
@@ -250,19 +243,6 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            enableMyLocation();
-        } else {
-            mPermissionDenied = true;
-        }
-    }
 
     @OnClick(R.id.btn_expand_map)
     public void onClick() {

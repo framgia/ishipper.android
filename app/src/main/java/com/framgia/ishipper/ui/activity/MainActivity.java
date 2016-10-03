@@ -3,6 +3,7 @@ package com.framgia.ishipper.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -188,6 +189,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        getSupportFragmentManager()
+                .findFragmentByTag(MainContentFragment.class.getName())
+                .onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
@@ -197,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == Const.REQUEST_SETTING) {
             if (!Config.getInstance().getUserInfo(getApplicationContext()).isShop()) {
                 if (mSelectedId == R.id.nav_nearby_order) {
-                    // Dont need to update nearby invoice if user is shop
+                    // Don't need to update nearby invoice if user is shop
                     getSupportFragmentManager()
                         .findFragmentByTag(MainContentFragment.class.getName())
                         .onActivityResult(requestCode, resultCode, data);

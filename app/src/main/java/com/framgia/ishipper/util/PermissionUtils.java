@@ -25,6 +25,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -48,7 +50,18 @@ public abstract class PermissionUtils {
         } else {
             // Location permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
+        }
+    }
 
+    public static void requestFragmentPermission(Fragment fragment, int requestId,
+                                                 String permission) {
+        if (fragment.shouldShowRequestPermissionRationale(permission)) {
+            // Display a dialog with rationale.
+            PermissionUtils.RationaleDialog.newInstance(requestId, false)
+                    .show(fragment.getChildFragmentManager(), "dialog");
+        } else {
+            // Location permission has not been granted yet, request it.
+            fragment.requestPermissions(new String[]{permission}, requestId);
         }
     }
 
@@ -67,6 +80,8 @@ public abstract class PermissionUtils {
         }
         return false;
     }
+
+
 
     /**
      * A dialog that displays a permission denied message.
