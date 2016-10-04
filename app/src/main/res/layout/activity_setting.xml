@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/back_ground_light_grey"
               android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -60,17 +61,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/all_divider_height"
+                android:background="@color/menu_divider" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/all_divider_height"
-            android:background="@color/menu_divider" />
 
         <RelativeLayout
             android:id="@+id/layout_blacklist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_action_select"
             android:paddingBottom="@dimen/_3dp"
             android:paddingTop="@dimen/_3dp">
 
