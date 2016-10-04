@@ -4,9 +4,9 @@
         android:id="@+id/nav_shop_main_group"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_nearby_order"
+            android:id="@+id/nav_nearby_shipper"
             android:icon="@drawable/ic_near_me_white_24dp"
-            android:title="@string/nav_nearby_order_item"/>
+            android:title="@string/nav_nearby_shipper_item"/>
         <item
             android:id="@+id/nav_create_order"
             android:checkable="false"
@@ -31,10 +31,6 @@
             android:id="@+id/nav_setting"
             android:title="@string/nav_setting_item"/>
 
-        <item
-            android:id="@+id/nav_rate_us"
-            android:icon="@drawable/ic_rate_review_white_24dp"
-            android:title="@string/nav_rate_us_item"/>
         <item
             android:id="@+id/nav_information"
             android:icon="@drawable/ic_info_white_24dp"

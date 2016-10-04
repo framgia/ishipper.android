@@ -111,7 +111,7 @@ public class FilterOrderActivity extends ToolbarActivity {
                         return;
                     }
                 }
-                
+
                 if (currentLatLng != null) {
                     params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LAT,
                             currentLatLng.latitude + "");
@@ -130,13 +130,13 @@ public class FilterOrderActivity extends ToolbarActivity {
                     params.put(APIDefinition.FilterInvoice.PARAM_MIN_ORDER_PRICE,
                             mSeekbarFilterOrderPrice.getSelectedMinValue() + "");
                     params.put(APIDefinition.FilterInvoice.PARAM_MAX_ORDER_PRICE,
-                            mSeekbarFilterOrderPrice.getSelectedMaxValue() + "");
+                            (int) mSeekbarFilterOrderPrice.getSelectedMaxValue() * 1000 + "");
                 }
                 if (isVisible(mSeekbarFilterShipPrice)) {
                     params.put(APIDefinition.FilterInvoice.PARAM_MIN_SHIP_PRICE,
                             mSeekbarFilterShipPrice.getSelectedMinValue() + "");
                     params.put(APIDefinition.FilterInvoice.PARAM_MAX_SHIP_PRICE,
-                            mSeekbarFilterShipPrice.getSelectedMaxValue() + "");
+                            (int) mSeekbarFilterShipPrice.getSelectedMaxValue() * 1000 + "");
                 }
                 if (isVisible(mSeekbarFilterWeight)) {
                     params.put(APIDefinition.FilterInvoice.PARAM_MIN_WEIGHT,
@@ -159,7 +159,8 @@ public class FilterOrderActivity extends ToolbarActivity {
                             public void onResponse(APIResponse<FilterInvoiceData> response) {
                                 Intent intent = getIntent();
                                 String data = new Gson().toJson(response.getData().getInvoiceList(),
-                                        new TypeToken<List<Invoice>>() {}.getType());
+                                        new TypeToken<List<Invoice>>() {
+                                        }.getType());
                                 intent.putExtra(INTENT_FILTER_DATA, data);
                                 setResult(RESULT_OK, intent);
                                 finish();

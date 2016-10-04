@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class ShopCreateOrderStep3Fragment extends Fragment {
     @BindView(R.id.tv_detail_shipper_phone) TextView mTvDetailShipperPhone;
     @BindView(R.id.tv_detail_customer_name) TextView mTvDetailCustomerName;
     @BindView(R.id.tv_detail_customer_phone) TextView mTvDetailCustomerPhone;
-    @BindView(R.id.btn_detail_cancel_order) ImageButton mBtnDetailCancelOrder;
+    @BindView(R.id.btn_detail_cancel_order) LinearLayout mBtnDetailCancelOrder;
     @BindView(R.id.layoutInvoiceStatus) CardView mLayoutInvoiceStatus;
     private User mCurrentUser;
     private Context mContext;

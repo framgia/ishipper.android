@@ -96,7 +96,6 @@ public class NearbyOrderFragment extends Fragment implements
     private static final String TAG = "NearbyOrderFragment";
     private static final int REQUEST_FILTER = 0x1234;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    private static final int RADIUS = 5;
 
     @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
     @BindView(R.id.iv_detail_promotion_label) ImageView mIvPromotionLabel;
@@ -171,6 +170,7 @@ public class NearbyOrderFragment extends Fragment implements
     private ArrayList<Invoice> mInvoices = new ArrayList<>();
     private boolean mAutoRefresh = true;
     private HashMap<String, Integer> mHashMap = new HashMap<>();
+    private int mRadius;
 
     public NearbyOrderFragment() {
         // Required empty public constructor
@@ -196,6 +196,11 @@ public class NearbyOrderFragment extends Fragment implements
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mRlOrderDetail.setVisibility(View.GONE);
+        mRadius =StorageUtils.getIntValue(
+                mContext,
+                Const.Storage.KEY_SETTING_INVOICE_RADIUS,
+                Const.SETTING_INVOICE_RADIUS_DEFAULT
+        );
         setHasOptionsMenu(true);
         return view;
     }
@@ -267,9 +272,7 @@ public class NearbyOrderFragment extends Fragment implements
             mCurrentUser.setLongitude(mLocation.getLongitude());
             MapUtils.zoomToPosition(mGoogleMap,
                     new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
-            markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(),
-                    StorageUtils.getIntValue(getContext(), Const.Storage.KEY_SETTING_INVOICE_RADIUS,
-                            Const.SETTING_INVOICE_RADIUS_DEFAULT));
+            markInvoiceNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(),mRadius);
             configGoogleMap();
         } else {
             Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
@@ -292,13 +295,14 @@ public class NearbyOrderFragment extends Fragment implements
                 new API.APICallback<APIResponse<ListInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ListInvoiceData> response) {
+                        Log.d(TAG, "onResponse: " + response.getMessage());
                         mInvoices = (ArrayList<Invoice>) response.getData().getInvoiceList();
                         addListMarker(mInvoices);
                     }
 
                     @Override
                     public void onFailure(int code, String message) {
-                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,message);
                     }
                 });
     }
@@ -326,12 +330,12 @@ public class NearbyOrderFragment extends Fragment implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(mContext, "Suspended", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Suspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -518,6 +522,7 @@ public class NearbyOrderFragment extends Fragment implements
                                 dialog.dismiss();
                                 Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT)
                                         .show();
+                                mRlOrderDetail.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -590,12 +595,12 @@ public class NearbyOrderFragment extends Fragment implements
         } else if (requestCode == REQUEST_FILTER && resultCode == Activity.RESULT_OK) {
             // Update list invoice in map
             String jsonData = data.getStringExtra(FilterOrderActivity.INTENT_FILTER_DATA);
-            List<Invoice> listInvoices = new Gson().fromJson(
+            mInvoices = new Gson().fromJson(
                     jsonData,
                     new TypeToken<List<Invoice>>() {
                     }.getType()
             );
-            addListMarker(listInvoices);
+            addListMarker(mInvoices);
         }
     }
 
@@ -633,7 +638,7 @@ public class NearbyOrderFragment extends Fragment implements
         protected String doInBackground(LatLng... latLngs) {
             double latitude = latLngs[0].latitude;
             double longitude = latLngs[0].longitude;
-            markInvoiceNearby(latitude, longitude, RADIUS);
+            markInvoiceNearby(latitude, longitude, mRadius);
             return MapUtils.getAddressFromLocation(
                     mContext,
                     new LatLng(latitude, longitude)
