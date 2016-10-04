@@ -32,11 +32,6 @@
             android:title="@string/nav_setting_item"/>
 
         <item
-            android:id="@+id/nav_rate_us"
-            android:icon="@drawable/ic_rate_review_white_24dp"
-            android:title="@string/nav_rate_us_item"/>
-
-        <item
             android:id="@+id/nav_information"
             android:icon="@drawable/ic_info_white_24dp"
             android:title="@string/nav_inform_item"/>

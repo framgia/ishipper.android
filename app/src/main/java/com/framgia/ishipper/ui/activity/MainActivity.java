@@ -108,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
                 mToolbar.setTitle(getString(R.string.nav_nearby_order_item));
                 tag = MainContentFragment.class.getName();
                 break;
+            case R.id.nav_nearby_shipper:
+                mSelectedId = id;
+                fragment = new MainContentFragment();
+                mToolbar.setTitle(getString(R.string.nav_nearby_shipper_item));
+                tag = MainContentFragment.class.getName();
+                break;
             case R.id.nav_order_management:
                 mSelectedId = id;
                 mToolbar.setTitle(getString(R.string.title_activity_order_manager));
@@ -132,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_user_management:
                 mSelectedId = id;
-                mToolbar.setTitle(getString(R.string.title_favorite_list_shipper));
+                mToolbar.setTitle(getString(R.string.nav_shop_management_item));
                 fragment = FavoriteFragment.newInstance();
                 tag = FavoriteFragment.class.getName();
                 break;

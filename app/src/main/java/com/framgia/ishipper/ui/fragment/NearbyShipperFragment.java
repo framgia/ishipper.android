@@ -167,12 +167,12 @@ public class NearbyShipperFragment extends Fragment implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(mContext, "Suspended", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Suspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -223,11 +223,7 @@ public class NearbyShipperFragment extends Fragment implements
                 new API.APICallback<APIResponse<ShipperNearbyData>>() {
                     @Override
                     public void onResponse(APIResponse<ShipperNearbyData> response) {
-                        Log.d(TAG, "onResponse: " + response.getCode());
-                        Toast.makeText(mContext,
-                                response.getMessage(),
-                                Toast.LENGTH_SHORT)
-                                .show();
+                        Log.d(TAG, "onResponse: " + response.getMessage());
                         shipperList = (ArrayList<User>) response.getData().getUsers();
                         addListMarker(shipperList);
                     }
@@ -235,7 +231,6 @@ public class NearbyShipperFragment extends Fragment implements
                     @Override
                     public void onFailure(int code, String message) {
                         Log.d(TAG, "onFailure: " + message);
-                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

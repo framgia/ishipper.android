@@ -88,7 +88,7 @@
     <dimen name="text_size_10sp">10sp</dimen>
     <dimen name="tv_btn_padding">16dp</dimen>
     <dimen name="info_dialog_viewpager">200dp</dimen>
-    <dimen name="info_dialog_width">400dp</dimen>
+    <dimen name="info_dialog_width">300dp</dimen>
     <dimen name="search_layout_height">40dp</dimen>
     <dimen name="search_icon_size">13dp</dimen>
     <dimen name="avatar_search_size">50dp</dimen>

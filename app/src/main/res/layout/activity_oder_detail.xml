@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ll_detail_btn_action"
+        android:background="@color/back_ground_light_grey"
         android:layout_below="@+id/appbar">
 
         <LinearLayout

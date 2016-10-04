@@ -55,7 +55,7 @@ public class ValidatePinFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnDone:
-                if (InputValidate.checkPin(mEdtPhoneNumber, getContext())) {
+                if (!InputValidate.checkPin(mEdtPhoneNumber, getContext())) {
                     break;
                 }
                 final ProgressDialog pd = new ProgressDialog(getActivity());
