@@ -246,7 +246,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
-                    mBtnReportUser.setVisibility(View.VISIBLE);
+//                    mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 default:
@@ -261,7 +261,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
-                    mBtnReportUser.setVisibility(View.VISIBLE);
+//                    mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 default:
