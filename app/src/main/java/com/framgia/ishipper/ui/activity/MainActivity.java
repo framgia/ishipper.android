@@ -52,7 +52,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-        selectItem(R.id.nav_nearby_order);
+        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
+            selectItem(R.id.nav_nearby_order);
+            getSupportActionBar().setTitle(getString(R.string.nav_nearby_order_item));
+        } else {
+            selectItem(R.id.nav_nearby_shipper);
+            getSupportActionBar().setTitle(getString(R.string.nav_nearby_shipper_item));
+        }
     }
 
     private void initView() {
@@ -105,18 +111,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_nearby_order:
                 mSelectedId = id;
                 fragment = new MainContentFragment();
-                mToolbar.setTitle(getString(R.string.nav_nearby_order_item));
+                getSupportActionBar().setTitle(getString(R.string.nav_nearby_order_item));
                 tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_nearby_shipper:
                 mSelectedId = id;
                 fragment = new MainContentFragment();
-                mToolbar.setTitle(getString(R.string.nav_nearby_shipper_item));
+                getSupportActionBar().setTitle(getString(R.string.nav_nearby_shipper_item));
                 tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_order_management:
                 mSelectedId = id;
-                mToolbar.setTitle(getString(R.string.title_activity_order_manager));
+                getSupportActionBar().setTitle(getString(R.string.title_activity_order_manager));
                 if (userType == SHIPPER) {
                     fragment =
                         ShipperOrderManagerFragment.instantiate(MainActivity.this,
@@ -133,12 +139,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_fb_order:
                 mSelectedId = id;
+                getSupportActionBar().setTitle(getString(R.string.title_facebook_order));
                 fragment = FacebookInvoiceFragment.newInstance(true);
                 tag = FacebookInvoiceFragment.class.getName();
                 break;
-            case R.id.nav_user_management:
+            case R.id.nav_ship_management:
                 mSelectedId = id;
-                mToolbar.setTitle(getString(R.string.nav_shop_management_item));
+                getSupportActionBar().setTitle(getString(R.string.nav_shop_management_item));
+                fragment = FavoriteFragment.newInstance();
+                tag = FavoriteFragment.class.getName();
+                break;
+            case R.id.nav_shop_management:
+                mSelectedId = id;
+                getSupportActionBar().setTitle(getString(R.string.nav_ship_management_item));
                 fragment = FavoriteFragment.newInstance();
                 tag = FavoriteFragment.class.getName();
                 break;

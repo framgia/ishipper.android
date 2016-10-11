@@ -17,7 +17,7 @@
             android:icon="@drawable/ic_order_management_white_24dp"
             android:title="@string/nav_order_management_item"/>
         <item
-            android:id="@+id/nav_user_management"
+            android:id="@+id/nav_shop_management"
             android:icon="@drawable/ic_shop_white_24dp"
             android:title="@string/nav_shop_management_item"/>
     </group>
