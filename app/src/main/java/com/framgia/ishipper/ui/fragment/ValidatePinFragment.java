@@ -13,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.InputValidate;
@@ -87,11 +89,13 @@ public class ValidatePinFragment extends Fragment {
                     API.confirmationPinInSignUp(
                             mPhoneNumber,
                             mEdtPhoneNumber.getText().toString(),
-                            new API.APICallback<APIResponse<EmptyData>>() {
+                            new API.APICallback<APIResponse<SignUpData>>() {
                                 @Override
                                 public void onResponse(
-                                        APIResponse<EmptyData> response) {
+                                        APIResponse<SignUpData> response) {
                                     pd.dismiss();
+                                    Config.getInstance().setUserInfo(getContext(),
+                                                                     response.getData().getUser());
                                     Intent mainIntent = new Intent(getActivity(),
                                             MainActivity.class);
                                     startActivity(mainIntent);

@@ -80,7 +80,7 @@ public interface APIServices {
 
     @FormUrlEncoded
     @PUT(APIDefinition.ConfirmationPin.PATH)
-    Call<APIResponse<EmptyData>> confirmationPinInSignUp(
+    Call<APIResponse<SignUpData>> confirmationPinInSignUp(
             @Field(APIDefinition.GetCheckPin.PARAM_PHONE) String phoneNumber,
             @Field(APIDefinition.GetCheckPin.PARAM_PIN) String pin);
 
