@@ -49,7 +49,7 @@ public abstract class API {
     }
 
     public static void confirmationPinInSignUp(String phoneNumber, String pin,
-                                               final APICallback<APIResponse<EmptyData>> callback) {
+                                               final APICallback<APIResponse<SignUpData>> callback) {
         client.confirmationPinInSignUp(phoneNumber, pin).enqueue(new RetrofitCallback<>(callback));
     }
 
