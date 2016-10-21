@@ -21,7 +21,9 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
+import com.framgia.ishipper.util.Const.Firebase;
 import com.framgia.ishipper.util.InputValidate;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 
@@ -46,6 +48,9 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
         if (Config.getInstance().isLogin(getApplicationContext())) {
             startMainActivity();
         }
+
+        // Register news topic that user can be received all news, promotion, ...
+        FirebaseMessaging.getInstance().subscribeToTopic(Firebase.TOPIC_NEWS);
 
        initView();
     }
@@ -150,4 +155,5 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> adapterView) {
         mPrefixPhoneNumber = "";
     }
+
 }

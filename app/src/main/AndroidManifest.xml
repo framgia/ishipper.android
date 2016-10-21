@@ -52,6 +52,22 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".ui.activity.BlackListActivity" />
+
+        <service
+            android:name=".service.FirebaseInstanceService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.AppMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
+
