@@ -29,6 +29,10 @@ public class Const {
                 "Có lỗi xảy ra trong quá trình kết nối, hãy thử lại!";
     }
 
+    public class Firebase {
+        public static final String TOPIC_NEWS = "news";
+    }
+
     public class Storage {
         public static final String KEY_USER_INFO = "UserStorageKey";
         public static final String KEY_IS_LOGIN = "IsLoginKey";

@@ -55,6 +55,7 @@
     <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_view_margin">10dp</dimen>
     <dimen name="text_size_tiny_material">10sp</dimen>
+    <dimen name="text_size_time">9sp</dimen>
 
     <!-- Margin -->
     <dimen name="all_margin_large">20dp</dimen>
