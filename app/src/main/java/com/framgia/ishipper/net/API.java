@@ -278,6 +278,13 @@ public abstract class API {
         client.putFCMRegistrationID(id, token).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void switchNotification(
+            String token,
+            int notification,
+            APICallback<APIResponse<GetUserData>> callback) {
+        client.switchNotification(token, notification).enqueue(new RetrofitCallback<>(callback));
+    }
+
     //endregion
 
     private static OkHttpClient loggingClient() {
