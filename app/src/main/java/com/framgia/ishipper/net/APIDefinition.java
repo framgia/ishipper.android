@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
 //    private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.125:3001/";
+    private static final String DEV_URL = "http://192.168.1.17:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -313,5 +313,12 @@ public class APIDefinition {
         public static final String PARAM_ID = "id";
 
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/black_lists/{" + PARAM_ID + "}";
+    }
+
+    public static class PutFCMId {
+        public static final String TAG = "Put Update Notification Registration Id";
+        public static final String PATH = "/api/user_token";
+
+        public static final String PARAM_REGISTRATION_ID = "user_token[registration_id]";
     }
 }

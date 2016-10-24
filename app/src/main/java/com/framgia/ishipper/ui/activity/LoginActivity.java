@@ -15,14 +15,17 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Firebase;
 import com.framgia.ishipper.util.InputValidate;
+import com.framgia.ishipper.util.StorageUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -52,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
         // Register news topic that user can be received all news, promotion, ...
         FirebaseMessaging.getInstance().subscribeToTopic(Firebase.TOPIC_NEWS);
 
-       initView();
+        initView();
     }
 
     private void initView() {
@@ -67,8 +70,8 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
     private void setUpSpinner() {
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(this,
-                                                R.array.prefix_phone_number,
-                                                android.R.layout.simple_spinner_item);
+                        R.array.prefix_phone_number,
+                        android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpnPrefixPhoneNumber.setAdapter(adapter);
         mSpnPrefixPhoneNumber.setOnItemSelectedListener(this);
@@ -118,9 +121,26 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onResponse(APIResponse<SignInData> response) {
                 loadingDialog.dismiss();
                 Toast.makeText(getBaseContext(), response.getMessage(),
-                               Toast.LENGTH_SHORT).show();
-                Config.getInstance().setUserInfo(getApplicationContext(),
-                                                 response.getData().getUser());
+                        Toast.LENGTH_SHORT).show();
+                User user = response.getData().getUser();
+                Config.getInstance().setUserInfo(getApplicationContext(), user);
+
+                API.putFCMRegistrationID(user.getAuthenticationToken(),
+                        StorageUtils.getStringValue(
+                                getBaseContext(),
+                                Const.Storage.KEY_NOTIFICATION_ID),
+                        new API.APICallback<APIResponse<EmptyData>>() {
+                            @Override
+                            public void onResponse(APIResponse<EmptyData> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(int code, String message) {
+                                Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                 startMainActivity();
             }
 
