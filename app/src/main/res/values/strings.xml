@@ -236,7 +236,7 @@
     <string name="success_invoice">Đơn hàng thành công:</string>
     <string name="full_name">Họ tên :</string>
     <string name="distance">Khoảng cách :</string>
-    <string name="fragment_setting_receive_notification">Nhận thông báo</string>
+    <string name="setting_notification_title">Bật/Tắt thông báo</string>
     <string name="fragment_setting_invoice_radius">Bán kính nhận đơn: %1$d km</string>
     <string name="nav_setting_item">Cài đặt</string>
     <string name="info_dialog_info_tab">Thông tin</string>
@@ -268,6 +268,8 @@
     <string name="nav_nearby_shipper_item">Shipper xung quanh</string>
     <string name="title_facebook_order">Đơn hàng từ Facebook</string>
     <string name="nav_ship_management_item">Shipper yêu thích</string>
+    <string name="setting_notification_content">Bật tắt nhận thông báo, tin tức từ ứng dụng</string>
+    <string name="setting_black_list_content">Danh sách các shipper bị block</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

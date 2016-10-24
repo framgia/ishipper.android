@@ -245,4 +245,12 @@ public interface APIServices {
     Call<APIResponse<EmptyData>> putFCMRegistrationID(
             @Field(APIDefinition.PutFCMId.PARAM_REGISTRATION_ID) String registrationID,
             @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+
+    @FormUrlEncoded
+    @POST(APIDefinition.SwitchNotification.PATH)
+    Call<APIResponse<GetUserData>> switchNotification(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Field(APIDefinition.SwitchNotification.PARAM_SWITCH) int notification
+    );
+
 }

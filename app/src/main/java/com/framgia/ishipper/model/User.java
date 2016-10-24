@@ -31,6 +31,8 @@ public class User implements Parcelable {
     @SerializedName("user_invoice_id") private String mUserInvoiceId;
     @SerializedName("black_list_id") private String mBlackListUserId;
     @SerializedName("favorite_list_id") private String mFavoriteListId;
+    @SerializedName("notification") private int mNotification;
+
 
     public User() {}
 
@@ -52,6 +54,7 @@ public class User implements Parcelable {
         mId = in.readString();
         mUserInvoiceId = in.readString();
         mBlackListUserId = in.readString();
+        mNotification = in.readInt();
     }
 
     public String getUserType() {
@@ -207,6 +210,14 @@ public class User implements Parcelable {
         mBlackListUserId = blackListUserId;
     }
 
+    public int getNotification() {
+        return mNotification;
+    }
+
+    public void setNotification(int notification) {
+        mNotification = notification;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -231,6 +242,7 @@ public class User implements Parcelable {
         parcel.writeString(mId);
         parcel.writeString(mUserInvoiceId);
         parcel.writeString(mBlackListUserId);
+        parcel.writeInt(mNotification);
     }
 
     public String getFavoriteListId() {

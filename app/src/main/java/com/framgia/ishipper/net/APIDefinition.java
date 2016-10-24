@@ -7,8 +7,8 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-//    private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.17:3001/";
+    //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.77:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -320,5 +320,10 @@ public class APIDefinition {
         public static final String PATH = "/api/user_token";
 
         public static final String PARAM_REGISTRATION_ID = "user_token[registration_id]";
+    }
+
+    public class SwitchNotification {
+        public static final String PATH = "";
+        public static final String PARAM_SWITCH = "";
     }
 }

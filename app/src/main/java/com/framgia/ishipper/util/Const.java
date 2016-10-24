@@ -52,4 +52,9 @@ public class Const {
         public static final int BOTTOM_PADDING = 0;
         public static final int LEFT_PADDING = 0;
     }
+
+    public class Notification {
+        public static final int ON = 0;
+        public static final int OFF = 1;
+    }
 }
