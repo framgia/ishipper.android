@@ -1,6 +1,14 @@
 package com.framgia.ishipper.service;
 
+import android.widget.Toast;
+
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.util.Const.Storage;
+import com.framgia.ishipper.util.StorageUtils;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -20,6 +28,21 @@ public class FirebaseInstanceService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String refreshedToken) {
-        // TODO send Firebase token to server
+        boolean isLogin = Config.getInstance().isLogin(getBaseContext());
+        StorageUtils.setValue(getBaseContext(), Storage.KEY_NOTIFICATION_ID, refreshedToken);
+
+        if (isLogin) {
+            String token = Config.getInstance().getUserInfo(getBaseContext()).getAuthenticationToken();
+            API.putFCMRegistrationID(token, refreshedToken, new API.APICallback<APIResponse<EmptyData>>() {
+                @Override
+                public void onResponse(APIResponse<EmptyData> response) {
+                }
+
+                @Override
+                public void onFailure(int code, String message) {
+                    Toast.makeText(FirebaseInstanceService.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

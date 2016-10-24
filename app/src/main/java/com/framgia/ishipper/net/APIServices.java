@@ -239,4 +239,10 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Path(APIDefinition.DeleteUserBlackList.PARAM_USER_TYPE) String userType,
             @Path(APIDefinition.DeleteUserBlackList.PARAM_ID) String blacklistId);
+
+    @FormUrlEncoded
+    @PUT(APIDefinition.PutFCMId.PATH)
+    Call<APIResponse<EmptyData>> putFCMRegistrationID(
+            @Field(APIDefinition.PutFCMId.PARAM_REGISTRATION_ID) String registrationID,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token);
 }

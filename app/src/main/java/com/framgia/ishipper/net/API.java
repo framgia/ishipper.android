@@ -115,6 +115,7 @@ public abstract class API {
             APICallback<APIResponse<ListUserData>> callback) {
         client.getBlackList(token, userType).enqueue(new RetrofitCallback<>(callback));
     }
+
     public static void getFavoriteList(
             String token,
             String userType,
@@ -270,6 +271,11 @@ public abstract class API {
             String blacklistId,
             APICallback<APIResponse<EmptyData>> callback) {
         client.deleteUserBlacklist(token, userType, blacklistId).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void putFCMRegistrationID(String token, String id,
+                                            final APICallback<APIResponse<EmptyData>> callback) {
+        client.putFCMRegistrationID(id, token).enqueue(new RetrofitCallback<>(callback));
     }
 
     //endregion
