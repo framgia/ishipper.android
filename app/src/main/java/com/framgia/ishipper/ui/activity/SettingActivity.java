@@ -10,16 +10,21 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.GetUserData;
+import com.framgia.ishipper.net.data.UpdateProfileData;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Storage;
 import com.framgia.ishipper.util.StorageUtils;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,20 +95,24 @@ public class SettingActivity extends ToolbarActivity {
                     : Const.Notification.OFF);
             Config.getInstance().setUserInfo(this, mCurrentUser);
 
-            API.switchNotification(
-                    mCurrentUser.getAuthenticationToken(),
-                    mCurrentUser.getNotification(),
-                    new API.APICallback<APIResponse<GetUserData>>() {
-                        @Override
-                        public void onResponse(APIResponse<GetUserData> response) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put(APIDefinition.PutUpdateProfile.PARAM_NOTIFICATION,
+                    String.valueOf(mCurrentUser.getNotification()));
+            API.putUpdateProfile(params, new API.APICallback<APIResponse<UpdateProfileData>>() {
+                @Override
+                public void onResponse(APIResponse<UpdateProfileData> response) {
+                    Toast.makeText(
+                            SettingActivity.this,
+                            response.getMessage(),
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
 
-                        }
-
-                        @Override
-                        public void onFailure(int code, String message) {
-
-                        }
-                    });
+                @Override
+                public void onFailure(int code, String message) {
+                    Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         StorageUtils.setValue(this, Storage.KEY_SETTING_NOTIFICATION,
                 cbReceiveNotification.isChecked());
