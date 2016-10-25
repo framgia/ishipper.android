@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#56d31d</color>
+    <color name="colorPrimaryDark">#4cbc18</color>
+    <color name="colorAccent">#4cbc18</color>
+
+    <color name="colorGreen">#44b610</color>
+    <color name="colorGreenDark">#72c125</color>
+    <color name="blue">#304ffe</color>
+    <color name="white">#fff</color>
+    <color name="gray">#bdbab4</color>
+    <color name="back_ground_grey">#ffeeeeee</color>
+    <color name="grey_DA_lightest">#ffc3c3c3</color>
+    <color name="fiveship_list_background">#ffebebeb</color>
+    <color name="fiveship_bg_dim_color">#66000000</color>
+    <color name="menu_divider">#ffd6d8d7</color>
+    <color name="fiveship_common_text">#ff3f454f</color>
+    <color name="grey_DA_light">#ffadadad</color>
+    <color name="black_80">#7f000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="white_20">#33ffffff</color>
+    <color name="light_gray">#e1e1e1</color>
+    <color name="button_clean_background">#f9f9f9</color>
+    <color name="button_stroke_clean">#ebebeb</color>
+    <color name="btn_normal_background">#f9f9f9</color>
+    <color name="color_status_pick">#ff7200</color>
+    <color name="orange">#ff7200</color>
+    <color name="orange_dark">#ce5c01</color>
+    <color name="color_status_shipping">#72c125</color>
+    <color name="drawable_tint">#bdbdbd</color>
+    <color name="bg_edt_create_order_step2">#dcffffff</color>
+    <color name="back_ground_light_grey">#f1f1f1</color>
+    <color name="color_status_cancelled">#394b54</color>
+    <color name="color_status_waiting">#999999</color>
+    <color name="color_status_delivered">#6258c6</color>
+    <color name="color_status_finish">#28a277</color>
+    <color name="transparent">#00000000</color>
+    <color name="shadow_color">#4D000000</color>
+    <color name="background_list_order">#DBDDE2</color>
+    <color name="invoice_change_status">#ffe0b2</color>
+    <color name="grey">#bdbdbd</color>
+    <color name="red">#FF0000</color>
+    <color name="border_rounded_imageview">#EEEEEE</color>
+    <color name="back_ground_title_grey">#bdbdbd</color>
+    <color name="back_ground_dark_grey">#e7e7e7</color>
+</resources>

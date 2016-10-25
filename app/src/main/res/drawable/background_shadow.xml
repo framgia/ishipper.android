@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/shadow_color"/>
+    <item
+        android:bottom="@dimen/background_shadow_size"
+        android:drawable="@android:color/white"
+        android:right="@dimen/background_shadow_size"/>
+</layer-list>

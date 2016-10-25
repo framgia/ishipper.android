@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layout_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:paddingLeft="@dimen/all_padding_medium"
+        android:paddingRight="@dimen/all_padding_medium"
+        android:paddingTop="@dimen/all_padding_small"
+        android:paddingBottom="@dimen/all_padding_small"
+        android:layout_marginBottom="@dimen/all_divider_height"
+        android:id="@+id/itemSearchUser"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="@dimen/avatar_search_size"
+            android:layout_height="@dimen/avatar_search_size"
+            android:layout_gravity="center"
+            android:src="@drawable/avatar_sample"
+            android:tint="@android:color/darker_gray"
+            app:civ_border_color="@color/border_rounded_imageview"
+            app:civ_border_width="@dimen/nav_contact_icon_border_width"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@android:color/black"
+            app:civ_shadow_radius="5"/>
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/all_margin_medium"/>
+
+        <TextView
+            android:id="@+id/btnRemove"
+            style="@style/AppButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/all_padding_small"
+            android:text="@string/item_user_unblock"
+            android:textSize="@dimen/text_size_tiny_material"/>
+    </LinearLayout>
+</LinearLayout>

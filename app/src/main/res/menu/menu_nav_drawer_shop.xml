@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/nav_shop_main_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_nearby_shipper"
+            android:icon="@drawable/ic_near_me_white_24dp"
+            android:title="@string/nav_nearby_shipper_item"/>
+        <item
+            android:id="@+id/nav_create_order"
+            android:checkable="false"
+            android:icon="@drawable/ic_create_order_white_24dp"
+            android:title="@string/nav_create_order_item"/>
+        <item
+            android:id="@+id/nav_order_management"
+            android:icon="@drawable/ic_order_management_white_24dp"
+            android:title="@string/nav_order_management_item"/>
+        <item
+            android:id="@+id/nav_ship_management"
+            android:icon="@drawable/ic_shipper_manage_white_24dp"
+            android:title="@string/title_shipper_management" />
+    </group>
+    <group
+        android:id="@+id/nav_shop_infor_group"
+        android:checkableBehavior="single">
+
+        <item
+            android:icon="@drawable/ic_nav_setting_24dp"
+            android:checkable="false"
+            android:id="@+id/nav_setting"
+            android:title="@string/nav_setting_item"/>
+
+        <item
+            android:id="@+id/nav_information"
+            android:icon="@drawable/ic_info_white_24dp"
+            android:title="@string/nav_inform_item"/>
+    </group>
+    <group
+        android:id="@+id/nav_shop_tool_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sign_out"
+            android:icon="@drawable/ic_exit_to_app_white_24dp"
+            android:title="@string/nav_sign_out_item"/>
+    </group>
+</menu>
