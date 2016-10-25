@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.ReviewUser;
 import com.framgia.ishipper.model.User;
@@ -93,6 +94,7 @@ public class OrderDetailActivity extends ToolbarActivity {
     }
 
     private void initData() {
+        int invoiceId;
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) return;
         if (CommonUtils.isOpenFromNoti(this)) {

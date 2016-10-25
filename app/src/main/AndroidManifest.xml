@@ -25,8 +25,8 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:configChanges="keyboardHidden|screenSize|orientation">
-        </activity>
+            android:configChanges="keyboardHidden|screenSize|orientation" />
+
         <activity android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
