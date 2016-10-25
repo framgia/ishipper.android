@@ -7,9 +7,8 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-//    private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.16:3001/";
-
+    //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.15:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -44,6 +43,7 @@ public class APIDefinition {
         public static final String USER_CURRENT_PASSWORD = "user[current_password]";
         public static final String PARAM_PLATE_NUMBER = "user[plate_number]";
         public static final String PARAM_ADDRESS = "user[address]";
+        public static final String PARAM_NOTIFICATION = "user[receive_notification]";
     }
 
     public static class ForgotPassword {
