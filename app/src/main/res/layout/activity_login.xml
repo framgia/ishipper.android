@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/login_background"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/activity_login_margin"
+              android:paddingRight="@dimen/activity_login_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/all_margin_large"
+            android:layout_marginTop="@dimen/all_margin_large"
+            android:src="@drawable/img_logo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/username_login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            style="@style/AppLayoutInputStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spnPrefixPhoneNumber"
+                style="@style/AppSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/back_ground_grey" />
+
+            <EditText
+                android:id="@+id/edtPhoneNumber"
+                style="@style/AppTextFieldEmptyStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="1dp"
+                android:gravity="center_vertical"
+                android:inputType="phone"
+                android:textSize="@dimen/text_size_content" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/all_padding_medium"
+            android:text="@string/all_password"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            style="@style/AppTextFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/all_margin_small"
+            android:inputType="textPassword"
+            android:textSize="@dimen/text_size_content" />
+
+        <TextView
+            android:id="@+id/btnLogin"
+            style="@style/AppButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/all_margin_large"
+            android:text="@string/login" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/all_margin_small">
+
+            <TextView
+                android:id="@+id/btnRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/all_padding_small"
+                android:text="@string/register"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/text_size_button" />
+
+            <TextView
+                android:id="@+id/btnForgotPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/all_padding_small"
+                android:text="@string/activity_login_forgot_pass"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_button" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/all_padding_medium">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/all_divider_height"
+            android:layout_marginBottom="@dimen/all_margin_large"
+            android:background="@color/white_20" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/btnShop"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:text="@string/shop" />
+
+            <TextView
+                android:id="@+id/btnShipper"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/all_margin_medium"
+                android:background="@color/color_status_pick"
+                android:text="@string/shipper" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

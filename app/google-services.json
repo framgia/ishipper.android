@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "390344509677",
+    "firebase_url": "https://ishipperandroid.firebaseio.com",
+    "project_id": "ishipperandroid",
+    "storage_bucket": "ishipperandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390344509677:android:cff74307de0e4c6a",
+        "android_client_info": {
+          "package_name": "com.framgia.ishipper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390344509677-njsk55odtn8bg9i283ne7cu1g84oovsh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.framgia.ishipper",
+            "certificate_hash": "DAFA6FA43C0BE6AF0CA5423F81667FAE0098628F"
+          }
+        },
+        {
+          "client_id": "390344509677-cuthhd6j7ph3cbpidc5b128m3tipjv4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD9qt-bMW90140PprLPF_H73FZcNAtOXY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390344509677-cuthhd6j7ph3cbpidc5b128m3tipjv4j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

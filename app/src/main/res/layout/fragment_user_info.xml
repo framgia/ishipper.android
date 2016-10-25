@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingTop="@dimen/activity_vertical_padding"
+              tools:context=".ui.fragment.UserInfoFragment">
+
+    <TextView
+        android:id="@+id/tv_user_info_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_phone_grey_24dp"
+        android:drawablePadding="@dimen/tv_drawable_padding"
+        android:gravity="center_vertical"
+        android:padding="@dimen/activity_vertical_padding"
+        android:textSize="@dimen/text_size_title"/>
+
+    <TextView
+        android:id="@+id/tv_user_info_plate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_plate_grey_24dp"
+        android:drawablePadding="@dimen/tv_drawable_padding"
+        android:gravity="center_vertical"
+        android:padding="@dimen/activity_vertical_padding"
+        android:textSize="@dimen/text_size_title"/>
+
+    <TextView
+        android:id="@+id/tv_user_info_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_place_grey_24dp"
+        android:drawablePadding="@dimen/tv_drawable_padding"
+        android:gravity="center_vertical"
+        android:padding="@dimen/activity_vertical_padding"
+        android:textSize="@dimen/text_size_title"/>
+</LinearLayout>
