@@ -7,8 +7,9 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.77:3001/";
+//    private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.16:3001/";
+
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";

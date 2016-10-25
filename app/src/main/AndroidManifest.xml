@@ -37,6 +37,10 @@
         <activity
             android:name=".ui.activity.ListShipperRegActivity"
             android:label="@string/title_activity_list_shipper_reg">
+            <intent-filter>
+                <action android:name="com.framgia.ishipper.LIST_SHIPPER_REGISTER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.activity.OrderDetailActivity" />
         <activity android:name=".ui.activity.RouteActivity" />

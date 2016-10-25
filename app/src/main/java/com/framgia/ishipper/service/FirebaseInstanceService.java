@@ -7,8 +7,6 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.util.Const.Storage;
-import com.framgia.ishipper.util.StorageUtils;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -29,7 +27,6 @@ public class FirebaseInstanceService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String refreshedToken) {
         boolean isLogin = Config.getInstance().isLogin(getBaseContext());
-        StorageUtils.setValue(getBaseContext(), Storage.KEY_NOTIFICATION_ID, refreshedToken);
 
         if (isLogin) {
             String token = Config.getInstance().getUserInfo(getBaseContext()).getAuthenticationToken();
