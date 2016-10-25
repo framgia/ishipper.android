@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +20,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.ui.adapter.ShipperRegAdapter;
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.util.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,16 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     }
 
     private void initData() {
-        mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
+        Bundle data = getIntent().getExtras();
+
+        if (data != null && data.getString(Const.FirebaseData.INVOICE_ID) != null) {
+            // Explicit Intent
+            mInvoiceId = Integer.valueOf(data.getString(Const.FirebaseData.INVOICE_ID));
+        } else {
+            // Implicit Intent
+            mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
+        }
+
         mShipperList = new ArrayList<>();
         mShipperRegAdapter = new ShipperRegAdapter(this, mShipperList);
         mShipperRegAdapter.setListener(this);

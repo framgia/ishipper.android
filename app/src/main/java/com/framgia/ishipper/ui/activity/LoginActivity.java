@@ -25,7 +25,7 @@ import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Firebase;
 import com.framgia.ishipper.util.InputValidate;
-import com.framgia.ishipper.util.StorageUtils;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -126,9 +126,7 @@ public class LoginActivity extends AppCompatActivity implements AdapterView.OnIt
                 Config.getInstance().setUserInfo(getApplicationContext(), user);
 
                 API.putFCMRegistrationID(user.getAuthenticationToken(),
-                        StorageUtils.getStringValue(
-                                getBaseContext(),
-                                Const.Storage.KEY_NOTIFICATION_ID),
+                        FirebaseInstanceId.getInstance().getToken(),
                         new API.APICallback<APIResponse<EmptyData>>() {
                             @Override
                             public void onResponse(APIResponse<EmptyData> response) {

@@ -38,7 +38,6 @@ public class Const {
         public static final String KEY_IS_LOGIN = "IsLoginKey";
         public static final String KEY_SETTING_NOTIFICATION = "SettingNotification";
         public static final String KEY_SETTING_INVOICE_RADIUS = "SettingInvoiceRadius";
-        public static final String KEY_NOTIFICATION_ID = "KEY_NOTIFICATION_ID";
     }
 
     public class LocationRequest {
@@ -56,5 +55,10 @@ public class Const {
     public class Notification {
         public static final int ON = 0;
         public static final int OFF = 1;
+    }
+
+    public class FirebaseData {
+        public static final String INVOICE_ID = "invoice_id";
+
     }
 }
