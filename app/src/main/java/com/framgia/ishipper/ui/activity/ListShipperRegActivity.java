@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.ui.adapter.ShipperRegAdapter;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ import butterknife.ButterKnife;
 public class ListShipperRegActivity extends ToolbarActivity implements
         ShipperRegAdapter.OnItemClickShipperRegListener,
         ShipperRegAdapter.OnClickAcceptShipperListener {
-
+    private static final String TAG = "ListShipperRegActivity";
     public static final String KEY_INVOICE_ID = "KEY_INVOICE_ID";
     public static final int REQUEST_CODE_RESULT = 888;
 
@@ -52,14 +54,15 @@ public class ListShipperRegActivity extends ToolbarActivity implements
         ButterKnife.bind(this);
         initData();
         initEvent();
+        com.framgia.ishipper.common.Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
+
     }
 
     private void initData() {
-        Bundle data = getIntent().getExtras();
-
-        if (data != null && data.getString(Const.FirebaseData.INVOICE_ID) != null) {
+        if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
-            mInvoiceId = Integer.valueOf(data.getString(Const.FirebaseData.INVOICE_ID));
+            mInvoiceId = Integer.valueOf(getIntent().getExtras()
+                    .getString(Const.FirebaseData.INVOICE_ID));
         } else {
             // Implicit Intent
             mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
@@ -73,6 +76,7 @@ public class ListShipperRegActivity extends ToolbarActivity implements
         mRecyclerView.setAdapter(mShipperRegAdapter);
         getListShipper();
     }
+
 
     private void initEvent() {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -107,6 +111,24 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (CommonUtils.isOpenFromNoti(this)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
+    @Override
     public void onItemClickShipperRegListener(User shipper) {
         //TODO : Go to detail Shipper
         Log.d("clicked", shipper.getClass().getName());
@@ -115,26 +137,27 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     @Override
     public void onClickAcceptShipperListener(User shipper) {
         final Dialog dialog = CommonUtils.showLoadingDialog(this);
-        API.putShopReceiveShipper(Config.getInstance().getUserInfo(getApplicationContext()).getAuthenticationToken(),
+        API.putShopReceiveShipper(Config.getInstance().getUserInfo(getApplicationContext())
+                .getAuthenticationToken(),
                 shipper.getUserInvoiceId(), new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
                         dialog.dismiss();
-                        Toast.makeText(ListShipperRegActivity.this, R.string.accept_shipper_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListShipperRegActivity.this,
+                                R.string.accept_shipper_success, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.putExtra(KEY_INVOICE_ID, mInvoiceId);
                         setResult(RESULT_OK, intent);
-                        finish();
+                        onBackPressed();
                     }
 
                     @Override
                     public void onFailure(int code, String message) {
                         dialog.dismiss();
-                        Toast.makeText(ListShipperRegActivity.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListShipperRegActivity.this, message,
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
     }
 
     @Override

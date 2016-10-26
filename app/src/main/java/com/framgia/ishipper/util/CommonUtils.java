@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
@@ -127,5 +128,10 @@ public class CommonUtils {
             return true;
         }
         return false;
+    }
+
+    public static boolean isOpenFromNoti(Activity activity) {
+        Bundle data = activity.getIntent().getExtras();
+        return data != null && data.getString(Const.FirebaseData.INVOICE_ID) != null;
     }
 }

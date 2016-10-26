@@ -37,6 +37,7 @@ import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
 import com.framgia.ishipper.ui.view.CancelDialog;
 import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.HashMap;
@@ -48,7 +49,7 @@ import butterknife.OnClick;
 
 public class OrderDetailActivity extends ToolbarActivity {
 
-    public static final String KEY_INVOICE_ID = "invoice id";
+    public static final String KEY_INVOICE_ID = "invoice_id";
     public static final int REQUEST_INVOICE_ID = 1;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.appbar) AppBarLayout appbar;
@@ -80,6 +81,7 @@ public class OrderDetailActivity extends ToolbarActivity {
     private User mCurrentUser;
     private User mInvoiceUser;
     private Invoice mInvoice;
+    private int mInvoiceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +95,18 @@ public class OrderDetailActivity extends ToolbarActivity {
     private void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) return;
+        if (CommonUtils.isOpenFromNoti(this)) {
+            // Explicit Intent
+            mInvoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
+        } else {
+            // Implicit Intent
+            mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
+        }
+
+        // get Invoice from invoice id
         API.getInvoiceDetail(
                 mCurrentUser.getRole(),
-                String.valueOf(bundle.getInt(KEY_INVOICE_ID)),
+                String.valueOf(mInvoiceId),
                 mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
@@ -107,12 +118,15 @@ public class OrderDetailActivity extends ToolbarActivity {
                         setStatus(mInvoice);
                         showAction(mInvoice.getStatusCode());
                         User user = mInvoice.getUser();
-                        tvDetailDistance.setText(TextFormatUtils.formatDistance(mInvoice.getDistance()));
+                        tvDetailDistance.setText(TextFormatUtils
+                                .formatDistance(mInvoice.getDistance()));
                         tvDetailStart.setText(mInvoice.getAddressStart());
                         tvDetailEnd.setText(mInvoice.getAddressFinish());
                         tvDetailOrderName.setText(mInvoice.getName());
-                        tvDetailOrderPrice.setText(TextFormatUtils.formatPrice(mInvoice.getPrice()));
-                        tvDetailShipPrice.setText(TextFormatUtils.formatPrice(mInvoice.getShippingPrice()));
+                        tvDetailOrderPrice.setText(TextFormatUtils
+                                .formatPrice(mInvoice.getPrice()));
+                        tvDetailShipPrice.setText(TextFormatUtils
+                                .formatPrice(mInvoice.getShippingPrice()));
                         tvDetailShipTime.setText(mInvoice.getDeliveryTime());
                         tvDetailNote.setText(mInvoice.getDescription());
                         if (user == null) return;
@@ -313,6 +327,16 @@ public class OrderDetailActivity extends ToolbarActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (CommonUtils.isOpenFromNoti(this)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
+
     @OnClick({
             R.id.btn_detail_show_shipper,
             R.id.btn_detail_show_shop,
@@ -366,7 +390,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
                         loadingDialog.dismiss();
-                        finish();
+                        onBackPressed();
                     }
 
                     @Override
@@ -395,7 +419,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                         Toast.makeText(OrderDetailActivity.this, response.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                         loadingDialog.dismiss();
-                        finish();
+                        onBackPressed();
                     }
 
                     @Override
@@ -459,7 +483,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                                                 Intent intent = new Intent();
                                                 intent.putExtra(KEY_INVOICE_ID, mInvoice.getId());
                                                 setResult(Activity.RESULT_OK, intent);
-                                                finish();
+                                                onBackPressed();
                                             }
 
                                             @Override
