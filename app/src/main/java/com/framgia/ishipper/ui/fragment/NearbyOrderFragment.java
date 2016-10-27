@@ -553,6 +553,7 @@ public class NearbyOrderFragment extends Fragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.menu_filter) {
             Intent intent = new Intent(mContext, FilterOrderActivity.class);
             startActivityForResult(intent, REQUEST_FILTER);

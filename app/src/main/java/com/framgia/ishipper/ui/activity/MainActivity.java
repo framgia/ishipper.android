@@ -32,6 +32,8 @@ import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private int mSelectedId;
     private boolean doubleBackToExitPressedOnce;
     private TextView mTvNotifyCount;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +207,14 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main_content, menu);
         MenuItem item = menu.findItem(R.id.menu_notification);
         MenuItemCompat.setActionView(item, R.layout.icon_notification);
-        mTvNotifyCount = (TextView) MenuItemCompat.getActionView(item).findViewById(R.id.tvNotifCount);
+        View view = MenuItemCompat.getActionView(item);
+        mTvNotifyCount = (TextView) view.findViewById(R.id.tvNotifCount);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNotifCount(new Random().nextInt(100));
+            }
+        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -218,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
             mTvNotifyCount.setVisibility(View.VISIBLE);
             mTvNotifyCount.setText(String.valueOf(count));
         }
-        invalidateOptionsMenu();
     }
 
     @Override

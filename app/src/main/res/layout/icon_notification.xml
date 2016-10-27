@@ -5,11 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:clickable="true"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/imgNotification"
