@@ -327,4 +327,12 @@ public class APIDefinition {
         public static final String PATH = "";
         public static final String PARAM_SWITCH = "";
     }
+
+    public class UpdateReadNotification {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PARAM_NOTIFICATION_READ = "notifications[read]";
+        public static final String PARAM_NOTIFICATION_ID = "noti_id";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE +
+                                          "}/nofitications/{" + PARAM_NOTIFICATION_ID + "}";
+    }
 }

@@ -287,6 +287,18 @@ public abstract class API {
 
     //endregion
 
+    //region NOTIFICATION
+    public static void updateNotification(String userType,
+                                          String notificationId,
+                                          String token,
+                                          boolean isRead,
+                                          APICallback<APIResponse<EmptyData>> callback) {
+        client.updateReadNotification(userType, notificationId, token, isRead)
+                .enqueue(new RetrofitCallback<>(callback));
+    }
+
+    //endregion
+
     private static OkHttpClient loggingClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
