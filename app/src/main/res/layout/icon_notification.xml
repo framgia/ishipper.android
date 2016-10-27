@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@android:style/Widget.ActionButton"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:src="@drawable/ic_notifications_white_24dp"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvNotifCount"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/badge_size"
+        android:layout_alignBottom="@id/imgNotification"
+        android:layout_alignLeft="@id/imgNotification"
+        android:layout_marginBottom="@dimen/badge_margin"
+        android:layout_marginLeft="@dimen/badge_margin"
+        android:background="@drawable/rounded_square"
+        android:gravity="center"
+        android:minWidth="@dimen/badge_size"
+        android:paddingLeft="@dimen/badge_padding"
+        android:paddingRight="@dimen/badge_padding"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_10sp"/>
+</RelativeLayout>

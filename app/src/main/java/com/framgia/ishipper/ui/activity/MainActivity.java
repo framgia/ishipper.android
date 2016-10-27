@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private User mCurrentUser;
     private int mSelectedId;
     private boolean doubleBackToExitPressedOnce;
+    private TextView mTvNotifyCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +203,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_content, menu);
+        MenuItem item = menu.findItem(R.id.menu_notification);
+        MenuItemCompat.setActionView(item, R.layout.icon_notification);
+        mTvNotifyCount = (TextView) MenuItemCompat.getActionView(item).findViewById(R.id.tvNotifCount);
+
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void setNotifCount(int count) {
+        if (count <= 0) {
+            mTvNotifyCount.setVisibility(View.GONE);
+        } else {
+            mTvNotifyCount.setVisibility(View.VISIBLE);
+            mTvNotifyCount.setText(String.valueOf(count));
+        }
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -210,8 +229,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         getSupportFragmentManager()
-                .findFragmentByTag(MainContentFragment.class.getName())
-                .onRequestPermissionsResult(requestCode,permissions,grantResults);
+            .findFragmentByTag(MainContentFragment.class.getName())
+            .onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
