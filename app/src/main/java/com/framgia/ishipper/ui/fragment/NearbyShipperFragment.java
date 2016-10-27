@@ -83,10 +83,6 @@ public class NearbyShipperFragment extends Fragment implements
 
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
 
-    public NearbyShipperFragment() {
-
-    }
-
     public static NearbyShipperFragment newInstance() {
         NearbyShipperFragment fragment = new NearbyShipperFragment();
         return fragment;

@@ -97,4 +97,9 @@
     <dimen name="tv_body_size">14sp</dimen>
     <dimen name="_65">65dp</dimen>
     <dimen name="_7dp">7dp</dimen>
+    <dimen name="badge_padding">3dp</dimen>
+    <dimen name="badge_size">18dp</dimen>
+    <dimen name="badge_margin">-5dp</dimen>
+    <dimen name="badge_background_radius">9dp</dimen>
+    <dimen name="badge_stroke_width">0.2dp</dimen>
 </resources>

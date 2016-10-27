@@ -548,7 +548,7 @@ public class NearbyOrderFragment extends Fragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main_content, menu);
+        inflater.inflate(R.menu.menu_shipper_filter, menu);
     }
 
     @Override
