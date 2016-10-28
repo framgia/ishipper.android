@@ -1,12 +1,16 @@
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.framgia.ishipper.ui.fragment.NotificationFragment">
+    android:orientation="vertical"
+    tools:context="com.framgia.ishipper.ui.activity.NotificationActivity">
+
+    <include layout="@layout/toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvListNotification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</FrameLayout>
+
+</LinearLayout>

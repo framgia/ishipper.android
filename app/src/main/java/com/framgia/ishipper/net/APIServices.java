@@ -9,6 +9,7 @@ import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.net.data.ListReviewData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ListUserData;
@@ -27,6 +28,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -261,4 +263,11 @@ public interface APIServices {
             @Header(APIDefinition.HEADER_AUTHORIZE) String token,
             @Field(APIDefinition.UpdateReadNotification.PARAM_NOTIFICATION_READ) boolean isRead);
 
+    @GET(APIDefinition.GetAllNotification.PATH)
+    Call<APIResponse<ListNotificationData>> getAllNotification(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.GetAllNotification.PARAM_USER_TYPE) String type,
+            @Query(APIDefinition.GetAllNotification.PARAM_NOTIFICATION_PAGE) int page,
+            @Query(APIDefinition.GetAllNotification.PARAM_PER_PAGE) int perPage
+    );
 }
