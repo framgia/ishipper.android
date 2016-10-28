@@ -7,8 +7,8 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-    // private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.108:3001/";
+    //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
+    private static final String DEV_URL = "http://192.168.1.143:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -333,6 +333,14 @@ public class APIDefinition {
         public static final String PARAM_NOTIFICATION_READ = "notifications[read]";
         public static final String PARAM_NOTIFICATION_ID = "noti_id";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE +
-                                          "}/nofitications/{" + PARAM_NOTIFICATION_ID + "}";
+                "}/nofitications/{" + PARAM_NOTIFICATION_ID + "}";
     }
+
+    public class GetAllNotification {
+        public static final String PARAM_USER_TYPE = "user_type";
+        public static final String PARAM_NOTIFICATION_PAGE = "notification[page]";
+        public static final String PARAM_PER_PAGE = "notification[per_page]";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/notifications";
+    }
+
 }

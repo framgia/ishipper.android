@@ -12,6 +12,7 @@ import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.net.data.ListReviewData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ListUserData;
@@ -285,6 +286,15 @@ public abstract class API {
         client.switchNotification(token, notification).enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void getAllNotification(
+            String token,
+            String userType,
+            int page,
+            int perPage,
+            APICallback<APIResponse<ListNotificationData>> callback) {
+        client.getAllNotification(token, userType, page, perPage)
+                .enqueue(new RetrofitCallback<>(callback));
+    }
     //endregion
 
     //region NOTIFICATION

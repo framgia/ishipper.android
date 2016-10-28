@@ -1,28 +1,46 @@
 package com.framgia.ishipper.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by HungNT on 10/21/16.
  */
 
 public class Notification {
-    private String mContent;
-    private String mTimePost;
+    @SerializedName("content") private String mContent;
+    @SerializedName("created_at") private String mTimePost;
     private String avatarUrl;
-    private String userPost;
+    @SerializedName("owner_id") private String mOwnerId;
 
     public String getContent() {
         return mContent;
     }
 
-    public String getTimePost() {
-        return mTimePost;
+    public void setContent(String content) {
+        mContent = content;
     }
 
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
-    public String getUserPost() {
-        return userPost;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getTimePost() {
+        return mTimePost;
+    }
+
+    public void setTimePost(String timePost) {
+        mTimePost = timePost;
+    }
+
+    public String getOwnerId() {
+        return mOwnerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        mOwnerId = ownerId;
     }
 }

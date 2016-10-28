@@ -61,4 +61,8 @@ public class Const {
         public static final String INVOICE_ID = "invoice_id";
 
     }
+
+    public class Setting {
+        public static final int PER_PAGE = 20;
+    }
 }
