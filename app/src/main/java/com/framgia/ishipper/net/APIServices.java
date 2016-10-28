@@ -253,4 +253,12 @@ public interface APIServices {
             @Field(APIDefinition.SwitchNotification.PARAM_SWITCH) int notification
     );
 
+    @FormUrlEncoded
+    @PUT(APIDefinition.UpdateReadNotification.PATH)
+    Call<APIResponse<EmptyData>> updateReadNotification(
+            @Path(APIDefinition.UpdateReadNotification.PARAM_USER_TYPE) String userType,
+            @Path(APIDefinition.UpdateReadNotification.PARAM_NOTIFICATION_ID) String notiId,
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Field(APIDefinition.UpdateReadNotification.PARAM_NOTIFICATION_READ) boolean isRead);
+
 }
