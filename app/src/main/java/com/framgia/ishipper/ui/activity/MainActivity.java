@@ -90,19 +90,19 @@ public class MainActivity extends AppCompatActivity {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shipper);
         }
         mNavigationView.setNavigationItemSelectedListener(
-            new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(MenuItem item) {
-                    selectItem(item.getItemId());
-                    return true;
-                }
-            });
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        selectItem(item.getItemId());
+                        return true;
+                    }
+                });
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-            this,
-            mDrawerLayout,
-            mToolbar,
-            R.string.drawer_open,
-            R.string.drawer_close);
+                this,
+                mDrawerLayout,
+                mToolbar,
+                R.string.drawer_open,
+                R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         /** Set listener to image icon in drawer */
@@ -140,15 +140,15 @@ public class MainActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle(getString(R.string.title_activity_order_manager));
                 if (userType == SHIPPER) {
                     fragment =
-                        ShipperOrderManagerFragment.instantiate(MainActivity.this,
-                            ShipperOrderManagerFragment.class.getName(),
-                            null);
+                            ShipperOrderManagerFragment.instantiate(MainActivity.this,
+                                    ShipperOrderManagerFragment.class.getName(),
+                                    null);
                     tag = ShipperOrderManagerFragment.class.getName();
                 } else {
                     fragment =
-                        ShipperOrderManagerFragment.instantiate(MainActivity.this,
-                            ShopOrderManagerFragment.class.getName(),
-                            null);
+                            ShipperOrderManagerFragment.instantiate(MainActivity.this,
+                                    ShopOrderManagerFragment.class.getName(),
+                                    null);
                     tag = ShipperOrderManagerFragment.class.getName();
                 }
                 break;
@@ -179,35 +179,35 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_setting:
                 mNavigationView.setCheckedItem(mSelectedId);
                 startActivityForResult(new Intent(this, SettingActivity.class),
-                    Const.REQUEST_SETTING);
+                        Const.REQUEST_SETTING);
                 return;
             default:
                 return;
         }
         if (fragment != null) {
             getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, fragment, tag)
-                .commit();
+                    .beginTransaction()
+                    .replace(R.id.main_container, fragment, tag)
+                    .commit();
         }
     }
 
     private void signOut() {
         StorageUtils.clearAll(getApplicationContext());
         API.signOut(mCurrentUser.getAuthenticationToken(),
-            mCurrentUser.getPhoneNumber(),
-            new API.APICallback<APIResponse<EmptyData>>() {
-                @Override
-                public void onResponse(APIResponse<EmptyData> response) {
-                    Toast.makeText(MainActivity.this, response.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                }
+                mCurrentUser.getPhoneNumber(),
+                new API.APICallback<APIResponse<EmptyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<EmptyData> response) {
+                        Toast.makeText(MainActivity.this, response.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFailure(int code, String message) {
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         finish();
     }
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Set action
+                startActivity(new Intent(getBaseContext(), NotificationActivity.class));
             }
         });
 
@@ -232,17 +232,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void getNotifCount() {
         API.getUnreadNotification(mCurrentUser.getAuthenticationToken(),
-            mCurrentUser.getUserType(), new API.APICallback<APIResponse<ListNotificationData>>() {
-                @Override
-                public void onResponse(APIResponse<ListNotificationData> response) {
-                    setNotifCount(response.getData().getUnread());
-                }
+                mCurrentUser.getUserType(), new API.APICallback<APIResponse<ListNotificationData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListNotificationData> response) {
+                        setNotifCount(response.getData().getUnread());
+                    }
 
-                @Override
-                public void onFailure(int code, String message) {
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void setNotifCount(int count) {
@@ -262,8 +262,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         getSupportFragmentManager()
-            .findFragmentByTag(MainContentFragment.class.getName())
-            .onRequestPermissionsResult(requestCode, permissions, grantResults);
+                .findFragmentByTag(MainContentFragment.class.getName())
+                .onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -271,15 +271,15 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
             getSupportFragmentManager()
-                .findFragmentByTag(MainContentFragment.class.getName())
-                .onActivityResult(requestCode, resultCode, data);
+                    .findFragmentByTag(MainContentFragment.class.getName())
+                    .onActivityResult(requestCode, resultCode, data);
         } else if (requestCode == Const.REQUEST_SETTING) {
             if (!Config.getInstance().getUserInfo(getApplicationContext()).isShop()) {
                 if (mSelectedId == R.id.nav_nearby_order) {
                     // Don't need to update nearby invoice if user is shop
                     getSupportFragmentManager()
-                        .findFragmentByTag(MainContentFragment.class.getName())
-                        .onActivityResult(requestCode, resultCode, data);
+                            .findFragmentByTag(MainContentFragment.class.getName())
+                            .onActivityResult(requestCode, resultCode, data);
                 }
             }
         }

@@ -72,7 +72,7 @@ public class ListShipperRegActivity extends ToolbarActivity implements
                                        @Override
                                        public void onResponse(
                                                APIResponse<EmptyData> response) {
-                                           //TODO: read notification
+                                           //TODO: read notificationItem
                                        }
 
                                        @Override

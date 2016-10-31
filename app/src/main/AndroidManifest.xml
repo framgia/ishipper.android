@@ -38,8 +38,8 @@
             android:name=".ui.activity.ListShipperRegActivity"
             android:label="@string/title_activity_list_shipper_reg">
             <intent-filter>
-                <action android:name="com.framgia.ishipper.LIST_SHIPPER_REGISTER" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.framgia.ishipper.LIST_SHIPPER_REGISTER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.OrderDetailActivity">
@@ -63,6 +63,7 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".ui.activity.BlackListActivity"/>
+        <activity android:name=".ui.activity.NotificationActivity"/>
 
         <service
             android:name=".service.FirebaseInstanceService">

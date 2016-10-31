@@ -27,7 +27,7 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
-import com.framgia.ishipper.ui.LocationSettingCallback;
+import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;

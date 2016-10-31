@@ -17,7 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.ui.LocationSettingCallback;
+import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;

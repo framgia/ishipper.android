@@ -105,7 +105,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                                        @Override
                                        public void onResponse(
                                                APIResponse<EmptyData> response) {
-                                           //TODO: read notification
+                                           //TODO: read notificationItem
                                        }
 
                                        @Override
