@@ -46,12 +46,14 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     private ShipperRegAdapter mShipperRegAdapter;
     private int mInvoiceId;
     private List<User> mShipperList;
+    private User mCurrentUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_shipper_reg);
         ButterKnife.bind(this);
+        mCurrentUser = Config.getInstance().getUserInfo(this);
         initData();
         initEvent();
         com.framgia.ishipper.common.Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
@@ -63,6 +65,21 @@ public class ListShipperRegActivity extends ToolbarActivity implements
             // Explicit Intent
             mInvoiceId = Integer.valueOf(getIntent().getExtras()
                     .getString(Const.FirebaseData.INVOICE_ID));
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            API.updateNotification(mCurrentUser.getUserType(), notiId,
+                                   mCurrentUser.getAuthenticationToken(), true,
+                                   new API.APICallback<APIResponse<EmptyData>>() {
+                                       @Override
+                                       public void onResponse(
+                                               APIResponse<EmptyData> response) {
+                                           //TODO: read notification
+                                       }
+
+                                       @Override
+                                       public void onFailure(int code, String message) {
+
+                                       }
+                                   });
         } else {
             // Implicit Intent
             mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);

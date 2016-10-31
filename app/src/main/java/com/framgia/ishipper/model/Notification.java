@@ -7,10 +7,19 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Notification {
+    @SerializedName("id") private String mId;
     @SerializedName("content") private String mContent;
     @SerializedName("created_at") private String mTimePost;
     private String avatarUrl;
     @SerializedName("owner_id") private String mOwnerId;
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
+    }
 
     public String getContent() {
         return mContent;

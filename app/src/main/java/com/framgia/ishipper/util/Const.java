@@ -60,6 +60,7 @@ public class Const {
     public class FirebaseData {
         public static final String INVOICE_ID = "invoice_id";
 
+        public static final String NOTI_ID = "id";
     }
 
     public class Setting {
