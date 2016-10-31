@@ -28,7 +28,6 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -269,5 +268,11 @@ public interface APIServices {
             @Path(APIDefinition.GetAllNotification.PARAM_USER_TYPE) String type,
             @Query(APIDefinition.GetAllNotification.PARAM_NOTIFICATION_PAGE) int page,
             @Query(APIDefinition.GetAllNotification.PARAM_PER_PAGE) int perPage
+    );
+
+    @GET(APIDefinition.GetAllNotification.PATH)
+    Call<APIResponse<ListNotificationData>> getUnreadNotificationCount(
+            @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+            @Path(APIDefinition.GetAllNotification.PARAM_USER_TYPE) String type
     );
 }
