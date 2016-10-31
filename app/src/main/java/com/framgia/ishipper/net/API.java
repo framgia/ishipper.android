@@ -295,6 +295,14 @@ public abstract class API {
         client.getAllNotification(token, userType, page, perPage)
                 .enqueue(new RetrofitCallback<>(callback));
     }
+
+    public static void getUnreadNotification(
+            String token,
+            String userType,
+            APICallback<APIResponse<ListNotificationData>> callback) {
+        client.getUnreadNotificationCount(token, userType)
+                .enqueue(new RetrofitCallback<>(callback));
+    }
     //endregion
 
     //region NOTIFICATION

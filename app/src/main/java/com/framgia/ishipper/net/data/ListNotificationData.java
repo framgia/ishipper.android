@@ -13,6 +13,8 @@ import java.util.List;
 public class ListNotificationData {
     @SerializedName("notifications")
     private List<Notification> mNotifications = new ArrayList<>();
+    @SerializedName("unread")
+    private int mUnread;
 
     public List<Notification> getNotifications() {
         return mNotifications;
@@ -20,5 +22,9 @@ public class ListNotificationData {
 
     public void setNotifications(List<Notification> notifications) {
         mNotifications = notifications;
+    }
+
+    public int getUnread() {
+        return mUnread;
     }
 }

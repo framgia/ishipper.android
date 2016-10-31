@@ -1,6 +1,9 @@
 package com.framgia.ishipper.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,6 +26,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
 import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
@@ -31,8 +35,6 @@ import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce;
     private TextView mTvNotifyCount;
 
+    BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getNotifCount();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             selectItem(R.id.nav_nearby_shipper);
             getSupportActionBar().setTitle(getString(R.string.nav_nearby_shipper_item));
         }
+        registerReceiver(mNotificationReceiver, new IntentFilter(Const.Broadcast.NEW_NOTIFICATION_ACTION));
     }
 
     private void initView() {
@@ -209,14 +219,30 @@ public class MainActivity extends AppCompatActivity {
         MenuItemCompat.setActionView(item, R.layout.icon_notification);
         View view = MenuItemCompat.getActionView(item);
         mTvNotifyCount = (TextView) view.findViewById(R.id.tvNotifCount);
+        getNotifCount();
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNotifCount(new Random().nextInt(100));
+                // TODO Set action
             }
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void getNotifCount() {
+        API.getUnreadNotification(mCurrentUser.getAuthenticationToken(),
+            mCurrentUser.getUserType(), new API.APICallback<APIResponse<ListNotificationData>>() {
+                @Override
+                public void onResponse(APIResponse<ListNotificationData> response) {
+                    setNotifCount(response.getData().getUnread());
+                }
+
+                @Override
+                public void onFailure(int code, String message) {
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 
     private void setNotifCount(int count) {
@@ -279,5 +305,11 @@ public class MainActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, Const.TIME_DELAY_EXIT);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mNotificationReceiver);
     }
 }

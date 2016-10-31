@@ -65,4 +65,8 @@ public class Const {
     public class Setting {
         public static final int PER_PAGE = 20;
     }
+
+    public class Broadcast {
+        public static final String NEW_NOTIFICATION_ACTION = "com.framgia.ishipper.NEW_NOTIFICATION_ACTION";
+    }
 }
