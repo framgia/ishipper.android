@@ -98,6 +98,21 @@ public class OrderDetailActivity extends ToolbarActivity {
         if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
             mInvoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            API.updateNotification(mCurrentUser.getUserType(), notiId,
+                                   mCurrentUser.getAuthenticationToken(), true,
+                                   new API.APICallback<APIResponse<EmptyData>>() {
+                                       @Override
+                                       public void onResponse(
+                                               APIResponse<EmptyData> response) {
+                                           //TODO: read notification
+                                       }
+
+                                       @Override
+                                       public void onFailure(int code, String message) {
+
+                                       }
+                                   });
         } else {
             // Implicit Intent
             mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
