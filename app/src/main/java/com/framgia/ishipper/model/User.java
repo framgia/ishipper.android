@@ -31,7 +31,7 @@ public class User implements Parcelable {
     @SerializedName("user_invoice_id") private String mUserInvoiceId;
     @SerializedName("black_list_id") private String mBlackListUserId;
     @SerializedName("favorite_list_id") private String mFavoriteListId;
-    @SerializedName("notification") private int mNotification;
+    @SerializedName("notificationItem") private int mNotification;
 
 
     public User() {}

@@ -10,8 +10,9 @@ public class Notification {
     @SerializedName("id") private String mId;
     @SerializedName("content") private String mContent;
     @SerializedName("created_at") private String mTimePost;
-    private String avatarUrl;
     @SerializedName("owner_id") private String mOwnerId;
+    @SerializedName("read") private boolean mRead;
+    private String avatarUrl;
 
     public String getId() {
         return mId;
@@ -51,5 +52,13 @@ public class Notification {
 
     public void setOwnerId(String ownerId) {
         mOwnerId = ownerId;
+    }
+
+    public boolean isRead() {
+        return mRead;
+    }
+
+    public void setRead(boolean read) {
+        mRead = read;
     }
 }

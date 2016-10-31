@@ -73,6 +73,9 @@
     <dimen name="searchview_padding">20dp</dimen>
     <dimen name="all_layout_margin_regular">16dp</dimen>
     <dimen name="fragment_phone_validate_text_size">44sp</dimen>
+    <dimen name="activity_horizontal_padding">16dp</dimen>
+    <dimen name="activity_vertical_padding">16dp</dimen>
+
 
     <dimen name="background_shadow_size">0.5dp</dimen>
     <dimen name="tv_drawable_padding">10dp</dimen>
@@ -82,8 +85,7 @@
     <dimen name="tv_profile_name_margin_bottom">25dp</dimen>
     <dimen name="cardview_margin">6dp</dimen>
     <dimen name="linear_profile_padding">10dp</dimen>
-    <dimen name="activity_horizontal_padding">16dp</dimen>
-    <dimen name="activity_vertical_padding">16dp</dimen>
+
     <dimen name="searchview_size">15dp</dimen>
     <dimen name="shipper_item_avatar_size">60dp</dimen>
     <dimen name="text_size_10sp">10sp</dimen>

@@ -41,7 +41,7 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
-import com.framgia.ishipper.ui.LocationSettingCallback;
+import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.framgia.ishipper.ui.activity.FilterOrderActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
