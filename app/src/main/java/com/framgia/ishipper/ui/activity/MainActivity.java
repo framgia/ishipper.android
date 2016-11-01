@@ -76,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mNotificationReceiver, new IntentFilter(Const.Broadcast.NEW_NOTIFICATION_ACTION));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //FIXME update using socket
+        getNotifCount();
+    }
+
     private void initView() {
         setSupportActionBar(mToolbar);
         mCurrentUser = Config.getInstance().getUserInfo(this);
