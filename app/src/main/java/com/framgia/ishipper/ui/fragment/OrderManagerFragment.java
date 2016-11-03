@@ -4,17 +4,16 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -41,11 +40,11 @@ import butterknife.Unbinder;
 
 public class OrderManagerFragment extends Fragment implements OrderListFragment.OnActionClickListener {
     private static final String TAG = "OrderManagerFragment";
-    private OrderManagerPagerAdapter mOrderManagerPagerAdapter;
     @BindView(R.id.viewpager) ViewPager mViewPager;
     @BindView(R.id.tabs) TabLayout mTabLayout;
 
     private List<OrderListFragment> mListOrderFragment;
+    private OrderManagerPagerAdapter mOrderManagerPagerAdapter;
     private Unbinder mUnbinder;
     private List<String> mOrderTitleList;
     private Context mContext;
@@ -289,13 +288,13 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         switch (requestCode) {
             case ListShipperRegActivity.REQUEST_CODE_RESULT:
                 if (resultCode == Activity.RESULT_OK) {
-                    int invoiceId = data.getIntExtra(ListShipperRegActivity.KEY_INVOICE_ID, - 1);
+                    int invoiceId = data.getIntExtra(ListShipperRegActivity.KEY_INVOICE_ID, -1);
                     notifyChangeTab(Invoice.STATUS_CODE_INIT);
                     notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
                 }
                 break;
             case OrderDetailActivity.REQUEST_INVOICE_ID:
-                if ( resultCode == Activity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     if (data == null) return;
                     int id = data.getIntExtra(OrderDetailActivity.KEY_INVOICE_ID, -1);
                     if (id == -1) return;

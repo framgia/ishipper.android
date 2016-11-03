@@ -70,4 +70,9 @@ public class Const {
     public class Broadcast {
         public static final String NEW_NOTIFICATION_ACTION = "com.framgia.ishipper.NEW_NOTIFICATION_ACTION";
     }
+
+    public class ElevationLevel {
+        public static final int DEFAULT = 8;
+        public static final int NONE = 0;
+    }
 }
