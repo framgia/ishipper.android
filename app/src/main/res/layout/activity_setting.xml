@@ -113,6 +113,34 @@
                     android:src="@drawable/ic_block_32"/>
             </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/all_divider_height"
+            android:background="@color/menu_divider"/>
+
+        <LinearLayout
+            android:id="@+id/layout_favorite_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_action_select"
+            android:orientation="vertical"
+            android:padding="@dimen/all_padding_medium">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_favorite_location"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_title"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/all_margin_medium"
+                android:text="@string/setting_favorite_location_content"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

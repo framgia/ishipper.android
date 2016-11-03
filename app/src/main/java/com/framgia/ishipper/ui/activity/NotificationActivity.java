@@ -83,7 +83,6 @@ public class NotificationActivity extends ToolbarActivity {
                 }
             }
         });
-
     }
 
     private void loadMore(int page) {
@@ -102,7 +101,6 @@ public class NotificationActivity extends ToolbarActivity {
                         mNotificationList.addAll(response.getData().getNotifications());
                         mAdapter.notifyDataSetChanged();
                         mIsLoading = false;
-                        Toast.makeText(getBaseContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -110,6 +108,7 @@ public class NotificationActivity extends ToolbarActivity {
                         Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 }
+
         );
     }
 

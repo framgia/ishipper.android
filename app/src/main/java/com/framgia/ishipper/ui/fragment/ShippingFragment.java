@@ -105,7 +105,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
     @OnClick(R.id.layoutEmpty)
     protected void getListShippingInvoice() {
-        API.getListShipperInvoices(Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
+        API.getListShipperInvoices(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
                 Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<ListInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ListInvoiceData> response) {
@@ -124,7 +124,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
                     @Override
                     public void onFailure(int code, String message) {
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -213,7 +213,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     }
 
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
         } else if (mMap != null) {
             mMap.setMyLocationEnabled(true);
@@ -247,7 +247,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
     @OnClick(R.id.btn_expand_map)
     public void onClick() {
         int height;
-        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_180);
+        Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.rotate_180);
         anim.setFillAfter(true);
         if (!isExpand) {
             height = 700;
@@ -258,7 +258,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
         } else {
             height = 200;
             isExpand = false;
-            anim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_180_reverse);
+            anim = AnimationUtils.loadAnimation(mContext, R.anim.rotate_180_reverse);
             mLayoutOrderDetail.setVisibility(View.VISIBLE);
             mImgExpandMap.startAnimation(anim);
             mRvOrders.setVisibility(View.GONE);
@@ -270,7 +270,7 @@ public class ShippingFragment extends Fragment implements OnMapReadyCallback, Ro
 
     private void settingRecycleView() {
         mAdapter = new OrderShippingAdapter(mInvoiceList, this);
-        mRvOrders.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRvOrders.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRvOrders.setAdapter(mAdapter);
     }
 

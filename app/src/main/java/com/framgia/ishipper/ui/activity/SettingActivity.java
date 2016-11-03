@@ -1,6 +1,5 @@
 package com.framgia.ishipper.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +17,6 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Storage;
@@ -41,6 +39,7 @@ public class SettingActivity extends ToolbarActivity {
     @BindView(R.id.layoutInvoiceRadius) LinearLayout layoutInvoiceRadius;
     @BindView(R.id.ll_setting_notification) LinearLayout mSettingNotification;
     @BindView(R.id.layout_blacklist) LinearLayout mLayoutBlacklist;
+    @BindView(R.id.layout_favorite_location) LinearLayout mLayoutFavoriteLocation;
     private int mInvoiceRadius;
     private User mCurrentUser;
 
@@ -50,7 +49,7 @@ public class SettingActivity extends ToolbarActivity {
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
         initView();
-        settingInvoiceRadiusSeekBar();
+        getWidgetControl();
     }
 
     private void initView() {
@@ -61,6 +60,16 @@ public class SettingActivity extends ToolbarActivity {
         seekbarInvoiceRadius.setProgress(mInvoiceRadius - 1);
         tvInvoiceRadius.setText(
                 getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
+        settingInvoiceRadiusSeekBar();
+    }
+
+    private void getWidgetControl() {
+        mLayoutFavoriteLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: show pick location activity
+            }
+        });
     }
 
     private void settingInvoiceRadiusSeekBar() {

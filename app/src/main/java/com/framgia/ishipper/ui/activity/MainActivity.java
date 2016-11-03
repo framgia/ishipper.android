@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -41,9 +43,12 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.main_navigation) NavigationView mNavigationView;
     @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.appbar) AppBarLayout mAppbar;
+
     public static final int SHIPPER = 0;
     public static final int SHOP = 1;
     public static int userType = SHIPPER;
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            getNotifCount();
+            getNotiCount();
         }
     };
 
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //FIXME update using socket
-        getNotifCount();
+        getNotiCount();
     }
 
     private void initView() {
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.setCheckedItem(id);
         mDrawerLayout.closeDrawer(mNavigationView);
         if (mSelectedId == id) return;
+        setElevationAppBar(Const.ElevationLevel.DEFAULT);
         Fragment fragment;
         String tag = null;
         switch (id) {
@@ -143,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_order_management:
+                setElevationAppBar(Const.ElevationLevel.NONE);
                 mSelectedId = id;
                 getSupportActionBar().setTitle(getString(R.string.title_activity_order_manager));
                 if (userType == SHIPPER) {
@@ -226,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItemCompat.setActionView(item, R.layout.icon_notification);
         View view = MenuItemCompat.getActionView(item);
         mTvNotifyCount = (TextView) view.findViewById(R.id.tvNotifCount);
-        getNotifCount();
+        getNotiCount();
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void getNotifCount() {
+    private void getNotiCount() {
         API.getUnreadNotification(mCurrentUser.getAuthenticationToken(),
                 mCurrentUser.getUserType(), new API.APICallback<APIResponse<ListNotificationData>>() {
                     @Override
@@ -258,6 +265,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mTvNotifyCount.setVisibility(View.VISIBLE);
             mTvNotifyCount.setText(String.valueOf(count));
+        }
+    }
+
+    private void setElevationAppBar(int level) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mAppbar.setElevation(level);
         }
     }
 
