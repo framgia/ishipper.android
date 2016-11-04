@@ -1,17 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:clickable="true"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
               android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <FrameLayout
             android:id="@+id/layoutMapContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
         <ImageView
             android:id="@+id/imgPickPosition"
@@ -21,7 +30,6 @@
             android:layout_marginBottom="16.5dp"
             android:src="@drawable/ic_map_picker_start"
             android:visibility="visible"/>
-
     </FrameLayout>
 
     <LinearLayout
@@ -40,20 +48,23 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
+            <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
                 android:id="@+id/edt_address_start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/fragment_create_step1_start_point_hint"
                 android:layout_weight="1"
-                android:textSize="@dimen/text_size_content"/>
+                android:hint="@string/fragment_create_step1_start_point_hint"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/text_size_content"
+                app:pacv_googleMapsApiKey="@string/google_maps_key"
+                app:pacv_historyFile="@null"
+                app:pacv_languageCode="vi"/>
 
             <ImageView
                 android:id="@+id/btnPickStart"
                 android:layout_width="@dimen/_30dp"
                 android:layout_height="@dimen/_30dp"
                 android:src="@drawable/ic_map_picker_start"/>
-
         </LinearLayout>
 
         <TextView
@@ -66,20 +77,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
+            <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
                 android:id="@+id/edt_address_end"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/fragment_create_step1_end_point_hint"
-                android:textSize="@dimen/text_size_content"/>
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/text_size_content"
+                app:pacv_googleMapsApiKey="@string/google_maps_key"
+                app:pacv_languageCode="vi"/>
 
             <ImageView
                 android:id="@+id/btnPickEnd"
                 android:layout_width="@dimen/_30dp"
                 android:layout_height="@dimen/_30dp"
                 android:src="@drawable/ic_map_picker_end"/>
-
         </LinearLayout>
 
         <TextView
@@ -95,7 +108,7 @@
             style="@style/AppButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tiếp tục"
+            android:text="@string/all_button_continue"
             android:textAllCaps="true"/>
     </LinearLayout>
 </LinearLayout>
