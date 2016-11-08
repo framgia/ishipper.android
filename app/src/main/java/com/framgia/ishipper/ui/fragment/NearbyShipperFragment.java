@@ -2,12 +2,12 @@ package com.framgia.ishipper.ui.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,6 +37,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -67,7 +69,8 @@ import butterknife.Unbinder;
 public class NearbyShipperFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
     private static final String TAG = "NearbyShipperFragment";
     private static final float RADIUS = 5;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -80,6 +83,7 @@ public class NearbyShipperFragment extends Fragment implements
     private User mCurrentUser;
     private Context mContext;
     private FetchAddressTask task;
+    private Dialog mDialog;
 
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
 
@@ -162,13 +166,81 @@ public class NearbyShipperFragment extends Fragment implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    Place place = PlaceAutocomplete.getPlace(mContext, data);
+                    Log.d(TAG, "onActivityResult: " + place.getName());
+                    mTvSearchArea.setText(place.getName());
+                    double latitude = place.getLatLng().latitude;
+                    double longitude = place.getLatLng().longitude;
+                    MapUtils.zoomToPosition(mGoogleMap, new LatLng(latitude, longitude));
+                    break;
+                case PlaceAutocomplete.RESULT_ERROR:
+                    Status status = PlaceAutocomplete.getStatus(mContext, data);
+                    Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    break;
+                case Activity.RESULT_CANCELED:
+                    Log.d(TAG, " Search Cancel");
+                    break;
+            }
+        } else if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+            //            location setting is set up
+            if (resultCode == Activity.RESULT_OK) {
+                mMapFragment.getMapAsync(NearbyShipperFragment.this);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (PermissionUtils.isPermissionGranted(
+                permissions,
+                grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        )) {
+            CommonUtils.checkLocationRequestSetting(
+                    getActivity(),
+                    mGoogleApiClient,
+                    new LocationSettingCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mMapFragment.getMapAsync(NearbyShipperFragment.this);
+                        }
+                    });
+        }
+    }
+
+    @OnClick(R.id.rl_search_view)
+    public void onClick() {
+        try {
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                    .build();
+
+            Intent searchIntent = new PlaceAutocomplete
+                    .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                    .setFilter(typeFilter)
+                    .build(getActivity());
+            startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void onConnectionSuspended(int i) {
-//        Toast.makeText(mContext, "Suspended", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -184,23 +256,34 @@ public class NearbyShipperFragment extends Fragment implements
         super.onDestroy();
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        onLocationChange(location);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        mDialog.dismiss();
+    }
+
     // initialize map
     private void initMap() {
         if (PermissionUtils.checkLocationPermission(mContext)) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLocation != null) {
-            mCurrentUser.setLatitude(mLocation.getLatitude());
-            mCurrentUser.setLongitude(mLocation.getLongitude());
-            MapUtils.zoomToPosition(
-                    mGoogleMap,
-                    new LatLng(mLocation.getLatitude(),
-                            mLocation.getLongitude())
-            );
-            markShipperNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), RADIUS);
-            configGoogleMap();
+        if (mLocation == null) {
+            mDialog = CommonUtils.showLoadingDialog(mContext);
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, new LocationRequest(), NearbyShipperFragment.this);
         } else {
-            Toast.makeText(mContext, R.string.all_cant_get_location, Toast.LENGTH_SHORT).show();
+            onLocationChange(mLocation);
+            android.util.Log.d(TAG, "initMap: " + mLocation);
         }
+    }
+
+    private void onLocationChange(Location location) {
+        mCurrentUser.setLatitude(location.getLatitude());
+        mCurrentUser.setLongitude(location.getLongitude());
+        MapUtils.zoomToPosition(mGoogleMap,
+                new LatLng(location.getLatitude(), location.getLongitude()));
+        markShipperNearby(mCurrentUser.getLatitude(), mCurrentUser.getLongitude(), RADIUS);
+        configGoogleMap();
     }
 
     /**
@@ -250,54 +333,6 @@ public class NearbyShipperFragment extends Fragment implements
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(mContext, data);
-                Log.d(TAG, "onActivityResult: " + place.getName());
-                mTvSearchArea.setText(place.getName());
-                double latitude = place.getLatLng().latitude;
-                double longitude = place.getLatLng().longitude;
-                MapUtils.zoomToPosition(mGoogleMap, new LatLng(latitude, longitude));
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(mContext, data);
-                Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Log.d(TAG, " Search Cancel");
-            }
-        }
-        if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
- //            location setting is set up
-            if (resultCode == Activity.RESULT_OK) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMapFragment.getMapAsync(NearbyShipperFragment.this);
-                    }
-                }, Const.REQUEST_LOCATION_DELAY_TIME);
-            }
-        }
-    }
-
-    @OnClick(R.id.rl_search_view)
-    public void onClick() {
-        try {
-            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                    .build();
-
-            Intent searchIntent = new PlaceAutocomplete
-                    .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                    .setFilter(typeFilter)
-                    .build(getActivity());
-            startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private void configGoogleMap() {
         mGoogleMap.getUiSettings().setCompassEnabled(false);
@@ -357,27 +392,6 @@ public class NearbyShipperFragment extends Fragment implements
                 // TODO: 30/08/2016  
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if (PermissionUtils.isPermissionGranted(
-                permissions,
-                grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        )) {
-            CommonUtils.checkLocationRequestSetting(
-                    getActivity(),
-                    mGoogleApiClient,
-                    new LocationSettingCallback() {
-                        @Override
-                        public void onSuccess() {
-                            mMapFragment.getMapAsync(NearbyShipperFragment.this);
-                        }
-                    });
-        }
     }
 
     /**
