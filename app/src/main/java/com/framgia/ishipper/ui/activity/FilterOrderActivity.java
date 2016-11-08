@@ -51,8 +51,6 @@ public class FilterOrderActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter_order);
-        ButterKnife.bind(this);
         getWidgetControl();
     }
 
@@ -72,6 +70,11 @@ public class FilterOrderActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.all_filter_order;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_filter_order;
     }
 
     @OnClick({

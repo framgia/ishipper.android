@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
     //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.85:3001/";
+    private static final String DEV_URL = "http://192.168.1.11:3001/";
     private static final String PROD_URL = "";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
@@ -341,6 +341,13 @@ public class APIDefinition {
         public static final String PARAM_NOTIFICATION_PAGE = "notification[page]";
         public static final String PARAM_PER_PAGE = "notification[per_page]";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE + "}/notifications";
+    }
+
+    public class WebSockets {
+        public static final String WEBSOCKETS_URL = DEV_URL + "cable";
+        public static final String PARAM_PHONE_NUMBER = "phone_number";
+        public static final int INTERVAL_DEFAULT = 15 * 1000;
+        public static final int TIMEOUT_DEFAULT = 60 * 1000;
     }
 
 }

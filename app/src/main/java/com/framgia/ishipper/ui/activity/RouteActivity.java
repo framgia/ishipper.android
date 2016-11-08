@@ -45,8 +45,6 @@ public class RouteActivity extends ToolbarActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route);
-        ButterKnife.bind(this);
 
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
@@ -154,6 +152,11 @@ public class RouteActivity extends ToolbarActivity implements OnMapReadyCallback
     @Override
     int getActivityTitle() {
         return R.string.title_activity_route;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_route;
     }
 
     @Override

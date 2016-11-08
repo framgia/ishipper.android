@@ -43,6 +43,7 @@ dependencies {
     compile 'com.google.firebase:firebase-config:9.4.0'
     compile 'com.seatgeek:placesautocomplete:0.2-SNAPSHOT'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.neovisionaries:nv-websocket-client:1.30'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -7,13 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
@@ -51,16 +51,14 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_shipper_reg);
-        ButterKnife.bind(this);
-        mCurrentUser = Config.getInstance().getUserInfo(this);
         initData();
         initEvent();
-        com.framgia.ishipper.common.Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
+        Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
 
     }
 
     private void initData() {
+        mCurrentUser = Config.getInstance().getUserInfo(this);
         if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
             mInvoiceId = Integer.valueOf(getIntent().getExtras()
@@ -185,5 +183,10 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     @Override
     int getActivityTitle() {
         return R.string.title_activity_list_shipper_reg;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_list_shipper_reg;
     }
 }

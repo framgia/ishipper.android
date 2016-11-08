@@ -1,6 +1,7 @@
 package com.framgia.ishipper.ui.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,14 +18,16 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.ui.adapter.NotificationAdapter;
+import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
+import com.neovisionaries.ws.client.WebSocket;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends ToolbarActivity {
+public class NotificationActivity extends ToolbarActivity implements SocketCallback {
 
     private static final String TAG = "NotificationActivity";
     @BindView(R.id.rvListNotification) RecyclerView rvListNotification;
@@ -41,8 +44,6 @@ public class NotificationActivity extends ToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
-        ButterKnife.bind(this);
         mCurrentUser = Config.getInstance().getUserInfo(this);
         if (mCurrentUser == null) {
             return;
@@ -83,6 +84,7 @@ public class NotificationActivity extends ToolbarActivity {
                 }
             }
         });
+        connectWebSocket(this);
     }
 
     private void loadMore(int page) {
@@ -120,5 +122,21 @@ public class NotificationActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.title_activity_notification;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_notification;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disconnectWebSocket();
+    }
+
+    @Override
+    public void onCallback(WebSocket websocket, String text) {
+        //TODO: handle data from socket server
     }
 }

@@ -32,8 +32,6 @@ public class ChangePasswordActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -46,6 +44,10 @@ public class ChangePasswordActivity extends ToolbarActivity {
         return R.string.title_activity_change_password;
     }
 
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_change_password;
+    }
 
     @OnClick(R.id.btn_change_password)
     public void onClick() {

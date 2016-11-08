@@ -46,8 +46,6 @@ public class SearchUserActivity extends ToolbarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_user);
-        ButterKnife.bind(this);
 
         mRequestCode = getIntent()
                 .getIntExtra(EXTRA_REQUEST_CODE, Const.RequestCode.REQUEST_SEARCH_BLACKLIST);
@@ -105,6 +103,11 @@ public class SearchUserActivity extends ToolbarActivity
     @Override
     int getActivityTitle() {
         return R.string.activity_search_title;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_search_user;
     }
 
     public static Intent startIntent(Context context, int requestCode) {

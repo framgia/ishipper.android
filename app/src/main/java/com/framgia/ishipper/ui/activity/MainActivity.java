@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,14 +33,15 @@ import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.neovisionaries.ws.client.WebSocket;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ToolbarActivity implements SocketCallback {
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -58,38 +58,19 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce;
     private TextView mTvNotifyCount;
 
-    BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            getNotiCount();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         initView();
-        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
-            selectItem(R.id.nav_nearby_order);
-            getSupportActionBar().setTitle(getString(R.string.nav_nearby_order_item));
-        } else {
-            selectItem(R.id.nav_nearby_shipper);
-            getSupportActionBar().setTitle(getString(R.string.nav_nearby_shipper_item));
-        }
-        registerReceiver(mNotificationReceiver, new IntentFilter(Const.Broadcast.NEW_NOTIFICATION_ACTION));
+        connectWebSocket(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //FIXME update using socket
-        getNotiCount();
     }
 
     private void initView() {
-        setSupportActionBar(mToolbar);
         mCurrentUser = Config.getInstance().getUserInfo(this);
         if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
             userType = SHIPPER;
@@ -112,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
-                mToolbar,
+                getToolbar(),
                 R.string.drawer_open,
                 R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
@@ -126,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getBaseContext(), UserProfileActivity.class));
             }
         });
+
+        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
+            selectItem(R.id.nav_nearby_order);
+        } else {
+            selectItem(R.id.nav_nearby_shipper);
+        }
     }
 
     private void selectItem(int id) {
@@ -139,19 +126,19 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_nearby_order:
                 mSelectedId = id;
                 fragment = new MainContentFragment();
-                getSupportActionBar().setTitle(getString(R.string.nav_nearby_order_item));
+                getToolbar().setTitle(getString(R.string.nav_nearby_order_item));
                 tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_nearby_shipper:
                 mSelectedId = id;
                 fragment = new MainContentFragment();
-                getSupportActionBar().setTitle(getString(R.string.nav_nearby_shipper_item));
+                getToolbar().setTitle(getString(R.string.nav_nearby_shipper_item));
                 tag = MainContentFragment.class.getName();
                 break;
             case R.id.nav_order_management:
                 setElevationAppBar(Const.ElevationLevel.NONE);
                 mSelectedId = id;
-                getSupportActionBar().setTitle(getString(R.string.title_activity_order_manager));
+                getToolbar().setTitle(getString(R.string.title_activity_order_manager));
                 if (userType == SHIPPER) {
                     fragment =
                             ShipperOrderManagerFragment.instantiate(MainActivity.this,
@@ -168,19 +155,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_fb_order:
                 mSelectedId = id;
-                getSupportActionBar().setTitle(getString(R.string.title_facebook_order));
+                getToolbar().setTitle(getString(R.string.title_facebook_order));
                 fragment = FacebookInvoiceFragment.newInstance(true);
                 tag = FacebookInvoiceFragment.class.getName();
                 break;
             case R.id.nav_ship_management:
                 mSelectedId = id;
-                getSupportActionBar().setTitle(getString(R.string.nav_shop_management_item));
+                getToolbar().setTitle(getString(R.string.nav_shop_management_item));
                 fragment = FavoriteFragment.newInstance();
                 tag = FavoriteFragment.class.getName();
                 break;
             case R.id.nav_shop_management:
                 mSelectedId = id;
-                getSupportActionBar().setTitle(getString(R.string.nav_ship_management_item));
+                getToolbar().setTitle(getString(R.string.nav_ship_management_item));
                 fragment = FavoriteFragment.newInstance();
                 tag = FavoriteFragment.class.getName();
                 break;
@@ -243,22 +230,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void getNotiCount() {
-        API.getUnreadNotification(mCurrentUser.getAuthenticationToken(),
-                mCurrentUser.getUserType(), new API.APICallback<APIResponse<ListNotificationData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ListNotificationData> response) {
-                        setNotifCount(response.getData().getUnread());
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
     private void setNotifCount(int count) {
+        if (mTvNotifyCount == null) return;
         if (count <= 0) {
             mTvNotifyCount.setVisibility(View.GONE);
         } else {
@@ -271,6 +244,21 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mAppbar.setElevation(level);
         }
+    }
+
+    @Override
+    Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    int getActivityTitle() {
+        return R.string.title_activity_main;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -329,6 +317,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mNotificationReceiver);
+        disconnectWebSocket();
+    }
+
+    @Override
+    public void onCallback(WebSocket websocket, String text) {
+        //TODO: handle data from socket server
     }
 }
