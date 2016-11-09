@@ -183,5 +183,8 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <dimen name="default_button_padding">8dp</dimen>
+    <style name="Widget.PlacesAutoCompleteTextView.Styled"
+           parent="PACV.Widget.PlacesAutoCompleteTextView">
+    </style>
+
 </resources>

@@ -233,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItemCompat.setActionView(item, R.layout.icon_notification);
         View view = MenuItemCompat.getActionView(item);
         mTvNotifyCount = (TextView) view.findViewById(R.id.tvNotifCount);
-        getNotiCount();
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -3,6 +3,7 @@ package com.framgia.ishipper.ui.fragment;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,12 +39,18 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.seatgeek.placesautocomplete.DetailsCallback;
+import com.seatgeek.placesautocomplete.OnPlaceSelectedListener;
+import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
+import com.seatgeek.placesautocomplete.model.Place;
+import com.seatgeek.placesautocomplete.model.PlaceDetails;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 
 public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -56,8 +62,8 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
 
     @BindView(R.id.layoutMapContainer) FrameLayout mFrameMapContainer;
     @BindView(R.id.imgPickPosition) ImageView mImgPickPosition;
-    @BindView(R.id.edt_address_start) EditText mEdtAddressStart;
-    @BindView(R.id.edt_address_end) EditText mEdtAddressEnd;
+    @BindView(R.id.edt_address_start) PlacesAutocompleteTextView mEdtAddressStart;
+    @BindView(R.id.edt_address_end) PlacesAutocompleteTextView mEdtAddressEnd;
     @BindView(R.id.btnPickStart) ImageView mBtnPickStart;
     @BindView(R.id.btnPickEnd) ImageView mBtnPickEnd;
     @BindView(R.id.tvDistance) TextView mTvDistance;
@@ -73,6 +79,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     private FetchAddressTask task;
     private float mDistance;
     private AsyncTask mGetDistanceTask;
+    private boolean mDisableCameraChange;
 
 
     @Override
@@ -88,13 +95,37 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_shop_create_order_step1, container, false);
         ButterKnife.bind(this, view);
+        initView();
 
-        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(this);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.layoutMapContainer, mapFragment).commit();
-        connectToGoogleApi();
         return view;
+    }
+
+    @OnFocusChange({R.id.edt_address_start, R.id.edt_address_end})
+    public void onFocusChange(View view, boolean hasFocus) {
+        switch (view.getId()) {
+            case R.id.edt_address_start:
+                if (hasFocus) {
+                    setPickStartLocation();
+                    if (mLatLngFinish == null) return;
+
+                    mBtnPickEnd.setImageResource(R.drawable.ic_map_picker_end);
+                    mMakerEnd = mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(mLatLngFinish)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_end)));
+                }
+                break;
+            case R.id.edt_address_end:
+                if (hasFocus) {
+                    setPickEndLocation();
+                    mBtnPickStart.setImageResource(R.drawable.ic_map_picker_start);
+                    mMakerStart = mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(mLatLngStart)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
+                }
+                break;
+        }
     }
 
     private void connectToGoogleApi() {
@@ -244,7 +275,10 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
 
     private void getDistance(LatLng start, LatLng end) {
         if (start == null || end == null) return;
-        if (mGetDistanceTask != null && !mGetDistanceTask.isCancelled()) mGetDistanceTask.cancel(true);
+        if (mGetDistanceTask != null && !mGetDistanceTask.isCancelled()) {
+            mGetDistanceTask.cancel(true);
+        }
+
 
         mGetDistanceTask = MapUtils.routing(start, end, new RoutingListener() {
             @Override
@@ -278,18 +312,18 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         startPickLocation(mMakerStart);
         mImgPickPosition.setImageResource(R.drawable.ic_map_picker_start);
         mBtnPickStart.setImageResource(R.drawable.ic_done);
-        mEdtAddressStart.requestFocus();
     }
 
     private void setPickEndLocation() {
+        mDisableCameraChange = true;
         mStatus = PICK_END_POINT;
         startPickLocation(mMakerEnd);
         mImgPickPosition.setImageResource(R.drawable.ic_map_picker_end);
         mBtnPickEnd.setImageResource(R.drawable.ic_done);
-        mEdtAddressEnd.requestFocus();
     }
 
     private void startPickLocation(Marker marker) {
+        mDisableCameraChange = true;
         if (marker != null) {
             marker.remove();
             MapUtils.zoomToPosition(mMap, marker.getPosition());
@@ -301,10 +335,16 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (PermissionUtils.checkLocationPermission(mContext)) return;
+
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
+                if (mDisableCameraChange) {
+                    mDisableCameraChange = false;
+                    return;
+                }
+                if (mStatus == NONE) return;
                 LatLng position = new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude);
                 if (mStatus == PICK_START_POINT) {
                     mLatLngStart = position;
@@ -330,7 +370,6 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
             MapUtils.zoomToPosition(mMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
             com.framgia.ishipper.common.Log.w(TAG, mLocation.getLatitude() + "");
             mLatLngStart = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-            mEdtAddressStart.setText(MapUtils.getAddressFromLocation(getContext(), mLatLngStart));
             setPickStartLocation();
         } else {
             Toast.makeText(
@@ -392,11 +431,71 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
         @Override
         protected void onPostExecute(String address) {
             super.onPostExecute(address);
-            if (mStatus == PICK_START_POINT) {
+            if (mStatus == NONE) return;
+            PlacesAutocompleteTextView tvShowing;
+            tvShowing = mStatus == PICK_START_POINT ? mEdtAddressStart : mEdtAddressEnd;
+            // Disable dropdown showing up
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                tvShowing.setText(address, false);
+            } else {
+                mEdtAddressStart.setFocusable(false);
+                mEdtAddressStart.setFocusableInTouchMode(false);
                 mEdtAddressStart.setText(address);
-            } else if (mStatus == PICK_END_POINT) {
-                mEdtAddressEnd.setText(address);
+                mEdtAddressStart.setFocusable(true);
+                mEdtAddressStart.setFocusableInTouchMode(true);
             }
         }
+    }
+
+    private void initView() {
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(this);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.layoutMapContainer, mapFragment).commit();
+        connectToGoogleApi();
+
+        mEdtAddressStart.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                mEdtAddressStart.clearFocus();
+                mEdtAddressStart.getDetailsFor(place, new DetailsCallback() {
+                    @Override
+                    public void onSuccess(PlaceDetails placeDetails) {
+                        mLatLngStart = new LatLng(placeDetails.geometry.location.lat,
+                                placeDetails.geometry.location.lng);
+                        mDisableCameraChange = true;
+                        MapUtils.zoomToPosition(mMap, mLatLngStart);
+                        getDistance(mLatLngStart, mLatLngFinish);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        // Dont update
+                    }
+                });
+            }
+        });
+
+        mEdtAddressEnd.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                mEdtAddressEnd.clearFocus();
+                mEdtAddressEnd.getDetailsFor(place, new DetailsCallback() {
+                    @Override
+                    public void onSuccess(PlaceDetails placeDetails) {
+                        mLatLngFinish = new LatLng(placeDetails.geometry.location.lat,
+                                placeDetails.geometry.location.lng);
+                        mDisableCameraChange = true;
+                        MapUtils.zoomToPosition(mMap, mLatLngFinish);
+                        getDistance(mLatLngStart, mLatLngFinish);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        // Dont update
+                    }
+                });
+            }
+        });
     }
 }
