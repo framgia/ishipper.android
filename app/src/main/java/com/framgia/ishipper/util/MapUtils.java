@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.directions.route.AbstractRouting;
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.ui.activity.MainActivity;
@@ -34,7 +35,7 @@ public class MapUtils {
      */
     public static AsyncTask routing(LatLng start, LatLng end, RoutingListener listener) {
         Routing routing = new Routing.Builder()
-                .travelMode(Routing.TravelMode.WALKING)
+                .travelMode(Routing.TravelMode.DRIVING)
                 .withListener(listener)
                 .waypoints(start, end)
                 .build();

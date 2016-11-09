@@ -128,7 +128,9 @@ public class NearbyOrderFragment extends Fragment implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_item_order_show_path:
-                getActivity().startActivity(new Intent(getActivity(), RouteActivity.class));
+                Intent showPathIntent = new Intent(getActivity(), RouteActivity.class);
+                showPathIntent.putExtra(Const.KeyIntent.KEY_INVOICE, mInvoice);
+                getActivity().startActivity(showPathIntent);
                 break;
             case R.id.btn_item_order_register_order:
                 String invoiceId = (String) view.getTag();
@@ -149,11 +151,11 @@ public class NearbyOrderFragment extends Fragment implements
                 }
                 break;
             case R.id.window_order_detail:
-                Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                Intent orderDetailIntent = new Intent(mContext, OrderDetailActivity.class);
                 Bundle extras = new Bundle();
                 extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoice.getId());
-                intent.putExtras(extras);
-                startActivity(intent);
+                orderDetailIntent.putExtras(extras);
+                startActivity(orderDetailIntent);
                 break;
         }
     }

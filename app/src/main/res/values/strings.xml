@@ -275,6 +275,7 @@
     <string name="setting_favorite_location_content">Chọn địa điểm hiển thị các đơn hàng xung quanh</string>
     <string name="all_button_continue">Tiếp tục</string>
     <string name="title_activity_main">Home</string>
+    <string name="all_current_position">Vi tri hien tai</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
