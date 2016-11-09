@@ -30,8 +30,6 @@ public class ForgetPasswordActivity extends ToolbarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forget_password);
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -42,6 +40,11 @@ public class ForgetPasswordActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.forgot_pass;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_forget_password;
     }
 
     @OnClick(R.id.btnDone)

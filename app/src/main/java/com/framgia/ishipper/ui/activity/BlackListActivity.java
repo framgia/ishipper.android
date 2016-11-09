@@ -43,8 +43,6 @@ public class BlackListActivity extends ToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blacklist_user);
-        ButterKnife.bind(this);
         invalidView();
         getBlackList();
     }
@@ -196,5 +194,10 @@ public class BlackListActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.title_black_list_shipper;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_blacklist_user;
     }
 }

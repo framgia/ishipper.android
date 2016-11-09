@@ -51,8 +51,6 @@ public class RegisterActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        ButterKnife.bind(this);
         configUserType();
         setUpSpinner();
     }
@@ -156,6 +154,11 @@ public class RegisterActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.register;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_register;
     }
 
 }

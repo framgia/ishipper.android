@@ -274,6 +274,7 @@
     <string name="setting_black_list_content">Danh sách các shipper bị block</string>
     <string name="setting_favorite_location_content">Chọn địa điểm hiển thị các đơn hàng xung quanh</string>
     <string name="all_button_continue">Tiếp tục</string>
+    <string name="title_activity_main">Home</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

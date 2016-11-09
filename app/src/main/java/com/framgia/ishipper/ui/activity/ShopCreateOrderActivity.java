@@ -22,8 +22,6 @@ public class ShopCreateOrderActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop_create_order);
-        ButterKnife.bind(this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, new ShopCreateOrderStep1Fragment())
@@ -48,6 +46,11 @@ public class ShopCreateOrderActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.title_activity_create_invoice;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_shop_create_order;
     }
 
     @Override

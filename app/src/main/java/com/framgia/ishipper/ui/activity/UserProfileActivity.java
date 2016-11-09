@@ -38,8 +38,6 @@ public class UserProfileActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
-        ButterKnife.bind(this);
         bindData();
     }
 
@@ -51,6 +49,11 @@ public class UserProfileActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.nav_user_name_example;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_user_profile;
     }
 
     private void bindData() {

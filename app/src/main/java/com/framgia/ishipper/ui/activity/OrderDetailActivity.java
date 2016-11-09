@@ -86,8 +86,6 @@ public class OrderDetailActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oder_detail);
-        ButterKnife.bind(this);
         mCurrentUser = Config.getInstance().getUserInfo(this);
         initData();
     }
@@ -307,6 +305,11 @@ public class OrderDetailActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.title_activity_order_detail;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_oder_detail;
     }
 
     @Override

@@ -46,8 +46,6 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
         initView();
         getWidgetControl();
     }
@@ -136,6 +134,11 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     int getActivityTitle() {
         return R.string.nav_setting_item;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_setting;
     }
 
     @Override
