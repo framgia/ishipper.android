@@ -375,7 +375,9 @@ public class OrderDetailActivity extends ToolbarActivity {
                 dialogFragment.show(getSupportFragmentManager(), "dialog");
                 break;
             case R.id.btn_detail_show_path:
-                startActivity(new Intent(OrderDetailActivity.this, RouteActivity.class));
+                Intent showPathIntent = new Intent(this, RouteActivity.class);
+                showPathIntent.putExtra(Const.KeyIntent.KEY_INVOICE, mInvoice);
+                startActivity(showPathIntent);
                 break;
             case R.id.btn_detail_shop_call:
                 break;

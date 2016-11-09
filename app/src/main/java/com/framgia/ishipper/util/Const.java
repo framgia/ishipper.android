@@ -74,4 +74,8 @@ public class Const {
         public static final int DEFAULT = 8;
         public static final int NONE = 0;
     }
+
+    public class KeyIntent {
+        public static final String KEY_INVOICE = "invoice";
+    }
 }
