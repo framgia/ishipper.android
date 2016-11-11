@@ -41,9 +41,11 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.activity.FilterOrderActivity;
+import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
+import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
@@ -89,7 +91,7 @@ public class NearbyOrderFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, OnInvoiceUpdate {
     private static final String TAG = "NearbyOrderFragment";
     private static final int REQUEST_FILTER = 0x1234;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -162,6 +164,9 @@ public class NearbyOrderFragment extends Fragment implements
                 Const.SETTING_INVOICE_RADIUS_DEFAULT
         );
         setHasOptionsMenu(true);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).setOnInvoiceUpdate(this);
+        }
         return view;
     }
 
@@ -179,6 +184,7 @@ public class NearbyOrderFragment extends Fragment implements
                     .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
+
     }
 
     @Override
@@ -311,7 +317,6 @@ public class NearbyOrderFragment extends Fragment implements
                     addListMarker(mInvoices);
                 }
                 break;
-
         }
     }
 
@@ -401,6 +406,19 @@ public class NearbyOrderFragment extends Fragment implements
         Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
+        /** save position of invoice with marker id to hashmap */
+        mHashMap.put(marker.getId(), mInvoices.indexOf(invoice));
+    }
+
+    private void addNewMarkerInvoice(Invoice invoice) {
+        mInvoices.add(invoice);
+        LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
+        final Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .alpha(0)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
+        MapUtils.setAnimatedInMarker(marker);
+
         /** save position of invoice with marker id to hashmap */
         mHashMap.put(marker.getId(), mInvoices.indexOf(invoice));
     }
@@ -607,6 +625,21 @@ public class NearbyOrderFragment extends Fragment implements
         dialog.show();
     }
 
+    @Override
+    public void onInvoiceCreate(final Invoice invoice) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                addNewMarkerInvoice(invoice);
+            }
+        });
+    }
+
+    @Override
+    public void onInvoiceRemove(Invoice invoice) {
+
+    }
+
     /**
      * Task fetch address from location in another thread
      */
@@ -638,6 +671,7 @@ public class NearbyOrderFragment extends Fragment implements
             }
         }
     }
+
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
             R.id.rl_search_view, R.id.window_order_detail})
     public void onClick(View view) {

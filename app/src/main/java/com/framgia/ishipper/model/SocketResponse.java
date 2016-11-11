@@ -1,4 +1,5 @@
 package com.framgia.ishipper.model;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -22,6 +23,10 @@ public class SocketResponse {
         return mMessage.mData.mUnreadNotifiction;
     }
 
+    public Invoice getInvoice() {
+        return mMessage.mData.mInvoice;
+    }
+
     private class Message {
         @SerializedName("action") private String mAction;
         @SerializedName("data") private Data mData;
@@ -29,6 +34,9 @@ public class SocketResponse {
     }
 
     private class Data {
-        @SerializedName("unread_notification") private int mUnreadNotifiction;
+        @SerializedName("unread_notification")
+        private int mUnreadNotifiction;
+        @SerializedName("invoice")
+        private Invoice mInvoice;
     }
 }

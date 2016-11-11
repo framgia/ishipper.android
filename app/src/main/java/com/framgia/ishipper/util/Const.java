@@ -13,6 +13,7 @@ public class Const {
     public static final int SETTING_MAX_INVOICE_RADIUS = 14;
     public static final int SETTING_MIN_INVOICE_RADIUS = 1;
     public static final int SETTING_INVOICE_RADIUS_DEFAULT = 5;
+    public static final String ACTION_NEW_INVOICE = "new_invoice";
     public static String VIETNAM_PREFIX = "+84";
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;

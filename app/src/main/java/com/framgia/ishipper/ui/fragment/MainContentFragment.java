@@ -31,6 +31,9 @@ public class MainContentFragment extends Fragment {
     @BindView(R.id.main_fragment_container)
     CustomViewPager mViewPager;
 
+    private MainTabAdapter mAdapter;
+
+
     public MainContentFragment() {
 
     }
@@ -40,8 +43,8 @@ public class MainContentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main_content, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         mViewPager.setPagingEnabled(false);
-        MainTabAdapter adapter = new MainTabAdapter(getChildFragmentManager(), getContext());
-        mViewPager.setAdapter(adapter);
+        mAdapter = new MainTabAdapter(getChildFragmentManager(), getContext());
+        mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         return view;
     }
@@ -56,7 +59,7 @@ public class MainContentFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         ((MainTabAdapter) mViewPager.getAdapter())
                 .getFragment(mViewPager.getCurrentItem())
-                .onRequestPermissionsResult(requestCode,permissions,grantResults);
+                .onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
