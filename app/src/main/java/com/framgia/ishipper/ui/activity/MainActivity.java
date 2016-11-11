@@ -1,9 +1,6 @@
 package com.framgia.ishipper.ui.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,11 +20,11 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.SocketResponse;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
 import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
@@ -36,9 +33,12 @@ import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
+import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.neovisionaries.ws.client.WebSocket;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import butterknife.BindView;
 
 public class MainActivity extends ToolbarActivity implements SocketCallback {
@@ -57,6 +57,7 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
     private int mSelectedId;
     private boolean doubleBackToExitPressedOnce;
     private TextView mTvNotifyCount;
+    private int mNotifyCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,9 +221,11 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
         MenuItemCompat.setActionView(item, R.layout.icon_notification);
         View view = MenuItemCompat.getActionView(item);
         mTvNotifyCount = (TextView) view.findViewById(R.id.tvNotifCount);
+        setNotifCount(mNotifyCount);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setNotifCount(Const.ZERO);
                 startActivity(new Intent(getBaseContext(), NotificationActivity.class));
             }
         });
@@ -232,7 +235,7 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
 
     private void setNotifCount(int count) {
         if (mTvNotifyCount == null) return;
-        if (count <= 0) {
+        if (count <= Const.ZERO) {
             mTvNotifyCount.setVisibility(View.GONE);
         } else {
             mTvNotifyCount.setVisibility(View.VISIBLE);
@@ -294,7 +297,7 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > Const.ZERO) {
             super.onBackPressed();
             return;
         }
@@ -323,5 +326,39 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
     @Override
     public void onCallback(WebSocket websocket, String text) {
         //TODO: handle data from socket server
+        final SocketResponse response = new Gson().fromJson(text, SocketResponse.class);
+        if (text.contains(Const.WELCOME)) {
+                subscribeChannel(mCurrentUser.getAuthenticationToken(), websocket, Const.CHANNEL_REALTIME);
+            }
+        switch (response.getAction()) {
+            case Const.ACTION_UNREAD_NOTIFICATION:
+                if (response.getUnreadNotification() >= Const.ZERO) {
+                    mNotifyCount = response.getUnreadNotification();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setNotifCount(mNotifyCount);
+                        }
+                    });
+                }
+                break;
+            //TODO: add other action
+            default:
+                break;
+        }
+    }
+
+    private void subscribeChannel(String token, WebSocket websocket, String channel) {
+        JSONObject object = new JSONObject();
+        JSONObject identifyObject = new JSONObject();
+        try {
+            identifyObject.put(Const.CHANNEL, channel);
+            identifyObject.put(Const.AUTHENTICATION_TOKEN, token);
+            object.put(Const.COMMAND, Const.COMMAND_SUBSCRIBE);
+            object.put(Const.IDENTIFIER, identifyObject.toString());
+            websocket.sendText(object.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

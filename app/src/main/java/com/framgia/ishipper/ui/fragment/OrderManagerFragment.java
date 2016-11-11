@@ -60,7 +60,6 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_manager, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-        setHasOptionsMenu(true);
         initData();
         initEvent();
         return view;

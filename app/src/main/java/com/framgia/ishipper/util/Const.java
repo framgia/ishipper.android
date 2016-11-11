@@ -17,6 +17,16 @@ public class Const {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
+    public static final int ZERO = 0;
+    public static final String WELCOME = "welcome";
+    public static final String CHANNEL = "channel";
+    public static final String CHANNEL_REALTIME = "RealtimeChannel";
+    public static final String AUTHENTICATION_TOKEN = "authentication_token";
+    public static final String COMMAND = "command";
+    public static final String COMMAND_SUBSCRIBE = "subscribe";
+    public static final String IDENTIFIER = "identifier";
+    public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
+
     public class RequestCode {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
         public static final int REQUEST_SEARCH_FAVORITE = 2;

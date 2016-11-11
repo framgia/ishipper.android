@@ -15,7 +15,6 @@ import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import java.io.IOException;
-import java.util.List;
 import butterknife.ButterKnife;
 
 /**
@@ -97,8 +96,6 @@ public abstract class ToolbarActivity extends AppCompatActivity {
                             mCallback.onCallback(websocket, text);
                         }
                     }
-
-
                 });
             } catch (IOException | WebSocketException e) {
                 e.printStackTrace();
