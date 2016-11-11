@@ -272,10 +272,11 @@
     <string name="setting_notification_content">Bật tắt nhận thông báo, tin tức từ ứng dụng</string>
     <string name="title_favorite_location">Địa điểm yêu thích</string>
     <string name="setting_black_list_content">Danh sách các shipper bị block</string>
-    <string name="setting_favorite_location_content">Chọn địa điểm hiển thị các đơn hàng xung quanh</string>
+    <string name="setting_favorite_location_content">Nhấn để chọn địa điểm hiển thị các đơn hàng xung quanh</string>
     <string name="all_button_continue">Tiếp tục</string>
     <string name="title_activity_main">Home</string>
     <string name="all_current_position">Vi tri hien tai</string>
+    <string name="err_google_play_service_not_available">Google Play Service not available</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

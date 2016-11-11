@@ -265,6 +265,10 @@ public class NearbyShipperFragment extends Fragment implements
 
     // initialize map
     private void initMap() {
+        // Disable tilt and rotate map
+        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false);
+
         if (PermissionUtils.checkLocationPermission(mContext)) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation == null) {
