@@ -277,6 +277,8 @@
     <string name="title_activity_main">Home</string>
     <string name="all_current_position">Vi tri hien tai</string>
     <string name="err_google_play_service_not_available">Google Play Service not available</string>
+    <string name="not_have_guide_for_route">Không có hướng dẫn chỉ đường cho cung đường này</string>
+    <string name="cant_get_guide_for_route">Không lấy được hướng dẫn chỉ đường, xin thử lại sau</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

@@ -8,11 +8,14 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
     //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.85:3001/";
+    private static final String DEV_URL = "http://192.168.1.139:3001/";
     private static final String PROD_URL = "";
+
+    public static final String BASE_GOOGLE_MAP_API = "https://maps.googleapis.com";
 
     public static final String HEADER_AUTHORIZE = "Authorization";
 
+    public static final String PARAM_LANGUAGE = "language";
     public static class RegisterUser {
         public static final String PATH = "/api/sign_up/";
         public static final String PARAM_USER_PHONE_NUMBER = "user[phone_number]";
@@ -147,7 +150,7 @@ public class APIDefinition {
         public static final String PARAM_CUSTOMER_NUMBER = "invoice[customer_number]";
     }
 
-    public static String getBaseUrl() {
+    public static String getBaseIShipperUrl() {
         return Config.IS_DEV ? DEV_URL : PROD_URL;
     }
 
@@ -350,4 +353,10 @@ public class APIDefinition {
         public static final int TIMEOUT_DEFAULT = 60 * 1000;
     }
 
+    public class GetListRoutes {
+        public static final String PATH = "/maps/api/directions/json";
+        public static final String PARAM_ORIGIN = "origin";
+        public static final String PARAM_DESTINATION = "destination";
+        public static final String PARAM_KEY = "key";
+    }
 }

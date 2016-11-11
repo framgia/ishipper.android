@@ -44,7 +44,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10dp"
-                android:text="Minh Khai, Hanoi"
                 android:textSize="@dimen/text_size_content_plus"/>
         </LinearLayout>
 
@@ -75,9 +74,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10dp"
-                android:text="13 Nam Dư, Lĩnh Nam"
                 android:textSize="@dimen/text_size_content_plus"/>
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rv_guide_path_height"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_detail_guide_path"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/rc_guide_path_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/activity_vertical_padding"
+            android:visibility="gone"/>
     </LinearLayout>
 </RelativeLayout>

@@ -39,6 +39,7 @@ import com.neovisionaries.ws.client.WebSocket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import butterknife.BindView;
 
 public class MainActivity extends ToolbarActivity implements SocketCallback {

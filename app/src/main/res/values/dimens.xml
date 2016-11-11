@@ -104,4 +104,10 @@
     <dimen name="badge_margin">-5dp</dimen>
     <dimen name="badge_background_radius">9dp</dimen>
     <dimen name="badge_stroke_width">0.2dp</dimen>
+    <dimen name="rv_guide_path_height">200dp</dimen>
+    <dimen name="rv_item_vertical_padding">8dp</dimen>
+    <dimen name="rv_item_horizontal_padding">16dp</dimen>
+    <dimen name="icon_guide_path_width">30dp</dimen>
+    <dimen name="icon_guide_path_height">30dp</dimen>
+
 </resources>
