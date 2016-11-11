@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,10 @@ import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.net.API;
+import com.framgia.ishipper.net.APIDefinition;
+import com.framgia.ishipper.net.data.ListRouteData;
+import com.framgia.ishipper.ui.adapter.PathGuideAdapter;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
@@ -37,9 +44,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RouteActivity extends ToolbarActivity implements
         OnMapReadyCallback,
@@ -54,16 +65,20 @@ public class RouteActivity extends ToolbarActivity implements
     private LatLng mStartLatLng;
     private LatLng mFinishLatLng;
     private GoogleApiClient mGoogleApiClient;
+    private ArrayList<ListRouteData.Step> mSteps;
 
+    @BindView(R.id.rv_detail_guide_path) RecyclerView mRvGuidePath;
     @BindView(R.id.img_start_address) ImageView mImgStartAddress;
     @BindView(R.id.img_finish_address) ImageView mImgFinishAddress;
     @BindView(R.id.shipping_from) TextView mTvStartAddress;
     @BindView(R.id.orderEndAddress) TextView mTvFinishAddress;
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.rc_guide_path_empty) TextView mTvEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mInvoice = getIntent().getParcelableExtra(Const.KeyIntent.KEY_INVOICE);
         if (mGoogleApiClient == null) {
@@ -75,6 +90,7 @@ public class RouteActivity extends ToolbarActivity implements
                     .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
+        getListSteps(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
 
     }
 
@@ -206,8 +222,42 @@ public class RouteActivity extends ToolbarActivity implements
         }
     }
 
+    /**
+     * Get list steps from start to the end address
+     */
+    private void getListSteps(String startAddress, String finishAddress) {
+        Map<String, String> userParams = new HashMap<>();
+        userParams.put(APIDefinition.GetListRoutes.PARAM_ORIGIN, startAddress);
+        userParams.put(APIDefinition.GetListRoutes.PARAM_DESTINATION, finishAddress);
+        userParams.put(APIDefinition.GetListRoutes.PARAM_KEY, getString(R.string.google_maps_key));
+        userParams.put(APIDefinition.PARAM_LANGUAGE, Const.Language.VIETNAMESE);
+        API.getListRoutes(userParams, new Callback<ListRouteData>() {
+            @Override
+            public void onResponse(Call<ListRouteData> call, Response<ListRouteData> response) {
+                mSteps = response.body().getRoutes().get(0).getLegs().get(0).getSteps();
+                if (mSteps != null) {
+                    PathGuideAdapter pathGuideAdapter = new PathGuideAdapter(RouteActivity.this, mSteps);
+                    mRvGuidePath.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                    mRvGuidePath.setAdapter(pathGuideAdapter);
+                    mRvGuidePath.setVisibility(View.VISIBLE);
+                }else {
+                    mTvEmpty.setText(R.string.not_have_guide_for_route);
+                    mTvEmpty.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ListRouteData> call, Throwable t) {
+                mTvEmpty.setVisibility(View.VISIBLE);
+                mTvEmpty.setText(R.string.cant_get_guide_for_route);
+            }
+        });
+    }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             return;

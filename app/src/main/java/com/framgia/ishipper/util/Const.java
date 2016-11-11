@@ -88,4 +88,8 @@ public class Const {
     public class KeyIntent {
         public static final String KEY_INVOICE = "invoice";
     }
+
+    public class Language {
+        public static final String VIETNAMESE = "vi";
+    }
 }

@@ -14,6 +14,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.net.data.ListReviewData;
+import com.framgia.ishipper.net.data.ListRouteData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.net.data.ReportUserData;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,12 +38,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public abstract class API {
 
-    private static final APIServices client = new Retrofit.Builder()
-            .baseUrl(APIDefinition.getBaseUrl())
+    private static final APIServices.IShipperServices client = new Retrofit.Builder()
+            .baseUrl(APIDefinition.getBaseIShipperUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .client(loggingClient())
             .build()
-            .create(APIServices.class);
+            .create(APIServices.IShipperServices.class);
+
+    private static final APIServices.GGMapApiServices ggMapApiClient = new Retrofit.Builder()
+            .baseUrl(APIDefinition.BASE_GOOGLE_MAP_API)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(loggingClient())
+            .build()
+            .create(APIServices.GGMapApiServices.class);
 
     //region USER API
     public static void signUp(Map<String, String> userParams,
@@ -315,6 +324,10 @@ public abstract class API {
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
+    public static void getListRoutes(Map<String, String> userParams,
+                                     Callback<ListRouteData> callback) {
+        ggMapApiClient.getListRouteData(userParams).enqueue(callback);
+    }
     //endregion
 
     private static OkHttpClient loggingClient() {
