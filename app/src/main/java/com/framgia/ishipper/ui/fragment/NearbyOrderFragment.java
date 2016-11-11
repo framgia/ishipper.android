@@ -85,11 +85,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NearbyOrderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NearbyOrderFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -123,43 +118,6 @@ public class NearbyOrderFragment extends Fragment implements
 
     private Dialog mDialog;
 
-    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-            R.id.rl_search_view, R.id.window_order_detail})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_item_order_show_path:
-                Intent showPathIntent = new Intent(getActivity(), RouteActivity.class);
-                showPathIntent.putExtra(Const.KeyIntent.KEY_INVOICE, mInvoice);
-                getActivity().startActivity(showPathIntent);
-                break;
-            case R.id.btn_item_order_register_order:
-                String invoiceId = (String) view.getTag();
-                showReceiveDialog(invoiceId);
-                break;
-            case R.id.rl_search_view:
-                try {
-                    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                            .build();
-                    Intent searchIntent = new PlaceAutocomplete
-                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .setFilter(typeFilter)
-                            .build(getActivity());
-                    startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.window_order_detail:
-                Intent orderDetailIntent = new Intent(mContext, OrderDetailActivity.class);
-                Bundle extras = new Bundle();
-                extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoice.getId());
-                orderDetailIntent.putExtras(extras);
-                startActivity(orderDetailIntent);
-                break;
-        }
-    }
-
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mGoogleMap;
@@ -177,10 +135,6 @@ public class NearbyOrderFragment extends Fragment implements
     private boolean mAutoRefresh = true;
     private HashMap<String, Integer> mHashMap = new HashMap<>();
     private int mRadius;
-
-    public NearbyOrderFragment() {
-        // Required empty public constructor
-    }
 
     public static NearbyOrderFragment newInstance() {
         return new NearbyOrderFragment();
@@ -270,6 +224,9 @@ public class NearbyOrderFragment extends Fragment implements
 
     // initialize map
     private void initMap() {
+        // Disable tilt and rotate map
+        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false);
         if (PermissionUtils.checkLocationPermission(mContext)) return;
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation == null) {
@@ -679,6 +636,42 @@ public class NearbyOrderFragment extends Fragment implements
             if (mTvSearchArea != null) {
                 mTvSearchArea.setText(address);
             }
+        }
+    }
+    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
+            R.id.rl_search_view, R.id.window_order_detail})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_item_order_show_path:
+                Intent showPathIntent = new Intent(getActivity(), RouteActivity.class);
+                showPathIntent.putExtra(Const.KeyIntent.KEY_INVOICE, mInvoice);
+                getActivity().startActivity(showPathIntent);
+                break;
+            case R.id.btn_item_order_register_order:
+                String invoiceId = (String) view.getTag();
+                showReceiveDialog(invoiceId);
+                break;
+            case R.id.rl_search_view:
+                try {
+                    AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                            .build();
+                    Intent searchIntent = new PlaceAutocomplete
+                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .setFilter(typeFilter)
+                            .build(getActivity());
+                    startActivityForResult(searchIntent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.window_order_detail:
+                Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                Bundle extras = new Bundle();
+                extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, mInvoice.getId());
+                intent.putExtras(extras);
+                startActivity(intent);
+                break;
         }
     }
 }

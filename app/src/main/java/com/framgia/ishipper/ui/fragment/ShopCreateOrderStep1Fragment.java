@@ -334,6 +334,10 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        // Disable tilt and rotate map
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.getUiSettings().setTiltGesturesEnabled(false);
+
         if (PermissionUtils.checkLocationPermission(mContext)) return;
 
         googleMap.setMyLocationEnabled(true);
@@ -377,7 +381,6 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     getString(R.string.all_cant_get_location),
                     Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
