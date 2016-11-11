@@ -107,7 +107,6 @@ public class NearbyShipperFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_nearby_shipper, null);
         mUnbinder = ButterKnife.bind(this, view);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
-        setHasOptionsMenu(true);
         return view;
     }
 

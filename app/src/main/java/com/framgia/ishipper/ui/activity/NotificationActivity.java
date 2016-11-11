@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends ToolbarActivity implements SocketCallback {
+public class NotificationActivity extends ToolbarActivity {
 
     private static final String TAG = "NotificationActivity";
     @BindView(R.id.rvListNotification) RecyclerView rvListNotification;
@@ -84,7 +84,6 @@ public class NotificationActivity extends ToolbarActivity implements SocketCallb
                 }
             }
         });
-        connectWebSocket(this);
     }
 
     private void loadMore(int page) {
@@ -129,14 +128,4 @@ public class NotificationActivity extends ToolbarActivity implements SocketCallb
         return R.layout.activity_notification;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        disconnectWebSocket();
-    }
-
-    @Override
-    public void onCallback(WebSocket websocket, String text) {
-        //TODO: handle data from socket server
-    }
 }
