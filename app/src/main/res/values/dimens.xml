@@ -56,6 +56,7 @@
     <dimen name="text_view_margin">10dp</dimen>
     <dimen name="text_size_tiny_material">10sp</dimen>
     <dimen name="text_size_time">9sp</dimen>
+    <dimen name="text_size_distance">20sp</dimen>
 
     <!-- Margin -->
     <dimen name="all_margin_large">20dp</dimen>
@@ -107,7 +108,7 @@
     <dimen name="rv_guide_path_height">200dp</dimen>
     <dimen name="rv_item_vertical_padding">8dp</dimen>
     <dimen name="rv_item_horizontal_padding">16dp</dimen>
-    <dimen name="icon_guide_path_width">30dp</dimen>
-    <dimen name="icon_guide_path_height">30dp</dimen>
+    <dimen name="icon_address_width">24dp</dimen>
+    <dimen name="icon_address_height">24dp</dimen>
 
 </resources>

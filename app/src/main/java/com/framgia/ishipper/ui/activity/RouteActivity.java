@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -66,6 +67,7 @@ public class RouteActivity extends ToolbarActivity implements
     private LatLng mFinishLatLng;
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<ListRouteData.Step> mSteps;
+    private BottomSheetBehavior<View> mBottomSheetBehavior;
 
     @BindView(R.id.rv_detail_guide_path) RecyclerView mRvGuidePath;
     @BindView(R.id.img_start_address) ImageView mImgStartAddress;
@@ -74,6 +76,7 @@ public class RouteActivity extends ToolbarActivity implements
     @BindView(R.id.orderEndAddress) TextView mTvFinishAddress;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.rc_guide_path_empty) TextView mTvEmpty;
+    @BindView(R.id.layout_bottom_sheet) View mBottomSheetView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class RouteActivity extends ToolbarActivity implements
                     .build();
         }
         getListSteps(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
-
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetView);
     }
 
     @Override
@@ -240,7 +243,7 @@ public class RouteActivity extends ToolbarActivity implements
                     mRvGuidePath.setLayoutManager(new LinearLayoutManager(getBaseContext()));
                     mRvGuidePath.setAdapter(pathGuideAdapter);
                     mRvGuidePath.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mTvEmpty.setText(R.string.not_have_guide_for_route);
                     mTvEmpty.setVisibility(View.VISIBLE);
                 }
@@ -317,5 +320,14 @@ public class RouteActivity extends ToolbarActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

@@ -1,103 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.framgia.ishipper.ui.activity.RouteActivity">
 
     <include
         android:id="@+id/layoutToolbar"
         layout="@layout/toolbar"/>
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layoutToolbar"/>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutToolbar"
-        android:layout_margin="@dimen/_10dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/_10dp">
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/img_start_address"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="@dimen/_5dp"
-                android:src="@drawable/ic_status_pick"/>
 
-            <TextView
-                android:id="@+id/shipping_from"
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:textSize="@dimen/text_size_content_plus"/>
-        </LinearLayout>
+                android:layout_margin="@dimen/_10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_10dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/_5dp"
-            android:layout_marginTop="@dimen/_5dp"
-            android:background="@color/menu_divider"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img_start_address"
+                        android:layout_width="@dimen/icon_address_width"
+                        android:layout_height="@dimen/icon_address_height"
+                        android:layout_marginLeft="@dimen/_5dp"
+                        android:src="@drawable/ic_status_pick"/>
+
+                    <TextView
+                        android:id="@+id/shipping_from"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10dp"
+                        android:textSize="@dimen/text_size_content_plus"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/_5dp"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:background="@color/menu_divider"/>
+
+                <LinearLayout
+                    android:id="@+id/delivery_to_address_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img_finish_address"
+                        android:layout_width="@dimen/icon_address_width"
+                        android:layout_height="@dimen/icon_address_height"
+                        android:layout_marginLeft="@dimen/_5dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_status_delivering"/>
+
+                    <TextView
+                        android:id="@+id/orderEndAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10dp"
+                        android:textSize="@dimen/text_size_content_plus"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/delivery_to_address_box"
+            android:id="@+id/layout_bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            app:behavior_peekHeight="@dimen/rv_guide_path_height"
+            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-            <ImageView
-                android:id="@+id/img_finish_address"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="@dimen/_5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_status_delivering"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_detail_guide_path"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/orderEndAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:textSize="@dimen/text_size_content_plus"/>
-
+                android:id="@+id/rc_guide_path_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/activity_vertical_padding"
+                android:visibility="gone"/>
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/rv_guide_path_height"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_detail_guide_path"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/rc_guide_path_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/activity_vertical_padding"
-            android:visibility="gone"/>
-    </LinearLayout>
-</RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
