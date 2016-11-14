@@ -1,7 +1,6 @@
 package com.framgia.ishipper.ui.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -52,12 +51,12 @@ public class PathGuideAdapter extends RecyclerView.Adapter<PathGuideAdapter.Path
     }
 
     class PathGuideViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.img_path_guide_icon)
-        ImageView mImgIcon;
         @BindView(R.id.tv_path_guide_distance)
         TextView mTvDistance;
         @BindView(R.id.tv_path_guide_content)
         TextView mTvContent;
+        @BindView(R.id.tv_path_guide_unit)
+        TextView mTvUnit;
 
         public PathGuideViewHolder(View itemView) {
             super(itemView);
@@ -65,7 +64,14 @@ public class PathGuideAdapter extends RecyclerView.Adapter<PathGuideAdapter.Path
         }
 
         public void bindData(ListRouteData.Step step) {
-            mTvDistance.setText(step.getDistance().getText());
+            // distance format is: 0.5 km
+            String distanceText = step.getDistance().getText();
+            // get distance: 0.5
+            String distanceNumber = distanceText.split(" ")[0];
+            // get unit: km
+            String unit = distanceText.split(" ")[1];
+            mTvDistance.setText(distanceNumber);
+            mTvUnit.setText(unit);
             mTvContent.setText(Html.fromHtml(step.getHtmlInstructions())
                     .toString().replaceAll(REMOVE_BLANK_LINE_RG, "")
             );
