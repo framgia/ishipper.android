@@ -353,6 +353,11 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
                     mOnInvoiceUpdate.onInvoiceCreate(invoice);
                 }
                 break;
+            case Const.ACTION_REMOVE_INVOICE:
+                Invoice data = response.getInvoice();
+                if (mOnInvoiceUpdate != null) {
+                    mOnInvoiceUpdate.onInvoiceRemove(data);
+                }
             //TODO: add other action
             default:
                 break;
