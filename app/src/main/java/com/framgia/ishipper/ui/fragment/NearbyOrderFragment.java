@@ -135,7 +135,7 @@ public class NearbyOrderFragment extends Fragment implements
     private FetchAddressTask mTask;
     private ArrayList<Invoice> mInvoices = new ArrayList<>();
     private boolean mAutoRefresh = true;
-    private HashMap<String, Integer> mHashMap = new HashMap<>();
+    private HashMap<Marker, Invoice> mHashMap = new HashMap<>();
     private int mRadius;
 
     public static NearbyOrderFragment newInstance() {
@@ -378,8 +378,25 @@ public class NearbyOrderFragment extends Fragment implements
                     @Override
                     public void onResponse(APIResponse<ListInvoiceData> response) {
                         Log.d(TAG, "onResponse: " + response.getMessage());
-                        mInvoices = (ArrayList<Invoice>) response.getData().getInvoiceList();
-                        addListMarker(mInvoices);
+                        // update new invoices
+                        ArrayList<Invoice> lastUpdateInvoices = (ArrayList<Invoice>) response
+                                .getData().getInvoiceList();
+                        // init common list invoices
+                        ArrayList<Invoice> commonInvoices = new ArrayList<>(mInvoices);
+                        // get common invoices between previous list invoices and new update invoices
+                        commonInvoices.retainAll(lastUpdateInvoices);
+                        // init list invoices need to be removed
+                        ArrayList<Invoice> removeInvoices = new ArrayList<>(mInvoices);
+                        // init list invoices need to be added
+                        ArrayList<Invoice> addInvoices = new ArrayList<>(lastUpdateInvoices);
+                        // get invoices need to be added
+                        addInvoices.removeAll(commonInvoices);
+                        // get invoices need to be removed
+                        removeInvoices.removeAll(commonInvoices);
+                        addListMarker(addInvoices);
+                        removeListMarker(removeInvoices);
+                        // update invoices
+                        mInvoices = lastUpdateInvoices;
                     }
 
                     @Override
@@ -395,10 +412,10 @@ public class NearbyOrderFragment extends Fragment implements
      * @param invoiceList list invoice
      */
     private void addListMarker(List<Invoice> invoiceList) {
-        mGoogleMap.clear();
         for (Invoice invoice : invoiceList) {
             addMarkInvoice(invoice);
         }
+        android.util.Log.d(TAG, mHashMap.size() + "");
     }
 
     private void addMarkInvoice(Invoice invoice) {
@@ -407,7 +424,25 @@ public class NearbyOrderFragment extends Fragment implements
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
         /** save position of invoice with marker id to hashmap */
-        mHashMap.put(marker.getId(), mInvoices.indexOf(invoice));
+        mHashMap.put(marker, invoice);
+    }
+
+    private void removeListMarker(List<Invoice> invoiceList) {
+        for (Invoice invoice : invoiceList) {
+            removeMarkInvoice(invoice);
+        }
+    }
+
+    private void removeMarkInvoice(Invoice invoice) {
+        for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
+            Marker key = entry.getKey();
+            Invoice value = entry.getValue();
+            if (value.getId() == invoice.getId()) {
+                mHashMap.remove(key);
+                key.remove();
+                break;
+            }
+        }
     }
 
     private void addNewMarkerInvoice(Invoice invoice) {
@@ -420,7 +455,7 @@ public class NearbyOrderFragment extends Fragment implements
         MapUtils.setAnimatedInMarker(marker);
 
         /** save position of invoice with marker id to hashmap */
-        mHashMap.put(marker.getId(), mInvoices.indexOf(invoice));
+        mHashMap.put(marker, invoice);
     }
 
     private void configSizeMap() {
@@ -471,14 +506,12 @@ public class NearbyOrderFragment extends Fragment implements
             @Override
             public boolean onMarkerClick(Marker marker) {
                 // Check if marker is not in list of marker invoices, don't need to do anything
-                if (!mHashMap.containsKey(marker.getId())) {
+                if (!mHashMap.containsKey(marker)) {
                     return false;
                 }
                 switchAutoRefresh(false);
                 mRlOrderDetail.setVisibility(View.VISIBLE);
-                String id = marker.getId();
-                int pos = mHashMap.get(id);
-                mInvoice = mInvoices.get(pos);
+                mInvoice = mHashMap.get(marker);
                 mBtnNearbyReceiveOrder.setTag(mInvoice.getStringId());
                 User mUser = mInvoice.getUser();
                 mTvItemOrderShopName.setText(mUser.getName());
