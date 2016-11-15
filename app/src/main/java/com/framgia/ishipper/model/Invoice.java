@@ -289,4 +289,12 @@ public class Invoice implements Parcelable {
             return new Invoice[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Invoice) {
+            return ((Invoice) o).getId() == getId();
+        }
+        return super.equals(o);
+    }
 }
