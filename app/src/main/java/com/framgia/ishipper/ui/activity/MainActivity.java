@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.SocketResponse;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -30,6 +31,7 @@ import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
+import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
 import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
@@ -59,6 +61,8 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
     private boolean doubleBackToExitPressedOnce;
     private TextView mTvNotifyCount;
     private int mNotifyCount = 0;
+
+    private OnInvoiceUpdate mOnInvoiceUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,8 +333,8 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
         //TODO: handle data from socket server
         final SocketResponse response = new Gson().fromJson(text, SocketResponse.class);
         if (text.contains(Const.WELCOME)) {
-                subscribeChannel(mCurrentUser.getAuthenticationToken(), websocket, Const.CHANNEL_REALTIME);
-            }
+            subscribeChannel(mCurrentUser.getAuthenticationToken(), websocket, Const.CHANNEL_REALTIME);
+        }
         switch (response.getAction()) {
             case Const.ACTION_UNREAD_NOTIFICATION:
                 if (response.getUnreadNotification() >= Const.ZERO) {
@@ -343,10 +347,20 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
                     });
                 }
                 break;
+            case Const.ACTION_NEW_INVOICE:
+                Invoice invoice = response.getInvoice();
+                if (mOnInvoiceUpdate != null) {
+                    mOnInvoiceUpdate.onInvoiceCreate(invoice);
+                }
+                break;
             //TODO: add other action
             default:
                 break;
         }
+    }
+
+    public void setOnInvoiceUpdate(OnInvoiceUpdate onInvoiceUpdate) {
+        mOnInvoiceUpdate = onInvoiceUpdate;
     }
 
     private void subscribeChannel(String token, WebSocket websocket, String channel) {

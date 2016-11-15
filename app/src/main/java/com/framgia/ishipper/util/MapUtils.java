@@ -1,13 +1,12 @@
 package com.framgia.ishipper.util;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.directions.route.AbstractRouting;
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.ui.activity.MainActivity;
@@ -16,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +27,8 @@ import java.util.Locale;
 public class MapUtils {
     private static final int ZOOM_LEVEL = 15;
     private static final String TAG = "MapUtils";
+
+    private static final int MARKER_FADE_DURATION = 500;
 
     /**
      * Route between 2 point start & end
@@ -115,5 +117,18 @@ public class MapUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void setAnimatedInMarker(final Marker marker) {
+        // Add fade in animation
+        ValueAnimator ani = ValueAnimator.ofFloat(0, 1);
+        ani.setDuration(MARKER_FADE_DURATION);
+        ani.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                marker.setAlpha((float) animation.getAnimatedValue());
+            }
+        });
+        ani.start();
     }
 }
