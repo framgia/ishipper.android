@@ -385,7 +385,11 @@ public class OrderDetailActivity extends ToolbarActivity {
                 showReceiveDialog();
                 break;
             case R.id.btn_detail_cancel_order:
-                showReportDialog();
+                if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT) {
+                    onCancelOrder();
+                } else {
+                    showReportDialog();
+                }
                 break;
             case R.id.btn_detail_cancel_register_order:
                 // TODO: 25/08/2016 cancel register order
@@ -439,6 +443,33 @@ public class OrderDetailActivity extends ToolbarActivity {
                         Toast.makeText(OrderDetailActivity.this, response.getMessage(),
                                 Toast.LENGTH_SHORT).show();
                         loadingDialog.dismiss();
+                        onBackPressed();
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismiss();
+                    }
+                });
+    }
+
+    private void onCancelOrder() {
+        final Dialog loadingDialog = CommonUtils.showLoadingDialog(OrderDetailActivity.this);
+        API.putUpdateInvoiceStatus(
+                mCurrentUser.getRole(),
+                mInvoice.getStringId(),
+                mCurrentUser.getAuthenticationToken(),
+                Invoice.STATUS_CANCEL,
+                new API.APICallback<APIResponse<InvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<InvoiceData> response) {
+                        loadingDialog.dismiss();
+                        Toast.makeText(OrderDetailActivity.this, response.getMessage(),
+                                       Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.putExtra(KEY_INVOICE_ID, mInvoice.getId());
+                        setResult(Activity.RESULT_OK, intent);
                         onBackPressed();
                     }
 
