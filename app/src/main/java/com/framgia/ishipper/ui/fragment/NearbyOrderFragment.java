@@ -578,6 +578,11 @@ public class NearbyOrderFragment extends Fragment implements
             public void onMapClick(LatLng latLng) {
                 switchAutoRefresh(true);
                 mRlOrderDetail.setVisibility(View.GONE);
+
+                if (mPolylineRoute != null) {
+                    mPolylineRoute.remove();
+                    mMakerEndOrder.remove();
+                }
             }
         });
     }
@@ -669,8 +674,29 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     @Override
-    public void onInvoiceRemove(Invoice invoice) {
+    public void onInvoiceRemove(final Invoice invoice) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int invoiceId = invoice.getId();
+                for (Invoice item : mInvoices) {
+                    if (item.getId() == invoiceId) {
+                        mInvoices.remove(item);
+                        break;
+                    }
+                }
 
+                for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
+                    final Marker key = entry.getKey();
+                    Invoice value = entry.getValue();
+                    if (value.getId() == invoiceId) {
+                        MapUtils.setAnimatedOutMarker(key);
+                        mHashMap.remove(key);
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     /**

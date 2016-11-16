@@ -1,5 +1,6 @@
 package com.framgia.ishipper.util;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.location.Address;
@@ -127,6 +128,37 @@ public class MapUtils {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 marker.setAlpha((float) animation.getAnimatedValue());
+            }
+        });
+        ani.start();
+    }
+
+    public static void setAnimatedOutMarker(final Marker marker) {
+        // Add fade out animation
+        ValueAnimator ani = ValueAnimator.ofFloat(1, 0);
+        ani.setDuration(MARKER_FADE_DURATION);
+        ani.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                marker.setAlpha((float) animation.getAnimatedValue());
+            }
+        });
+        ani.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                marker.remove();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
             }
         });
         ani.start();
