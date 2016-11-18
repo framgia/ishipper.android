@@ -30,6 +30,9 @@ public class Const {
     public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
     public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
     public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_BODY = "body";
+    public static final String ACTION_NEW_NOTIFICATION = "new_notification";
 
     public class RequestCode {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
