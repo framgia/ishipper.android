@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
@@ -28,12 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by vuduychuong1994 on 7/20/16.
  */
-public class ListShipperRegActivity extends ToolbarActivity implements
+public class ListShipperRegActivity extends BaseActivity implements
         ShipperRegAdapter.OnItemClickShipperRegListener,
         ShipperRegAdapter.OnClickAcceptShipperListener {
     private static final String TAG = "ListShipperRegActivity";

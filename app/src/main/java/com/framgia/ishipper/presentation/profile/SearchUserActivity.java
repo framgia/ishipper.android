@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -27,9 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class SearchUserActivity extends ToolbarActivity
+public class SearchUserActivity extends BaseActivity
         implements API.APICallback<APIResponse<ListUserData>>,SearchUserAdapter.OnSearchItemCallback {
     private static final String EXTRA_REQUEST_CODE = "EXTRA_REQUEST_CODE";
     private static final String RESULT_USER = "RESULT_USER";

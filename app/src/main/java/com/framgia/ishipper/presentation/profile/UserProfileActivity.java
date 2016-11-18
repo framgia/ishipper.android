@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.presentation.authenication.update_pass.ChangePasswordActivity;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -21,10 +23,9 @@ import com.framgia.ishipper.net.data.UpdateProfileData;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserProfileActivity extends ToolbarActivity {
+public class UserProfileActivity extends BaseActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.edt_profile_name) TextInputEditText mEdtProfileName;

@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.block;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
@@ -19,20 +20,19 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.AddBlacklistData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
-import com.framgia.ishipper.ui.adapter.BlackListAdapter;
-import com.framgia.ishipper.ui.view.ConfirmDialog;
+import com.framgia.ishipper.presentation.profile.SearchUserActivity;
+import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by vuduychuong1994 on 9/30/16.
  */
 
-public class BlackListActivity extends ToolbarActivity {
+public class BlackListActivity extends BaseActivity {
     private static final String TAG = "BlackListActivity";
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;

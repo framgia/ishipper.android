@@ -21,6 +21,7 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
@@ -53,7 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RouteActivity extends ToolbarActivity implements
+public class RouteActivity extends BaseActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {

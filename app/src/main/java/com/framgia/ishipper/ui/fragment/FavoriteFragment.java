@@ -25,9 +25,9 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
-import com.framgia.ishipper.ui.activity.SearchUserActivity;
+import com.framgia.ishipper.presentation.profile.SearchUserActivity;
 import com.framgia.ishipper.ui.adapter.FavoriteListAdapter;
-import com.framgia.ishipper.ui.view.ConfirmDialog;
+import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 
