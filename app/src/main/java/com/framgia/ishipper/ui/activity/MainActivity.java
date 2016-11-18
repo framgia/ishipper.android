@@ -32,6 +32,7 @@ import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
+import com.framgia.ishipper.ui.listener.OnShipperUpdateListener;
 import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
@@ -63,6 +64,7 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
     private int mNotifyCount = 0;
 
     private OnInvoiceUpdate mOnInvoiceUpdate;
+    private OnShipperUpdateListener mShipperUpdateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -358,6 +360,17 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
                 if (mOnInvoiceUpdate != null) {
                     mOnInvoiceUpdate.onInvoiceRemove(data);
                 }
+                break;
+            case Const.ACTION_SHIPPER_ONLINE:
+                if (mShipperUpdateListener != null) {
+                    mShipperUpdateListener.onShipperOnline(response.getUser());
+                }
+                break;
+            case Const.ACTION_SHIPPER_OFFLINE:
+                if (mShipperUpdateListener != null) {
+                    mShipperUpdateListener.onShipperOffline(response.getUser());
+                }
+                break;
             //TODO: add other action
             default:
                 break;
@@ -366,6 +379,10 @@ public class MainActivity extends ToolbarActivity implements SocketCallback {
 
     public void setOnInvoiceUpdate(OnInvoiceUpdate onInvoiceUpdate) {
         mOnInvoiceUpdate = onInvoiceUpdate;
+    }
+
+    public void setShipperUpdateListener(OnShipperUpdateListener shipperUpdateListener) {
+        mShipperUpdateListener = shipperUpdateListener;
     }
 
     private void subscribeChannel(String token, WebSocket websocket, String channel) {

@@ -27,7 +27,9 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
+import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
+import com.framgia.ishipper.ui.listener.OnShipperUpdateListener;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
@@ -70,7 +72,7 @@ public class NearbyShipperFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, OnShipperUpdateListener {
     private static final String TAG = "NearbyShipperFragment";
     private static final float RADIUS = 5;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -79,6 +81,7 @@ public class NearbyShipperFragment extends Fragment implements
     private Location mLocation;
     private GoogleMap mGoogleMap;
     private ArrayList<User> shipperList = new ArrayList<>();
+    private HashMap<Integer, Marker> mUserMap = new HashMap<>();
     private SupportMapFragment mMapFragment;
     private User mCurrentUser;
     private Context mContext;
@@ -107,6 +110,9 @@ public class NearbyShipperFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_nearby_shipper, null);
         mUnbinder = ButterKnife.bind(this, view);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).setShipperUpdateListener(this);
+        }
         return view;
     }
 
@@ -331,9 +337,14 @@ public class NearbyShipperFragment extends Fragment implements
 
     private void addMarkShipper(User user) {
         LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
-        mGoogleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
+        final Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                             .position(latLng)
+                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
+        MapUtils.setAnimatedInMarker(marker);
+        if (!mUserMap.containsKey(Integer.valueOf(user.getId()))) {
+            shipperList.add(user);
+        }
+        mUserMap.put(Integer.valueOf(user.getId()), marker);
     }
 
 
@@ -395,6 +406,50 @@ public class NearbyShipperFragment extends Fragment implements
                 // TODO: 30/08/2016  
             }
         });
+    }
+
+    @Override
+    public void onShipperOnline(final User user) {
+        if (user == null) return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                addMarkShipper(user);
+            }
+        });
+    }
+
+    @Override
+    public void onShipperOffline(final User user) {
+        /**
+         * Find shipper on Map and remove it
+         */
+        if (user == null) return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (User shipper : shipperList) {
+                    if (shipper.getId().equals(user.getId())) {
+                        removeUser(user);
+                        shipperList.remove(shipper);
+                        break;
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void removeUser(User user) {
+        for (Map.Entry<Integer, Marker> entry : mUserMap.entrySet()) {
+            int key = entry.getKey();
+            Marker value = entry.getValue();
+            if (key == Integer.valueOf(user.getId())) {
+                MapUtils.setAnimatedOutMarker(value);
+                mUserMap.remove(key);
+                break;
+            }
+        }
     }
 
     /**
