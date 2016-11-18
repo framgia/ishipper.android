@@ -28,6 +28,8 @@ public class Const {
     public static final String COMMAND_SUBSCRIBE = "subscribe";
     public static final String IDENTIFIER = "identifier";
     public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
+    public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
+    public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
 
     public class RequestCode {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
