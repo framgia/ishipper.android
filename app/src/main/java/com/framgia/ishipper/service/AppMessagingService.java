@@ -19,5 +19,14 @@ public class AppMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        sendBroadcastNewNotification(remoteMessage);
+    }
+
+    private void sendBroadcastNewNotification(RemoteMessage remoteMessage) {
+        Intent intent = new Intent();
+        intent.setAction(Const.ACTION_NEW_NOTIFICATION);
+        intent.putExtra(Const.KEY_TITLE, remoteMessage.getNotification().getTitle());
+        intent.putExtra(Const.KEY_BODY, remoteMessage.getNotification().getBody());
+        sendBroadcast(intent);
     }
 }

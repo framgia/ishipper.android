@@ -441,11 +441,11 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 tvShowing.setText(address, false);
             } else {
-                mEdtAddressStart.setFocusable(false);
-                mEdtAddressStart.setFocusableInTouchMode(false);
-                mEdtAddressStart.setText(address);
-                mEdtAddressStart.setFocusable(true);
-                mEdtAddressStart.setFocusableInTouchMode(true);
+                tvShowing.setFocusable(false);
+                tvShowing.setFocusableInTouchMode(false);
+                tvShowing.setText(address);
+                tvShowing.setFocusable(true);
+                tvShowing.setFocusableInTouchMode(true);
             }
         }
     }
