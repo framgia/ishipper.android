@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.UpdateProfileData;
+import com.framgia.ishipper.presentation.block.BlackListActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Storage;
 import com.framgia.ishipper.util.StorageUtils;
@@ -36,7 +38,7 @@ import butterknife.OnClick;
 /**
  * Created by HungNT on 9/16/16.
  */
-public class SettingActivity extends ToolbarActivity {
+public class SettingActivity extends BaseActivity {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0x1234;
     @BindView(R.id.cbReceiveNotification) CheckBox cbReceiveNotification;
     @BindView(R.id.seekbar_invoice_radius) SeekBar seekbarInvoiceRadius;

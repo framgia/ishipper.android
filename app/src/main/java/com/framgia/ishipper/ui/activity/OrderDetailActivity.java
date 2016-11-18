@@ -17,11 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.ReviewUser;
@@ -34,8 +34,8 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
-import com.framgia.ishipper.ui.view.CancelDialog;
-import com.framgia.ishipper.ui.view.ReviewDialog;
+import com.framgia.ishipper.widget.dialog.CancelDialog;
+import com.framgia.ishipper.widget.dialog.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
@@ -44,10 +44,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrderDetailActivity extends ToolbarActivity {
+public class OrderDetailActivity extends BaseActivity {
 
     public static final String KEY_INVOICE_ID = "invoice_id";
     public static final int REQUEST_INVOICE_ID = 1;

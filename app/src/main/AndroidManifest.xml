@@ -27,7 +27,7 @@
             android:name=".ui.activity.MainActivity"
             android:configChanges="keyboardHidden|screenSize|orientation">
         </activity>
-        <activity android:name=".ui.activity.LoginActivity">
+        <activity android:name=".presentation.authenication.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -51,18 +51,18 @@
         </activity>
         <activity android:name=".ui.activity.RouteActivity"/>
         <activity android:name=".ui.activity.ShopCreateOrderActivity"/>
-        <activity android:name=".ui.activity.RegisterActivity"/>
-        <activity android:name=".ui.activity.ForgetPasswordActivity"/>
-        <activity android:name=".ui.activity.UserProfileActivity"/>
-        <activity android:name=".ui.activity.SettingActivity">
+        <activity android:name=".presentation.authenication.register.RegisterActivity"/>
+        <activity android:name=".presentation.authenication.update_pass.ForgetPasswordActivity"/>
+        <activity android:name=".presentation.profile.UserProfileActivity"/>
+        <activity android:name=".presentation.settings.SettingActivity">
         </activity>
-        <activity android:name=".ui.activity.SearchUserActivity"/>
-        <activity android:name=".ui.activity.ChangePasswordActivity"/>
+        <activity android:name=".presentation.profile.SearchUserActivity"/>
+        <activity android:name=".presentation.authenication.update_pass.ChangePasswordActivity"/>
         <activity
             android:name=".ui.activity.FilterOrderActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
-        <activity android:name=".ui.activity.BlackListActivity"/>
+        <activity android:name=".presentation.block.BlackListActivity"/>
         <activity android:name=".ui.activity.NotificationActivity"/>
 
         <service

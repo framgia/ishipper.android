@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.SocketResponse;
@@ -26,6 +28,8 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.presentation.settings.SettingActivity;
+import com.framgia.ishipper.presentation.profile.UserProfileActivity;
 import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
 import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
@@ -44,7 +48,7 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 
-public class MainActivity extends ToolbarActivity implements SocketCallback {
+public class MainActivity extends BaseActivity implements SocketCallback {
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;

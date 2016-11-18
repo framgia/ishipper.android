@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
@@ -30,10 +31,9 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FilterOrderActivity extends ToolbarActivity {
+public class FilterOrderActivity extends BaseActivity {
     private static final String TAG = "FilterOrderActivity";
     public static final String INTENT_FILTER_DATA = "INTENT_FILTER_DATA";
     private User mCurrentUser;

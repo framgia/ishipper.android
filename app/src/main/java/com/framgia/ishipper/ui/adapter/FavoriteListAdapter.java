@@ -15,7 +15,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.ui.view.ConfirmDialog;
+import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.List;
