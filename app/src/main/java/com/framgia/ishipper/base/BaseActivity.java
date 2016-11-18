@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIDefinition;
@@ -27,11 +28,11 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
-    abstract Toolbar getToolbar();
+    public abstract Toolbar getToolbar();
 
-    abstract int getActivityTitle();
+    public abstract int getActivityTitle();
 
-    abstract int getLayoutId();
+    public abstract int getLayoutId();
 
     protected WebSocket mWebSocket;
     protected Thread mThread;

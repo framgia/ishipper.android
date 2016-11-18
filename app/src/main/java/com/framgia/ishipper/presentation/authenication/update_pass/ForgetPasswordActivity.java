@@ -32,17 +32,17 @@ public class ForgetPasswordActivity extends BaseActivity {
     }
 
     @Override
-    Toolbar getToolbar() {
+    public Toolbar getToolbar() {
         return mToolbar;
     }
 
     @Override
-    int getActivityTitle() {
+    public int getActivityTitle() {
         return R.string.forgot_pass;
     }
 
     @Override
-    int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_forget_password;
     }
 

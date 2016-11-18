@@ -111,17 +111,17 @@ public class NotificationActivity extends BaseActivity {
     }
 
     @Override
-    Toolbar getToolbar() {
+    public Toolbar getToolbar() {
         return mToolbar;
     }
 
     @Override
-    int getActivityTitle() {
+    public int getActivityTitle() {
         return R.string.title_activity_notification;
     }
 
     @Override
-    int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_notification;
     }
 

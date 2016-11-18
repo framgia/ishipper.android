@@ -286,17 +286,17 @@ public class RouteActivity extends BaseActivity implements
     }
 
     @Override
-    Toolbar getToolbar() {
+    public Toolbar getToolbar() {
         return mToolbar;
     }
 
     @Override
-    int getActivityTitle() {
+    public int getActivityTitle() {
         return R.string.title_activity_route;
     }
 
     @Override
-    int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_route;
     }
 

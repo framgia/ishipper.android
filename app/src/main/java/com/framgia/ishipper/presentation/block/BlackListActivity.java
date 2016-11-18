@@ -187,17 +187,17 @@ public class BlackListActivity extends BaseActivity {
     }
 
     @Override
-    Toolbar getToolbar() {
+    public Toolbar getToolbar() {
         return mToolbar;
     }
 
     @Override
-    int getActivityTitle() {
+    public int getActivityTitle() {
         return R.string.title_black_list_shipper;
     }
 
     @Override
-    int getLayoutId() {
+    public int getLayoutId() {
         return R.layout.activity_blacklist_user;
     }
 }
