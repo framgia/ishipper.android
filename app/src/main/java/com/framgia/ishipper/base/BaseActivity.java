@@ -1,12 +1,9 @@
 package com.framgia.ishipper.base;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
@@ -20,41 +17,31 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 
 import java.io.IOException;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by HungNT on 8/3/16.
  */
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
-    public abstract Toolbar getToolbar();
-
-    public abstract int getActivityTitle();
-
-    public abstract int getLayoutId();
-
     protected WebSocket mWebSocket;
     protected Thread mThread;
     protected ProgressDialog mDialog;
-
-    protected void setToolbar(Toolbar toolbar) {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getActivityTitle());
-    }
 
     protected void connectWebSocket(SocketCallback callback) {
         mThread = new Thread(new WebSocketClient(callback));
         mThread.start();
     }
 
-    protected void showDialog() {
+    public void showUserMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showDialog() {
         if (mDialog == null) initDialog();
         if (mDialog != null && !mDialog.isShowing()) mDialog.show();
     }
 
-    protected void dismissDialog() {
+    public void dismissDialog() {
         if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
     }
 
@@ -73,22 +60,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected WebSocket getWebSocket() {
         return mWebSocket;
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-        ButterKnife.bind(this);
-        setToolbar(getToolbar());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-        return true;
     }
 
     class WebSocketClient implements Runnable {
