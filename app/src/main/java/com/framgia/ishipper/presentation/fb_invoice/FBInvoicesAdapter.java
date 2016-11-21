@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.adapter;
+package com.framgia.ishipper.presentation.fb_invoice;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +19,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FacebookInvoicesAdapter extends RecyclerView.Adapter<FacebookInvoicesAdapter.ViewHolder> {
+public class FBInvoicesAdapter extends RecyclerView.Adapter<FBInvoicesAdapter.ViewHolder> {
     private List<FbInvoice> mInvoiceList;
     private Context mContext;
 
-    public FacebookInvoicesAdapter(Context context, List<FbInvoice> invoiceList) {
+    public FBInvoicesAdapter(Context context, List<FbInvoice> invoiceList) {
         mContext = context;
         mInvoiceList = invoiceList;
     }
