@@ -28,9 +28,9 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
+import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
 import com.framgia.ishipper.presentation.profile.UserProfileActivity;
 import com.framgia.ishipper.presentation.settings.SettingActivity;
-import com.framgia.ishipper.ui.fragment.FacebookInvoiceFragment;
 import com.framgia.ishipper.ui.fragment.FavoriteFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
@@ -166,8 +166,8 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
             case R.id.nav_fb_order:
                 mSelectedId = id;
                 getToolbar().setTitle(getString(R.string.title_facebook_order));
-                fragment = FacebookInvoiceFragment.newInstance(true);
-                tag = FacebookInvoiceFragment.class.getName();
+                fragment = FBInvoiceFragment.newInstance(true);
+                tag = FBInvoiceFragment.class.getName();
                 break;
             case R.id.nav_ship_management:
                 mSelectedId = id;

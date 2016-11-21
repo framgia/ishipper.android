@@ -49,7 +49,6 @@ public class LoginActivity extends BaseActivity implements
         initViews();
     }
 
-    @Override
     public void initViews() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

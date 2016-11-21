@@ -5,5 +5,5 @@ package com.framgia.ishipper.base;
  */
 
 public interface BaseView {
-    void initViews();
+
 }
