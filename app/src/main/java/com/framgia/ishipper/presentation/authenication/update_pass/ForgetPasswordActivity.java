@@ -7,10 +7,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 /**
  * Created by HungNT on 8/3/16.
  */
-public class ForgetPasswordActivity extends BaseActivity {
+public class ForgetPasswordActivity extends BaseToolbarActivity {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;

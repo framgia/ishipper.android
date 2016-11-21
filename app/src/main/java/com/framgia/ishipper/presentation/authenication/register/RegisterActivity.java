@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.base.BaseActivity;
+import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -31,7 +31,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseToolbarActivity {
 
     @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
     @BindView(R.id.edtPasswordRegister) EditText mEdtPasswordRegister;

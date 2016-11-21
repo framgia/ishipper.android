@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
-import com.framgia.ishipper.base.BaseActivity;
+import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -38,7 +38,7 @@ import butterknife.OnClick;
 /**
  * Created by HungNT on 9/16/16.
  */
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseToolbarActivity {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0x1234;
     @BindView(R.id.cbReceiveNotification) CheckBox cbReceiveNotification;
     @BindView(R.id.seekbar_invoice_radius) SeekBar seekbarInvoiceRadius;
