@@ -31,7 +31,7 @@ import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
 import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
 import com.framgia.ishipper.presentation.profile.UserProfileActivity;
 import com.framgia.ishipper.presentation.settings.SettingActivity;
-import com.framgia.ishipper.ui.fragment.FavoriteFragment;
+import com.framgia.ishipper.presentation.favorite.FavoriteListFragment;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
 import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
@@ -172,14 +172,14 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
             case R.id.nav_ship_management:
                 mSelectedId = id;
                 getToolbar().setTitle(getString(R.string.nav_shop_management_item));
-                fragment = FavoriteFragment.newInstance();
-                tag = FavoriteFragment.class.getName();
+                fragment = FavoriteListFragment.newInstance();
+                tag = FavoriteListFragment.class.getName();
                 break;
             case R.id.nav_shop_management:
                 mSelectedId = id;
                 getToolbar().setTitle(getString(R.string.nav_ship_management_item));
-                fragment = FavoriteFragment.newInstance();
-                tag = FavoriteFragment.class.getName();
+                fragment = FavoriteListFragment.newInstance();
+                tag = FavoriteListFragment.class.getName();
                 break;
             case R.id.nav_create_order:
                 startActivity(new Intent(this, ShopCreateOrderActivity.class));
@@ -274,11 +274,6 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         getSupportFragmentManager()
                 .findFragmentByTag(MainContentFragment.class.getName())
@@ -288,6 +283,7 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) return;
         if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
             getSupportFragmentManager()
                     .findFragmentByTag(MainContentFragment.class.getName())

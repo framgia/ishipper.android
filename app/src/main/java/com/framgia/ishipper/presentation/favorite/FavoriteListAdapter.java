@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.adapter;
+package com.framgia.ishipper.presentation.favorite;
 
 import android.app.Dialog;
 import android.content.Context;

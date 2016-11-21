@@ -65,10 +65,6 @@ public class BlackListAdapter extends RecyclerView.Adapter<BlackListAdapter.View
         return mUserList;
     }
 
-    public void setUserList(List<User> userList) {
-        mUserList = userList;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tvUserName) TextView mTextName;
 
