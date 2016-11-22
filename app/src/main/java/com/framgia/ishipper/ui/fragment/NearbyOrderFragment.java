@@ -40,8 +40,8 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.presentation.filter.FilterInvoiceActivity;
 import com.framgia.ishipper.presentation.route.RouteActivity;
-import com.framgia.ishipper.ui.activity.FilterOrderActivity;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
@@ -264,7 +264,7 @@ public class NearbyOrderFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.menu_filter) {
-            Intent intent = new Intent(mContext, FilterOrderActivity.class);
+            Intent intent = new Intent(mContext, FilterInvoiceActivity.class);
             startActivityForResult(intent, REQUEST_FILTER);
         }
         return true;
@@ -308,7 +308,7 @@ public class NearbyOrderFragment extends Fragment implements
             case REQUEST_FILTER:
                 if (resultCode == Activity.RESULT_OK) {
                     // Update list invoice in map
-                    String jsonData = data.getStringExtra(FilterOrderActivity.INTENT_FILTER_DATA);
+                    String jsonData = data.getStringExtra(FilterInvoiceActivity.INTENT_FILTER_DATA);
                     mInvoices = new Gson().fromJson(
                             jsonData,
                             new TypeToken<List<Invoice>>() {

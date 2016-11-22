@@ -59,7 +59,7 @@
         <activity android:name=".presentation.profile.SearchUserActivity"/>
         <activity android:name=".presentation.authenication.update_pass.ChangePasswordActivity"/>
         <activity
-            android:name=".ui.activity.FilterOrderActivity"
+            android:name=".presentation.filter.FilterInvoiceActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".presentation.block.BlackListActivity"/>
