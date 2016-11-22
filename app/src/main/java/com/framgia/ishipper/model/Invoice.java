@@ -43,6 +43,7 @@ public class Invoice implements Parcelable {
     @SerializedName("customer_name") private String mCustomerName;
     @SerializedName("customer_number") private String mCustomerNumber;
     @SerializedName("received") private boolean mReceived;
+    @SerializedName("number_of_recipients") private String mNumOfRecipient;
 
     public Invoice() {
 
@@ -230,6 +231,14 @@ public class Invoice implements Parcelable {
         mReceived = received;
     }
 
+    public String getNumOfRecipient() {
+        return mNumOfRecipient;
+    }
+
+    public void setNumOfRecipient(String numOfRecipient) {
+        mNumOfRecipient = numOfRecipient;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -255,6 +264,7 @@ public class Invoice implements Parcelable {
         parcel.writeString(mCustomerName);
         parcel.writeString(mCustomerNumber);
         parcel.writeByte((byte) (mReceived ? 1 : 0));
+        parcel.writeString(mNumOfRecipient);
     }
 
     protected Invoice(Parcel in) {
@@ -276,6 +286,7 @@ public class Invoice implements Parcelable {
         mCustomerName = in.readString();
         mCustomerNumber = in.readString();
         mReceived = in.readByte() != 0;
+        mNumOfRecipient = in.readString();
     }
 
     public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {

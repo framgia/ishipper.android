@@ -167,6 +167,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.mTvShippingOrderStatus.setTextColor(statusColor);
         holder.mTvShippingOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
                 null, null, null);
+        if (holder.mInvoice.getNumOfRecipient() != null) {
+            holder.mTvNumShipRegister.setVisibility(View.VISIBLE);
+            holder.mTvNumShipRegister.setText(holder.mInvoice.getNumOfRecipient());
+        } else {
+            holder.mTvNumShipRegister.setVisibility(View.GONE);
+        }
         if (action.equals("")) {
             holder.mBtnActionItemOrder.setVisibility(View.GONE);
         } else {
@@ -242,6 +248,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         @BindView(R.id.btn_cancel_item_order) TextView mBtnCancelItemOrder;
         @BindView(R.id.btn_action_item_order) TextView mBtnActionItemOrder;
         @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
+        @BindView(R.id.tv_number_shipper_register) TextView mTvNumShipRegister;
 
         public ViewHolder(View view) {
             super(view);

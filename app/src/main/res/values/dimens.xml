@@ -110,5 +110,8 @@
     <dimen name="rv_item_horizontal_padding">16dp</dimen>
     <dimen name="icon_address_width">24dp</dimen>
     <dimen name="icon_address_height">24dp</dimen>
+    <dimen name="text_size_number_shipper_register">15dp</dimen>
+    <dimen name="radius_rounded_square">30dp</dimen>
+    <dimen name="size_number_shipper_register">30dp</dimen>
 
 </resources>
