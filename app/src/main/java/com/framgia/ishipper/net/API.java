@@ -3,6 +3,7 @@ package com.framgia.ishipper.net;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.model.UserSetting;
 import com.framgia.ishipper.net.data.AddBlacklistData;
 import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.ChangePasswordData;
@@ -23,6 +24,7 @@ import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
+import com.framgia.ishipper.net.data.UserSettingData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -158,6 +160,15 @@ public abstract class API {
             String token,
             APICallback<APIResponse<EmptyData>> callback) {
         client.deleteAllFavoriteList(userType, token).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void updateUserSetting(String token, HashMap<String, String> params,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.updateUserSetting(token, params).enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void getUserSetting(String token, APICallback<APIResponse<UserSettingData>> callback) {
+        client.getSetting(token).enqueue(new RetrofitCallback<>(callback));
     }
 
     //endregion

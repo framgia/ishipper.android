@@ -280,6 +280,7 @@
     <string name="not_have_guide_for_route">Không có hướng dẫn chỉ đường cho cung đường này</string>
     <string name="cant_get_guide_for_route">Không lấy được hướng dẫn chỉ đường, xin thử lại sau</string>
     <string name="new_notification">Có tin mới</string>
+    <string name="title_menu_save">Save</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
