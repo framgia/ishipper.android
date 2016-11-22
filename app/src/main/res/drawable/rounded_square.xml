@@ -3,7 +3,7 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <corners android:radius="@dimen/badge_background_radius"/>
+    <corners android:radius="@dimen/radius_rounded_square"/>
     <solid android:color="@color/badge_background_color"/>
     <stroke
         android:width="@dimen/badge_stroke_width"
