@@ -23,7 +23,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
-import com.framgia.ishipper.ui.activity.RouteActivity;
+import com.framgia.ishipper.presentation.route.RouteActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.TextFormatUtils;
 

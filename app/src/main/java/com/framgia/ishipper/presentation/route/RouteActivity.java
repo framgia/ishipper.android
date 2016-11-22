@@ -1,8 +1,6 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.route;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,17 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.directions.route.Route;
-import com.directions.route.RouteException;
-import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.data.ListRouteData;
-import com.framgia.ishipper.ui.adapter.PathGuideAdapter;
 import com.framgia.ishipper.util.Const;
-import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,15 +38,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RouteActivity extends BaseToolbarActivity implements
+        RouteContract.View,
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -63,12 +52,11 @@ public class RouteActivity extends BaseToolbarActivity implements
     private Invoice mInvoice;
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap;
-    private boolean isCheck;
     private LatLng mStartLatLng;
     private LatLng mFinishLatLng;
     private GoogleApiClient mGoogleApiClient;
-    private ArrayList<ListRouteData.Step> mSteps;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
+    private RouteContract.Presenter mPresenter;
 
     @BindView(R.id.rv_detail_guide_path) RecyclerView mRvGuidePath;
     @BindView(R.id.img_start_address) ImageView mImgStartAddress;
@@ -99,47 +87,12 @@ public class RouteActivity extends BaseToolbarActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (PermissionUtils.checkLocationPermission(this)) {
-            return;
-        }
-        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        switch (mInvoice.getStatusCode()) {
-            case Invoice.STATUS_CODE_INIT:
-                setUpUI(
-                        new LatLng(mInvoice.getLatStart(), mInvoice.getLngStart()),
-                        new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish()),
-                        mInvoice.getAddressStart(),
-                        mInvoice.getAddressFinish(),
-                        R.drawable.ic_shop,
-                        R.drawable.ic_destination
-                );
-                break;
-            case Invoice.STATUS_CODE_WAITING:
-                setUpUI(
-                        new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                        new LatLng(mInvoice.getLatStart(), mInvoice.getLngStart()),
-                        getString(R.string.all_current_position),
-                        mInvoice.getAddressStart(),
-                        R.drawable.ic_current_position,
-                        R.drawable.ic_shop
-                );
-                break;
-            default:
-                setUpUI(
-                        new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                        new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish()),
-                        getString(R.string.all_current_position),
-                        mInvoice.getAddressFinish(),
-                        R.drawable.ic_current_position,
-                        R.drawable.ic_destination
-                );
-                break;
-        }
-        showPath();
-
+        mPresenter.initMap(mGoogleApiClient, mInvoice);
+        mPresenter.showPath(mMap, mStartLatLng, mFinishLatLng);
     }
 
-    private void setUpUI(
+    @Override
+    public void setUpUI(
             LatLng startLatLng,
             LatLng finishLatLng,
             String startAddress,
@@ -158,92 +111,34 @@ public class RouteActivity extends BaseToolbarActivity implements
                 .position(mFinishLatLng));
     }
 
-    /**
-     * Show path of 2 position
-     */
-    private void showPath() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-        } else if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-                @Override
-                public void onMyLocationChange(Location location) {
-                    if (isCheck) return;
-                    isCheck = true;
-                    updateZoomMap(mMap);
-                    MapUtils.routing(mStartLatLng, mFinishLatLng, new RoutingListener() {
-                        @Override
-                        public void onRoutingFailure(RouteException e) {
-
-                        }
-
-                        @Override
-                        public void onRoutingStart() {
-
-                        }
-
-                        @Override
-                        public void onRoutingSuccess(ArrayList<Route> routes, int shortestRouteIndex) {
-                            PolylineOptions polyOptions = new PolylineOptions();
-                            for (int i = 0; i < routes.size(); i++) {
-                                Route route = routes.get(i);
-                                polyOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.colorGreen));
-                                polyOptions.width(8);
-                                polyOptions.addAll(route.getPoints());
-                                Log.d(TAG, route.getPoints().size() + "");
-                            }
-
-                            mMap.addPolyline(polyOptions);
-                        }
-
-                        @Override
-                        public void onRoutingCancelled() {
-
-                        }
-                    });
-
-                    mMap.setMyLocationEnabled(false);
+    @Override
+    public void onGetListStepSuccess(Response<ListRouteData> response) {
+        if (response.body() != null) {
+            ArrayList<ListRouteData.Route> routes = response.body().getRoutes();
+            if (routes != null && routes.size() > 0) {
+                ArrayList<ListRouteData.Leg> legs = routes.get(0).getLegs();
+                if (legs != null && legs.size() > 0) {
+                    ArrayList<ListRouteData.Step> steps = legs.get(0).getSteps();
+                    if (steps != null && steps.size() > 0) {
+                        RouteGuideAdapter routeGuideAdapter = new RouteGuideAdapter(this, steps);
+                        mRvGuidePath.setLayoutManager(new LinearLayoutManager(this));
+                        mRvGuidePath.setAdapter(routeGuideAdapter);
+                        mRvGuidePath.setVisibility(View.VISIBLE);
+                    } else {
+                        mTvEmpty.setText(R.string.not_have_guide_for_route);
+                        mTvEmpty.setVisibility(View.VISIBLE);
+                    }
                 }
-            });
+            }
         }
     }
 
-    /**
-     * Get list steps from start to the end address
-     */
-    private void getListSteps(String startAddress, String finishAddress) {
-        Map<String, String> userParams = new HashMap<>();
-        userParams.put(APIDefinition.GetListRoutes.PARAM_ORIGIN, startAddress);
-        userParams.put(APIDefinition.GetListRoutes.PARAM_DESTINATION, finishAddress);
-        userParams.put(APIDefinition.GetListRoutes.PARAM_KEY, getString(R.string.google_maps_key));
-        userParams.put(APIDefinition.PARAM_LANGUAGE, Const.Language.VIETNAMESE);
-        API.getListRoutes(userParams, new Callback<ListRouteData>() {
-            @Override
-            public void onResponse(Call<ListRouteData> call, Response<ListRouteData> response) {
-                mSteps = response.body().getRoutes().get(0).getLegs().get(0).getSteps();
-                if (mSteps != null) {
-                    PathGuideAdapter pathGuideAdapter = new PathGuideAdapter(RouteActivity.this, mSteps);
-                    mRvGuidePath.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-                    mRvGuidePath.setAdapter(pathGuideAdapter);
-                    mRvGuidePath.setVisibility(View.VISIBLE);
-                } else {
-                    mTvEmpty.setText(R.string.not_have_guide_for_route);
-                    mTvEmpty.setVisibility(View.VISIBLE);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ListRouteData> call, Throwable t) {
-                mTvEmpty.setVisibility(View.VISIBLE);
-                mTvEmpty.setText(R.string.cant_get_guide_for_route);
-            }
-        });
+    @Override
+    public void onGetListStepFail() {
+        mTvEmpty.setVisibility(View.VISIBLE);
+        mTvEmpty.setText(R.string.cant_get_guide_for_route);
     }
+
 
     @Override
     public void onRequestPermissionsResult(
@@ -255,11 +150,12 @@ public class RouteActivity extends BaseToolbarActivity implements
 
         if (PermissionUtils.isPermissionGranted(
                 permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            showPath();
+            mPresenter.showPath(mMap, mStartLatLng, mFinishLatLng);
         }
     }
 
-    private void updateZoomMap(GoogleMap googleMap) {
+    @Override
+    public void updateZoomMap(GoogleMap googleMap) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(mStartLatLng);
         builder.include(mFinishLatLng);
@@ -269,6 +165,20 @@ public class RouteActivity extends BaseToolbarActivity implements
         int padding = (int) (width * 0.12);
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         googleMap.moveCamera(cu);
+    }
+
+    @Override
+    public void drawRoute(ArrayList<Route> routes) {
+        PolylineOptions polyOptions = new PolylineOptions();
+        for (int i = 0; i < routes.size(); i++) {
+            Route route = routes.get(i);
+            polyOptions.color(ContextCompat.getColor(getApplicationContext(), R.color.colorGreen));
+            polyOptions.width(8);
+            polyOptions.addAll(route.getPoints());
+            Log.d(TAG, route.getPoints().size() + "");
+        }
+
+        mMap.addPolyline(polyOptions);
     }
 
     @Override
@@ -320,6 +230,7 @@ public class RouteActivity extends BaseToolbarActivity implements
 
     @Override
     public void initViews() {
+        mPresenter = new RoutePresenter(this, this, this);
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mInvoice = getIntent().getParcelableExtra(Const.KeyIntent.KEY_INVOICE);
         if (mGoogleApiClient == null) {
@@ -331,7 +242,7 @@ public class RouteActivity extends BaseToolbarActivity implements
                     .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
-        getListSteps(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
+        mPresenter.getListStep(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
         mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetView);
     }
 }
