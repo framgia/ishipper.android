@@ -54,6 +54,10 @@ public class Const {
         public static final String KEY_IS_LOGIN = "IsLoginKey";
         public static final String KEY_SETTING_NOTIFICATION = "SettingNotification";
         public static final String KEY_SETTING_INVOICE_RADIUS = "SettingInvoiceRadius";
+        public static final String KEY_SETTING_ADDRESS = "SettingAddress";
+        public static final String KEY_SETTING_LATITUDE = "SettingLatitude";
+        public static final String KEY_SETTING_LONGITUDE = "SettingLongitude";
+        public static final String KEY_SETTING_LOCATION = "SettingLocation";
     }
 
     public class LocationRequest {

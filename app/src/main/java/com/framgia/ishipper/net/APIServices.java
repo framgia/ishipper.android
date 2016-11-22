@@ -20,6 +20,7 @@ import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
+import com.framgia.ishipper.net.data.UserSettingData;
 
 import java.util.Map;
 
@@ -276,6 +277,16 @@ public class APIServices {
                 @Header(APIDefinition.HEADER_AUTHORIZE) String token,
                 @Path(APIDefinition.GetAllNotification.PARAM_USER_TYPE) String type
         );
+
+        @FormUrlEncoded
+        @PUT(APIDefinition.UserSetting.PATH)
+        Call<APIResponse<EmptyData>> updateUserSetting(
+                @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+                @FieldMap Map<String, String> params);
+
+        @GET(APIDefinition.UserSetting.PATH)
+        Call<APIResponse<UserSettingData>> getSetting(
+                @Header(APIDefinition.HEADER_AUTHORIZE) String token);
     }
 
     public interface GGMapApiServices {

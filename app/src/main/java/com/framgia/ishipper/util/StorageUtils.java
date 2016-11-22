@@ -68,6 +68,16 @@ public class StorageUtils {
         return editor.commit();
     }
 
+    public static boolean remove(Context context, String key) {
+        SharedPreferences preferences = getSharedPreferences(context);
+        if (preferences == null) {
+            return false;
+        }
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(key);
+        return editor.commit();
+    }
+
     /**
      * Clear all SharePref saved.
      */

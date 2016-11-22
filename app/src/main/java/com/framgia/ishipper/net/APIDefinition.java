@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
     //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.16:3001/";
+    private static final String DEV_URL = "http://192.168.1.109:3001/";
     private static final String PROD_URL = "";
 
     public static final String BASE_GOOGLE_MAP_API = "https://maps.googleapis.com";
@@ -359,4 +359,16 @@ public class APIDefinition {
         public static final String PARAM_DESTINATION = "destination";
         public static final String PARAM_KEY = "key";
     }
+
+    public class UserSetting {
+        public static final String PATH = "/api/user_setting";
+        public static final String PARAM_USER_ID = "user_setting[user_id]";
+        public static final String PARAM_RECEIVE_NOTIFICATION = "user_setting[receive_notification]";
+        public static final String PARAM_FAVORITE_LOCATION = "user_setting[favorite_location]";
+        public static final String PARAM_ADDRESS = "user_setting[favorite_address]";
+        public static final String PARAM_LATITUDE = "user_setting[favorite_latitude]";
+        public static final String PARAM_LONGITUDE = "user_setting[favorite_longitude]";
+        public static final String PARAM_RADIUS = "user_setting[radius_display]";
+    }
+
 }
