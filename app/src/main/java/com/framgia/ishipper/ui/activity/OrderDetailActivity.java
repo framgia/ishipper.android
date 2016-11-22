@@ -34,7 +34,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.presentation.route.RouteActivity;
-import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
+import com.framgia.ishipper.widget.dialog.UserInfoDialogFragment;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;

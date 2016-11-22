@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.fragment;
+package com.framgia.ishipper.presentation.profile;
 
 
 import android.os.Bundle;

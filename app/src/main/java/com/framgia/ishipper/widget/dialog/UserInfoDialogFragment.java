@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.fragment;
+package com.framgia.ishipper.widget.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.presentation.profile.UserInfoFragment;
 import com.framgia.ishipper.ui.adapter.GeneralFragmentPagerAdapter;
+import com.framgia.ishipper.presentation.profile.UserReviewFragment;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
@@ -72,11 +74,9 @@ public class UserInfoDialogFragment extends DialogFragment {
     private void initView() {
         mRatingBar.setRating((float) mUser.getRate());
         mTvName.setText(mUser.getName());
-        setUpViewPager();
         mTabLayout.setupWithViewPager(mViewPager);
-    }
 
-    private void setUpViewPager() {
+        // Viewpager
         GeneralFragmentPagerAdapter adapter = new GeneralFragmentPagerAdapter(getChildFragmentManager());
         adapter.addFragment(UserInfoFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_info_tab));
         adapter.addFragment(UserReviewFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_review));

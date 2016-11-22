@@ -1,9 +1,6 @@
 package com.framgia.ishipper.service;
 
-import android.content.Intent;
-
 import com.framgia.ishipper.common.Log;
-import com.framgia.ishipper.util.Const;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
