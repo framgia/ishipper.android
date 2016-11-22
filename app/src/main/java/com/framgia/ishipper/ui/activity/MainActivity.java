@@ -30,6 +30,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
 import com.framgia.ishipper.presentation.favorite.FavoriteListFragment;
 import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
+import com.framgia.ishipper.presentation.notification.NotificationActivity;
 import com.framgia.ishipper.presentation.profile.UserProfileActivity;
 import com.framgia.ishipper.presentation.settings.SettingActivity;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
