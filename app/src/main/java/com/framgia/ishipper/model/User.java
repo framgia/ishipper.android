@@ -147,7 +147,7 @@ public class User implements Parcelable {
     }
 
     public String getRole() {
-        return mRole;
+        return mRole.toLowerCase();
     }
 
     public void setRole(String role) {

@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.adapter;
+package com.framgia.ishipper.presentation.route;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,7 +7,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
@@ -23,12 +22,12 @@ import butterknife.ButterKnife;
  * Created by dinhduc on 11/11/2016.
  */
 
-public class PathGuideAdapter extends RecyclerView.Adapter<PathGuideAdapter.PathGuideViewHolder> {
+public class RouteGuideAdapter extends RecyclerView.Adapter<RouteGuideAdapter.PathGuideViewHolder> {
     private static final String REMOVE_BLANK_LINE_RG = "(?m)^[ \t]*\r?\n";
     private Context mContext;
     private List<ListRouteData.Step> mSteps;
 
-    public PathGuideAdapter(Context context, @NonNull ArrayList<ListRouteData.Step> steps) {
+    public RouteGuideAdapter(Context context, @NonNull ArrayList<ListRouteData.Step> steps) {
         mContext = context;
         mSteps = steps;
     }

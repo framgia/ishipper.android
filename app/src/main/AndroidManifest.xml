@@ -49,7 +49,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.RouteActivity"/>
+        <activity android:name=".presentation.route.RouteActivity"/>
         <activity android:name=".ui.activity.ShopCreateOrderActivity"/>
         <activity android:name=".presentation.authenication.register.RegisterActivity"/>
         <activity android:name=".presentation.authenication.update_pass.ForgetPasswordActivity"/>
