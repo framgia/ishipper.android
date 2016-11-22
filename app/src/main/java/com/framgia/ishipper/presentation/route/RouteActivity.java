@@ -68,11 +68,6 @@ public class RouteActivity extends BaseToolbarActivity implements
     @BindView(R.id.layout_bottom_sheet) View mBottomSheetView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();

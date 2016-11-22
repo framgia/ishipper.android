@@ -63,7 +63,7 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".presentation.block.BlackListActivity"/>
-        <activity android:name=".ui.activity.NotificationActivity"/>
+        <activity android:name=".presentation.notification.NotificationActivity"/>
 
         <service
             android:name=".service.FirebaseInstanceService">

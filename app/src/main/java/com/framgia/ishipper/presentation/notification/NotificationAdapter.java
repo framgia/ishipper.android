@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.adapter;
+package com.framgia.ishipper.presentation.notification;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
