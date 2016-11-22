@@ -2,6 +2,7 @@ package com.framgia.ishipper.base;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean allowInitViews = true;
 
     public abstract void initViews();
+
     public abstract int getLayoutId();
 
     @Override
@@ -50,6 +52,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void showUserMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showUserMessage(@StringRes int resId) {
+        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 
     public void showDialog() {
