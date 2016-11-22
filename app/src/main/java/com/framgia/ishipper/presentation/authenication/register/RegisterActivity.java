@@ -50,8 +50,6 @@ public class RegisterActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        configUserType();
-        setUpSpinner();
     }
 
     private void setUpSpinner() {
@@ -160,4 +158,9 @@ public class RegisterActivity extends BaseToolbarActivity {
         return R.layout.activity_register;
     }
 
+    @Override
+    public void initViews() {
+        configUserType();
+        setUpSpinner();
+    }
 }

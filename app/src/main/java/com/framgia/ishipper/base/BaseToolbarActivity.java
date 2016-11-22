@@ -3,7 +3,7 @@ package com.framgia.ishipper.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import butterknife.ButterKnife;
+import android.view.MenuItem;
 
 /**
  * Created by HungNT on 8/3/16.
@@ -15,14 +15,12 @@ public abstract class BaseToolbarActivity extends BaseActivity {
 
     public abstract int getActivityTitle();
 
-    public abstract int getLayoutId();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        allowInitViews = false;
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-        ButterKnife.bind(this);
         setToolbar(getToolbar());
+        initViews();
     }
 
     protected void setToolbar(Toolbar toolbar) {
@@ -32,8 +30,10 @@ public abstract class BaseToolbarActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
         return true;
     }
 }

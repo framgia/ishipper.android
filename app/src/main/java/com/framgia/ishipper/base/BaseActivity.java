@@ -1,6 +1,7 @@
 package com.framgia.ishipper.base;
 
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 
 import java.io.IOException;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by HungNT on 8/3/16.
  */
@@ -26,6 +29,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected WebSocket mWebSocket;
     protected Thread mThread;
     protected ProgressDialog mDialog;
+
+    protected boolean allowInitViews = true;
+
+    public abstract void initViews();
+    public abstract int getLayoutId();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutId());
+        ButterKnife.bind(this);
+        if (allowInitViews) initViews();
+    }
 
     protected void connectWebSocket(SocketCallback callback) {
         mThread = new Thread(new WebSocketClient(callback));

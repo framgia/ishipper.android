@@ -82,20 +82,6 @@ public class RouteActivity extends BaseToolbarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mInvoice = getIntent().getParcelableExtra(Const.KeyIntent.KEY_INVOICE);
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .build();
-        }
-        getListSteps(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
-        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetView);
     }
 
     @Override
@@ -330,5 +316,22 @@ public class RouteActivity extends BaseToolbarActivity implements
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void initViews() {
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mInvoice = getIntent().getParcelableExtra(Const.KeyIntent.KEY_INVOICE);
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .build();
+        }
+        getListSteps(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetView);
     }
 }

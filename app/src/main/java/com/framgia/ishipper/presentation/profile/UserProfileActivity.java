@@ -39,7 +39,7 @@ public class UserProfileActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bindData();
+        initViews();
     }
 
     @Override
@@ -56,19 +56,6 @@ public class UserProfileActivity extends BaseToolbarActivity {
     public int getLayoutId() {
         return R.layout.activity_user_profile;
     }
-
-    private void bindData() {
-        mCurrentUser = Config.getInstance().getUserInfo(getApplicationContext());
-        mEdtProfileName.setText(mCurrentUser.getName());
-        mEdtProfilePhone.setText(mCurrentUser.getPhoneNumber());
-        mEdtProfileAddress.setText(mCurrentUser.getAddress());
-        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
-            mEdtProfilePlate.setVisibility(View.GONE);
-        } else {
-            mEdtProfilePlate.setText(mCurrentUser.getPlateNumber());
-        }
-    }
-
 
     @OnClick({R.id.tv_change_password, R.id.btn_profile_update})
     public void onClick(View view) {
@@ -130,4 +117,16 @@ public class UserProfileActivity extends BaseToolbarActivity {
         });
     }
 
+    @Override
+    public void initViews() {
+        mCurrentUser = Config.getInstance().getUserInfo(getApplicationContext());
+        mEdtProfileName.setText(mCurrentUser.getName());
+        mEdtProfilePhone.setText(mCurrentUser.getPhoneNumber());
+        mEdtProfileAddress.setText(mCurrentUser.getAddress());
+        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
+            mEdtProfilePlate.setVisibility(View.GONE);
+        } else {
+            mEdtProfilePlate.setText(mCurrentUser.getPlateNumber());
+        }
+    }
 }
