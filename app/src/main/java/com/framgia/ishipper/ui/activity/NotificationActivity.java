@@ -41,46 +41,6 @@ public class NotificationActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCurrentUser = Config.getInstance().getUserInfo(this);
-        if (mCurrentUser == null) {
-            return;
-        }
-        mLayoutManager = new LinearLayoutManager(getBaseContext(),
-                LinearLayoutManager.VERTICAL, false);
-        rvListNotification.setLayoutManager(mLayoutManager);
-        API.getAllNotification(
-                mCurrentUser.getAuthenticationToken(),
-                mCurrentUser.getRole(),
-                1,
-                Const.Setting.PER_PAGE,
-                new API.APICallback<APIResponse<ListNotificationData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ListNotificationData> response) {
-                        mNotificationList = response.getData().getNotifications();
-                        mAdapter = new NotificationAdapter(getBaseContext(), mNotificationList);
-                        rvListNotification.setAdapter(mAdapter);
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-        rvListNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                mTotalItemCount = mLayoutManager.getItemCount();
-                mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-                Log.d(TAG, "last: " + mLastVisibleItem);
-                Log.d(TAG, "total: " + mTotalItemCount);
-                if (!mIsLoading && mTotalItemCount <= (mLastVisibleItem + mVisibleThreshold)) {
-                    loadMore(++mPage);
-                    mIsLoading = true;
-                }
-            }
-        });
     }
 
     private void loadMore(int page) {
@@ -125,4 +85,46 @@ public class NotificationActivity extends BaseToolbarActivity {
         return R.layout.activity_notification;
     }
 
+    @Override
+    public void initViews() {
+        mCurrentUser = Config.getInstance().getUserInfo(this);
+        if (mCurrentUser == null) return;
+
+        mLayoutManager = new LinearLayoutManager(getBaseContext(),
+                LinearLayoutManager.VERTICAL, false);
+        rvListNotification.setLayoutManager(mLayoutManager);
+        API.getAllNotification(
+                mCurrentUser.getAuthenticationToken(),
+                mCurrentUser.getRole(),
+                1,
+                Const.Setting.PER_PAGE,
+                new API.APICallback<APIResponse<ListNotificationData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListNotificationData> response) {
+                        mNotificationList = response.getData().getNotifications();
+                        mAdapter = new NotificationAdapter(getBaseContext(), mNotificationList);
+                        rvListNotification.setAdapter(mAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        rvListNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mTotalItemCount = mLayoutManager.getItemCount();
+                mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                Log.d(TAG, "last: " + mLastVisibleItem);
+                Log.d(TAG, "total: " + mTotalItemCount);
+                if (!mIsLoading && mTotalItemCount <= (mLastVisibleItem + mVisibleThreshold)) {
+                    loadMore(++mPage);
+                    mIsLoading = true;
+                }
+            }
+        });
+    }
 }

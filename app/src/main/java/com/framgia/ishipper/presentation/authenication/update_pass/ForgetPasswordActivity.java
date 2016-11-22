@@ -81,4 +81,9 @@ public class ForgetPasswordActivity extends BaseToolbarActivity {
         );
 
     }
+
+    @Override
+    public void initViews() {
+
+    }
 }

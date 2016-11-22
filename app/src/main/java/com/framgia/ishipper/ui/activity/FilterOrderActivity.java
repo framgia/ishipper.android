@@ -51,15 +51,6 @@ public class FilterOrderActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWidgetControl();
-    }
-
-    private void getWidgetControl() {
-        mSeekbarFilterOrderPrice.setNotifyWhileDragging(true);
-        mSeekbarFilterDistance.setNotifyWhileDragging(true);
-        mSeekbarFilterRadius.setNotifyWhileDragging(true);
-        mSeekbarFilterShipPrice.setNotifyWhileDragging(true);
-        mSeekbarFilterWeight.setNotifyWhileDragging(true);
     }
 
     @Override
@@ -189,5 +180,15 @@ public class FilterOrderActivity extends BaseToolbarActivity {
 
     private boolean isVisible(View view) {
         return view.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    public void initViews() {
+        // getWidgetControls
+        mSeekbarFilterOrderPrice.setNotifyWhileDragging(true);
+        mSeekbarFilterDistance.setNotifyWhileDragging(true);
+        mSeekbarFilterRadius.setNotifyWhileDragging(true);
+        mSeekbarFilterShipPrice.setNotifyWhileDragging(true);
+        mSeekbarFilterWeight.setNotifyWhileDragging(true);
     }
 }

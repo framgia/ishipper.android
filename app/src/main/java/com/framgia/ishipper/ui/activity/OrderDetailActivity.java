@@ -86,85 +86,6 @@ public class OrderDetailActivity extends BaseToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCurrentUser = Config.getInstance().getUserInfo(this);
-        initData();
-    }
-
-    private void initData() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) return;
-        if (CommonUtils.isOpenFromNoti(this)) {
-            // Explicit Intent
-            mInvoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
-            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
-            API.updateNotification(mCurrentUser.getUserType(), notiId,
-                                   mCurrentUser.getAuthenticationToken(), true,
-                                   new API.APICallback<APIResponse<EmptyData>>() {
-                                       @Override
-                                       public void onResponse(
-                                               APIResponse<EmptyData> response) {
-                                           //TODO: read notificationItem
-                                       }
-
-                                       @Override
-                                       public void onFailure(int code, String message) {
-
-                                       }
-                                   });
-        } else {
-            // Implicit Intent
-            mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
-        }
-
-        // get Invoice from invoice id
-        API.getInvoiceDetail(
-                mCurrentUser.getRole(),
-                String.valueOf(mInvoiceId),
-                mCurrentUser.getAuthenticationToken(),
-                new API.APICallback<APIResponse<ShowInvoiceData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ShowInvoiceData> response) {
-                        mInvoiceUser = response.getData().mInvoice.getUser();
-                        mInvoice = response.getData().mInvoice;
-                        if (mInvoice == null) return;
-                        invalidateOptionsMenu();
-                        setStatus(mInvoice);
-                        showAction(mInvoice.getStatusCode());
-                        User user = mInvoice.getUser();
-                        tvDetailDistance.setText(TextFormatUtils
-                                .formatDistance(mInvoice.getDistance()));
-                        tvDetailStart.setText(mInvoice.getAddressStart());
-                        tvDetailEnd.setText(mInvoice.getAddressFinish());
-                        tvDetailOrderName.setText(mInvoice.getName());
-                        tvDetailOrderPrice.setText(TextFormatUtils
-                                .formatPrice(mInvoice.getPrice()));
-                        tvDetailShipPrice.setText(TextFormatUtils
-                                .formatPrice(mInvoice.getShippingPrice()));
-                        tvDetailShipTime.setText(mInvoice.getDeliveryTime());
-                        tvDetailNote.setText(mInvoice.getDescription());
-                        if (user == null) return;
-                        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
-                            mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
-                            mCardviewDetailShipperInfor.setVisibility(View.GONE);
-                            tvDetailShopName.setText(user.getName());
-                            tvDetailShopPhone.setText(user.getPhoneNumber());
-                        } else {
-                            mCardviewDetailShopInfor.setVisibility(View.GONE);
-                            if (mInvoice.getStatus().equals(
-                                    Invoice.STATUS_INIT)) {
-                                mCardviewDetailShipperInfor.setVisibility(View.GONE);
-                            } else {
-                                mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
-                            }
-                            tvDetailShipperName.setText(user.getName());
-                            tvDetailShipperPhone.setText(user.getPhoneNumber());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int code, String message) {
-                        Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     private void setStatus(Invoice invoice) {
@@ -590,5 +511,84 @@ public class OrderDetailActivity extends BaseToolbarActivity {
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void initViews() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) return;
+        if (CommonUtils.isOpenFromNoti(this)) {
+            // Explicit Intent
+            mInvoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            API.updateNotification(mCurrentUser.getUserType(), notiId,
+                    mCurrentUser.getAuthenticationToken(), true,
+                    new API.APICallback<APIResponse<EmptyData>>() {
+                        @Override
+                        public void onResponse(
+                                APIResponse<EmptyData> response) {
+                            //TODO: read notificationItem
+                        }
+
+                        @Override
+                        public void onFailure(int code, String message) {
+
+                        }
+                    });
+        } else {
+            // Implicit Intent
+            mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
+        }
+
+        // get Invoice from invoice id
+        API.getInvoiceDetail(
+                mCurrentUser.getRole(),
+                String.valueOf(mInvoiceId),
+                mCurrentUser.getAuthenticationToken(),
+                new API.APICallback<APIResponse<ShowInvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ShowInvoiceData> response) {
+                        mInvoiceUser = response.getData().mInvoice.getUser();
+                        mInvoice = response.getData().mInvoice;
+                        if (mInvoice == null) return;
+                        invalidateOptionsMenu();
+                        setStatus(mInvoice);
+                        showAction(mInvoice.getStatusCode());
+                        User user = mInvoice.getUser();
+                        tvDetailDistance.setText(TextFormatUtils
+                                .formatDistance(mInvoice.getDistance()));
+                        tvDetailStart.setText(mInvoice.getAddressStart());
+                        tvDetailEnd.setText(mInvoice.getAddressFinish());
+                        tvDetailOrderName.setText(mInvoice.getName());
+                        tvDetailOrderPrice.setText(TextFormatUtils
+                                .formatPrice(mInvoice.getPrice()));
+                        tvDetailShipPrice.setText(TextFormatUtils
+                                .formatPrice(mInvoice.getShippingPrice()));
+                        tvDetailShipTime.setText(mInvoice.getDeliveryTime());
+                        tvDetailNote.setText(mInvoice.getDescription());
+                        if (user == null) return;
+                        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
+                            mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
+                            mCardviewDetailShipperInfor.setVisibility(View.GONE);
+                            tvDetailShopName.setText(user.getName());
+                            tvDetailShopPhone.setText(user.getPhoneNumber());
+                        } else {
+                            mCardviewDetailShopInfor.setVisibility(View.GONE);
+                            if (mInvoice.getStatus().equals(
+                                    Invoice.STATUS_INIT)) {
+                                mCardviewDetailShipperInfor.setVisibility(View.GONE);
+                            } else {
+                                mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
+                            }
+                            tvDetailShipperName.setText(user.getName());
+                            tvDetailShipperPhone.setText(user.getPhoneNumber());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

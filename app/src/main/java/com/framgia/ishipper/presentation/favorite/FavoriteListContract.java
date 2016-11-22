@@ -1,6 +1,4 @@
 package com.framgia.ishipper.presentation.favorite;
-import com.framgia.ishipper.base.BasePresenter;
-import com.framgia.ishipper.base.BaseView;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.data.ListUserData;
 
@@ -10,7 +8,7 @@ import com.framgia.ishipper.net.data.ListUserData;
 
 public interface FavoriteListContract {
 
-    interface View extends BaseView {
+    interface View {
 
         void showConfirmDialog();
 
@@ -19,7 +17,7 @@ public interface FavoriteListContract {
         void insertUser(int index, User favoriteUser);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
 
         void getFavoriteList(User currentUser);
 

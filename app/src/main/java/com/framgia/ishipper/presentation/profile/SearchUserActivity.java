@@ -1,7 +1,5 @@
 package com.framgia.ishipper.presentation.profile;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,17 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
-import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.ui.adapter.SearchUserAdapter;
-import com.framgia.ishipper.util.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +22,8 @@ import java.util.List;
 import butterknife.BindView;
 
 public class SearchUserActivity extends BaseToolbarActivity
-        implements API.APICallback<APIResponse<ListUserData>>,SearchUserAdapter.OnSearchItemCallback {
+        implements SearchUserAdapter.OnSearchItemCallback,
+        SearchUserContract.View {
     private static final String EXTRA_REQUEST_CODE = "EXTRA_REQUEST_CODE";
     private static final String RESULT_USER = "RESULT_USER";
     @BindView(R.id.edtSearch) EditText mEdtSearch;
@@ -41,15 +34,41 @@ public class SearchUserActivity extends BaseToolbarActivity
 
     private SearchUserAdapter mAdapter;
     private List<User> mListUsers = new ArrayList<>();
-    private int mRequestCode;
+    private SearchUserPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new SearchUserPresenter(this, this);
+    }
 
-        mRequestCode = getIntent()
-                .getIntExtra(EXTRA_REQUEST_CODE, Const.RequestCode.REQUEST_SEARCH_BLACKLIST);
+    @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
 
+    @Override
+    public int getActivityTitle() {
+        return R.string.activity_search_title;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_search_user;
+    }
+
+    @Override
+    public void onAddButtonClick(User data) {
+        mPresenter.gotoAddUser(data);
+    }
+
+    @Override
+    public void onItemClick(User data) {
+        // TODO show user info
+    }
+
+    @Override
+    public void initViews() {
         mAdapter = new SearchUserAdapter(mListUsers, this);
         mRvResult.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
@@ -72,60 +91,16 @@ public class SearchUserActivity extends BaseToolbarActivity
             @Override
             public void afterTextChanged(Editable editable) {
                 mAdapter.notifyDataSetChanged();
-
                 if (editable.length() == 0) return;
-
-                API.getSearchUser(
-                        Config.getInstance().getUserInfo(getBaseContext()).getAuthenticationToken(),
-                        editable.toString(), SearchUserActivity.this);
+                mPresenter.searchUser(editable.toString());
             }
         });
-
     }
 
     @Override
-    public void onResponse(APIResponse<ListUserData> response) {
+    public void updateListUser(List<User> listUsers) {
         mListUsers.clear();
-        mListUsers.addAll(response.getData().getShippersList());
+        mListUsers.addAll(listUsers);
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onFailure(int code, String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public Toolbar getToolbar() {
-        return mToolbar;
-    }
-
-    @Override
-    public int getActivityTitle() {
-        return R.string.activity_search_title;
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_search_user;
-    }
-
-    public static Intent startIntent(Context context, int requestCode) {
-        Intent intent = new Intent(context, SearchUserActivity.class);
-        intent.putExtra(EXTRA_REQUEST_CODE, requestCode);
-        return intent;
-    }
-
-    @Override
-    public void onAddButtonClick(User data) {
-        Intent intent = getIntent();
-        intent.putExtra(Const.KEY_USER, data);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    @Override
-    public void onItemClick(User data) {
-        // TODO show user info
     }
 }

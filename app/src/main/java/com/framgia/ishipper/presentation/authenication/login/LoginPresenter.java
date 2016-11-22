@@ -24,11 +24,11 @@ import java.util.HashMap;
  * Created by framgia on 18/11/2016.
  */
 
-public class LoginPresenter implements LoginContract.Presenter {
+class LoginPresenter implements LoginContract.Presenter {
     private final LoginContract.View mLoginView;
     private BaseActivity mLoginActivity;
 
-    public LoginPresenter(@NonNull LoginContract.View loginView, BaseActivity loginActivity) {
+    LoginPresenter(@NonNull LoginContract.View loginView, BaseActivity loginActivity) {
         mLoginView = loginView;
         mLoginActivity = loginActivity;
     }

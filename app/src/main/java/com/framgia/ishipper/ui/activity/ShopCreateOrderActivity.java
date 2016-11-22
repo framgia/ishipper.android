@@ -21,11 +21,6 @@ public class ShopCreateOrderActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, new ShopCreateOrderStep1Fragment())
-                .commit();
-
     }
 
     public void addFragment(Fragment fragment) {
@@ -58,5 +53,13 @@ public class ShopCreateOrderActivity extends BaseToolbarActivity {
             onBackPressed();
         }
         return true;
+    }
+
+    @Override
+    public void initViews() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new ShopCreateOrderStep1Fragment())
+                .commit();
     }
 }

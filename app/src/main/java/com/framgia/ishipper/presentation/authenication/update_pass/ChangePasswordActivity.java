@@ -87,4 +87,9 @@ public class ChangePasswordActivity extends BaseToolbarActivity {
                 }
         );
     }
+
+    @Override
+    public void initViews() {
+
+    }
 }

@@ -71,16 +71,11 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         connectWebSocket(this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    private void initView() {
+    public void initViews() {
         mCurrentUser = Config.getInstance().getUserInfo(this);
         if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
             userType = SHIPPER;

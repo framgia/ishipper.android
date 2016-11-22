@@ -1,8 +1,5 @@
 package com.framgia.ishipper.presentation.block;
-import com.framgia.ishipper.base.BasePresenter;
-import com.framgia.ishipper.base.BaseView;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListUserData;
 
 /**
@@ -11,7 +8,7 @@ import com.framgia.ishipper.net.data.ListUserData;
 
 public interface BlackListContract {
 
-    interface View extends BaseView {
+    interface View {
 
         void initViews();
 
@@ -22,7 +19,7 @@ public interface BlackListContract {
         void insertUser(int index, User blockUser);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
 
         void getBlackList(User currentUser);
 

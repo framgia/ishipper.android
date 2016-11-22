@@ -17,7 +17,6 @@ import com.framgia.ishipper.util.Const.Firebase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements
@@ -34,7 +33,13 @@ public class LoginActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+    }
+
+    public void initViews() {
         getConfig();
         mPresenter = new LoginPresenter(this, this);
 
@@ -46,16 +51,12 @@ public class LoginActivity extends BaseActivity implements
             mPresenter.startMainActivity();
         }
 
-        initViews();
+        setUpSpinner();
     }
 
-    public void initViews() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
-        setUpSpinner();
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_login;
     }
 
     public void setUpSpinner() {

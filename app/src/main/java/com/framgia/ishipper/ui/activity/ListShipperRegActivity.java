@@ -51,47 +51,10 @@ public class ListShipperRegActivity extends BaseToolbarActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
         initEvent();
         Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
 
     }
-
-    private void initData() {
-        mCurrentUser = Config.getInstance().getUserInfo(this);
-        if (CommonUtils.isOpenFromNoti(this)) {
-            // Explicit Intent
-            mInvoiceId = Integer.valueOf(getIntent().getExtras()
-                    .getString(Const.FirebaseData.INVOICE_ID));
-            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
-            API.updateNotification(mCurrentUser.getUserType(), notiId,
-                                   mCurrentUser.getAuthenticationToken(), true,
-                                   new API.APICallback<APIResponse<EmptyData>>() {
-                                       @Override
-                                       public void onResponse(
-                                               APIResponse<EmptyData> response) {
-                                           //TODO: read notificationItem
-                                       }
-
-                                       @Override
-                                       public void onFailure(int code, String message) {
-
-                                       }
-                                   });
-        } else {
-            // Implicit Intent
-            mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
-        }
-
-        mShipperList = new ArrayList<>();
-        mShipperRegAdapter = new ShipperRegAdapter(this, mShipperList);
-        mShipperRegAdapter.setListener(this);
-        mShipperRegAdapter.setAcceptShipperListener(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mShipperRegAdapter);
-        getListShipper();
-    }
-
 
     private void initEvent() {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -188,5 +151,41 @@ public class ListShipperRegActivity extends BaseToolbarActivity implements
     @Override
     public int getLayoutId() {
         return R.layout.activity_list_shipper_reg;
+    }
+
+    @Override
+    public void initViews() {
+        mCurrentUser = Config.getInstance().getUserInfo(this);
+        if (CommonUtils.isOpenFromNoti(this)) {
+            // Explicit Intent
+            mInvoiceId = Integer.valueOf(getIntent().getExtras()
+                    .getString(Const.FirebaseData.INVOICE_ID));
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            API.updateNotification(mCurrentUser.getUserType(), notiId,
+                    mCurrentUser.getAuthenticationToken(), true,
+                    new API.APICallback<APIResponse<EmptyData>>() {
+                        @Override
+                        public void onResponse(
+                                APIResponse<EmptyData> response) {
+                            //TODO: read notificationItem
+                        }
+
+                        @Override
+                        public void onFailure(int code, String message) {
+
+                        }
+                    });
+        } else {
+            // Implicit Intent
+            mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
+        }
+
+        mShipperList = new ArrayList<>();
+        mShipperRegAdapter = new ShipperRegAdapter(this, mShipperList);
+        mShipperRegAdapter.setListener(this);
+        mShipperRegAdapter.setAcceptShipperListener(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mShipperRegAdapter);
+        getListShipper();
     }
 }

@@ -56,10 +56,11 @@ public class SettingActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
+        initViews();
     }
 
-    private void initView() {
+    @Override
+    public void initViews() {
         mCurrentUser = Config.getInstance().getUserInfo(this);
         mInvoiceRadius = StorageUtils.getIntValue(this, Storage.KEY_SETTING_INVOICE_RADIUS,
                 Const.SETTING_INVOICE_RADIUS_DEFAULT);
