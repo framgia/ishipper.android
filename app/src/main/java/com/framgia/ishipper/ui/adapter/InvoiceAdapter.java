@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     private OnClickCancelListener mClickCancelListener;
     private OnclickViewListener mClickViewListener;
     private Context mContext;
-    private int mPositionHighlight = - 1;
+    private int mPositionHighlight = Const.POSITION_HIGHLIGHT_DEFAULT;
 
     public InvoiceAdapter(Context context, List<Invoice> invoiceList,
                           OnclickViewListener listener) {
