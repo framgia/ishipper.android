@@ -118,6 +118,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
             case R.id.edt_address_end:
                 if (hasFocus) {
                     setPickEndLocation();
+                    mDisableCameraChange = false;
                     mBtnPickStart.setImageResource(R.drawable.ic_map_picker_start);
                     mMakerStart = mMap.addMarker(
                             new MarkerOptions()
@@ -148,6 +149,7 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
                     // if user haven't pick end point
                     if (mMakerEnd == null) {
                         setPickEndLocation();
+                        mDisableCameraChange = false;
                     } else {
                         setDonePickLocation();
                     }
@@ -375,6 +377,11 @@ public class ShopCreateOrderStep1Fragment extends Fragment implements OnMapReady
             com.framgia.ishipper.common.Log.w(TAG, mLocation.getLatitude() + "");
             mLatLngStart = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
             setPickStartLocation();
+            if (task != null) {
+                task.cancel(true);
+            }
+            task = new FetchAddressTask();
+            task.execute(mLatLngStart);
         } else {
             Toast.makeText(
                     getContext(),
