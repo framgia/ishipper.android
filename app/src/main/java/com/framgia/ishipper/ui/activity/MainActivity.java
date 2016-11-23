@@ -30,12 +30,12 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
 import com.framgia.ishipper.presentation.favorite.FavoriteListFragment;
 import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
+import com.framgia.ishipper.presentation.manager_invoice.ShipperInvoiceManagerFragment;
+import com.framgia.ishipper.presentation.manager_invoice.ShopInvoiceManagerFragment;
 import com.framgia.ishipper.presentation.notification.NotificationActivity;
 import com.framgia.ishipper.presentation.profile.UserProfileActivity;
 import com.framgia.ishipper.presentation.settings.SettingActivity;
 import com.framgia.ishipper.ui.fragment.MainContentFragment;
-import com.framgia.ishipper.ui.fragment.ShipperOrderManagerFragment;
-import com.framgia.ishipper.ui.fragment.ShopOrderManagerFragment;
 import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
 import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
@@ -147,16 +147,16 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                 getToolbar().setTitle(getString(R.string.title_activity_order_manager));
                 if (userType == SHIPPER) {
                     fragment =
-                            ShipperOrderManagerFragment.instantiate(MainActivity.this,
-                                    ShipperOrderManagerFragment.class.getName(),
-                                    null);
-                    tag = ShipperOrderManagerFragment.class.getName();
+                            ShipperInvoiceManagerFragment.instantiate(MainActivity.this,
+                                                                      ShipperInvoiceManagerFragment.class.getName(),
+                                                                      null);
+                    tag = ShipperInvoiceManagerFragment.class.getName();
                 } else {
                     fragment =
-                            ShipperOrderManagerFragment.instantiate(MainActivity.this,
-                                    ShopOrderManagerFragment.class.getName(),
-                                    null);
-                    tag = ShipperOrderManagerFragment.class.getName();
+                            ShipperInvoiceManagerFragment.instantiate(MainActivity.this,
+                                                                      ShopInvoiceManagerFragment.class.getName(),
+                                                                      null);
+                    tag = ShipperInvoiceManagerFragment.class.getName();
                 }
                 break;
             case R.id.nav_fb_order:
