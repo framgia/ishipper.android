@@ -1,5 +1,6 @@
 package com.framgia.ishipper.base;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.framgia.ishipper.R;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -18,6 +21,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
 
     private Unbinder mUnbinder;
+    protected ProgressDialog mDialog;
 
     @Nullable
     @Override
@@ -29,6 +33,23 @@ public abstract class BaseFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this, view);
         initViews();
         return view;
+    }
+
+    public void showDialog() {
+        if (mDialog == null) initDialog();
+        if (mDialog != null && !mDialog.isShowing()) mDialog.show();
+    }
+
+    public void dismissDialog() {
+        if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
+    }
+
+    private void initDialog() {
+        mDialog = new ProgressDialog(getContext());
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setMessage(getString(R.string.dialog_loading_message));
+        mDialog.setIndeterminate(true);
+        mDialog.setCanceledOnTouchOutside(false);
     }
 
     public abstract int getLayoutId();
