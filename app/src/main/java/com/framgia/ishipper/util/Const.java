@@ -33,6 +33,8 @@ public class Const {
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
     public static final String ACTION_NEW_NOTIFICATION = "new_notification";
+    public static final int HEAD_LIST = 0;
+    public static final String KEY_INVOICE_ID = "invoice_id";
 
     public class RequestCode {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;

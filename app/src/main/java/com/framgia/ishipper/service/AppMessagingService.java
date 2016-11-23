@@ -27,6 +27,12 @@ public class AppMessagingService extends FirebaseMessagingService {
         intent.setAction(Const.ACTION_NEW_NOTIFICATION);
         intent.putExtra(Const.KEY_TITLE, remoteMessage.getNotification().getTitle());
         intent.putExtra(Const.KEY_BODY, remoteMessage.getNotification().getBody());
+        if (remoteMessage.getData().containsKey(Const.KEY_USER)) {
+            intent.putExtra(Const.KEY_USER, remoteMessage.getData().get(Const.KEY_USER));
+        }
+        if (remoteMessage.getData().containsKey(Const.KEY_INVOICE_ID)) {
+            intent.putExtra(Const.KEY_INVOICE_ID, remoteMessage.getData().get(Const.KEY_INVOICE_ID));
+        }
         sendBroadcast(intent);
     }
 }

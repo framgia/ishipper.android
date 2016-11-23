@@ -1,7 +1,10 @@
 package com.framgia.ishipper.ui.activity;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,12 +26,12 @@ import com.framgia.ishipper.ui.adapter.ShipperRegAdapter;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by vuduychuong1994 on 7/20/16.
@@ -47,12 +50,19 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     private int mInvoiceId;
     private List<User> mShipperList;
     private User mCurrentUser;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            addShipper(intent);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
         initEvent();
+        registerReceiver(mReceiver, new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
         Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
 
     }
@@ -92,7 +102,6 @@ public class ListShipperRegActivity extends ToolbarActivity implements
         getListShipper();
     }
 
-
     private void initEvent() {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,8 +111,8 @@ public class ListShipperRegActivity extends ToolbarActivity implements
         });
     }
 
-    private void getListShipper() {
 
+    private void getListShipper() {
         API.getListShipperReceived(Config.getInstance().getUserInfo(this).getAuthenticationToken(),
                 String.valueOf(mInvoiceId),
                 new API.APICallback<APIResponse<ListShipperData>>() {
@@ -125,6 +134,14 @@ public class ListShipperRegActivity extends ToolbarActivity implements
                 });
     }
 
+    private void addShipper(Intent intent) {
+        if (intent == null) return;
+        String userStr = intent.getStringExtra(Const.KEY_USER);
+        User user = new Gson().fromJson(userStr, User.class);
+        mShipperList.add(user);
+        mShipperRegAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -141,6 +158,12 @@ public class ListShipperRegActivity extends ToolbarActivity implements
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) unregisterReceiver(mReceiver);
     }
 
     @Override
