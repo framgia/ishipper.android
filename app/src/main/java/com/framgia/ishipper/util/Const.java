@@ -77,6 +77,7 @@ public class Const {
     public class Notification {
         public static final int ON = 1;
         public static final int OFF = 0;
+        public static final int ID = 1;
     }
 
     public class FirebaseData {
