@@ -5,4 +5,11 @@ package com.framgia.ishipper.presentation.authenication.update_pass;
  */
 
 public interface ForgetPasswordContract {
+    interface View {
+
+    }
+
+    interface Presenter {
+        void requestForgotPassword(String phoneNumber);
+    }
 }

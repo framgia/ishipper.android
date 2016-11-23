@@ -86,7 +86,6 @@ public class OrderDetailActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCurrentUser = Config.getInstance().getUserInfo(this);
     }
 
     private void setStatus(Invoice invoice) {
@@ -516,6 +515,7 @@ public class OrderDetailActivity extends BaseToolbarActivity {
 
     @Override
     public void initViews() {
+        mCurrentUser = Config.getInstance().getUserInfo(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) return;
         if (CommonUtils.isOpenFromNoti(this)) {
