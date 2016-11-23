@@ -317,7 +317,7 @@ public class OrderListFragment extends Fragment implements InvoiceAdapter.OnClic
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mReceiver != null) getActivity().unregisterReceiver(mReceiver);
+//        if (mReceiver != null) getActivity().unregisterReceiver(mReceiver);
     }
 
     @Override

@@ -312,7 +312,7 @@ public class NearbyShipperFragment extends Fragment implements
                     @Override
                     public void onResponse(APIResponse<ShipperNearbyData> response) {
                         Log.d(TAG, "onResponse: " + response.getMessage());
-                        List<User> shipperList = response.getData().getUsers();
+                        ArrayList<User> shipperList = (ArrayList<User>) response.getData().getUsers();
                         addListMarker(shipperList);
                     }
 
