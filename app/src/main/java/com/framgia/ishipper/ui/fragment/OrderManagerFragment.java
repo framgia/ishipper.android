@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -310,7 +308,7 @@ public class OrderManagerFragment extends Fragment implements OrderListFragment.
         for (int i = 0; i < size; i++) {
             if (listFragment.getInvoiceList().get(i).getId() == invoiceId) {
                 listFragment.getInvoiceList().remove(i);
-                listFragment.getOrderAdapter().notifyDataSetChanged();
+                listFragment.getInvoiceAdapter().notifyDataSetChanged();
                 return;
             }
         }
