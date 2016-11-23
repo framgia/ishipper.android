@@ -2,7 +2,6 @@ package com.framgia.ishipper.ui.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,13 +16,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.InvoiceHistory;
 import com.framgia.ishipper.model.ReviewUser;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -33,6 +33,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
+import com.framgia.ishipper.ui.adapter.InvoiceHistoryAdapter;
 import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
 import com.framgia.ishipper.ui.view.CancelDialog;
 import com.framgia.ishipper.ui.view.ReviewDialog;
@@ -40,11 +41,11 @@ import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class OrderDetailActivity extends ToolbarActivity {
@@ -77,6 +78,8 @@ public class OrderDetailActivity extends ToolbarActivity {
     @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     @BindView(R.id.tv_shipping_order_status) TextView tvOrderStatus;
+    @BindView(R.id.lv_detail_history) ListView mLvHistoryList;
+    @BindView(R.id.tv_detail_history) TextView mTvDetailHistory;
 
     private User mCurrentUser;
     private User mInvoiceUser;
@@ -91,6 +94,16 @@ public class OrderDetailActivity extends ToolbarActivity {
     }
 
     private void initData() {
+        ArrayList<InvoiceHistory> invoiceHistories = new ArrayList<>();
+        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
+        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
+        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
+        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
+        InvoiceHistoryAdapter adapter = new InvoiceHistoryAdapter(
+                this, R.layout.item_invoice_history, invoiceHistories);
+        mLvHistoryList.setAdapter(adapter);
+        CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) return;
         if (CommonUtils.isOpenFromNoti(this)) {
@@ -98,19 +111,19 @@ public class OrderDetailActivity extends ToolbarActivity {
             mInvoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
             String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
             API.updateNotification(mCurrentUser.getUserType(), notiId,
-                                   mCurrentUser.getAuthenticationToken(), true,
-                                   new API.APICallback<APIResponse<EmptyData>>() {
-                                       @Override
-                                       public void onResponse(
-                                               APIResponse<EmptyData> response) {
-                                           //TODO: read notificationItem
-                                       }
+                    mCurrentUser.getAuthenticationToken(), true,
+                    new API.APICallback<APIResponse<EmptyData>>() {
+                        @Override
+                        public void onResponse(
+                                APIResponse<EmptyData> response) {
+                            //TODO: read notificationItem
+                        }
 
-                                       @Override
-                                       public void onFailure(int code, String message) {
+                        @Override
+                        public void onFailure(int code, String message) {
 
-                                       }
-                                   });
+                        }
+                    });
         } else {
             // Implicit Intent
             mInvoiceId = getIntent().getIntExtra(KEY_INVOICE_ID, -1);
@@ -365,7 +378,8 @@ public class OrderDetailActivity extends ToolbarActivity {
             R.id.btn_detail_cancel_register_order,
             R.id.btn_report_user,
             R.id.btn_finished_order,
-            R.id.btn_take_order
+            R.id.btn_take_order,
+            R.id.tv_detail_history
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -402,6 +416,14 @@ public class OrderDetailActivity extends ToolbarActivity {
                 break;
             case R.id.btn_take_order:
                 onTakeOrder();
+                break;
+            case R.id.tv_detail_history:
+                mTvDetailHistory.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                        mLvHistoryList.getVisibility() == View.VISIBLE
+                                ? R.drawable.ic_arrow_drop_down_24dp
+                                : R.drawable.ic_arrow_drop_up_24dp, 0);
+                mLvHistoryList.setVisibility(
+                        mLvHistoryList.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 break;
         }
     }
@@ -466,7 +488,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                     public void onResponse(APIResponse<InvoiceData> response) {
                         loadingDialog.dismiss();
                         Toast.makeText(OrderDetailActivity.this, response.getMessage(),
-                                       Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.putExtra(KEY_INVOICE_ID, mInvoice.getId());
                         setResult(Activity.RESULT_OK, intent);
@@ -479,26 +501,6 @@ public class OrderDetailActivity extends ToolbarActivity {
                         loadingDialog.dismiss();
                     }
                 });
-    }
-
-    private void confirmShowReportDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-        builder.setMessage(R.string.message_report_dialog);
-        builder.setPositiveButton(R.string.all_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                showReportDialog();
-                dialogInterface.cancel();
-            }
-        });
-        builder.setNegativeButton(R.string.all_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     private void showReportDialog() {
@@ -592,4 +594,6 @@ public class OrderDetailActivity extends ToolbarActivity {
         });
         dialog.show();
     }
+
+
 }
