@@ -30,6 +30,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.ui.adapter.InvoiceAdapter;
 import com.framgia.ishipper.util.Const;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,21 +67,52 @@ public class OrderListFragment extends Fragment implements InvoiceAdapter.OnClic
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent == null) return;
-            if (intent.hasExtra(Const.KEY_INVOICE_ID)) {
-                changeCountShipperReg(intent);
+            if (intent.hasExtra(Const.KEY_INVOICE)) {
+                Invoice invoice = new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE),
+                                                      Invoice.class);
+                switch (mStatusCode) {
+                    case Invoice.STATUS_CODE_INIT:
+                        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
+                            changeCountShipperReg(invoice);
+                        } else {
+                            updateInvoice(invoice);
+                        }
+                        break;
+                    default:
+                        updateInvoice(invoice);
+                        break;
+                }
             }
         }
     };
 
-    private void changeCountShipperReg(Intent intent) {
-        String invoiceId = intent.getStringExtra(Const.KEY_INVOICE_ID);
-        for (Invoice invoice : mInvoiceList) {
-            if (invoice.getStringId().equals(invoiceId)) {
-                int numRecipient = Integer.parseInt(invoice.getNumOfRecipient());
-                invoice.setNumOfRecipient(String.valueOf(numRecipient + 1));
-                break;
+    private void updateInvoice(Invoice invoice) {
+        boolean isHave = false;
+        for (Invoice in : mInvoiceList) {
+            if (in.getId() == invoice.getId()) {
+                isHave = true;
+                if (invoice.getStatusCode() != mStatusCode) {
+                    mInvoiceList.remove(in);
+                    mInvoiceAdapter.setPositionHighlight(Const.POSITION_HIGHLIGHT_DEFAULT);
+                    mInvoiceAdapter.notifyDataSetChanged();
+                    return;
+                }
             }
+        }
+        if (!isHave && invoice.getStatusCode() == mStatusCode) {
+            mInvoiceList.add(Const.HEAD_LIST, invoice);
+            mInvoiceAdapter.setPositionHighlight(Const.HEAD_LIST);
             mInvoiceAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void changeCountShipperReg(Invoice invoice) {
+        for (Invoice in : mInvoiceList) {
+            if (in.getId() == invoice.getId()) {
+                in.setNumOfRecipient(invoice.getNumOfRecipient());
+                mInvoiceAdapter.notifyDataSetChanged();
+                return;
+            }
         }
 
     }
@@ -104,10 +136,7 @@ public class OrderListFragment extends Fragment implements InvoiceAdapter.OnClic
             mStatusCode = getArguments().getInt(STATUS_CODE, Invoice.STATUS_CODE_ALL);
         }
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
-        if (mStatusCode == Invoice.STATUS_CODE_INIT && mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
-            getActivity().registerReceiver(mReceiver,
-                                           new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
-        }
+        getActivity().registerReceiver(mReceiver, new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
     }
 
     @Override
@@ -317,7 +346,7 @@ public class OrderListFragment extends Fragment implements InvoiceAdapter.OnClic
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (mReceiver != null) getActivity().unregisterReceiver(mReceiver);
+        if (mReceiver != null) getActivity().unregisterReceiver(mReceiver);
     }
 
     @Override
