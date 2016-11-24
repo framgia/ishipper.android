@@ -29,10 +29,13 @@ public class Const {
     public static final String IDENTIFIER = "identifier";
     public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
     public static final int SIZE_INVOICE_STATUS = 6;
+    public static final String KEY_INVOICE_ID = "invoice_id";
 
     public class RequestCode {
+
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
         public static final int REQUEST_SEARCH_FAVORITE = 2;
+        public static final int REQUEST_CODE_CHOOSE_SHIPPER = 3;
         public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     }
 
