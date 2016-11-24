@@ -18,7 +18,7 @@ import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
-import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
+import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.util.Const;
@@ -169,10 +169,10 @@ public class InvoiceManagerFragment extends BaseFragment implements
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (data == null) return;
-            int invoiceId = data.getIntExtra(ListShipperRegActivity.KEY_INVOICE_ID, - 1);
+            int invoiceId = data.getIntExtra(Const.KEY_INVOICE_ID, - 1);
             if (invoiceId == - 1) return;
             switch (requestCode) {
-                case ListShipperRegActivity.REQUEST_CODE_RESULT:
+                case Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER:
                     notifyChangeTab(Invoice.STATUS_CODE_INIT);
                     notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
                     break;

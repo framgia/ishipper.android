@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.adapter;
+package com.framgia.ishipper.presentation.manager_shipper_register;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatRatingBar;
@@ -6,12 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.List;
 

@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.ListShipperRegActivity"
+            android:name=".presentation.manager_shipper_register.ChooseShipperRegisterActivity"
             android:label="@string/title_activity_list_shipper_reg">
             <intent-filter>
                 <action android:name="com.framgia.ishipper.LIST_SHIPPER_REGISTER"/>

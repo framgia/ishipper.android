@@ -12,12 +12,13 @@ import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.ui.activity.ListShipperRegActivity;
+import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.fragment.NearbyOrderFragment;
 import com.framgia.ishipper.ui.fragment.NearbyShipperFragment;
 import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.ui.fragment.ShippingFragment;
+import com.framgia.ishipper.util.Const;
 
 import static com.framgia.ishipper.ui.activity.MainActivity.SHIPPER;
 import static com.framgia.ishipper.ui.activity.MainActivity.userType;
@@ -82,8 +83,8 @@ public class MainTabAdapter extends FragmentPagerAdapter
 
     @Override
     public void onClickAction(Invoice invoice) {
-        Intent intent = new Intent(mContext, ListShipperRegActivity.class);
-        intent.putExtra(ListShipperRegActivity.KEY_INVOICE_ID, invoice.getId());
+        Intent intent = new Intent(mContext, ChooseShipperRegisterActivity.class);
+        intent.putExtra(Const.KEY_INVOICE_ID, invoice.getId());
         mContext.startActivity(intent);
     }
 
