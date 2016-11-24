@@ -30,6 +30,7 @@ public class Const {
     public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
     public static final int SIZE_INVOICE_STATUS = 6;
     public static final String KEY_INVOICE_ID = "invoice_id";
+    public static final int DEFAULT_HIGHLIGHT_POSITION = - 1;
 
     public class RequestCode {
 

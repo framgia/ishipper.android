@@ -20,7 +20,6 @@ import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
 import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
-import com.framgia.ishipper.ui.fragment.OrderListFragment;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 
@@ -30,12 +29,12 @@ import java.util.List;
 import butterknife.BindView;
 
 public class InvoiceManagerFragment extends BaseFragment implements
-        OrderListFragment.OnActionClickListener, InvoiceManagerContract.View {
+        ListInvoiceFragment.OnActionClickListener, InvoiceManagerContract.View {
     private static final String TAG = "InvoiceManagerFragment";
     @BindView(R.id.viewpager) ViewPager mViewPager;
     @BindView(R.id.tabs) TabLayout mTabLayout;
 
-    private List<OrderListFragment> mListOrderFragment;
+    private List<ListInvoiceFragment> mListOrderFragment;
     private OrderManagerPagerAdapter mOrderManagerPagerAdapter;
     private List<String> mOrderTitleList;
     private Context mContext;
@@ -74,10 +73,10 @@ public class InvoiceManagerFragment extends BaseFragment implements
             } else {
                 titleTab = getContext().getString(R.string.tab_title_unknow);
             }
-            OrderListFragment orderListFragment =
-                    OrderListFragment.newInstance(titleTab, type);
-            orderListFragment.setOnActionClickListener(this);
-            mListOrderFragment.add(orderListFragment);
+            ListInvoiceFragment listInvoiceFragment =
+                    ListInvoiceFragment.newInstance(titleTab, type);
+            listInvoiceFragment.setOnActionClickListener(this);
+            mListOrderFragment.add(listInvoiceFragment);
             mOrderManagerPagerAdapter.notifyDataSetChanged();
         }
     }
@@ -89,7 +88,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
     @Override
     public void notifyChangeTab(final int type) {
         if (mListOrderFragment.size() > type) {
-            mListOrderFragment.get(type).notifyChangedData(mContext, null);
+            mListOrderFragment.get(type).notifyChangedData(null);
         }
     }
 
@@ -97,7 +96,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
     public void notifyChangeTab(final int type, final boolean isShowNewInvoice, final int invoiceId) {
         if (mListOrderFragment.size() > type) {
             mListOrderFragment.get(type)
-                    .notifyChangedData(mContext, new OrderListFragment.OnGetInvoiceListener() {
+                    .notifyChangedData(new ListInvoiceFragment.OnGetInvoiceListener() {
                         @Override
                         public void onGetInvoiceSuccess() {
                             if (isShowNewInvoice) showInvoiceOnScreen(type, invoiceId);
@@ -118,12 +117,12 @@ public class InvoiceManagerFragment extends BaseFragment implements
 
     @Override
     public void removeInvoice(int invoiceId) {
-        OrderListFragment listFragment = mListOrderFragment.get(mViewPager.getCurrentItem());
+        ListInvoiceFragment listFragment = mListOrderFragment.get(mViewPager.getCurrentItem());
         if (listFragment == null) return;
         for (Invoice invoice : listFragment.getInvoiceList()) {
             if (invoice.getId() == invoiceId) {
                 listFragment.getInvoiceList().remove(invoice);
-                listFragment.getOrderAdapter().notifyDataSetChanged();
+                listFragment.getInvoiceAdapter().notifyDataSetChanged();
             }
         }
     }
@@ -184,27 +183,27 @@ public class InvoiceManagerFragment extends BaseFragment implements
     }
 
     public class OrderManagerPagerAdapter extends FragmentStatePagerAdapter {
-        private List<OrderListFragment> mOrderListFragments;
+        private List<ListInvoiceFragment> mListInvoiceFragments;
 
         private List<String> mListTitle;
 
         OrderManagerPagerAdapter(
-                FragmentManager fm, List<OrderListFragment> fragmentList,
+                FragmentManager fm, List<ListInvoiceFragment> fragmentList,
                 List<String> orderTitleList) {
             super(fm);
-            mOrderListFragments = fragmentList;
+            mListInvoiceFragments = fragmentList;
             mListTitle = orderTitleList;
         }
 
         @Override
         public Fragment getItem(int position) {
 
-            return mOrderListFragments.get(position);
+            return mListInvoiceFragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return mOrderListFragments == null ? 0 : mOrderListFragments.size();
+            return mListInvoiceFragments == null ? 0 : mListInvoiceFragments.size();
         }
 
         @Override
