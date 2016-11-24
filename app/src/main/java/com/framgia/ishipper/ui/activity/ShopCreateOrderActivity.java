@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.ui.fragment.ShopCreateOrderStep1Fragment;
+import com.framgia.ishipper.presentation.invoice.create_invoice.ShopCreateOrderStep1Fragment;
 
 import butterknife.BindView;
 
