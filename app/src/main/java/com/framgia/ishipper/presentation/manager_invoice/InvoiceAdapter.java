@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.adapter;
+package com.framgia.ishipper.presentation.manager_invoice;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
 
     private List<Invoice> mInvoiceList;
     private OnClickActionListener mClickActionListener;
@@ -31,8 +31,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private Context mContext;
     private int mPositionHighlight = - 1;
 
-    public OrderAdapter(Context context, List<Invoice> invoiceList,
-                        OnclickViewListener listener) {
+    public InvoiceAdapter(Context context, List<Invoice> invoiceList,
+                          OnclickViewListener listener) {
         mContext = context;
         mInvoiceList = invoiceList;
         mClickViewListener = listener;
