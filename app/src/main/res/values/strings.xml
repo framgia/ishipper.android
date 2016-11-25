@@ -228,6 +228,9 @@
     <string name="err_google_play_service_not_available">Google Play Service not available</string>
     <string name="not_have_guide_for_route">Không có hướng dẫn chỉ đường cho cung đường này</string>
     <string name="cant_get_guide_for_route">Không lấy được hướng dẫn chỉ đường, xin thử lại sau</string>
+    <string name="fragment_create_order_time_require">Nhập thời gian giao hàng</string>
+    <string name="msg_start_location_require">Bạn chưa nhập điểm đầu</string>
+    <string name="msg_end_location_require">Bạn chưa nhập điểm cuối</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
