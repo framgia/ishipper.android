@@ -97,5 +97,7 @@
     <dimen name="rv_item_horizontal_padding">16dp</dimen>
     <dimen name="icon_address_width">24dp</dimen>
     <dimen name="icon_address_height">24dp</dimen>
+    <dimen name="fragment_shipping_list_min_height">80dp</dimen>
+    <dimen name="fragment_shipping_list_max_height">300dp</dimen>
 
 </resources>
