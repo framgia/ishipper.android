@@ -9,8 +9,8 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
+import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
-import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.util.Const;
 
 /**
@@ -89,12 +89,12 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
 
     @Override
     public void startDetailInvoiceActivity(Invoice invoice) {
-        Intent intent = new Intent(mActivity, OrderDetailActivity.class);
+        Intent intent = new Intent(mActivity, InvoiceDetailActivity.class);
         Bundle extras = new Bundle();
-        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
+        extras.putInt(Const.KEY_INVOICE_ID, invoice.getId());
         intent.putExtras(extras);
         mActivity.startActivityForResult(intent,
-                                         OrderDetailActivity.REQUEST_INVOICE_ID);
+                                         InvoiceDetailActivity.REQUEST_INVOICE_ID);
     }
 
     @Override

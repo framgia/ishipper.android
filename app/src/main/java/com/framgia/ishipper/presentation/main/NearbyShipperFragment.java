@@ -207,7 +207,6 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     @Override
     public void onDestroy() {
         mGoogleApiClient.disconnect();
-        mUnbinder.unbind();
         super.onDestroy();
     }
 

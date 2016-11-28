@@ -18,8 +18,7 @@ import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
-import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
-import com.framgia.ishipper.ui.activity.OrderDetailActivity;
+import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 
@@ -175,7 +174,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
                     notifyChangeTab(Invoice.STATUS_CODE_INIT);
                     notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
                     break;
-                case OrderDetailActivity.REQUEST_INVOICE_ID:
+                case InvoiceDetailActivity.REQUEST_INVOICE_ID:
                     removeInvoice(invoiceId);
                     break;
             }

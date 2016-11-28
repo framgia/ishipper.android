@@ -16,8 +16,8 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.presentation.route.RouteActivity;
-import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -160,9 +160,9 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
 
     @Override
     public void showInvoiceDetail(Invoice invoice) {
-        Intent intent = new Intent(mContext, OrderDetailActivity.class);
+        Intent intent = new Intent(mContext, InvoiceDetailActivity.class);
         Bundle extras = new Bundle();
-        extras.putInt(OrderDetailActivity.KEY_INVOICE_ID, invoice.getId());
+        extras.putInt(Const.KEY_INVOICE_ID, invoice.getId());
         intent.putExtras(extras);
         mFragment.getActivity().startActivity(intent);
     }
