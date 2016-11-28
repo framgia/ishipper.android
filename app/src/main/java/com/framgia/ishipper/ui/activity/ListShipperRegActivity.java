@@ -73,7 +73,7 @@ public class ListShipperRegActivity extends ToolbarActivity implements
             // Explicit Intent
             mInvoiceId = Integer.valueOf(getIntent().getExtras()
                     .getString(Const.FirebaseData.INVOICE_ID));
-            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTIFICATION_ID);
             API.updateNotification(mCurrentUser.getUserType(), notiId,
                                    mCurrentUser.getAuthenticationToken(), true,
                                    new API.APICallback<APIResponse<EmptyData>>() {
@@ -153,7 +153,7 @@ public class ListShipperRegActivity extends ToolbarActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (CommonUtils.isOpenFromNoti(this)) {
+        if (isTaskRoot()) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

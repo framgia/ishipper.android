@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Notification;
@@ -23,8 +24,10 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.ui.adapter.NotificationAdapter;
 import com.framgia.ishipper.util.Const;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -40,7 +43,7 @@ public class NotificationActivity extends ToolbarActivity {
     private User mCurrentUser;
     private LinearLayoutManager mLayoutManager;
     private int mTotalItemCount, mLastVisibleItem;
-    private int mVisibleThreshold = 1;
+    private int mVisibleThreshold = 5;
     private boolean mIsLoading;
     private int mPage;
 
@@ -67,7 +70,7 @@ public class NotificationActivity extends ToolbarActivity {
                 LinearLayoutManager layoutManager =
                         ((LinearLayoutManager) rvListNotification.getLayoutManager());
                 if (layoutManager.findFirstVisibleItemPosition() == Const.ZERO &&
-                    mTvNewNotification.getVisibility() == View.VISIBLE) {
+                        mTvNewNotification.getVisibility() == View.VISIBLE) {
                     mTvNewNotification.setVisibility(View.GONE);
                 }
                 mTotalItemCount = mLayoutManager.getItemCount();
@@ -89,8 +92,16 @@ public class NotificationActivity extends ToolbarActivity {
                 new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
         rvListNotification.setLayoutManager(mLayoutManager);
         mNotificationList = new ArrayList<>();
-        mAdapter = new NotificationAdapter(getBaseContext(),
-                                           mNotificationList);
+        mAdapter = new NotificationAdapter(
+                getBaseContext(), mNotificationList, new NotificationAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(Notification notification) {
+                Intent intent = new Intent(notification.getAction());
+                intent.putExtra(Const.FirebaseData.INVOICE_ID, notification.getInvoiceId());
+                intent.putExtra(Const.FirebaseData.NOTIFICATION_ID, notification.getId());
+                startActivity(intent);
+            }
+        });
         rvListNotification.setAdapter(mAdapter);
         loadListNotification(++mPage);
     }
@@ -99,25 +110,25 @@ public class NotificationActivity extends ToolbarActivity {
         mNotificationList.add(null);
         mAdapter.notifyItemInserted(mNotificationList.size() - 1);
         API.getAllNotification(mCurrentUser.getAuthenticationToken(), mCurrentUser.getRole(),
-                               page, Const.Setting.PER_PAGE,
-                               new API.APICallback<APIResponse<ListNotificationData>>() {
-                                   @Override
-                                   public void onResponse(
-                                           APIResponse<ListNotificationData> response) {
-                                       mNotificationList.remove(mNotificationList.size() - 1);
-                                       mAdapter.notifyItemRemoved(mNotificationList.size());
-                                       mNotificationList.addAll(
-                                               response.getData().getNotifications());
-                                       mAdapter.notifyDataSetChanged();
-                                       mIsLoading = false;
-                                   }
+                page, Const.Setting.PER_PAGE,
+                new API.APICallback<APIResponse<ListNotificationData>>() {
+                    @Override
+                    public void onResponse(
+                            APIResponse<ListNotificationData> response) {
+                        mNotificationList.remove(mNotificationList.size() - 1);
+                        mAdapter.notifyItemRemoved(mNotificationList.size());
+                        mNotificationList.addAll(
+                                response.getData().getNotifications());
+                        mAdapter.notifyDataSetChanged();
+                        mIsLoading = false;
+                    }
 
-                                   @Override
-                                   public void onFailure(int code, String message) {
-                                       Toast.makeText(getBaseContext(), message,
-                                                      Toast.LENGTH_SHORT).show();
-                                   }
-                               }
+                    @Override
+                    public void onFailure(int code, String message) {
+                        Toast.makeText(getBaseContext(), message,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
 
         );
     }

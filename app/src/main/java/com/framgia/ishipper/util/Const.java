@@ -36,7 +36,7 @@ public class Const {
     public static final int HEAD_LIST = 0;
     public static final String KEY_INVOICE_ID = "invoice_id";
     public static final String KEY_INVOICE = "invoice";
-    public static final int POSITION_HIGHLIGHT_DEFAULT = - 1;
+    public static final int POSITION_HIGHLIGHT_DEFAULT = -1;
 
     public class RequestCode {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
@@ -83,9 +83,9 @@ public class Const {
     }
 
     public class FirebaseData {
+        public static final String CLICK_ACTION = "click_action";
         public static final String INVOICE_ID = "invoice_id";
-
-        public static final String NOTI_ID = "id";
+        public static final String NOTIFICATION_ID = "notification_id";
     }
 
     public class Setting {
@@ -107,5 +107,10 @@ public class Const {
 
     public class Language {
         public static final String VIETNAMESE = "vi";
+    }
+
+    public class IntentFilter {
+        public static final String INVOICE_DETAIL = "com.framgia.ishipper.INVOICE_DETAIL";
+        public static final String LIST_SHIPPER_REGISTER = "com.framgia.ishipper.LIST_SHIPPER_REGISTER";
     }
 }
