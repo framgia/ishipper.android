@@ -12,9 +12,11 @@ public class Const {
     public static final int PIN_LENGTH = 8;
     public static final int SETTING_MAX_INVOICE_RADIUS = 14;
     public static final int SETTING_MIN_INVOICE_RADIUS = 1;
+    public static final int SHIPPER_NEARBY_RADIUS = 5;
     public static final int SETTING_INVOICE_RADIUS_DEFAULT = 5;
     public static final String ACTION_NEW_INVOICE = "new_invoice";
     public static final String ACTION_REMOVE_INVOICE = "remove_invoice";
+    public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0x2233;
     public static String VIETNAM_PREFIX = "+84";
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
