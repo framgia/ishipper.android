@@ -33,6 +33,8 @@ public class MapUtils {
     private static final int MARKER_FADE_DURATION = 500;
     private static final int MAP_PADDING = 30;
 
+    public static final float MAP_PADDING_PERCENT = 0.12f;
+
     /**
      * Route between 2 point start & end
      *
@@ -61,9 +63,20 @@ public class MapUtils {
         }
         LatLngBounds bounds = builder.build();
 
-        int padding = (int) (width * 0.12);
+        int padding = (int) (width * MAP_PADDING_PERCENT);
 
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+        googleMap.animateCamera(cu);
+    }
+
+    public static void updateZoomMap(GoogleMap googleMap, List<LatLng> points) {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng item : points) {
+            builder.include(item);
+        }
+        LatLngBounds bounds = builder.build();
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, MAP_PADDING);
         googleMap.animateCamera(cu);
     }
 

@@ -231,6 +231,7 @@
     <string name="fragment_create_order_time_require">Nhập thời gian giao hàng</string>
     <string name="msg_start_location_require">Bạn chưa nhập điểm đầu</string>
     <string name="msg_end_location_require">Bạn chưa nhập điểm cuối</string>
+    <string name="all_no_invoice">Hiện chưa có đơn hàng nào, hãy nhận thêm đơn!</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

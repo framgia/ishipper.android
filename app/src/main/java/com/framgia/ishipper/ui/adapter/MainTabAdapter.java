@@ -17,7 +17,7 @@ import com.framgia.ishipper.presentation.manager_invoice.ListInvoiceFragment;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.fragment.NearbyOrderFragment;
 import com.framgia.ishipper.ui.fragment.NearbyShipperFragment;
-import com.framgia.ishipper.ui.fragment.ShippingFragment;
+import com.framgia.ishipper.presentation.invoice.shipping.ShippingFragment;
 import com.framgia.ishipper.util.Const;
 
 import static com.framgia.ishipper.ui.activity.MainActivity.SHIPPER;
