@@ -14,7 +14,8 @@ import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListInvoiceData;
-import com.framgia.ishipper.ui.activity.OrderDetailActivity;
+import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -73,9 +74,9 @@ public class ShippingPresenter implements ShippingContract.Presenter {
 
     @Override
     public void showInvoiceDetailActivity(int id) {
-        Intent intent = new Intent(mContext, OrderDetailActivity.class);
+        Intent intent = new Intent(mContext, InvoiceDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(OrderDetailActivity.KEY_INVOICE_ID, id);
+        bundle.putInt(Const.KEY_INVOICE_ID, id);
         intent.putExtras(bundle);
         mFragment.startActivity(intent);
     }
