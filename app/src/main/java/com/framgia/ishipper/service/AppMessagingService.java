@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationCompat;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Log;
-import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.util.Const;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -32,10 +31,13 @@ public class AppMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotification(RemoteMessage remoteMessage) {
-        Intent intent = new Intent(this, OrderDetailActivity.class);
+        String action = remoteMessage.getData().get(Const.FirebaseData.CLICK_ACTION);
+        Intent intent = new Intent(action);
         Bundle bundle = new Bundle();
-        bundle.putString(Const.FirebaseData.INVOICE_ID, remoteMessage.getData().get("invoice_id"));
-        bundle.putString(Const.FirebaseData.NOTI_ID, remoteMessage.getData().get("notification_id"));
+        bundle.putString(Const.FirebaseData.INVOICE_ID,
+                remoteMessage.getData().get(Const.FirebaseData.INVOICE_ID));
+        bundle.putString(Const.FirebaseData.NOTIFICATION_ID,
+                remoteMessage.getData().get(Const.FirebaseData.NOTIFICATION_ID));
         intent.putExtras(bundle);
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
