@@ -23,7 +23,7 @@ public class ResetPasswordPresenter implements ResetPasswordContract.Presenter {
 
     @Override
     public void requestResetPassword(String phoneNumber, String newPassword, String confirmPassword, String pin) {
-        mFragment.showDialog();
+        mFragment.showLoadingDialog();
         HashMap<String, String> params = new HashMap<>();
         params.put(APIDefinition.PutResetPassword.PARAM_PHONE, phoneNumber);
         params.put(APIDefinition.PutResetPassword.PARAM_PASSWORD, newPassword);
@@ -32,14 +32,14 @@ public class ResetPasswordPresenter implements ResetPasswordContract.Presenter {
         API.postResetPassword(params, new API.APICallback<APIResponse<EmptyData>>() {
             @Override
             public void onResponse(APIResponse<EmptyData> response) {
-                mFragment.dismissDialog();
+                mFragment.dismissLoadingDialog();
                 mFragment.getActivity().finish();
                 mFragment.showUserMessage(response.getMessage());
             }
 
             @Override
             public void onFailure(int code, String message) {
-                mFragment.dismissDialog();
+                mFragment.dismissLoadingDialog();
                 mFragment.showUserMessage(message);
             }
         });

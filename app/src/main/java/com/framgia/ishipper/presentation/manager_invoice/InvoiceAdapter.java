@@ -237,7 +237,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         @BindView(R.id.tv_item_order_distance) TextView mTvItemOrderDistance;
         @BindView(R.id.tv_item_order_ship_time) TextView mTvItemOrderShipTime;
         @BindView(R.id.tv_item_order_price) TextView mTvItemOrderOrderPrice;
-        @BindView(R.id.window_order_detail) RelativeLayout mWindowOrderDetail;
+        @BindView(R.id.window_invoice_detail) RelativeLayout mWindowOrderDetail;
         @BindView(R.id.ll_shop_order_status) LinearLayout mShopOrderStatus;
         @BindView(R.id.btn_cancel_item_order) TextView mBtnCancelItemOrder;
         @BindView(R.id.btn_action_item_order) TextView mBtnActionItemOrder;

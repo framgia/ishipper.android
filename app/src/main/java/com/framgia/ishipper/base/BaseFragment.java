@@ -36,12 +36,12 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    public void showDialog() {
+    public void showLoadingDialog() {
         if (mDialog == null) initDialog();
         if (mDialog != null && !mDialog.isShowing()) mDialog.show();
     }
 
-    public void dismissDialog() {
+    public void dismissLoadingDialog() {
         if (mDialog != null && mDialog.isShowing()) mDialog.dismiss();
     }
 
