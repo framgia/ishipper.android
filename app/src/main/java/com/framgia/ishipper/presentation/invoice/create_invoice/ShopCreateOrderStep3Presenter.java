@@ -66,13 +66,13 @@ public class ShopCreateOrderStep3Presenter implements ShopCreateOrderStep3Contra
         params.put(APIDefinition.CreateInvoice.PARAM_CUSTOMER_NUMBER,
                 newInvoice.getCustomerNumber());
 
-        mFragment.showDialog();
+        mFragment.showLoadingDialog();
         API.createInvoice(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
                 params,
                 new API.APICallback<APIResponse<CreateInVoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<CreateInVoiceData> response) {
-                        mFragment.dismissDialog();
+                        mFragment.dismissLoadingDialog();
                         // TODO: Go to invoice manager
                         mFragment.showUserMessage(response.getMessage());
                         mFragment.getActivity().finish();
@@ -80,7 +80,7 @@ public class ShopCreateOrderStep3Presenter implements ShopCreateOrderStep3Contra
 
                     @Override
                     public void onFailure(int code, String message) {
-                        mFragment.dismissDialog();
+                        mFragment.dismissLoadingDialog();
                         mFragment.showUserMessage(message);
                     }
                 });
