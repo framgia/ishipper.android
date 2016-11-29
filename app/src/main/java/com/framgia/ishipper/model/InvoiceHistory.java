@@ -1,12 +1,17 @@
 package com.framgia.ishipper.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by dinhduc on 23/11/2016.
  */
 
 public class InvoiceHistory {
-    private int mStatus;
+    @SerializedName("status")
+    private String mStatus;
+    @SerializedName("time")
     private String mTime;
+    @SerializedName("content")
     private String mContent;
 
     public InvoiceHistory(String time, String content) {
@@ -14,11 +19,11 @@ public class InvoiceHistory {
         mContent = content;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return mStatus;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         mStatus = status;
     }
 

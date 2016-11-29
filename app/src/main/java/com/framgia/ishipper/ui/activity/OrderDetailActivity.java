@@ -43,6 +43,7 @@ import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -85,6 +86,7 @@ public class OrderDetailActivity extends ToolbarActivity {
     private User mInvoiceUser;
     private Invoice mInvoice;
     private int mInvoiceId;
+    private List<InvoiceHistory> mInvoiceHistories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,16 +96,6 @@ public class OrderDetailActivity extends ToolbarActivity {
     }
 
     private void initData() {
-        ArrayList<InvoiceHistory> invoiceHistories = new ArrayList<>();
-        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
-        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
-        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
-        invoiceHistories.add(new InvoiceHistory("06 thang 10 2016 11:59", "Don hang duoc tao"));
-        InvoiceHistoryAdapter adapter = new InvoiceHistoryAdapter(
-                this, R.layout.item_invoice_history, invoiceHistories);
-        mLvHistoryList.setAdapter(adapter);
-        CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) return;
         if (CommonUtils.isOpenFromNoti(this)) {
@@ -172,6 +164,11 @@ public class OrderDetailActivity extends ToolbarActivity {
                             tvDetailShipperName.setText(user.getName());
                             tvDetailShipperPhone.setText(user.getPhoneNumber());
                         }
+                        mInvoiceHistories = mInvoice.getHistories();
+                        InvoiceHistoryAdapter adapter = new InvoiceHistoryAdapter(
+                                getBaseContext(), R.layout.item_invoice_history, mInvoiceHistories);
+                        mLvHistoryList.setAdapter(adapter);
+                        CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList);
                     }
 
                     @Override
