@@ -265,7 +265,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-
                             android:text="@string/all_ship_price"/>
 
                         <TextView
@@ -331,7 +330,6 @@
                         android:id="@+id/tv_detail_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_arrow_drop_down_24dp"
                         android:gravity="bottom"
                         android:text="@string/detail_history"/>
 
@@ -341,9 +339,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:divider="@color/transparent"
-                        android:visibility="gone">
+                        android:scrollbars="none"/>
 
-                    </ListView>
+                    <ImageView
+                        android:id="@+id/iv_detail_expand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_expand_more_32dp"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

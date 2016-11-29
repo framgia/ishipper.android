@@ -11,11 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,6 @@ import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.ui.adapter.InvoiceHistoryAdapter;
 import com.framgia.ishipper.ui.fragment.UserInfoDialogFragment;
 import com.framgia.ishipper.ui.view.CancelDialog;
-import com.framgia.ishipper.ui.view.ReviewDialog;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
@@ -80,13 +78,14 @@ public class OrderDetailActivity extends ToolbarActivity {
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     @BindView(R.id.tv_shipping_order_status) TextView tvOrderStatus;
     @BindView(R.id.lv_detail_history) ListView mLvHistoryList;
-    @BindView(R.id.tv_detail_history) TextView mTvDetailHistory;
+    @BindView(R.id.iv_detail_expand) ImageView mIvDetailExpand;
 
     private User mCurrentUser;
     private User mInvoiceUser;
     private Invoice mInvoice;
     private int mInvoiceId;
     private List<InvoiceHistory> mInvoiceHistories = new ArrayList<>();
+    private boolean mIsExpanded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +131,6 @@ public class OrderDetailActivity extends ToolbarActivity {
                         mInvoiceUser = response.getData().mInvoice.getUser();
                         mInvoice = response.getData().mInvoice;
                         if (mInvoice == null) return;
-                        invalidateOptionsMenu();
                         setStatus(mInvoice);
                         showAction(mInvoice.getStatusCode());
                         User user = mInvoice.getUser();
@@ -168,7 +166,7 @@ public class OrderDetailActivity extends ToolbarActivity {
                         InvoiceHistoryAdapter adapter = new InvoiceHistoryAdapter(
                                 getBaseContext(), R.layout.item_invoice_history, mInvoiceHistories);
                         mLvHistoryList.setAdapter(adapter);
-                        CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList);
+                        CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList, 1);
                     }
 
                     @Override
@@ -283,7 +281,6 @@ public class OrderDetailActivity extends ToolbarActivity {
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
-//                    mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
                     break;
                 default:
@@ -322,35 +319,11 @@ public class OrderDetailActivity extends ToolbarActivity {
         return R.layout.activity_oder_detail;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_invoice_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (mInvoice == null) return super.onPrepareOptionsMenu(menu);
-        if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_SHIPPED ||
-                mInvoice.getStatusCode() == Invoice.STATUS_CODE_FINISHED) {
-            return super.onPrepareOptionsMenu(menu);
-        }
-        MenuItem menuItem = menu.findItem(R.id.menu_rating);
-        if (menuItem == null) return super.onPrepareOptionsMenu(menu);
-        menuItem.setVisible(false);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            case R.id.menu_rating:
-                new ReviewDialog(this, mInvoice.getStringId()).show();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
         return true;
     }
@@ -376,7 +349,7 @@ public class OrderDetailActivity extends ToolbarActivity {
             R.id.btn_report_user,
             R.id.btn_finished_order,
             R.id.btn_take_order,
-            R.id.tv_detail_history
+            R.id.iv_detail_expand
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -414,13 +387,15 @@ public class OrderDetailActivity extends ToolbarActivity {
             case R.id.btn_take_order:
                 onTakeOrder();
                 break;
-            case R.id.tv_detail_history:
-                mTvDetailHistory.setCompoundDrawablesWithIntrinsicBounds(0, 0,
-                        mLvHistoryList.getVisibility() == View.VISIBLE
-                                ? R.drawable.ic_arrow_drop_down_24dp
-                                : R.drawable.ic_arrow_drop_up_24dp, 0);
-                mLvHistoryList.setVisibility(
-                        mLvHistoryList.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            case R.id.iv_detail_expand:
+                mIsExpanded = !mIsExpanded;
+                if (mIsExpanded) {
+                    mIvDetailExpand.setImageResource(R.drawable.ic_expand_more_32dp);
+                    CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList, 1);
+                } else {
+                    mIvDetailExpand.setImageResource(R.drawable.ic_expand_less_32dp);
+                    CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList, mInvoiceHistories.size());
+                }
                 break;
         }
     }
