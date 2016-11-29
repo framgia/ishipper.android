@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by vuduychuong1994 on 8/9/16.
  */
@@ -44,6 +46,7 @@ public class Invoice implements Parcelable {
     @SerializedName("customer_number") private String mCustomerNumber;
     @SerializedName("received") private boolean mReceived;
     @SerializedName("number_of_recipients") private String mNumOfRecipient;
+    @SerializedName("status_histories") private ArrayList<InvoiceHistory> mHistories;
 
     public Invoice() {
 
@@ -237,6 +240,14 @@ public class Invoice implements Parcelable {
 
     public void setNumOfRecipient(String numOfRecipient) {
         mNumOfRecipient = numOfRecipient;
+    }
+
+    public ArrayList<InvoiceHistory> getHistories() {
+        return mHistories;
+    }
+
+    public void setHistories(ArrayList<InvoiceHistory> histories) {
+        mHistories = histories;
     }
 
     @Override

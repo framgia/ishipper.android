@@ -50,7 +50,7 @@ public class InvoiceHistoryAdapter extends ArrayAdapter<InvoiceHistory> {
         ButterKnife.bind(this, convertView);
         InvoiceHistory invoiceHistory = mInvoiceHistories.get(position);
         mTvTime.setText(invoiceHistory.getTime());
-        mTvContent.setText(invoiceHistory.getContent());
+        mTvContent.setText(invoiceHistory.getStatus());
         return convertView;
     }
 }
