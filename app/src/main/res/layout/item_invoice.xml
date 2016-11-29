@@ -292,8 +292,7 @@
                 style="@style/ButtonShippingOrderAct"
                 android:background="@drawable/btn_assign_accept_selector"
                 android:text="@string/all_register_order"
-                android:textColor="@drawable/title_order_accept_selector"
-                android:visibility="gone" />
+                android:textColor="@drawable/title_order_accept_selector"/>
 
             <TextView
                 android:id="@+id/action_cancel_accept_order"
@@ -337,6 +336,7 @@
 
             <RelativeLayout
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
