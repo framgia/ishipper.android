@@ -58,14 +58,14 @@ public class CommonUtils {
     }
 
     public static void checkLocationRequestSetting(
-        final Activity activity,
-        GoogleApiClient googleApiClient,
-        final LocationSettingCallback callback) {
+            final Activity activity,
+            GoogleApiClient googleApiClient,
+            final LocationSettingCallback callback) {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-            .setAlwaysShow(true)
-            .addLocationRequest(createLocationRequest());
+                .setAlwaysShow(true)
+                .addLocationRequest(createLocationRequest());
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi
-            .checkLocationSettings(googleApiClient, builder.build());
+                .checkLocationSettings(googleApiClient, builder.build());
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
             public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
@@ -83,7 +83,7 @@ public class CommonUtils {
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         Toast.makeText(activity, R.string.all_location_not_available,
-                            Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -101,7 +101,7 @@ public class CommonUtils {
     public static void makePhoneCall(Context context, String number) {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) !=
-            PackageManager.PERMISSION_GRANTED) {
+                PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -128,7 +128,7 @@ public class CommonUtils {
 
     public static boolean stringIsValid(String str) {
         if (str != null && !str.trim().equals("")
-            && !str.toLowerCase().equals("null")) {
+                && !str.toLowerCase().equals("null")) {
             return true;
         }
         return false;
@@ -143,39 +143,25 @@ public class CommonUtils {
      * Sets ListView height dynamically based on the height of the items.
      *
      * @param listView to be resized
-     * @return true if the listView is successfully resized, false otherwise
      */
-    public static boolean setListViewHeightBasedOnItems(ListView listView) {
-
+    public static void setListViewHeightBasedOnItems(ListView listView, int numberOfItems) {
         ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter != null) {
-
-            int numberOfItems = listAdapter.getCount();
-
-            // Get total height of all items.
-            int totalItemsHeight = 0;
-            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
-                View item = listAdapter.getView(itemPos, null, listView);
-                item.measure(0, 0);
-                totalItemsHeight += item.getMeasuredHeight();
-            }
-
-            // Get total height of all item dividers.
-            int totalDividersHeight = listView.getDividerHeight() *
-                    (numberOfItems - 1);
-
-            // Set list height.
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = totalItemsHeight + totalDividersHeight;
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-
-            return true;
-
-        } else {
-            return false;
+        // Get total height of all items.
+        int totalItemsHeight = 0;
+        for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+            View item = listAdapter.getView(itemPos, null, listView);
+            item.measure(0, 0);
+            totalItemsHeight += item.getMeasuredHeight();
         }
 
-    }
+        // Get total height of all item dividers.
+        int totalDividersHeight = listView.getDividerHeight() *
+                (numberOfItems - 1);
 
+        // Set list height.
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalItemsHeight + totalDividersHeight;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
 }

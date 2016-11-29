@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
@@ -27,8 +26,6 @@ public class InvoiceHistoryAdapter extends ArrayAdapter<InvoiceHistory> {
     private int layoutId;
     private ArrayList<InvoiceHistory> mInvoiceHistories;
 
-    @BindView(R.id.icon_history_status)
-    ImageView mImgIcon;
     @BindView(R.id.tv_history_time)
     TextView mTvTime;
     @BindView(R.id.tv_history_content)
@@ -50,7 +47,7 @@ public class InvoiceHistoryAdapter extends ArrayAdapter<InvoiceHistory> {
         ButterKnife.bind(this, convertView);
         InvoiceHistory invoiceHistory = mInvoiceHistories.get(position);
         mTvTime.setText(invoiceHistory.getTime());
-        mTvContent.setText(invoiceHistory.getStatus());
+        mTvContent.setText(invoiceHistory.getContent());
         return convertView;
     }
 }
