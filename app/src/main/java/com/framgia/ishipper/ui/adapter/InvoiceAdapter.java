@@ -161,7 +161,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 statusColor = mContext.getResources().getColor(R.color.colorAccent);
                 break;
         }
-
+        holder.mLayoutAction.setVisibility(View.VISIBLE);
         holder.mShopOrderStatus.setVisibility(View.GONE);
         holder.mTvShippingOrderStatus.setVisibility(View.VISIBLE);
         holder.mTvShippingOrderStatus.setText(textStatus);
@@ -250,6 +250,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         @BindView(R.id.btn_action_item_order) TextView mBtnActionItemOrder;
         @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
         @BindView(R.id.tv_number_shipper_register) TextView mTvNumShipRegister;
+        @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
 
         public ViewHolder(View view) {
             super(view);
