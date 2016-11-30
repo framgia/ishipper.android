@@ -15,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.directions.route.Route;
 import com.directions.route.RouteException;
@@ -44,6 +47,7 @@ import com.framgia.ishipper.ui.activity.FilterOrderActivity;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.activity.OrderDetailActivity;
 import com.framgia.ishipper.ui.activity.RouteActivity;
+import com.framgia.ishipper.ui.adapter.NewInvoiceAdapter;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
 import com.framgia.ishipper.util.CommonUtils;
@@ -91,7 +95,7 @@ public class NearbyOrderFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, OnInvoiceUpdate {
+        LocationListener, OnInvoiceUpdate, NewInvoiceAdapter.OnItemClickListener {
     private static final String TAG = "NearbyOrderFragment";
     private static final int REQUEST_FILTER = 0x1234;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -117,6 +121,9 @@ public class NearbyOrderFragment extends Fragment implements
     @BindView(R.id.tv_shipping_order_status) TextView mTvShippingOrderStatus;
     @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
     @BindView(R.id.ll_shop_order_status) LinearLayout mLlShopOrderStatus;
+    @BindView(R.id.recyclerListInvoice) RecyclerView mRecyclerListInvoice;
+    @BindView(R.id.switcherLayout) ViewSwitcher mSwitcherLayout;
+    @BindView(R.id.tvInvoiceCount) TextView mTvInvoiceCount;
 
     private Dialog mDialog;
 
@@ -137,6 +144,7 @@ public class NearbyOrderFragment extends Fragment implements
     private boolean mAutoRefresh = true;
     private HashMap<Marker, Invoice> mHashMap = new HashMap<>();
     private int mRadius;
+    private NewInvoiceAdapter mAdapter;
 
     public static NearbyOrderFragment newInstance() {
         return new NearbyOrderFragment();
@@ -167,6 +175,7 @@ public class NearbyOrderFragment extends Fragment implements
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).setOnInvoiceUpdate(this);
         }
+        settingRecyclerView();
         return view;
     }
 
@@ -360,7 +369,6 @@ public class NearbyOrderFragment extends Fragment implements
         mDialog.dismiss();
     }
 
-
     /**
      * mark all invoices near a location on map
      *
@@ -396,7 +404,12 @@ public class NearbyOrderFragment extends Fragment implements
                         addListMarker(addInvoices);
                         removeListMarker(removeInvoices);
                         // update invoices
-                        mInvoices = lastUpdateInvoices;
+                        mInvoices.clear();
+                        mInvoices.addAll(lastUpdateInvoices);
+
+                        mAdapter.notifyDataSetChanged();
+                        mTvInvoiceCount.setText(
+                                getString(R.string.fragment_nearby_invoice_count, mInvoices.size()));
                     }
 
                     @Override
@@ -699,6 +712,11 @@ public class NearbyOrderFragment extends Fragment implements
         });
     }
 
+    @Override
+    public void onInvoiceItemClick(Invoice invoice) {
+        showReceiveDialog(invoice.getStringId());
+    }
+
     /**
      * Task fetch address from location in another thread
      */
@@ -732,9 +750,12 @@ public class NearbyOrderFragment extends Fragment implements
     }
 
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-            R.id.rl_search_view, R.id.window_order_detail})
+            R.id.rl_search_view, R.id.window_order_detail, R.id.btnViewChange})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btnViewChange:
+                mSwitcherLayout.showNext();
+                break;
             case R.id.btn_item_order_show_path:
                 Intent showPathIntent = new Intent(getActivity(), RouteActivity.class);
                 showPathIntent.putExtra(Const.KeyIntent.KEY_INVOICE, mInvoice);
@@ -766,5 +787,11 @@ public class NearbyOrderFragment extends Fragment implements
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void settingRecyclerView() {
+        mAdapter = new NewInvoiceAdapter(mInvoices, this);
+        mRecyclerListInvoice.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        mRecyclerListInvoice.setAdapter(mAdapter);
     }
 }
