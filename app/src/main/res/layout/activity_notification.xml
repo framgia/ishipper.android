@@ -6,11 +6,31 @@
     android:orientation="vertical"
     tools:context="com.framgia.ishipper.presentation.notification.NotificationActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvListNotification"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvListNotification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/tv_new_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10dp"
+            android:background="@drawable/bg_border"
+            android:padding="@dimen/_5dp"
+            android:text="@string/new_notification"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </LinearLayout>

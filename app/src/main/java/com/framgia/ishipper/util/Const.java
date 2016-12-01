@@ -30,9 +30,21 @@ public class Const {
     public static final String COMMAND_SUBSCRIBE = "subscribe";
     public static final String IDENTIFIER = "identifier";
     public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
+<<<<<<< HEAD
     public static final int SIZE_INVOICE_STATUS = 6;
     public static final String KEY_INVOICE_ID = "invoice_id";
     public static final int DEFAULT_HIGHLIGHT_POSITION = - 1;
+=======
+    public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
+    public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_BODY = "body";
+    public static final String ACTION_NEW_NOTIFICATION = "new_notification";
+    public static final int HEAD_LIST = 0;
+    public static final String KEY_INVOICE_ID = "invoice_id";
+    public static final String KEY_INVOICE = "invoice";
+    public static final int POSITION_HIGHLIGHT_DEFAULT = -1;
+>>>>>>> 1.0.1
 
     public class RequestCode {
 
@@ -57,6 +69,10 @@ public class Const {
         public static final String KEY_IS_LOGIN = "IsLoginKey";
         public static final String KEY_SETTING_NOTIFICATION = "SettingNotification";
         public static final String KEY_SETTING_INVOICE_RADIUS = "SettingInvoiceRadius";
+        public static final String KEY_SETTING_ADDRESS = "SettingAddress";
+        public static final String KEY_SETTING_LATITUDE = "SettingLatitude";
+        public static final String KEY_SETTING_LONGITUDE = "SettingLongitude";
+        public static final String KEY_SETTING_LOCATION = "SettingLocation";
     }
 
     public class LocationRequest {
@@ -74,12 +90,13 @@ public class Const {
     public class Notification {
         public static final int ON = 1;
         public static final int OFF = 0;
+        public static final int ID = 1;
     }
 
     public class FirebaseData {
+        public static final String CLICK_ACTION = "click_action";
         public static final String INVOICE_ID = "invoice_id";
-
-        public static final String NOTI_ID = "id";
+        public static final String NOTIFICATION_ID = "notification_id";
     }
 
     public class Setting {
@@ -101,5 +118,10 @@ public class Const {
 
     public class Language {
         public static final String VIETNAMESE = "vi";
+    }
+
+    public class IntentFilter {
+        public static final String INVOICE_DETAIL = "com.framgia.ishipper.INVOICE_DETAIL";
+        public static final String LIST_SHIPPER_REGISTER = "com.framgia.ishipper.LIST_SHIPPER_REGISTER";
     }
 }

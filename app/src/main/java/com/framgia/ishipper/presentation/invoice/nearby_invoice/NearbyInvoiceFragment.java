@@ -14,6 +14,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.directions.route.Route;
 import com.framgia.ishipper.R;
@@ -33,6 +36,12 @@ import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.presentation.filter.FilterInvoiceActivity;
 import com.framgia.ishipper.ui.activity.MainActivity;
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
+=======
+import com.framgia.ishipper.ui.activity.OrderDetailActivity;
+import com.framgia.ishipper.ui.activity.RouteActivity;
+import com.framgia.ishipper.ui.adapter.NewInvoiceAdapter;
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
 import com.framgia.ishipper.util.CommonUtils;
@@ -76,8 +85,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
         LocationListener, OnInvoiceUpdate {
     private static final String TAG = "NearbyInvoiceFragment";
+=======
+        LocationListener, OnInvoiceUpdate, NewInvoiceAdapter.OnItemClickListener {
+    private static final String TAG = "NearbyOrderFragment";
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
     private static final int REQUEST_FILTER = 0x1234;
 
     @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
@@ -93,6 +107,16 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
     @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
     @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
+=======
+    @BindView(R.id.ll_shop_order_status) LinearLayout mLlShopOrderStatus;
+    @BindView(R.id.recyclerListInvoice) RecyclerView mRecyclerListInvoice;
+    @BindView(R.id.switcherLayout) ViewSwitcher mSwitcherLayout;
+    @BindView(R.id.tvInvoiceCount) TextView mTvInvoiceCount;
+    @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
+
+    private Dialog mDialog;
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -108,8 +132,12 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     private HashMap<Marker, Invoice> mHashMap = new HashMap<>();
     private boolean mAutoRefresh = true;
     private int mRadius;
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
     private NearbyInvoiceContract.Presenter mPresenter;
     private AlertDialog mReceiveDialog;
+=======
+    private NewInvoiceAdapter mAdapter;
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
 
     public static NearbyInvoiceFragment newInstance() {
         return new NearbyInvoiceFragment();
@@ -121,6 +149,49 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         mContext = context;
     }
 
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
+=======
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_nearby_order, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
+        mBtnNearbyShowPath.setVisibility(View.VISIBLE);
+        mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
+        mLayoutAction.setVisibility(View.GONE);
+        mCurrentUser = Config.getInstance().getUserInfo(mContext);
+        mRlOrderDetail.setVisibility(View.GONE);
+        mRadius = StorageUtils.getIntValue(
+                mContext,
+                Const.Storage.KEY_SETTING_INVOICE_RADIUS,
+                Const.SETTING_INVOICE_RADIUS_DEFAULT
+        );
+        setHasOptionsMenu(true);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).setOnInvoiceUpdate(this);
+        }
+        settingRecyclerView();
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mMapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_nearby_order);
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .build();
+        }
+
+    }
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
 
     @Override
     public void onStart() {
@@ -291,6 +362,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         dismissLoadingDialog();
     }
 
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
     @Override
     public void updateInvoices(ArrayList<Invoice> invoices) {
         mInvoices = invoices;
@@ -303,6 +375,50 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         showUserMessage(message);
         mRlOrderDetail.setVisibility(View.GONE);
     }
+=======
+    /**
+     * mark all invoices near a location on map
+     *
+     * @param latitude  location's latitude
+     * @param longitude location's longitude
+     * @param radius    radius where to find invoice
+     */
+    private void markInvoiceNearby(final double latitude, final double longitude, float radius) {
+        Map<String, String> userParams = new HashMap<>();
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LAT, String.valueOf(latitude));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_LNG, String.valueOf(longitude));
+        userParams.put(APIDefinition.GetInvoiceNearby.PARAM_USER_DISTANCE, String.valueOf(radius));
+        API.getInvoiceNearby(mCurrentUser.getAuthenticationToken(), userParams,
+                new API.APICallback<APIResponse<ListInvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<ListInvoiceData> response) {
+                        Log.d(TAG, "onResponse: " + response.getMessage());
+                        // update new invoices
+                        ArrayList<Invoice> lastUpdateInvoices = (ArrayList<Invoice>) response
+                                .getData().getInvoiceList();
+                        // init common list invoices
+                        ArrayList<Invoice> commonInvoices = new ArrayList<>(mInvoices);
+                        // get common invoices between previous list invoices and new update invoices
+                        commonInvoices.retainAll(lastUpdateInvoices);
+                        // init list invoices need to be removed
+                        ArrayList<Invoice> removeInvoices = new ArrayList<>(mInvoices);
+                        // init list invoices need to be added
+                        ArrayList<Invoice> addInvoices = new ArrayList<>(lastUpdateInvoices);
+                        // get invoices need to be added
+                        addInvoices.removeAll(commonInvoices);
+                        // get invoices need to be removed
+                        removeInvoices.removeAll(commonInvoices);
+                        addListMarker(addInvoices);
+                        removeListMarker(removeInvoices);
+                        // update invoices
+                        mInvoices.clear();
+                        mInvoices.addAll(lastUpdateInvoices);
+
+                        mAdapter.notifyDataSetChanged();
+                        mTvInvoiceCount.setText(
+                                getString(R.string.fragment_nearby_invoice_count, mInvoices.size()));
+                    }
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
 
     @Override
     public void onReceiveInvoiceFail(String message) {
@@ -536,6 +652,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     }
 
     @Override
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
     public int getLayoutId() {
         return R.layout.fragment_nearby_invoice;
     }
@@ -567,6 +684,10 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                     .build();
         }
         setHasOptionsMenu(true);
+=======
+    public void onInvoiceItemClick(Invoice invoice) {
+        showReceiveDialog(invoice.getStringId());
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
     }
 
     /**
@@ -598,9 +719,16 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     }
 
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/nearby_invoice/NearbyInvoiceFragment.java
             R.id.rl_search_view, R.id.window_invoice_detail})
+=======
+            R.id.rl_search_view, R.id.window_order_detail, R.id.btnViewChange})
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/NearbyOrderFragment.java
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btnViewChange:
+                mSwitcherLayout.showNext();
+                break;
             case R.id.btn_item_order_show_path:
                 mPresenter.showPath(mInvoice);
                 break;
@@ -615,5 +743,11 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                 mPresenter.showInvoiceDetail(mInvoice);
                 break;
         }
+    }
+
+    private void settingRecyclerView() {
+        mAdapter = new NewInvoiceAdapter(mInvoices, this);
+        mRecyclerListInvoice.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        mRecyclerListInvoice.setAdapter(mAdapter);
     }
 }

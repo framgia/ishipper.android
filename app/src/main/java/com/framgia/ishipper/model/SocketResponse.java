@@ -27,6 +27,14 @@ public class SocketResponse {
         return mMessage.mData.mInvoice;
     }
 
+    public User getUser() {
+        try {
+            return mMessage.mData.mUser;
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
     private class Message {
         @SerializedName("action") private String mAction;
         @SerializedName("data") private Data mData;
@@ -34,9 +42,8 @@ public class SocketResponse {
     }
 
     private class Data {
-        @SerializedName("unread_notification")
-        private int mUnreadNotifiction;
-        @SerializedName("invoice")
-        private Invoice mInvoice;
+        @SerializedName("unread_notification") private int mUnreadNotifiction;
+        @SerializedName("invoice") private Invoice mInvoice;
+        @SerializedName("user") private User mUser;
     }
 }

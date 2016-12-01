@@ -33,9 +33,11 @@ public class NotificationAdapter extends
 
     private Context mContext;
     private List<Notification> mNotificationList;
+    private OnItemClickListener mClickListener;
 
-    public NotificationAdapter(Context context, List<Notification> notificationList) {
+    public NotificationAdapter(Context context, List<Notification> notificationList, OnItemClickListener listener) {
         mContext = context;
+        mClickListener = listener;
         mNotificationList = notificationList;
     }
 
@@ -101,13 +103,20 @@ public class NotificationAdapter extends
             mView = itemView;
         }
 
-        private void bindData(Notification item) {
+        private void bindData(final Notification item) {
             mTvContent.setText(item.getContent());
             notificationItem = item;
             mTvTimePost.setText(item.getTimePost());
             if (!item.isRead()) {
                 mView.setBackgroundResource(R.color.back_ground_dark_grey);
             }
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mClickListener.onClick(item);
+
+                }
+            });
         }
 
         @Override
@@ -132,5 +141,9 @@ public class NotificationAdapter extends
 
             }
         }
+    }
+
+    public interface OnItemClickListener {
+        void onClick(Notification notification);
     }
 }

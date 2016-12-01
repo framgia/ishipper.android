@@ -151,8 +151,19 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                 }
                 break;
             case R.id.edt_address_end:
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/create_invoice/ShopCreateOrderStep1Fragment.java
                 if (hasFocus && mStatus != PICK_END_POINT) {
                     mPresenter.onSuggestEndClick(mMap.getCameraPosition().target);
+=======
+                if (hasFocus) {
+                    setPickEndLocation();
+                    mDisableCameraChange = false;
+                    mBtnPickStart.setImageResource(R.drawable.ic_map_picker_start);
+                    mMakerStart = mMap.addMarker(
+                            new MarkerOptions()
+                                    .position(mLatLngStart)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/ShopCreateOrderStep1Fragment.java
                 }
                 break;
         }
@@ -164,10 +175,18 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
             case R.id.btnPickStart:
                 // user is picking start point, goto done pick
                 if (mStatus == PICK_START_POINT) {
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/create_invoice/ShopCreateOrderStep1Fragment.java
                     mPresenter.setStartLocation(mMap.getCameraPosition().target);
                     // if user haven't pick end point, go to pick end location
                     if (mMarkerEnd == null) {
                         pickEndLocation();
+=======
+                    addStartLocation();
+                    // if user haven't pick end point
+                    if (mMakerEnd == null) {
+                        setPickEndLocation();
+                        mDisableCameraChange = false;
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/ShopCreateOrderStep1Fragment.java
                     } else {
                         // all pick, confirm
                         mPresenter.confirmPickLocation();
@@ -349,11 +368,25 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (PermissionUtils.checkLocationPermission(mContext)) return;
+<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/invoice/create_invoice/ShopCreateOrderStep1Fragment.java
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location != null) {
             MapUtils.zoomToPosition(mMap, new LatLng(location.getLatitude(), location.getLongitude()));
             mPresenter.saveLatLngStart(new LatLng(location.getLatitude(), location.getLongitude()));
             pickStartLocation();
+=======
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLocation != null) {
+            MapUtils.zoomToPosition(mMap, new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+            com.framgia.ishipper.common.Log.w(TAG, mLocation.getLatitude() + "");
+            mLatLngStart = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+            setPickStartLocation();
+            if (task != null) {
+                task.cancel(true);
+            }
+            task = new FetchAddressTask();
+            task.execute(mLatLngStart);
+>>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/fragment/ShopCreateOrderStep1Fragment.java
         } else {
             showUserMessage(R.string.all_cant_get_location);
         }
@@ -414,11 +447,11 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 tvShowing.setText(address, false);
             } else {
-                mEdtAddressStart.setFocusable(false);
-                mEdtAddressStart.setFocusableInTouchMode(false);
-                mEdtAddressStart.setText(address);
-                mEdtAddressStart.setFocusable(true);
-                mEdtAddressStart.setFocusableInTouchMode(true);
+                tvShowing.setFocusable(false);
+                tvShowing.setFocusableInTouchMode(false);
+                tvShowing.setText(address);
+                tvShowing.setFocusable(true);
+                tvShowing.setFocusableInTouchMode(true);
             }
         }
     }

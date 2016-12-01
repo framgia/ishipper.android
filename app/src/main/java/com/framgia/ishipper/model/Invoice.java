@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.framgia.ishipper.util.CommonUtils;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by vuduychuong1994 on 8/9/16.
  */
@@ -44,6 +46,8 @@ public class Invoice implements Parcelable {
     @SerializedName("customer_name") private String mCustomerName;
     @SerializedName("customer_number") private String mCustomerNumber;
     @SerializedName("received") private boolean mReceived;
+    @SerializedName("number_of_recipients") private String mNumOfRecipient;
+    @SerializedName("status_histories") private ArrayList<InvoiceHistory> mHistories;
 
     public Invoice() {
 
@@ -232,6 +236,22 @@ public class Invoice implements Parcelable {
         mReceived = received;
     }
 
+    public String getNumOfRecipient() {
+        return mNumOfRecipient;
+    }
+
+    public void setNumOfRecipient(String numOfRecipient) {
+        mNumOfRecipient = numOfRecipient;
+    }
+
+    public ArrayList<InvoiceHistory> getHistories() {
+        return mHistories;
+    }
+
+    public void setHistories(ArrayList<InvoiceHistory> histories) {
+        mHistories = histories;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -257,6 +277,7 @@ public class Invoice implements Parcelable {
         parcel.writeString(mCustomerName);
         parcel.writeString(mCustomerNumber);
         parcel.writeByte((byte) (mReceived ? 1 : 0));
+        parcel.writeString(mNumOfRecipient);
     }
 
     protected Invoice(Parcel in) {
@@ -278,6 +299,7 @@ public class Invoice implements Parcelable {
         mCustomerName = in.readString();
         mCustomerNumber = in.readString();
         mReceived = in.readByte() != 0;
+        mNumOfRecipient = in.readString();
     }
 
     public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {
