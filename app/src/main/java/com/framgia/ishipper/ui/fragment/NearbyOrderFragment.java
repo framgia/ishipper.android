@@ -124,6 +124,7 @@ public class NearbyOrderFragment extends Fragment implements
     @BindView(R.id.recyclerListInvoice) RecyclerView mRecyclerListInvoice;
     @BindView(R.id.switcherLayout) ViewSwitcher mSwitcherLayout;
     @BindView(R.id.tvInvoiceCount) TextView mTvInvoiceCount;
+    @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
 
     private Dialog mDialog;
 
@@ -164,6 +165,7 @@ public class NearbyOrderFragment extends Fragment implements
         mUnbinder = ButterKnife.bind(this, view);
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
+        mLayoutAction.setVisibility(View.GONE);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mRlOrderDetail.setVisibility(View.GONE);
         mRadius = StorageUtils.getIntValue(
