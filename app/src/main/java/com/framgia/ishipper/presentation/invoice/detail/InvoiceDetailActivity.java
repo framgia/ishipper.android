@@ -177,7 +177,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
             invoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
-            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTIFICATION_ID);
             mPresenter.readNotification(notiId);
         } else {
             // Implicit Intent

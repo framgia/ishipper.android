@@ -43,7 +43,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by dinhduc on 20/07/2016.
@@ -52,7 +51,6 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private static final String TAG = "NearbyShipperFragment";
-    private Unbinder mUnbinder;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mGoogleMap;

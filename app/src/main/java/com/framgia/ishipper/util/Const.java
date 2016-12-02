@@ -30,11 +30,8 @@ public class Const {
     public static final String COMMAND_SUBSCRIBE = "subscribe";
     public static final String IDENTIFIER = "identifier";
     public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
-<<<<<<< HEAD
     public static final int SIZE_INVOICE_STATUS = 6;
-    public static final String KEY_INVOICE_ID = "invoice_id";
     public static final int DEFAULT_HIGHLIGHT_POSITION = - 1;
-=======
     public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
     public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
     public static final String KEY_TITLE = "title";
@@ -44,7 +41,6 @@ public class Const {
     public static final String KEY_INVOICE_ID = "invoice_id";
     public static final String KEY_INVOICE = "invoice";
     public static final int POSITION_HIGHLIGHT_DEFAULT = -1;
->>>>>>> 1.0.1
 
     public class RequestCode {
 
