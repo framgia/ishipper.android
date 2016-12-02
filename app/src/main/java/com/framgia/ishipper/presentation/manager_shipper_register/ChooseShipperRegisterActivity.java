@@ -62,7 +62,7 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
             // Explicit Intent
             mInvoiceId = Integer.valueOf(getIntent().getExtras()
                     .getString(Const.FirebaseData.INVOICE_ID));
-            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTI_ID);
+            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTIFICATION_ID);
             mPresenter.updateNotificationStatus(mCurrentUser, notiId);
         } else {
             // Implicit Intent

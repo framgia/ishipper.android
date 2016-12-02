@@ -1,7 +1,5 @@
 package com.framgia.ishipper.service;
 
-<<<<<<< HEAD
-=======
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,8 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.framgia.ishipper.R;
->>>>>>> 1.0.1
 import com.framgia.ishipper.common.Log;
+import com.framgia.ishipper.util.Const;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

@@ -18,7 +18,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class NotificationActivity extends BaseToolbarActivity implements NotificationContract.View {
+public class NotificationActivity extends BaseToolbarActivity implements NotificationContract.View,
+        NotificationAdapter.OnItemClickListener {
     private static final String TAG = "NotificationActivity";
 
     @BindView(R.id.rvListNotification) RecyclerView rvListNotification;
@@ -55,7 +56,7 @@ public class NotificationActivity extends BaseToolbarActivity implements Notific
         if (mCurrentUser == null) return;
         mLayoutManager = new LinearLayoutManager(getBaseContext());
         rvListNotification.setLayoutManager(mLayoutManager);
-        mAdapter = new NotificationAdapter(getBaseContext(), mNotificationList);
+        mAdapter = new NotificationAdapter(getBaseContext(), mNotificationList, this);
         rvListNotification.setAdapter(mAdapter);
         mPresenter.loadMore(mNotificationList, mAdapter, mCurrentUser, ++mPage);
         rvListNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -79,5 +80,10 @@ public class NotificationActivity extends BaseToolbarActivity implements Notific
         mNotificationList.addAll(response.getData().getNotifications());
         mAdapter.notifyDataSetChanged();
         mIsLoading = false;
+    }
+
+    @Override
+    public void onClick(Notification notification) {
+        //TODO: onclick Notification
     }
 }
