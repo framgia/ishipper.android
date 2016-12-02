@@ -60,7 +60,6 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
 
     public static final int SHIPPER = 0;
     public static final int SHOP = 1;
-    public static int userType = SHIPPER;
     public static boolean firstTime = true;
     private User mCurrentUser;
     private int mSelectedId;
@@ -80,12 +79,7 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     @Override
     public void initViews() {
         mCurrentUser = Config.getInstance().getUserInfo(this);
-        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
-            userType = SHIPPER;
-        } else {
-            userType = SHOP;
-        }
-        if (userType == SHOP) {
+        if (mCurrentUser.isShop()) {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shop);
         } else {
             mNavigationView.inflateMenu(R.menu.menu_nav_drawer_shipper);
@@ -116,10 +110,10 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
             }
         });
 
-        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
-            selectItem(R.id.nav_nearby_order);
-        } else {
+        if (mCurrentUser.isShop()) {
             selectItem(R.id.nav_nearby_shipper);
+        } else {
+            selectItem(R.id.nav_nearby_order);
         }
     }
 
@@ -147,16 +141,16 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                 setElevationAppBar(Const.ElevationLevel.NONE);
                 mSelectedId = id;
                 getToolbar().setTitle(getString(R.string.title_activity_order_manager));
-                if (userType == SHIPPER) {
+                if (mCurrentUser.isShop()) {
                     fragment =
                             ShipperInvoiceManagerFragment.instantiate(MainActivity.this,
-                                                                      ShipperInvoiceManagerFragment.class.getName(),
+                                                                      ShopInvoiceManagerFragment.class.getName(),
                                                                       null);
                     tag = ShipperInvoiceManagerFragment.class.getName();
                 } else {
                     fragment =
                             ShipperInvoiceManagerFragment.instantiate(MainActivity.this,
-                                                                      ShopInvoiceManagerFragment.class.getName(),
+                                                                      ShipperInvoiceManagerFragment.class.getName(),
                                                                       null);
                     tag = ShipperInvoiceManagerFragment.class.getName();
                 }

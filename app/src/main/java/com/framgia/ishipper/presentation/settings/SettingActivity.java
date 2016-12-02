@@ -3,12 +3,8 @@ package com.framgia.ishipper.presentation.settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
-=======
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -19,18 +15,11 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
-=======
-import com.framgia.ishipper.model.UserSetting;
-import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIDefinition;
-import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.EmptyData;
-import com.framgia.ishipper.net.data.UserSettingData;
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Storage;
 import com.framgia.ishipper.util.StorageUtils;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
@@ -39,18 +28,9 @@ import butterknife.OnClick;
 /**
  * Created by HungNT on 9/16/16.
  */
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
 public class SettingActivity extends BaseToolbarActivity implements SettingContact.View {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0x1234;
-
-    @BindView(R.id.cbReceiveNotification) CheckBox cbReceiveNotification;
-=======
-public class SettingActivity extends ToolbarActivity {
-    private static final String TAG = SettingActivity.class.getName();
-
-    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0x1234;
     @BindView(R.id.cbReceiveNotification) CheckBox mCbReceiveNotification;
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
     @BindView(R.id.seekbar_invoice_radius) SeekBar seekbarInvoiceRadius;
     @BindView(R.id.tvInvoiceRadius) TextView tvInvoiceRadius;
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -62,11 +42,8 @@ public class SettingActivity extends ToolbarActivity {
 
     private int mInvoiceRadius;
     private boolean mFavoriteLocationEnable;
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
     private SettingPresenter mPresenter;
-=======
     private Place mPlace;
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,58 +56,10 @@ public class SettingActivity extends ToolbarActivity {
         User currentUser = Config.getInstance().getUserInfo(this);
         mInvoiceRadius = StorageUtils.getIntValue(this, Storage.KEY_SETTING_INVOICE_RADIUS,
                 Const.SETTING_INVOICE_RADIUS_DEFAULT);
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
-        cbReceiveNotification.setChecked(currentUser.getNotification() == Const.Notification.ON);
+        mCbReceiveNotification.setChecked(currentUser.getNotification() == Const.Notification.ON);
         seekbarInvoiceRadius.setProgress(mInvoiceRadius - 1);
         tvInvoiceRadius.setText(
                 getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
-=======
-        mCbReceiveNotification.setChecked(mCurrentUser.getNotification() == Const.Notification.ON);
-        seekbarInvoiceRadius.setProgress(mInvoiceRadius - 1);
-        tvInvoiceRadius.setText(
-                getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
-        settingInvoiceRadiusSeekBar();
-
-        // Favorite Location
-        //TODO fetch data from server
-        setFavoriteCheckbox(mFavoriteLocationEnable);
-        getSettingFromServer();
-    }
-
-    private void getSettingFromServer() {
-        if (mCurrentUser == null) return;
-        API.getUserSetting(mCurrentUser.getAuthenticationToken(), new API.APICallback<APIResponse<UserSettingData>>() {
-            @Override
-            public void onResponse(
-                    APIResponse<UserSettingData> response) {
-                UserSetting setting = response.getData().userSetting;
-                mCbReceiveNotification.setChecked(setting.isReceiveNotification());
-                mCbFavoriteLocation.setChecked(setting.isFavoriteLocation());
-                if (setting.isFavoriteLocation()) {
-                    mTvFavoriteContent.setText(setting.getAddress());
-                }
-                try {
-                    setRadiusDisplay(Integer.parseInt(setting.getRadiusDisplay()));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-                saveSettingOnLocale();
-
-            }
-
-            @Override
-            public void onFailure(int code, String message) {
-                Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setRadiusDisplay(int radiusDisplay) {
-        mInvoiceRadius = radiusDisplay;
-        seekbarInvoiceRadius.setProgress(radiusDisplay - 1);
-        tvInvoiceRadius.setText(getString(R.string.fragment_setting_invoice_radius, radiusDisplay));
-    }
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
 
         // settingInvoiceRadiusSeekBar
         if (Config.getInstance().getUserInfo(getApplicationContext()).isShop()) {
@@ -149,67 +78,16 @@ public class SettingActivity extends ToolbarActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Log.d(TAG, "onStopTrackingTouch: start");
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.d(TAG, "onStopTrackingTouch: end");
             }
         });
 
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
         // Favorite Location
         //TODO fetch data from server
         setFavoriteCheckbox(mFavoriteLocationEnable);
-=======
-    public void saveSetting() {
-        if (mCurrentUser != null) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put(APIDefinition.UserSetting.PARAM_USER_ID, mCurrentUser.getId());
-            params.put(APIDefinition.UserSetting.PARAM_RECEIVE_NOTIFICATION,
-                       String.valueOf(mCbReceiveNotification.isChecked()));
-            params.put(APIDefinition.UserSetting.PARAM_FAVORITE_LOCATION,
-                       String.valueOf(mCbFavoriteLocation.isChecked()));
-            if (mPlace != null) {
-                params.put(APIDefinition.UserSetting.PARAM_ADDRESS, mPlace.getAddress().toString());
-                params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
-                params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
-            }
-            params.put(APIDefinition.UserSetting.PARAM_RADIUS, String.valueOf(mInvoiceRadius));
-            API.updateUserSetting(mCurrentUser.getAuthenticationToken(),
-                                  params,
-                                  new API.APICallback<APIResponse<EmptyData>>() {
-                                      @Override
-                                      public void onResponse(
-                                              APIResponse<EmptyData> response) {
-                                          saveSettingOnLocale();
-                                      }
-
-                                      @Override
-                                      public void onFailure(int code, String message) {
-                                          Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT)
-                                                  .show();
-                                      }
-                                  });
-        }
-    }
-
-    private void saveSettingOnLocale() {
-        StorageUtils.setValue(this, Storage.KEY_SETTING_NOTIFICATION,
-                              mCbReceiveNotification.isChecked());
-        StorageUtils.setValue(this, Storage.KEY_SETTING_INVOICE_RADIUS, mInvoiceRadius);
-        StorageUtils.setValue(this, Storage.KEY_SETTING_LOCATION, mCbFavoriteLocation.isChecked());
-        if (mPlace == null) {
-            StorageUtils.remove(this, Storage.KEY_SETTING_ADDRESS);
-            StorageUtils.remove(this, Storage.KEY_SETTING_LATITUDE);
-            StorageUtils.remove(this, Storage.KEY_SETTING_LONGITUDE);
-        } else {
-            StorageUtils.setValue(this, Storage.KEY_SETTING_ADDRESS, mPlace.getAddress().toString());
-            StorageUtils.setValue(this, Storage.KEY_SETTING_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
-            StorageUtils.setValue(this, Storage.KEY_SETTING_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
-        }
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
     }
 
     @Override
@@ -228,8 +106,6 @@ public class SettingActivity extends ToolbarActivity {
     }
 
     @Override
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
-=======
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.setting_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -242,7 +118,8 @@ public class SettingActivity extends ToolbarActivity {
                 onBackPressed();
                 return true;
             case R.id.action_save:
-                saveSetting();
+                mPresenter.saveSetting(mCbReceiveNotification.isChecked(), mCbFavoriteLocation.isChecked(),
+                        mInvoiceRadius, mPlace);
                 return true;
             default:
                 return false;
@@ -250,7 +127,6 @@ public class SettingActivity extends ToolbarActivity {
     }
 
     @Override
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
     public void onBackPressed() {
         setResult(RESULT_OK);
         super.onBackPressed();
@@ -289,19 +165,13 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-<<<<<<< HEAD:app/src/main/java/com/framgia/ishipper/presentation/settings/SettingActivity.java
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 mPresenter.onPickFavoritePlace(data);
                 //TODO request save favorite location
-=======
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-                //TODO request save favorite location
                 mPlace = PlaceAutocomplete.getPlace(this, data);
                 mTvFavoriteContent.setText(mPlace.getName());
                 setFavoriteCheckbox(true);
->>>>>>> 1.0.1:app/src/main/java/com/framgia/ishipper/ui/activity/SettingActivity.java
             }
         }
     }
@@ -320,5 +190,4 @@ public class SettingActivity extends ToolbarActivity {
         mTvFavoriteContent.setText(name);
         setFavoriteCheckbox(true);
     }
-
 }

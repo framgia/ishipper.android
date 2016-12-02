@@ -70,7 +70,7 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
 
     @Override
     public void actionFinishInvoice(final Invoice invoice) {
-        API.putUpdateInvoiceStatus(User.ROLE_SHOP, String.valueOf(invoice.getId()),
+        API.putUpdateInvoiceStatus(User.ROLE_SHOP.toLowerCase(), String.valueOf(invoice.getId()),
                                    Config.getInstance().getUserInfo(mActivity).getAuthenticationToken(),
                                    Invoice.STATUS_FINISHED, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override

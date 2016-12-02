@@ -13,8 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     private OnClickCancelListener mClickCancelListener;
     private OnclickViewListener mClickViewListener;
     private Context mContext;
-    private int mPositionHighlight = - 1;
+    private int mPositionHighlight = Const.POSITION_HIGHLIGHT_DEFAULT;
 
     public InvoiceAdapter(Context context, List<Invoice> invoiceList,
                           OnclickViewListener listener) {
@@ -74,12 +75,12 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         int statusColor;
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    textStatus = mContext.getString(R.string.order_status_wait);
-                    action = "";
-                } else {
+                if (Config.getInstance().isShop(mContext)) {
                     textStatus = mContext.getString(R.string.order_shop_status_wait);
                     action = mContext.getString(R.string.action_shop_wait);
+                } else {
+                    textStatus = mContext.getString(R.string.order_status_wait);
+                    action = "";
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         mContext.getResources(),
@@ -89,12 +90,12 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 statusColor = mContext.getResources().getColor(R.color.color_status_waiting);
                 break;
             case Invoice.STATUS_CODE_WAITING:
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    textStatus = mContext.getString(R.string.order_status_take);
-                    action = mContext.getString(R.string.action_shipper_take);
-                } else {
+                if (Config.getInstance().isShop(mContext)) {
                     textStatus = mContext.getString(R.string.order_shop_status_take);
                     action = "";
+                } else {
+                    textStatus = mContext.getString(R.string.order_status_take);
+                    action = mContext.getString(R.string.action_shipper_take);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         mContext.getResources(),
@@ -105,10 +106,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 break;
             case Invoice.STATUS_CODE_SHIPPING:
                 textStatus = mContext.getString(R.string.order_status_shipping);
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    action = mContext.getString(R.string.action_shipper_shipping);
-                } else {
+                if (Config.getInstance().isShop(mContext)) {
                     action = "";
+                } else {
+                    action = mContext.getString(R.string.action_shipper_shipping);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         mContext.getResources(),
@@ -119,10 +120,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
                 textStatus = mContext.getString(R.string.order_status_delivered);
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    action = "";
-                } else {
+                if (Config.getInstance().isShop(mContext)) {
                     action = mContext.getString(R.string.action_shop_delivered);
+                } else {
+                    action = "";
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         mContext.getResources(),
@@ -160,13 +161,19 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 statusColor = mContext.getResources().getColor(R.color.colorAccent);
                 break;
         }
-
+        holder.mLayoutAction.setVisibility(View.VISIBLE);
         holder.mShopOrderStatus.setVisibility(View.GONE);
         holder.mTvShippingOrderStatus.setVisibility(View.VISIBLE);
         holder.mTvShippingOrderStatus.setText(textStatus);
         holder.mTvShippingOrderStatus.setTextColor(statusColor);
         holder.mTvShippingOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
                 null, null, null);
+        if (holder.mInvoice.getNumOfRecipient() != null) {
+            holder.mTvNumShipRegister.setVisibility(View.VISIBLE);
+            holder.mTvNumShipRegister.setText(holder.mInvoice.getNumOfRecipient());
+        } else {
+            holder.mTvNumShipRegister.setVisibility(View.GONE);
+        }
         if (action.equals("")) {
             holder.mBtnActionItemOrder.setVisibility(View.GONE);
         } else {
@@ -226,6 +233,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public Invoice mInvoice;
+
         @BindView(R.id.tv_shipping_order_status) TextView mTvShippingOrderStatus;
         @BindView(R.id.tv_item_order_shop_name) TextView mTvNearbyShopName;
         @BindView(R.id.ll_order_status) LinearLayout mLlOrderStatus;
@@ -237,11 +245,12 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         @BindView(R.id.tv_item_order_distance) TextView mTvItemOrderDistance;
         @BindView(R.id.tv_item_order_ship_time) TextView mTvItemOrderShipTime;
         @BindView(R.id.tv_item_order_price) TextView mTvItemOrderOrderPrice;
-        @BindView(R.id.window_invoice_detail) RelativeLayout mWindowOrderDetail;
         @BindView(R.id.ll_shop_order_status) LinearLayout mShopOrderStatus;
         @BindView(R.id.btn_cancel_item_order) TextView mBtnCancelItemOrder;
         @BindView(R.id.btn_action_item_order) TextView mBtnActionItemOrder;
         @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
+        @BindView(R.id.tv_number_shipper_register) TextView mTvNumShipRegister;
+        @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
 
         public ViewHolder(View view) {
             super(view);
@@ -255,13 +264,13 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         @Override
         public void onClick(View view) {
             if (view.getId() == mView.getId() && mClickViewListener != null) {
-                    mClickViewListener.onclickViewListener(mInvoice);
+                mClickViewListener.onclickViewListener(mInvoice);
             }
             if (view.getId() == R.id.btn_cancel_item_order && mClickCancelListener != null) {
-                    mClickCancelListener.onClickCancelListener(mInvoice);
+                mClickCancelListener.onClickCancelListener(mInvoice);
             }
             if (view.getId() == R.id.btn_action_item_order && mClickActionListener != null) {
-                    mClickActionListener.onClickActionListener(mInvoice);
+                mClickActionListener.onClickActionListener(mInvoice);
             }
         }
     }

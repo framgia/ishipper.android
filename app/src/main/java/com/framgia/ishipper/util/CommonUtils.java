@@ -141,7 +141,32 @@ public class CommonUtils {
     }
 
     /**
-<<<<<<< HEAD
+     * Sets ListView height dynamically based on the height of the items.
+     *
+     * @param listView to be resized
+     */
+    public static void setListViewHeightBasedOnItems(ListView listView, int numberOfItems) {
+        ListAdapter listAdapter = listView.getAdapter();
+        // Get total height of all items.
+        int totalItemsHeight = 0;
+        for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+            View item = listAdapter.getView(itemPos, null, listView);
+            item.measure(0, 0);
+            totalItemsHeight += item.getMeasuredHeight();
+        }
+
+        // Get total height of all item dividers.
+        int totalDividersHeight = listView.getDividerHeight() *
+                (numberOfItems - 1);
+
+        // Set list height.
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalItemsHeight + totalDividersHeight;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    /**
      * place the path in center of screen
      *
      * @param startPoint start point of path
@@ -173,30 +198,5 @@ public class CommonUtils {
             }
         }
         return latLng;
-=======
-     * Sets ListView height dynamically based on the height of the items.
-     *
-     * @param listView to be resized
-     */
-    public static void setListViewHeightBasedOnItems(ListView listView, int numberOfItems) {
-        ListAdapter listAdapter = listView.getAdapter();
-        // Get total height of all items.
-        int totalItemsHeight = 0;
-        for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
-            View item = listAdapter.getView(itemPos, null, listView);
-            item.measure(0, 0);
-            totalItemsHeight += item.getMeasuredHeight();
-        }
-
-        // Get total height of all item dividers.
-        int totalDividersHeight = listView.getDividerHeight() *
-                (numberOfItems - 1);
-
-        // Set list height.
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalItemsHeight + totalDividersHeight;
-        listView.setLayoutParams(params);
-        listView.requestLayout();
->>>>>>> 1.0.1
     }
 }

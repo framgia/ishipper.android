@@ -24,7 +24,6 @@ import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.util.Const;
-import com.framgia.ishipper.ui.adapter.InvoiceAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
                                                       Invoice.class);
                 switch (mStatusCode) {
                     case Invoice.STATUS_CODE_INIT:
-                        if (mCurrentUser.getRole().equals(User.ROLE_SHOP)) {
+                        if (mCurrentUser.isShop()) {
                             changeCountShipperReg(invoice);
                         } else {
                             updateInvoice(invoice);

@@ -1,5 +1,6 @@
 package com.framgia.ishipper.presentation.settings;
 
+import android.content.Context;
 import android.content.Intent;
 
 import com.framgia.ishipper.R;
@@ -9,7 +10,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.UpdateProfileData;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.presentation.block.BlackListActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
@@ -29,49 +30,66 @@ class SettingPresenter implements SettingContact.Presenter {
 
     private final SettingContact.View mView;
     private BaseActivity mActivity;
+    private User mCurrentUser;
+    private Context mContext;
 
 
     public SettingPresenter(SettingContact.View view, BaseActivity activity) {
         mView = view;
         mActivity = activity;
+        mCurrentUser = Config.getInstance().getUserInfo(mActivity);
+        mContext = activity.getBaseContext();
     }
 
 
     @Override
-    public void saveSetting(boolean receiveNotification, int invoiceRadius) {
-        User mCurrentUser = Config.getInstance().getUserInfo(mActivity);
-        saveSettingLocal(receiveNotification, invoiceRadius);
-
+    public void saveSetting(final boolean receiveNotification, final boolean favoriteLocation, final int invoiceRadius, final Place mPlace) {
         if (mCurrentUser != null) {
-            mCurrentUser.setNotification(receiveNotification
-                    ? Const.Notification.ON
-                    : Const.Notification.OFF);
-            Config.getInstance().setUserInfo(mActivity, mCurrentUser);
-
             HashMap<String, String> params = new HashMap<>();
-            params.put(APIDefinition.PutUpdateProfile.PARAM_NOTIFICATION,
-                    String.valueOf(mCurrentUser.getNotification()));
-            mActivity.showDialog();
-            API.putUpdateProfile(params, new API.APICallback<APIResponse<UpdateProfileData>>() {
-                @Override
-                public void onResponse(APIResponse<UpdateProfileData> response) {
-                    mActivity.dismissDialog();
-                    mActivity.showUserMessage(response.getMessage());
-                }
+            params.put(APIDefinition.UserSetting.PARAM_USER_ID, mCurrentUser.getId());
+            params.put(APIDefinition.UserSetting.PARAM_RECEIVE_NOTIFICATION,
+                    String.valueOf(receiveNotification));
+            params.put(APIDefinition.UserSetting.PARAM_FAVORITE_LOCATION,
+                    String.valueOf(favoriteLocation));
+            if (mPlace != null) {
+                params.put(APIDefinition.UserSetting.PARAM_ADDRESS, mPlace.getAddress().toString());
+                params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
+                params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
+            }
+            params.put(APIDefinition.UserSetting.PARAM_RADIUS, String.valueOf(invoiceRadius));
+            API.updateUserSetting(mCurrentUser.getAuthenticationToken(),
+                    params,
+                    new API.APICallback<APIResponse<EmptyData>>() {
+                        @Override
+                        public void onResponse(APIResponse<EmptyData> response) {
+                            saveSettingLocal(receiveNotification, favoriteLocation, invoiceRadius, mPlace);
+                        }
 
-                @Override
-                public void onFailure(int code, String message) {
-                    mActivity.dismissDialog();
-                    mActivity.showUserMessage(message);
-                }
-            });
+                        @Override
+                        public void onFailure(int code, String message) {
+                            mActivity.showUserMessage(message);
+                        }
+                    });
         }
+
+
     }
 
     @Override
-    public void saveSettingLocal(boolean receiveNotification, int invoiceRadius) {
-        StorageUtils.setValue(mActivity, Const.Storage.KEY_SETTING_NOTIFICATION, receiveNotification);
-        StorageUtils.setValue(mActivity, Const.Storage.KEY_SETTING_INVOICE_RADIUS, invoiceRadius);
+    public void saveSettingLocal(boolean receiveNotification, boolean favoriteLocation, int invoiceRadius, Place mPlace) {
+        StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_NOTIFICATION,
+                receiveNotification);
+        StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_INVOICE_RADIUS, invoiceRadius);
+        StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LOCATION, favoriteLocation);
+        if (mPlace == null) {
+            StorageUtils.remove(mContext, Const.Storage.KEY_SETTING_ADDRESS);
+            StorageUtils.remove(mContext, Const.Storage.KEY_SETTING_LATITUDE);
+            StorageUtils.remove(mContext, Const.Storage.KEY_SETTING_LONGITUDE);
+        } else {
+            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_ADDRESS, mPlace.getAddress().toString());
+            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
+            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
+        }
     }
 
     @Override

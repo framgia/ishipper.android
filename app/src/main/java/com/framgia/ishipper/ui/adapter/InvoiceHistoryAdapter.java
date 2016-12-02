@@ -45,9 +45,11 @@ public class InvoiceHistoryAdapter extends ArrayAdapter<InvoiceHistory> {
             convertView = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
         }
         ButterKnife.bind(this, convertView);
-        InvoiceHistory invoiceHistory = mInvoiceHistories.get(position);
-        mTvTime.setText(invoiceHistory.getTime());
-        mTvContent.setText(invoiceHistory.getContent());
+        if (mInvoiceHistories != null && !mInvoiceHistories.isEmpty()) {
+            InvoiceHistory invoiceHistory = mInvoiceHistories.get(position);
+            mTvTime.setText(invoiceHistory.getTime());
+            mTvContent.setText(invoiceHistory.getContent());
+        }
         return convertView;
     }
 }
