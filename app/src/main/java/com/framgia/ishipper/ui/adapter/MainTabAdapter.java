@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.presentation.invoice.nearby_invoice.NearbyInvoiceFragment;
 import com.framgia.ishipper.presentation.invoice.shipping.ShippingFragment;
@@ -19,9 +21,6 @@ import com.framgia.ishipper.presentation.main.NearbyShipperFragment;
 import com.framgia.ishipper.presentation.manager_invoice.ListInvoiceFragment;
 import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
 import com.framgia.ishipper.util.Const;
-
-import static com.framgia.ishipper.ui.activity.MainActivity.SHIPPER;
-import static com.framgia.ishipper.ui.activity.MainActivity.userType;
 
 /**
  * Created by dinhduc on 20/07/2016.
@@ -32,11 +31,13 @@ public class MainTabAdapter extends FragmentPagerAdapter
     private Context mContext;
     private ListInvoiceFragment mListInvoiceFragment;
     private SparseArray<Fragment> mFragments = new SparseArray<>();
+    private User mCurrentUser;
 
     public MainTabAdapter(FragmentManager fm, Context context) {
         super(fm);
         mContext = context;
-        if (userType == SHIPPER) {
+        mCurrentUser = Config.getInstance().getUserInfo(mContext);
+        if (!mCurrentUser.isShop()) {
             mTitle = new String[]{
                     context.getString(R.string.all_nearby_order),
                     context.getString(R.string.all_shipping_order)
@@ -52,21 +53,21 @@ public class MainTabAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            if (userType == SHIPPER) {
-                return new NearbyInvoiceFragment();
-            } else {
+            if (mCurrentUser.isShop()) {
                 return new NearbyShipperFragment();
+            } else {
+                return new NearbyInvoiceFragment();
             }
         } else {
-            if (userType == SHIPPER) {
-                return new ShippingFragment();
-            } else {
+            if (mCurrentUser.isShop()) {
                 mListInvoiceFragment =
                         ListInvoiceFragment.newInstance(
                                 mContext.getString(R.string.tab_title_shop_order_wait),
                                 Invoice.STATUS_CODE_INIT);
                 mListInvoiceFragment.setOnActionClickListener(this);
                 return mListInvoiceFragment;
+            } else {
+                return new ShippingFragment();
             }
         }
     }

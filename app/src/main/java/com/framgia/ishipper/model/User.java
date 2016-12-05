@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class User implements Parcelable {
     public static final String ROLE_ADMIN = "admin";
-    public static final String ROLE_SHOP = "shop";
-    public static final String ROLE_SHIPPER = "shipper";
+    public static final String ROLE_SHOP = "Shop";
+    public static final String ROLE_SHIPPER = "Shipper";
 
     @SerializedName("name") private String mName;
     @SerializedName("email") private String mEmail;
@@ -58,7 +58,7 @@ public class User implements Parcelable {
     }
 
     public String getUserType() {
-        return mRole;
+        return mRole.toLowerCase();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

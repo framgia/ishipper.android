@@ -51,7 +51,7 @@ class LoginPresenter implements LoginContract.Presenter {
         API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
             @Override
             public void onResponse(APIResponse<SignInData> response) {
-                mLoginActivity.showDialog();
+                mLoginActivity.dismissDialog();
                 mLoginActivity.showUserMessage(response.getMessage());
 
                 User user = response.getData().getUser();
@@ -66,6 +66,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
                             @Override
                             public void onFailure(int code, String message) {
+                                mLoginActivity.dismissDialog();
                                 mLoginActivity.showUserMessage(message);
                             }
                         });

@@ -3,7 +3,6 @@ package com.framgia.ishipper.net;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.model.UserSetting;
 import com.framgia.ishipper.net.data.AddBlacklistData;
 import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.ChangePasswordData;
@@ -125,14 +124,14 @@ public abstract class API {
             String token,
             String userType,
             APICallback<APIResponse<ListUserData>> callback) {
-        client.getBlackList(token, userType).enqueue(new RetrofitCallback<>(callback));
+        client.getBlackList(token, userType.toLowerCase()).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void getFavoriteList(
             String token,
             String userType,
             APICallback<APIResponse<ListUserData>> callback) {
-        client.getFavoriteList(token, userType).enqueue(new RetrofitCallback<>(callback));
+        client.getFavoriteList(token, userType.toLowerCase()).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void addFavoriteUser(
@@ -140,26 +139,26 @@ public abstract class API {
             String token,
             String userId,
             APICallback<APIResponse<AddFavoriteListData>> callback) {
-        client.addFavorite(userType, token, userId).enqueue(new RetrofitCallback<>(callback));
+        client.addFavorite(userType.toLowerCase(), token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void addUserToBlackList(String userType, String token, String blackListUserId,
                                           final APICallback<APIResponse<AddBlacklistData>> callback) {
-        client.addBlacklist(userType, token, blackListUserId).enqueue(new RetrofitCallback<>(callback));
+        client.addBlacklist(userType.toLowerCase(), token, blackListUserId).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void deleteAllBlackList(
             String userType,
             String token,
             APICallback<APIResponse<EmptyData>> callback) {
-        client.deleteAllBlackList(userType, token).enqueue(new RetrofitCallback<>(callback));
+        client.deleteAllBlackList(userType.toLowerCase(), token).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void deleteAllFavoriteList(
             String userType,
             String token,
             APICallback<APIResponse<EmptyData>> callback) {
-        client.deleteAllFavoriteList(userType, token).enqueue(new RetrofitCallback<>(callback));
+        client.deleteAllFavoriteList(userType.toLowerCase(), token).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void updateUserSetting(String token, HashMap<String, String> params,
@@ -192,7 +191,7 @@ public abstract class API {
     public static void putUpdateInvoiceStatus(String userType, String invoiceId, String token, String status,
                                               final APICallback<APIResponse<InvoiceData>> callback) {
 
-        client.putUpdateInvoiceStatus(userType, invoiceId, token, status)
+        client.putUpdateInvoiceStatus(userType.toLowerCase(), invoiceId, token, status)
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
@@ -214,7 +213,7 @@ public abstract class API {
                                   String token,
                                   Map<String, String> params,
                                   final APICallback<APIResponse<ListInvoiceData>> callback) {
-        client.getListInvoice(userType, token, params).enqueue(new RetrofitCallback<>(callback));
+        client.getListInvoice(userType.toLowerCase(), token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void getInvoiceNearby(String token, Map<String, String> userParams,
@@ -244,19 +243,19 @@ public abstract class API {
 
     public static void getInvoiceDetail(String userType, String id, String token,
                                         final APICallback<APIResponse<ShowInvoiceData>> callback) {
-        client.getInvoiceDetail(userType, id, token).enqueue(new RetrofitCallback<>(callback));
+        client.getInvoiceDetail(userType.toLowerCase(), id, token).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void reportUser(String userType,
                                   String token,
                                   Map<String, String> params,
                                   final APICallback<APIResponse<ReportUserData>> callback) {
-        client.reportUser(userType, token, params).enqueue(new RetrofitCallback<>(callback));
+        client.reportUser(userType.toLowerCase(), token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void postRating(HashMap<String, String> params, String token, String userType,
                                   final APICallback<APIResponse<EmptyData>> callback) {
-        client.postRating(userType, token, params).enqueue(new RetrofitCallback<>(callback));
+        client.postRating(userType.toLowerCase(), token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void getSearchInvoice(String status, String query, String token,
@@ -283,7 +282,7 @@ public abstract class API {
             String userType,
             String favoriteId,
             APICallback<APIResponse<EmptyData>> callback) {
-        client.deleteUserFavorite(token, userType, favoriteId).enqueue(new RetrofitCallback<>(callback));
+        client.deleteUserFavorite(token, userType.toLowerCase(), favoriteId).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void deleteUserBlacklist(
@@ -312,7 +311,7 @@ public abstract class API {
             int page,
             int perPage,
             APICallback<APIResponse<ListNotificationData>> callback) {
-        client.getAllNotification(token, userType, page, perPage)
+        client.getAllNotification(token, userType.toLowerCase(), page, perPage)
                 .enqueue(new RetrofitCallback<>(callback));
     }
 
@@ -320,7 +319,7 @@ public abstract class API {
             String token,
             String userType,
             APICallback<APIResponse<ListNotificationData>> callback) {
-        client.getUnreadNotificationCount(token, userType)
+        client.getUnreadNotificationCount(token, userType.toLowerCase())
                 .enqueue(new RetrofitCallback<>(callback));
     }
     //endregion
@@ -331,7 +330,7 @@ public abstract class API {
                                           String token,
                                           boolean isRead,
                                           APICallback<APIResponse<EmptyData>> callback) {
-        client.updateReadNotification(userType, notificationId, token, isRead)
+        client.updateReadNotification(userType.toLowerCase(), notificationId, token, isRead)
                 .enqueue(new RetrofitCallback<>(callback));
     }
 

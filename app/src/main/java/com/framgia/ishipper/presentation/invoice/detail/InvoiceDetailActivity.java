@@ -17,7 +17,6 @@ import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
@@ -202,10 +201,10 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         int statusColor;
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    textStatus = getString(R.string.order_status_wait);
-                } else {
+                if (Config.getInstance().isShop(this)) {
                     textStatus = getString(R.string.order_shop_status_wait);
+                } else {
+                    textStatus = getString(R.string.order_status_wait);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
                         R.drawable.ic_status_waiting,
@@ -214,10 +213,10 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 statusColor = getResources().getColor(R.color.color_status_waiting);
                 break;
             case Invoice.STATUS_CODE_WAITING:
-                if (MainActivity.userType == MainActivity.SHIPPER) {
-                    textStatus = getString(R.string.order_status_take);
-                } else {
+                if (Config.getInstance().isShop(this)) {
                     textStatus = getString(R.string.order_shop_status_take);
+                } else {
+                    textStatus = getString(R.string.order_status_take);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         getResources(),

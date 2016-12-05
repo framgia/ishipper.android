@@ -72,15 +72,15 @@ public class UserInfoDialogFragment extends DialogFragment {
     }
 
     private void initView() {
-        mRatingBar.setRating((float) mUser.getRate());
-        mTvName.setText(mUser.getName());
-        mTabLayout.setupWithViewPager(mViewPager);
-
         // Viewpager
         GeneralFragmentPagerAdapter adapter = new GeneralFragmentPagerAdapter(getChildFragmentManager());
         adapter.addFragment(UserInfoFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_info_tab));
         adapter.addFragment(UserReviewFragment.newInstance(mUser), getResources().getString(R.string.info_dialog_review));
         mViewPager.setAdapter(adapter);
+
+        mRatingBar.setRating((float) mUser.getRate());
+        mTvName.setText(mUser.getName());
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @OnClick(R.id.tv_info_dialog_close)

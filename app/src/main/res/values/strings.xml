@@ -236,6 +236,7 @@
     <string name="title_menu_save">Save</string>
     <string name="detail_history">Lịch sử đơn hàng</string>
     <string name="fragment_nearby_order_view_in_map"><u>Xem trên map</u></string>
+    <string name="fragment_nearby_order_view_in_list"><u>Xem danh sách</u></string>
     <string name="fragment_nearby_invoice_count">Có %1$d đơn hàng đang chờ</string>
 
     <string-array name="prefix_phone_number">

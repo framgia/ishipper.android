@@ -98,7 +98,7 @@ public class UserProfileActivity extends BaseToolbarActivity implements UserProf
         mEdtProfileName.setText(currentUser.getName());
         mEdtProfilePhone.setText(currentUser.getPhoneNumber());
         mEdtProfileAddress.setText(currentUser.getAddress());
-        if (currentUser.getRole().equals(User.ROLE_SHOP)) {
+        if (currentUser.isShop()) {
             mEdtProfilePlate.setVisibility(View.GONE);
         } else {
             mEdtProfilePlate.setText(currentUser.getPlateNumber());
