@@ -74,7 +74,7 @@ public class User implements Parcelable {
     };
 
     public boolean isShop() {
-        return mRole.equals(ROLE_SHOP);
+        return mRole != null && mRole.equals(ROLE_SHOP);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class User implements Parcelable {
     }
 
     public String getRole() {
-        return mRole.toLowerCase();
+        return mRole;
     }
 
     public void setRole(String role) {

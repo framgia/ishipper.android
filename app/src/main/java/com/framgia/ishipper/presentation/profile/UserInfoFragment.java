@@ -53,10 +53,10 @@ public class UserInfoFragment extends Fragment {
     private void initView() {
         mTvPhone.setText(String.valueOf(mUser.getPhoneNumber()));
         mTvAddress.setText(String.valueOf(mUser.getAddress()));
-        if (mUser.getRole().equals(User.ROLE_SHIPPER)) {
-            mTvPlate.setText(String.valueOf(mUser.getPlateNumber()));
-        } else {
+        if (mUser.isShop()) {
             mTvPlate.setVisibility(View.GONE);
+        } else {
+            mTvPlate.setText(String.valueOf(mUser.getPlateNumber()));
         }
 
         if (CommonUtils.stringIsValid(mUser.getAddress())) {

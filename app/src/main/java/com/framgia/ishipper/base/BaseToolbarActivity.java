@@ -34,6 +34,6 @@ public abstract class BaseToolbarActivity extends BaseActivity {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

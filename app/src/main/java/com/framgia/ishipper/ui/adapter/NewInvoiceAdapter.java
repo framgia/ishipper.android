@@ -59,11 +59,17 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
             super(view);
             ButterKnife.bind(this, view);
             mBtnReceiveInvoice.setVisibility(View.VISIBLE);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onInvoiceItemClick(mInvoiceList.get(getAdapterPosition()));
+                }
+            });
         }
 
         @OnClick(R.id.btn_item_order_register_order)
         void receiveInvoice() {
-            mCallback.onInvoiceItemClick(mInvoiceList.get(getAdapterPosition()));
+            mCallback.onInvoiceReceiveItemClick(mInvoiceList.get(getAdapterPosition()));
         }
 
         void bindData(Invoice invoice) {
@@ -77,6 +83,7 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
     }
 
     public interface OnItemClickListener {
+        void onInvoiceReceiveItemClick(Invoice invoice);
         void onInvoiceItemClick(Invoice invoice);
     }
 }

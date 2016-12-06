@@ -52,9 +52,14 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mContext = getContext();
         mPresenter = new FavoriteListPresenter(mContext, this);
         mPresenter.getFavoriteList(mCurrentUser);
     }
@@ -86,7 +91,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
                 mPresenter.startSearchUserActivity();
                 return true;
             case R.id.menu_delete_all:
-                if (mFavoriteList == null ||  mFavoriteList.size() == 0) return false;
+                if (mFavoriteList == null || mFavoriteList.size() == 0) return false;
                 showConfirmDialog();
                 return true;
             default:
