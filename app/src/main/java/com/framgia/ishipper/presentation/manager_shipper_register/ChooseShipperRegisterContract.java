@@ -1,5 +1,6 @@
 package com.framgia.ishipper.presentation.manager_shipper_register;
 import android.content.Context;
+import android.content.Intent;
 import com.framgia.ishipper.model.User;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface ChooseShipperRegisterContract {
 
         void addListShipper(List<User> userList);
 
+        void addUser(User user);
     }
 
     interface Presenter {
@@ -24,6 +26,9 @@ public interface ChooseShipperRegisterContract {
         void startMainActivity();
 
         void actionAcceptShipper(User shipper, int invoiceId);
+
+        void addShipper(Intent intent);
+
     }
 
 }

@@ -19,6 +19,7 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
 import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
+import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 
@@ -50,7 +51,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new InvoiceManagerPresenter(mActivity, this);
+        mPresenter = new InvoiceManagerPresenter(this, mActivity, this);
     }
 
     @Override
@@ -167,8 +168,13 @@ public class InvoiceManagerFragment extends BaseFragment implements
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (data == null) return;
-            int invoiceId = data.getIntExtra(Const.KEY_INVOICE_ID, - 1);
-            if (invoiceId == - 1) return;
+            int invoiceId;
+            try {
+                invoiceId = Integer.parseInt(data.getStringExtra(Const.KEY_INVOICE_ID));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return;
+            }
             switch (requestCode) {
                 case Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER:
                     notifyChangeTab(Invoice.STATUS_CODE_INIT);

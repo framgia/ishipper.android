@@ -1,4 +1,5 @@
 package com.framgia.ishipper.presentation.manager_shipper_register;
+import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 import com.framgia.ishipper.R;
@@ -11,6 +12,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListShipperData;
 import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.util.Const;
+import com.google.gson.Gson;
 
 /**
  * Created by vuduychuong1994 on 11/24/16.
@@ -82,8 +84,8 @@ public class ChooseShipperRegisterPresenter implements ChooseShipperRegisterCont
                         Toast.makeText(mActivity,
                                        R.string.accept_shipper_success, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
-                        intent.putExtra(Const.KEY_INVOICE_ID, invoiceId);
-                        mActivity.setResult(mActivity.RESULT_OK, intent);
+                        intent.putExtra(Const.KEY_INVOICE_ID, String.valueOf(invoiceId));
+                        mActivity.setResult(Activity.RESULT_OK, intent);
                         mActivity.onBackPressed();
                     }
 
@@ -94,5 +96,13 @@ public class ChooseShipperRegisterPresenter implements ChooseShipperRegisterCont
                                        Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public void addShipper(Intent intent) {
+        if (intent == null) return;
+        String userStr = intent.getStringExtra(Const.KEY_USER);
+        User user = new Gson().fromJson(userStr, User.class);
+        mView.addUser(user);
     }
 }
