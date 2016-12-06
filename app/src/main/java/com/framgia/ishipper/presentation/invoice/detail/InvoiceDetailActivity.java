@@ -277,7 +277,22 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     @Override
     public void showActionButton(int statusCode) {
         mBtnDetailCancelOrder.setVisibility(View.VISIBLE);
-        if (mCurrentUser.getRole().equals(User.ROLE_SHIPPER)) {
+        if (mCurrentUser.isShop()) {
+            switch (statusCode) {
+                case Invoice.STATUS_CODE_SHIPPED:
+                    mBtnFinishedOrder.setVisibility(View.VISIBLE);
+                    break;
+                case Invoice.STATUS_CODE_FINISHED:
+                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    break;
+                case Invoice.STATUS_CODE_CANCEL:
+//                    mBtnReportUser.setVisibility(View.VISIBLE);
+                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    break;
+                default:
+                    break;
+            }
+        } else {
             switch (statusCode) {
                 case Invoice.STATUS_CODE_INIT:
                     if (!mInvoice.isReceived()) {
@@ -294,21 +309,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                     break;
                 case Invoice.STATUS_CODE_SHIPPED:
                     mBtnDetailCancelOrder.setVisibility(View.GONE);
-                    break;
-                case Invoice.STATUS_CODE_FINISHED:
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
-                    break;
-                case Invoice.STATUS_CODE_CANCEL:
-//                    mBtnReportUser.setVisibility(View.VISIBLE);
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            switch (statusCode) {
-                case Invoice.STATUS_CODE_SHIPPED:
-                    mBtnFinishedOrder.setVisibility(View.VISIBLE);
                     break;
                 case Invoice.STATUS_CODE_FINISHED:
                     mBtnDetailCancelOrder.setVisibility(View.GONE);

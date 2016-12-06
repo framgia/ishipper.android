@@ -491,8 +491,9 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     @Override
     public void updateMapAfterDrawRoute(LatLng startAddress, LatLng finishAddress) {
         Point mapSize = getConfigSizeMap();
-        LatLng configLatLng = CommonUtils.configLatLng(startAddress, finishAddress);
-        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, configLatLng);
+//        LatLng configLatLng = CommonUtils.configLatLng(startAddress, finishAddress);
+//        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, configLatLng);
+        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, startAddress, finishAddress);
     }
 
 
@@ -591,8 +592,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     }
 
     @Override
-    public void onInvoiceItemClick(Invoice invoice) {
+    public void onInvoiceReceiveItemClick(Invoice invoice) {
         showReceiveDialog(invoice.getStringId());
+    }
+
+    @Override
+    public void onInvoiceItemClick(Invoice invoice) {
+        mPresenter.showInvoiceDetail(invoice);
     }
 
     /**
@@ -630,10 +636,10 @@ public class NearbyInvoiceFragment extends BaseFragment implements
             case R.id.btnViewChange:
                 if (mSwitcherLayout.getCurrentView() == mRecyclerListInvoice) {
                     mSwitcherLayout.showNext();
-                    mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_map);
+                    mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_list);
                 } else {
                     mSwitcherLayout.showPrevious();
-                    mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_list);
+                    mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_map);
                 }
                 break;
             case R.id.btn_item_order_show_path:

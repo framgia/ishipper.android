@@ -31,11 +31,10 @@ public class RegisterPresenter implements RegisterContract.Presenter {
 
     @Override
     public void requestRegister(EditText edtPlateNumber, EditText edtPhoneNumber,
-                               EditText edtNameRegister, EditText edtPasswordRegister,
-                               EditText edtPasswordConfirm, String prefixPhoneNumber) {
+                                EditText edtNameRegister, EditText edtPasswordRegister,
+                                EditText edtPasswordConfirm, String prefixPhoneNumber) {
         final User currentUser = Config.getInstance().getUserInfo(mActivity.getBaseContext());
-        if (currentUser.getRole().equals(User.ROLE_SHIPPER)
-                && !InputValidate.notEmpty(edtPlateNumber, mActivity)) {
+        if (!currentUser.isShop() && !InputValidate.notEmpty(edtPlateNumber, mActivity)) {
             return;
         }
 
