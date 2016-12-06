@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.util.InputValidate;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,8 +44,14 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
 
     @OnClick(R.id.btnDone)
     public void onClick() {
-        mPresenter.requestRegister(mEdtPlateNumber, mEdtPhoneNumber, mEdtNameRegister,
-                mEdtPasswordRegister, mEdtPasswordConfirm, mPrefixPhoneNumber);
+        clearError();
+        mPresenter.requestRegister(mCurrentUser,
+                                   mEdtPlateNumber.getText().toString(),
+                                   mEdtPhoneNumber.getText().toString(),
+                                   mEdtNameRegister.getText().toString(),
+                                   mEdtPasswordRegister.getText().toString(),
+                                   mEdtPasswordConfirm.getText().toString(),
+                                   mPrefixPhoneNumber);
     }
 
     @Override
@@ -98,5 +105,43 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
                 mPrefixPhoneNumber = "";
             }
         });
+    }
+
+    @Override
+    public boolean validatePlateNumber(String plateNumber) {
+        if (mCurrentUser.isShop() ||
+            (!mCurrentUser.isShop() && InputValidate.notEmpty(mEdtPlateNumber, this))) return true;
+        mEdtPlateNumber.setError(getString(R.string.error_empty_string));
+        return false;
+    }
+
+    @Override
+    public boolean validatePhoneNumber(String phoneNumber) {
+        if (InputValidate.notEmpty(mEdtPhoneNumber, this)) return true;
+        mEdtPhoneNumber.setError(getString(R.string.error_empty_string));
+        return false;
+    }
+
+    @Override
+    public boolean validateName(String name) {
+        if (InputValidate.notEmpty(mEdtNameRegister, this)) return true;
+        mEdtNameRegister.setError(getString(R.string.error_empty_string));
+        return false;
+    }
+
+    @Override
+    public boolean validatePassword(String password, String confirmPassword) {
+        if (InputValidate.confirmPassword(mEdtPasswordRegister, mEdtPasswordConfirm, this)) return true;
+        mEdtPasswordConfirm.setError(getString(R.string.error_password_match));
+        return false;
+    }
+
+    @Override
+    public void clearError() {
+        mEdtPhoneNumber.setError(null);
+        mEdtPasswordConfirm.setError(null);
+        mEdtPasswordConfirm.setError(null);
+        mEdtNameRegister.setError(null);
+        mEdtPlateNumber.setError(null);
     }
 }

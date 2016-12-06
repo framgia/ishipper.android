@@ -202,13 +202,12 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                 new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
-                        Toast.makeText(MainActivity.this, response.getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        //TODO: on logout success
                     }
 
                     @Override
                     public void onFailure(int code, String message) {
-                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                        //TODO: on logout failed
                     }
                 });
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
