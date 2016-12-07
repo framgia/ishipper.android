@@ -65,7 +65,8 @@ public class MainContentFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.REQUEST_CHECK_SETTINGS || requestCode == Const.REQUEST_SETTING) {
+        if (requestCode == Const.RequestCode.REQUEST_CHECK_SETTINGS ||
+            requestCode == Const.REQUEST_SETTING) {
             ((MainTabAdapter) mViewPager.getAdapter())
                     .getFragment(mViewPager.getCurrentItem())
                     .onActivityResult(requestCode, resultCode, data);

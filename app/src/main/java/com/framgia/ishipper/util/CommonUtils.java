@@ -77,7 +77,8 @@ public class CommonUtils {
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
-                            status.startResolutionForResult(activity, Const.REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(activity,
+                                                            Const.RequestCode.REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                         }

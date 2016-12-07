@@ -158,7 +158,7 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
                     showUserMessage(status.getStatusMessage());
                     break;
             }
-        } else if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+        } else if (requestCode == Const.RequestCode.REQUEST_CHECK_SETTINGS) {
             //            location setting is set up
             if (resultCode == Activity.RESULT_OK) {
                 mMapFragment.getMapAsync(NearbyShipperFragment.this);

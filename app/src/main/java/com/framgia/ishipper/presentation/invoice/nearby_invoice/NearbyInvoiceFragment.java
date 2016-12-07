@@ -240,7 +240,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                         break;
                 }
                 break;
-            case Const.REQUEST_CHECK_SETTINGS:
+            case Const.RequestCode.REQUEST_CHECK_SETTINGS:
                 // location setting is set up
                 if (resultCode == Activity.RESULT_OK) {
                     mMapFragment.getMapAsync(NearbyInvoiceFragment.this);

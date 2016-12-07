@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
+import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -22,10 +23,13 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
     private static final String TAG = FavoriteListPresenter.class.getName();
 
     private Context mContext;
+    private BaseFragment mFragment;
     FavoriteListContract.View mFavoriteListView;
 
-    public FavoriteListPresenter(Context context, FavoriteListContract.View favoriteListView) {
+    public FavoriteListPresenter(Context context, BaseFragment fragment,
+                                 FavoriteListContract.View favoriteListView) {
         mContext = context;
+        mFragment = fragment;
         mFavoriteListView = favoriteListView;
     }
 
@@ -95,10 +99,7 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
 
     @Override
     public void startSearchUserActivity() {
-        if (mContext instanceof BaseActivity) {
-            ((BaseActivity) mContext).startActivityForResult(
-                    new Intent(mContext, SearchUserActivity.class),
-                    Const.RequestCode.REQUEST_SEARCH_FAVORITE);
-        }
+        mFragment.startActivityForResult(new Intent(mContext, SearchUserActivity.class),
+                                         Const.RequestCode.REQUEST_SEARCH_FAVORITE);
     }
 }

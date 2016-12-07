@@ -275,7 +275,7 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) return;
-        if (requestCode == Const.REQUEST_CHECK_SETTINGS) {
+        if (requestCode == Const.RequestCode.REQUEST_CHECK_SETTINGS) {
             getSupportFragmentManager()
                     .findFragmentByTag(MainContentFragment.class.getName())
                     .onActivityResult(requestCode, resultCode, data);
