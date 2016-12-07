@@ -5,7 +5,6 @@ package com.framgia.ishipper.util;
  */
 public class Const {
     public static final String KEY_USER = "user";
-    public static final int REQUEST_CHECK_SETTINGS = 2;
     public static final int REQUEST_SETTING = 3;
     public static final long TIME_DELAY_EXIT = 2000;
     public static final int MIN_PASSWORD_LENGTH = 6;
@@ -51,8 +50,9 @@ public class Const {
         public static final int REQUEST_SEARCH_BLACKLIST = 1;
         public static final int REQUEST_SEARCH_FAVORITE = 2;
         public static final int REQUEST_CODE_CHOOSE_SHIPPER = 3;
-        public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-        public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+        public static final int LOCATION_PERMISSION_REQUEST_CODE = 4;
+        public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 5;
+        public static final int REQUEST_CHECK_SETTINGS = 6;
     }
 
     public class ErrorMessage {

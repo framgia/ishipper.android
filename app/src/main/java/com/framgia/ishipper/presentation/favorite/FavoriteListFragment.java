@@ -60,7 +60,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new FavoriteListPresenter(mContext, this);
+        mPresenter = new FavoriteListPresenter(mContext, this, this);
         mPresenter.getFavoriteList(mCurrentUser);
     }
 
@@ -102,6 +102,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Const.RequestCode.REQUEST_SEARCH_FAVORITE) {
                 final User user = data.getParcelableExtra(Const.KEY_USER);
