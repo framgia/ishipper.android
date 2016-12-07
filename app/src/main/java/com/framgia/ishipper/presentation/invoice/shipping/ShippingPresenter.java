@@ -76,7 +76,7 @@ public class ShippingPresenter implements ShippingContract.Presenter {
     public void showInvoiceDetailActivity(int id) {
         Intent intent = new Intent(mContext, InvoiceDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(Const.KEY_INVOICE_ID, id);
+        bundle.putString(Const.KEY_INVOICE_ID, String.valueOf(id));
         intent.putExtras(bundle);
         mFragment.startActivity(intent);
     }

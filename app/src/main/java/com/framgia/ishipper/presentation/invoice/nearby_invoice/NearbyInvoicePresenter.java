@@ -162,7 +162,7 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
     public void showInvoiceDetail(Invoice invoice) {
         Intent intent = new Intent(mContext, InvoiceDetailActivity.class);
         Bundle extras = new Bundle();
-        extras.putInt(Const.KEY_INVOICE_ID, invoice.getId());
+        extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);
         mFragment.getActivity().startActivity(intent);
     }

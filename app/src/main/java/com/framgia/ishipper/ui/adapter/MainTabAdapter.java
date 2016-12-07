@@ -85,7 +85,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
     @Override
     public void onClickAction(Invoice invoice) {
         Intent intent = new Intent(mContext, ChooseShipperRegisterActivity.class);
-        intent.putExtra(Const.KEY_INVOICE_ID, invoice.getId());
+        intent.putExtra(Const.KEY_INVOICE_ID, invoice.getStringId());
         mContext.startActivity(intent);
     }
 
@@ -112,7 +112,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
     public void onClickView(Invoice invoice) {
         Intent intent = new Intent(mContext, InvoiceDetailActivity.class);
         Bundle extras = new Bundle();
-        extras.putInt(Const.KEY_INVOICE_ID, invoice.getId());
+        extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);
         mContext.startActivity(intent);
     }

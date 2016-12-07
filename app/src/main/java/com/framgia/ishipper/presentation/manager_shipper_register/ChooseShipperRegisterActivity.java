@@ -1,5 +1,9 @@
 package com.framgia.ishipper.presentation.manager_shipper_register;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,12 +40,20 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
     private List<User> mShipperList;
     private User mCurrentUser;
     private ChooseShipperRegisterContract.Presenter mPresenter;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (mPresenter != null) {
+                mPresenter.addShipper(intent);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
-
+        registerReceiver(mReceiver, new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
     }
 
     @Override
@@ -60,13 +72,27 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
         mPresenter = new ChooseShipperRegisterPresenter(this, this);
         if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
-            mInvoiceId = Integer.valueOf(getIntent().getExtras()
-                    .getString(Const.FirebaseData.INVOICE_ID));
-            String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTIFICATION_ID);
+            try {
+                mInvoiceId = Integer.parseInt(getIntent()
+                      .getExtras()
+                      .getString(Const.FirebaseData.INVOICE_ID,
+                                 String.valueOf(Const.INVOICE_ID_DEFAULT)));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            String notiId = getIntent()
+                    .getExtras()
+                    .getString(Const.FirebaseData.NOTIFICATION_ID,
+                               String.valueOf(Const.INVOICE_ID_DEFAULT));
             mPresenter.updateNotificationStatus(mCurrentUser, notiId);
         } else {
             // Implicit Intent
-            mInvoiceId = getIntent().getIntExtra(Const.KEY_INVOICE_ID, -1);
+            try {
+                mInvoiceId = Integer.parseInt(getIntent().getStringExtra(Const.KEY_INVOICE_ID));
+            } catch (NumberFormatException e) {
+                mInvoiceId = Const.INVOICE_ID_DEFAULT;
+                e.printStackTrace();
+            }
         }
         mShipperList = new ArrayList<>();
         mShipperRegAdapter = new ShipperRegAdapter(this, mShipperList);
@@ -85,6 +111,12 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
     }
 
     @Override
+    public void addUser(User user) {
+        mShipperList.add(user);
+        mShipperRegAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public boolean onNavigateUp() {
         onBackPressed();
         return super.onNavigateUp();
@@ -93,9 +125,15 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (CommonUtils.isOpenFromNoti(this)) {
+        if (isTaskRoot()) {
             mPresenter.startMainActivity();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) unregisterReceiver(mReceiver);
     }
 
     @Override
