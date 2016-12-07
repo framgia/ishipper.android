@@ -47,6 +47,8 @@ public class APIDefinition {
         public static final String PARAM_PLATE_NUMBER = "user[plate_number]";
         public static final String PARAM_ADDRESS = "user[address]";
         public static final String PARAM_NOTIFICATION = "user[receive_notification]";
+        public static final String PARAM_LATITUDE = "user[latitude]";
+        public static final String PARAM_LONGITUDE = "user[longitude]";
     }
 
     public static class ForgotPassword {

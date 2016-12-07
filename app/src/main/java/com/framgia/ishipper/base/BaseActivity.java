@@ -16,6 +16,7 @@ import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
+import com.neovisionaries.ws.client.WebSocketFrame;
 
 import java.io.IOException;
 
@@ -113,6 +114,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                         if (mCallback != null) {
                             mCallback.onCallback(websocket, text);
                         }
+                    }
+
+                    @Override
+                    public void onDisconnected(
+                            WebSocket websocket, WebSocketFrame serverCloseFrame,
+                            WebSocketFrame clientCloseFrame, boolean closedByServer)
+                            throws Exception {
+                        super.onDisconnected(websocket, serverCloseFrame, clientCloseFrame,
+                                             closedByServer);
+                        if (closedByServer) {
+                            com.framgia.ishipper.common.Log.d(TAG, "socket disconnected by server");
+                        } else {
+                            com.framgia.ishipper.common.Log.d(TAG, "socket disconnected by client");
+                        }
+                        if (mWebSocket != null) mWebSocket.connect();
                     }
                 });
             } catch (IOException | WebSocketException e) {
