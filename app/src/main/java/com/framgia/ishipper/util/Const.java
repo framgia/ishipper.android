@@ -42,6 +42,9 @@ public class Const {
     public static final String KEY_INVOICE = "invoice";
     public static final int POSITION_HIGHLIGHT_DEFAULT = -1;
 
+    public static final long AUTO_COMPLETE_PLACE_RADIUS = 2000;
+    public static final String AUTO_COMPLETE_PLACE_LANGUAGE_CODE = "vi";
+
     public class RequestCode {
 
         public static final int REQUEST_SEARCH_BLACKLIST = 1;

@@ -11,6 +11,7 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.CreateInVoiceData;
 import com.framgia.ishipper.presentation.route.RouteActivity;
+import com.framgia.ishipper.util.Const;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,7 +88,9 @@ public class ShopCreateOrderStep3Presenter implements ShopCreateOrderStep3Contra
     }
 
     @Override
-    public void startRouteActivity() {
-        mFragment.startActivity(new Intent(mContext, RouteActivity.class));
+    public void startRouteActivity(Invoice invoice) {
+        Intent showPathIntent = new Intent(mContext, RouteActivity.class);
+        showPathIntent.putExtra(Const.KeyIntent.KEY_INVOICE, invoice);
+        mFragment.startActivity(showPathIntent);
     }
 }

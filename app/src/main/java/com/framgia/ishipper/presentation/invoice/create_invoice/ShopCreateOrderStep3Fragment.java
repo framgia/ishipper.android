@@ -41,6 +41,7 @@ public class ShopCreateOrderStep3Fragment extends BaseFragment implements ShopCr
     @BindView(R.id.tv_detail_customer_phone) TextView mTvDetailCustomerPhone;
     @BindView(R.id.btn_detail_cancel_order) LinearLayout mBtnDetailCancelOrder;
     @BindView(R.id.layoutInvoiceStatus) CardView mLayoutInvoiceStatus;
+    @BindView(R.id.layoutHistoryInvoice) View mLayoutHistoryInvoice;
 
     private Context mContext;
     private ShopCreateOrderStep3Presenter mPresenter;
@@ -63,6 +64,7 @@ public class ShopCreateOrderStep3Fragment extends BaseFragment implements ShopCr
         mToolbar.setVisibility(View.GONE);
         mBtnCreateOrder.setText(R.string.create_order);
         mBtnCreateOrder.setVisibility(View.VISIBLE);
+        mLayoutHistoryInvoice.setVisibility(View.GONE);
         mTvDetailDistance.setText(TextFormatUtils.formatDistance(sInvoice.getDistance()));
         mTvDetailStart.setText(sInvoice.getAddressStart());
         mTvDetailEnd.setText(sInvoice.getAddressFinish());
@@ -84,7 +86,7 @@ public class ShopCreateOrderStep3Fragment extends BaseFragment implements ShopCr
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_detail_show_path:
-                mPresenter.startRouteActivity();
+                mPresenter.startRouteActivity(sInvoice);
                 break;
             case R.id.btn_detail_shop_call:
                 break;
