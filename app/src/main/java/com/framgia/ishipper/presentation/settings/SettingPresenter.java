@@ -7,10 +7,12 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.model.UserSetting;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.net.data.UserSettingData;
 import com.framgia.ishipper.presentation.block.BlackListActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
@@ -43,7 +45,8 @@ class SettingPresenter implements SettingContact.Presenter {
 
 
     @Override
-    public void saveSetting(final boolean receiveNotification, final boolean favoriteLocation, final int invoiceRadius, final Place mPlace) {
+    public void saveSetting(final boolean receiveNotification, final boolean favoriteLocation,
+                            final int invoiceRadius, final Place mPlace) {
         if (mCurrentUser != null) {
             HashMap<String, String> params = new HashMap<>();
             params.put(APIDefinition.UserSetting.PARAM_USER_ID, mCurrentUser.getId());
@@ -56,17 +59,20 @@ class SettingPresenter implements SettingContact.Presenter {
                 params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
                 params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
             }
+            mActivity.showDialog();
             params.put(APIDefinition.UserSetting.PARAM_RADIUS, String.valueOf(invoiceRadius));
             API.updateUserSetting(mCurrentUser.getAuthenticationToken(),
                     params,
                     new API.APICallback<APIResponse<EmptyData>>() {
                         @Override
                         public void onResponse(APIResponse<EmptyData> response) {
+                            mActivity.dismissDialog();
                             saveSettingLocal(receiveNotification, favoriteLocation, invoiceRadius, mPlace);
                         }
 
                         @Override
                         public void onFailure(int code, String message) {
+                            mActivity.dismissDialog();
                             mActivity.showUserMessage(message);
                         }
                     });
@@ -117,6 +123,28 @@ class SettingPresenter implements SettingContact.Presenter {
     @Override
     public void getSetting() {
         //TODO get setting from server
+        mActivity.showDialog();
+        API.getUserSetting(mCurrentUser.getAuthenticationToken(),
+                new API.APICallback<APIResponse<UserSettingData>>() {
+                    @Override
+                    public void onResponse(APIResponse<UserSettingData> response) {
+                        mActivity.dismissDialog();
+                        UserSetting data = response.getData().userSetting;
+                        mView.activeNotification(data.isReceiveNotification());
+                        mView.setRadiusDisplay(data.getRadiusDisplay());
+                        if (data.isFavoriteLocation()) {
+                            mView.setPlace(data.getAddress());
+                        } else {
+                            mView.setFavoriteCheckbox(false);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        mActivity.dismissDialog();
+                        mActivity.showUserMessage(message);
+                    }
+                });
     }
 
     @Override

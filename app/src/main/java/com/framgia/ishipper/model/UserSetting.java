@@ -12,7 +12,7 @@ public class UserSetting {
     @SerializedName("favorite_address") private String mAddress;
     @SerializedName("favorite_latitude") private String mLatitude;
     @SerializedName("favorite_longitude") private String mLongitude;
-    @SerializedName("radius_display") private String mRadiusDisplay;
+    @SerializedName("radius_display") private int mRadiusDisplay;
 
 
     public String getId() {
@@ -63,11 +63,11 @@ public class UserSetting {
         mLongitude = longitude;
     }
 
-    public String getRadiusDisplay() {
+    public int getRadiusDisplay() {
         return mRadiusDisplay;
     }
 
-    public void setRadiusDisplay(String radiusDisplay) {
+    public void setRadiusDisplay(int radiusDisplay) {
         mRadiusDisplay = radiusDisplay;
     }
 }
