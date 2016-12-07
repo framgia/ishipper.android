@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import android.widget.TimePicker;
 
 import com.framgia.ishipper.base.BaseFragment;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
+import com.framgia.ishipper.util.NumberFormatTextWatcher;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -53,12 +55,13 @@ public class ShopCreateOrderStep2Presenter implements ShopCreateOrderStep2Contra
                             String time, String customerName, String customerPhone, String note) {
         ShopCreateOrderActivity.sInvoice.setName(name);
         ShopCreateOrderActivity.sInvoice.setWeight(Float.valueOf(weight));
-        ShopCreateOrderActivity.sInvoice.setPrice(Double.valueOf(orderPrice));
-        ShopCreateOrderActivity.sInvoice.setShippingPrice(Double.valueOf(shipPrice));
+        ShopCreateOrderActivity.sInvoice.setPrice(NumberFormatTextWatcher.getValueFromText(orderPrice));
+        ShopCreateOrderActivity.sInvoice.setShippingPrice(NumberFormatTextWatcher.getValueFromText(shipPrice));
         ShopCreateOrderActivity.sInvoice.setDeliveryTime(time);
         ShopCreateOrderActivity.sInvoice.setCustomerName(customerName);
         ShopCreateOrderActivity.sInvoice.setCustomerNumber(customerPhone);
         ShopCreateOrderActivity.sInvoice.setDescription(note);
+        ShopCreateOrderActivity.sInvoice.setStatus(Invoice.STATUS_INIT);
 
         if (mFragment.getActivity() instanceof ShopCreateOrderActivity) {
             ((ShopCreateOrderActivity) mFragment.getActivity())

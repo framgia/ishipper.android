@@ -74,7 +74,7 @@ public class ShopCreateOrderStep2Fragment extends BaseFragment
                         mEdtCustomerName.getText().toString(),
                         mEdtCustomerPhone.getText().toString(),
                         mEdtNote.getText().toString()
-                        );
+                );
                 break;
             case R.id.rb_today_select:
                 mPresenter.pickTime(getString(today));
@@ -117,21 +117,25 @@ public class ShopCreateOrderStep2Fragment extends BaseFragment
 
     @Override
     public void validateNameFailure() {
+        showUserMessage(R.string.create_step_2_require_customer_name);
         mEdtCustomerName.requestFocus();
     }
 
     @Override
     public void validateWeightFailure() {
+        showUserMessage(R.string.create_step_2_require_weight);
         mEdtOrderWeight.requestFocus();
     }
 
     @Override
     public void validateOrderPriceFailure() {
+        showUserMessage(R.string.create_step_2_require_invoice_price);
         mEdtOrderPrice.requestFocus();
     }
 
     @Override
     public void validateShipPriceFailure() {
+        showUserMessage(R.string.create_step_2_require_ship_price);
         mEdtShipPrice.requestFocus();
     }
 

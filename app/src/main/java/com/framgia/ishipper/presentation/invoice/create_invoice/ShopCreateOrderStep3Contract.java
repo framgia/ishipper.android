@@ -13,6 +13,6 @@ public interface ShopCreateOrderStep3Contract {
 
     interface Presenter {
         void requestCreateInvoice(Invoice newInvoice);
-        void startRouteActivity();
+        void startRouteActivity(Invoice invoice);
     }
 }

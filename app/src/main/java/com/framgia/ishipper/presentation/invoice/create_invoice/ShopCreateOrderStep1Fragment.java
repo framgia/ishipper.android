@@ -41,6 +41,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 
+import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_LANGUAGE_CODE;
+import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_RADIUS;
+
 public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         ShopCreateOrderStep1Contract.View {
@@ -328,6 +331,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                     mDisableCameraChange = false;
                     return;
                 }
+
                 if (mStatus == NONE) return;
                 LatLng position = new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude);
                 if (mStatus == PICK_START_POINT) {
@@ -352,6 +356,12 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location != null) {
             MapUtils.zoomToPosition(mMap, new LatLng(location.getLatitude(), location.getLongitude()));
+            mEdtAddressStart.setCurrentLocation(location);
+            mEdtAddressStart.setRadiusMeters(AUTO_COMPLETE_PLACE_RADIUS);
+            mEdtAddressStart.setLanguageCode(AUTO_COMPLETE_PLACE_LANGUAGE_CODE);
+            mEdtAddressEnd.setCurrentLocation(location);
+            mEdtAddressEnd.setRadiusMeters(AUTO_COMPLETE_PLACE_RADIUS);
+            mEdtAddressEnd.setLanguageCode(AUTO_COMPLETE_PLACE_LANGUAGE_CODE);
             mPresenter.saveLatLngStart(new LatLng(location.getLatitude(), location.getLongitude()));
             pickStartLocation();
         } else {
