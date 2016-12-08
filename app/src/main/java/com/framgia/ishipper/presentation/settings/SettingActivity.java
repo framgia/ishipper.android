@@ -14,10 +14,7 @@ import android.widget.TextView;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
-import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.util.Const;
-import com.framgia.ishipper.util.Const.Storage;
-import com.framgia.ishipper.util.StorageUtils;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
@@ -39,6 +36,7 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
     @BindView(R.id.layout_blacklist) LinearLayout mLayoutBlacklist;
     @BindView(R.id.tvFavoriteContent) TextView mTvFavoriteContent;
     @BindView(R.id.cbFavoriteLocation) CheckBox mCbFavoriteLocation;
+    @BindView(R.id.layout_favorite_location) View layoutFavoriteLocation;
 
     private int mInvoiceRadius;
     private boolean mFavoriteLocationEnable;
@@ -48,24 +46,12 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new SettingPresenter(this, this);
     }
 
     @Override
     public void initViews() {
-        User currentUser = Config.getInstance().getUserInfo(this);
-        mInvoiceRadius = StorageUtils.getIntValue(this, Storage.KEY_SETTING_INVOICE_RADIUS,
-                Const.SETTING_INVOICE_RADIUS_DEFAULT);
-        mCbReceiveNotification.setChecked(currentUser.getNotification() == Const.Notification.ON);
-        seekbarInvoiceRadius.setProgress(mInvoiceRadius - 1);
-        tvInvoiceRadius.setText(
-                getString(R.string.fragment_setting_invoice_radius, mInvoiceRadius));
+        mPresenter = new SettingPresenter(this, this);
 
-        // settingInvoiceRadiusSeekBar
-        if (Config.getInstance().getUserInfo(getApplicationContext()).isShop()) {
-            layoutInvoiceRadius.setVisibility(View.GONE);
-            return;
-        }
         seekbarInvoiceRadius.setMax(Const.SETTING_MAX_INVOICE_RADIUS);
         seekbarInvoiceRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -85,9 +71,13 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
             }
         });
 
-        // Favorite Location
-        //TODO fetch data from server
-        setFavoriteCheckbox(mFavoriteLocationEnable);
+        mPresenter.getSetting();
+
+        // settingInvoiceRadiusSeekBar
+        if (Config.getInstance().isShop(this)) {
+            layoutInvoiceRadius.setVisibility(View.GONE);
+            layoutFavoriteLocation.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -118,8 +108,8 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
                 onBackPressed();
                 return true;
             case R.id.action_save:
-                mPresenter.saveSetting(mCbReceiveNotification.isChecked(), mCbFavoriteLocation.isChecked(),
-                        mInvoiceRadius, mPlace);
+                mPresenter.saveSetting(mCbReceiveNotification.isChecked(),
+                        mCbFavoriteLocation.isChecked(), mInvoiceRadius, mPlace);
                 return true;
             default:
                 return false;
@@ -145,7 +135,7 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
                 mPresenter.startBlacklistActivity();
                 break;
             case R.id.ll_setting_notification:
-                mCbReceiveNotification.setChecked(! mCbReceiveNotification.isChecked());
+                mCbReceiveNotification.setChecked(!mCbReceiveNotification.isChecked());
                 break;
             case R.id.layout_favorite_location:
                 mPresenter.pickFavoriteLocation(PLACE_AUTOCOMPLETE_REQUEST_CODE);
@@ -158,7 +148,6 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
         if (!isChecked) {
             setFavoriteCheckbox(false);
             // TODO Request disable favorite location
-
         }
     }
 
@@ -180,6 +169,7 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
     public void setFavoriteCheckbox(boolean isEnable) {
         mCbFavoriteLocation.setChecked(isEnable);
         mCbFavoriteLocation.setEnabled(isEnable);
+        mCbFavoriteLocation.setClickable(isEnable);
         if (!isEnable) {
             mTvFavoriteContent.setText(R.string.setting_favorite_location_content);
         }
@@ -189,5 +179,16 @@ public class SettingActivity extends BaseToolbarActivity implements SettingConta
     public void setPlace(String name) {
         mTvFavoriteContent.setText(name);
         setFavoriteCheckbox(true);
+    }
+
+    @Override
+    public void activeNotification(boolean receiveNotification) {
+        mCbReceiveNotification.setChecked(receiveNotification);
+    }
+
+    @Override
+    public void setRadiusDisplay(int radiusDisplay) {
+        mInvoiceRadius = radiusDisplay;
+        seekbarInvoiceRadius.setProgress(radiusDisplay - 1);
     }
 }

@@ -13,6 +13,10 @@ class SettingContact {
         void setFavoriteCheckbox(boolean isEnable);
 
         void setPlace(String name);
+
+        void activeNotification(boolean receiveNotification);
+
+        void setRadiusDisplay(int radiusDisplay);
     }
 
     interface Presenter {
