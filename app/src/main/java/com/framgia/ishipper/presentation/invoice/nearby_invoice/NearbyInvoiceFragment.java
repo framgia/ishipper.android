@@ -532,6 +532,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                removeRoute();
                 int invoiceId = invoice.getId();
                 for (Invoice item : mInvoices) {
                     if (item.getId() == invoiceId) {
@@ -539,7 +540,6 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                         break;
                     }
                 }
-
                 for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
                     final Marker key = entry.getKey();
                     Invoice value = entry.getValue();
@@ -570,9 +570,6 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                 Const.Storage.KEY_SETTING_INVOICE_RADIUS,
                 Const.SETTING_INVOICE_RADIUS_DEFAULT
         );
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).setOnInvoiceUpdate(this);
-        }
         mMapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_nearby_order);
         if (mGoogleApiClient == null) {

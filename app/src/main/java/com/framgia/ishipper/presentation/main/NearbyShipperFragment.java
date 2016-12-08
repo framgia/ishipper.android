@@ -16,7 +16,9 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
+import com.framgia.ishipper.ui.listener.OnShipperUpdateListener;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
@@ -39,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,12 +52,13 @@ import butterknife.OnClick;
  */
 public class NearbyShipperFragment extends BaseFragment implements NearbyShipperContract.View,
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, OnShipperUpdateListener {
     private static final String TAG = "NearbyShipperFragment";
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mGoogleMap;
     private ArrayList<User> shipperList = new ArrayList<>();
+    private HashMap<Integer, Marker> mUserMap = new HashMap<>();
     private SupportMapFragment mMapFragment;
     private User mCurrentUser;
     private Context mContext;
@@ -83,6 +87,9 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     public void initViews() {
         mPresenter = new NearbyShipperPresenter(this, this);
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).setShipperUpdateListener(this);
+        }
     }
 
     @Override
@@ -221,6 +228,7 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
         MapUtils.zoomToPosition(mGoogleMap,
                 new LatLng(location.getLatitude(), location.getLongitude()));
         mPresenter.requestShipperNearby(new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()));
+        mPresenter.updateCurrentLocation(mCurrentUser);
         configGoogleMap();
     }
 
@@ -265,14 +273,43 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     public void onGetShipperNearbyComplete(List<User> users) {
         mGoogleMap.clear();
         for (User user : users) {
-            LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
-            mGoogleMap.addMarker(new MarkerOptions().position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
+            mPresenter.addShipper(user, shipperList, mUserMap);
         }
     }
 
     @Override
     public void onAddressChange(String string) {
         mTvSearchArea.setText(string);
+    }
+
+
+    @Override
+    public Marker addMark(LatLng latLng) {
+        return mGoogleMap.addMarker(new MarkerOptions()
+                   .position(latLng)
+                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
+    }
+
+
+    @Override
+    public void onShipperOnline(final User user) {
+        if (user == null) return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.addShipper(user, shipperList, mUserMap);
+                }
+            });
+    }
+
+    @Override
+    public void onShipperOffline(final User user) {
+        if (user == null) return;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.removeShipper(user, shipperList, mUserMap);
+                }
+            });
     }
 }
