@@ -111,6 +111,7 @@ public class MainTabAdapter extends FragmentPagerAdapter
     @Override
     public void onClickView(Invoice invoice) {
         Intent intent = new Intent(mContext, InvoiceDetailActivity.class);
+
         Bundle extras = new Bundle();
         extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);

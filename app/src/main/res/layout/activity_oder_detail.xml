@@ -133,10 +133,10 @@
                         </LinearLayout>
 
                         <View
-                            android:layout_width="0.5dp"
+                            android:layout_width="@dimen/all_divider_width"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="15dp"
+                            android:layout_marginLeft="@dimen/all_margin_medium"
+                            android:layout_marginRight="@dimen/all_margin_medium"
                             android:background="@color/menu_divider"/>
 
                         <LinearLayout
@@ -153,8 +153,8 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="4dp"
-                                    android:layout_marginRight="10dp"
+                                    android:layout_marginLeft="@dimen/activity_invoice_detail_icon_detail_from_margin_left"
+                                    android:layout_marginRight="@dimen/all_margin_medium"
                                     android:gravity="center"
                                     android:orientation="vertical">
 
@@ -162,6 +162,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:scaleType="fitCenter"
+                                        android:layout_marginTop="@dimen/all_margin_small"
                                         android:src="@drawable/ic_detail_from"/>
 
                                     <View
@@ -175,12 +176,12 @@
                                     android:id="@+id/tv_detail_start"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="13dp"
-                                    android:drawablePadding="15dp"
+                                    android:layout_marginBottom="@dimen/activity_invoice_detail_detail_margin_bottom"
+                                    android:drawablePadding="@dimen/activity_invoice_detail_start_padding"
                                     android:ellipsize="end"
-                                    android:singleLine="true"
+                                    android:lines="1"
                                     android:textColor="@color/fiveship_common_text"
-                                    android:textSize="14sp"/>
+                                    android:textSize="@dimen/text_size_content"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -194,15 +195,17 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:scaleType="fitCenter"
+                                    android:layout_marginTop="@dimen/_3dp"
                                     android:src="@drawable/ic_detail_to"/>
 
                                 <TextView
+                                    android:layout_gravity="center_vertical"
                                     android:id="@+id/tv_detail_end"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginLeft="@dimen/all_margin_medium"
                                     android:ellipsize="end"
-                                    android:singleLine="true"/>
+                                    android:lines="1"/>
 
                             </LinearLayout>
 
@@ -326,10 +329,11 @@
                     </RelativeLayout>
 
                     <LinearLayout
+                        android:id="@+id/layoutHistoryInvoice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/layoutHistoryInvoice"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tv_detail_history"
