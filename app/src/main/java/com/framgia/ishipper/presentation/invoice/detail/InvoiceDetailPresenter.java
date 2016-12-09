@@ -27,12 +27,13 @@ import com.framgia.ishipper.widget.dialog.CancelDialog;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.framgia.ishipper.util.Const.KEY_INVOICE_ID;
+
 /**
  * Created by HungNT on 11/28/16.
  */
 
 public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
-    public static final String KEY_INVOICE_ID = "invoice_id";
 
     private InvoiceDetailContact.View mView;
     private BaseToolbarActivity mActivity;
@@ -45,11 +46,11 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
     }
 
     @Override
-    public void getInvoiceDetail(int invoiceId) {
+    public void getInvoiceDetail(String invoiceId) {
         // get Invoice from invoice id
         API.getInvoiceDetail(
                 mCurrentUser.getRole(),
-                String.valueOf(invoiceId),
+                invoiceId,
                 mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override

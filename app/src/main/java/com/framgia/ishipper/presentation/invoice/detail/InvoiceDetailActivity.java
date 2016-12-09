@@ -26,6 +26,8 @@ import com.framgia.ishipper.widget.dialog.UserInfoDialogFragment;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.framgia.ishipper.util.Const.KEY_INVOICE_ID;
+
 public class InvoiceDetailActivity extends BaseToolbarActivity implements InvoiceDetailContact.View {
 
     public static final int REQUEST_INVOICE_ID = 1;
@@ -55,6 +57,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     @BindView(R.id.tv_shipping_order_status) TextView mTvOrderStatus;
+    @BindView(R.id.layoutHistoryInvoice) View mLayoutHistoryInvoice;
 
     private User mCurrentUser;
     private User mInvoiceUser;
@@ -172,15 +175,15 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         mCurrentUser = Config.getInstance().getUserInfo(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) return;
-        int invoiceId;
+        String invoiceId;
         if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
-            invoiceId = Integer.valueOf(bundle.getString(Const.FirebaseData.INVOICE_ID));
+            invoiceId = bundle.getString(Const.FirebaseData.INVOICE_ID);
             String notiId = getIntent().getExtras().getString(Const.FirebaseData.NOTIFICATION_ID);
             mPresenter.readNotification(notiId);
         } else {
             // Implicit Intent
-            invoiceId = getIntent().getIntExtra(InvoiceDetailPresenter.KEY_INVOICE_ID, -1);
+            invoiceId = getIntent().getExtras().getString(KEY_INVOICE_ID);
         }
 
         mPresenter.getInvoiceDetail(invoiceId);
@@ -210,6 +213,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         R.drawable.ic_status_waiting,
                         null
                 );
+                mLayoutHistoryInvoice.setVisibility(View.GONE);
                 statusColor = getResources().getColor(R.color.color_status_waiting);
                 break;
             case Invoice.STATUS_CODE_WAITING:
@@ -224,6 +228,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_pick);
+                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_SHIPPING:
                 textStatus = getString(R.string.order_status_shipping);
@@ -232,6 +237,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_shipping);
+                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
                 textStatus = getString(R.string.order_status_delivered);
@@ -240,6 +246,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_delivered);
+                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_FINISHED:
                 textStatus = getString(R.string.order_status_finished);
@@ -248,6 +255,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_finish);
+                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_CANCEL:
                 textStatus = getString(R.string.order_status_cancelled);
@@ -257,6 +265,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_cancelled);
+                mLayoutHistoryInvoice.setVisibility(View.GONE);
                 break;
             default:
                 textStatus = "";

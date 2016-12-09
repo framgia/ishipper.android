@@ -21,7 +21,7 @@ public class InvoiceDetailContact {
     }
 
     interface Presenter {
-        void getInvoiceDetail(int invoiceId);
+        void getInvoiceDetail(String invoiceId);
 
         void readNotification(String notiId);
 

@@ -52,12 +52,6 @@ public class UserInfoFragment extends Fragment {
 
     private void initView() {
         mTvPhone.setText(String.valueOf(mUser.getPhoneNumber()));
-        mTvAddress.setText(String.valueOf(mUser.getAddress()));
-        if (mUser.isShop()) {
-            mTvPlate.setVisibility(View.GONE);
-        } else {
-            mTvPlate.setText(String.valueOf(mUser.getPlateNumber()));
-        }
 
         if (CommonUtils.stringIsValid(mUser.getAddress())) {
             mTvAddress.setText(String.valueOf(mUser.getAddress()));
@@ -65,6 +59,15 @@ public class UserInfoFragment extends Fragment {
             mTvAddress.setText(R.string.all_na);
         }
 
-    }
+        if (mUser.isShop()) {
+            mTvPlate.setVisibility(View.GONE);
+            return;
+        }
 
+        if (CommonUtils.stringIsValid(mUser.getPlateNumber())) {
+            mTvPlate.setText(String.valueOf(mUser.getPlateNumber()));
+        } else {
+            mTvPlate.setText(R.string.all_na);
+        }
+    }
 }

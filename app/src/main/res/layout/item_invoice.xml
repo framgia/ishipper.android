@@ -148,6 +148,7 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:layout_marginTop="@dimen/all_margin_small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:scaleType="fitCenter"
@@ -181,6 +182,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="fitCenter"
+                        android:layout_marginTop="@dimen/item_invoice_icon_delivery_to_margin"
                         android:src="@drawable/ic_detail_to" />
 
                     <TextView
