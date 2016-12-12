@@ -76,7 +76,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_oder_detail;
+        return R.layout.activity_invoice_detail;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class ShopCreateOrderStep3Fragment extends BaseFragment implements ShopCr
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_oder_detail;
+        return R.layout.activity_invoice_detail;
     }
 
     @Override

@@ -8,6 +8,7 @@
     android:layout_marginBottom="@dimen/_5dp"
     android:layout_marginLeft="@dimen/_5dp"
     android:layout_marginRight="@dimen/_5dp"
+    android:clickable="true"
     android:background="@drawable/background_state"
     android:visibility="visible">
 
@@ -199,6 +200,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutInvoiceSummary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
@@ -370,8 +372,6 @@
                     android:textSize="@dimen/text_size_number_shipper_register"
                     android:visibility="gone" />
             </RelativeLayout>
-
-
         </LinearLayout>
     </LinearLayout>
 

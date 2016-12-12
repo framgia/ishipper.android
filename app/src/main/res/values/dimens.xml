@@ -108,6 +108,5 @@
     <dimen name="activity_invoice_detail_detail_margin_bottom">13dp</dimen>
     <dimen name="item_invoice_icon_delivery_to_margin">2dp</dimen>
     <dimen name="activity_invoice_detail_start_padding">15dp</dimen>
-
-    <item name="all_divider_width" type="dimen" format="float">0.5dp</item>
+    <dimen name="all_divider_width">0.5dp</dimen>
 </resources>
