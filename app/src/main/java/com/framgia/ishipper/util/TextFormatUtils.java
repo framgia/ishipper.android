@@ -1,4 +1,5 @@
 package com.framgia.ishipper.util;
+
 import java.util.Locale;
 
 /**
@@ -7,10 +8,10 @@ import java.util.Locale;
 public class TextFormatUtils {
 
     public static String formatDistance(double distance) {
-        return String.format(Locale.US, "%1$,.1f KM", distance);
+        return String.format(Locale.US, "%1$,.1f Km", distance);
     }
 
     public static String formatPrice(double orderPrice) {
-        return String.format(Locale.US, "%1$,.0f", orderPrice);
+        return String.format(Locale.US, "%,d", (int) orderPrice);
     }
 }

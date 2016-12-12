@@ -358,10 +358,12 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     private void addNewMarkerInvoice(Invoice invoice) {
         mInvoices.add(invoice);
         LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
+        int markerResId = invoice.isReceived() ?
+                R.drawable.ic_marker_shop_received : R.drawable.ic_marker_shop;
         final Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .alpha(0)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shop)));
+                .icon(BitmapDescriptorFactory.fromResource(markerResId)));
         MapUtils.setAnimatedInMarker(marker);
 
         /** save position of invoice with marker id to hashmap */
@@ -428,6 +430,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                 mInvoice = mHashMap.get(marker);
                 showInvoiceDetailWindow(mInvoice);
                 removeRoute();
+
                 mMakerEndOrder = mGoogleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish())));
                 mPresenter.getRoute(
@@ -458,10 +461,22 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         mRlOrderDetail.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setTag(invoice.getStringId());
         User mUser = invoice.getUser();
+        if (invoice.isReceived()) {
+            mBtnNearbyReceiveOrder.setText(R.string.all_invoice_received);
+            mBtnNearbyReceiveOrder.setBackgroundResource(R.drawable.btn_clean_radius_background);
+            mBtnNearbyReceiveOrder.setClickable(false);
+            mBtnNearbyReceiveOrder.setTextColor(ContextCompat.getColor(getContext(),
+                    R.color.color_cancel_invoice_button));
+        } else {
+            mBtnNearbyReceiveOrder.setClickable(true);
+            mBtnNearbyReceiveOrder.setText(R.string.all_register_order);
+            mBtnNearbyReceiveOrder.setBackgroundResource(R.drawable.btn_assign_accept_selector);
+            mBtnNearbyReceiveOrder.setTextColor(ContextCompat.getColor(getContext(),
+                    R.drawable.title_order_accept_selector));
+        }
         mTvItemOrderShopName.setText(mUser.getName());
         mRatingOrderWindow.setRating((float) mUser.getRate());
-        mTvNearbyDistance.setText(
-                TextFormatUtils.formatDistance(invoice.getDistance()));
+        mTvNearbyDistance.setText(TextFormatUtils.formatDistance(invoice.getDistance()));
         mTvNearbyFrom.setText(invoice.getAddressStart());
         mTvNearbyTo.setText(invoice.getAddressFinish());
         mTvNearbyShipTime.setText(invoice.getDeliveryTime());
@@ -626,8 +641,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         }
     }
 
-    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-            R.id.rl_search_view, R.id.window_invoice_detail, R.id.btnViewChange})
+    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order, R.id.action_detail_order,
+            R.id.rl_search_view, R.id.btnViewChange, R.id.layoutInvoiceSummary})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnViewChange:
@@ -649,7 +664,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements
             case R.id.rl_search_view:
                 mPresenter.clickSearchView();
                 break;
-            case R.id.window_invoice_detail:
+            case R.id.layoutInvoiceSummary:
+            case R.id.action_detail_order:
                 mPresenter.showInvoiceDetail(mInvoice);
                 break;
         }
