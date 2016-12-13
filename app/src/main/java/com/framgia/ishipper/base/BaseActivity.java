@@ -4,11 +4,11 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.ui.listener.SocketCallback;
@@ -19,6 +19,8 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 
@@ -117,6 +119,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                     }
 
                     @Override
+                    public void onConnected(
+                            WebSocket websocket, Map<String, List<String>> headers)
+                            throws Exception {
+                        Log.d(TAG, "socket connected");
+                    }
+
+                    @Override
                     public void onDisconnected(
                             WebSocket websocket, WebSocketFrame serverCloseFrame,
                             WebSocketFrame clientCloseFrame, boolean closedByServer)
@@ -124,9 +133,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                         super.onDisconnected(websocket, serverCloseFrame, clientCloseFrame,
                                              closedByServer);
                         if (closedByServer) {
-                            com.framgia.ishipper.common.Log.d(TAG, "socket disconnected by server");
+                            Log.d(TAG, "socket disconnected by server");
                         } else {
-                            com.framgia.ishipper.common.Log.d(TAG, "socket disconnected by client");
+                            Log.d(TAG, "socket disconnected by client");
                         }
                         if (mWebSocket != null) mWebSocket.connect();
                     }

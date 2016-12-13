@@ -168,10 +168,16 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.mTvShippingOrderStatus.setTextColor(statusColor);
         holder.mTvShippingOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
                 null, null, null);
-        if (holder.mInvoice.getNumOfRecipient() != null) {
-            holder.mTvNumShipRegister.setVisibility(View.VISIBLE);
-            holder.mTvNumShipRegister.setText(holder.mInvoice.getNumOfRecipient());
-        } else {
+        try {
+            if (holder.mInvoice.getNumOfRecipient() != null &&
+                Integer.parseInt(holder.mInvoice.getNumOfRecipient()) > Const.ZERO) {
+                holder.mTvNumShipRegister.setVisibility(View.VISIBLE);
+                holder.mTvNumShipRegister.setText(holder.mInvoice.getNumOfRecipient());
+            } else {
+                holder.mTvNumShipRegister.setVisibility(View.GONE);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             holder.mTvNumShipRegister.setVisibility(View.GONE);
         }
         if (action.equals("")) {

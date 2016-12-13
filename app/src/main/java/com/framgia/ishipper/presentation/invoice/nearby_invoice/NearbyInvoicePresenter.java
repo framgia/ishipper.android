@@ -7,10 +7,12 @@ import android.os.Bundle;
 import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
@@ -165,5 +167,28 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
         extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);
         mFragment.getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void updateCurrentLocation(User currentUser) {
+        ((BaseActivity) mContext).showDialog();
+        HashMap<String, String> params = new HashMap<>();
+        params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(currentUser.getLatitude()));
+        params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(currentUser.getLongitude()));
+        API.updateUserSetting(currentUser.getAuthenticationToken(),
+                              params,
+                              new API.APICallback<APIResponse<EmptyData>>() {
+                                  @Override
+                                  public void onResponse(APIResponse<EmptyData> response) {
+                                      ((BaseActivity) mContext).dismissDialog();
+                                      //TODO: on update current location success
+                                  }
+
+                                  @Override
+                                  public void onFailure(int code, String message) {
+                                      ((BaseActivity) mContext).dismissDialog();
+                                      //TODO: on update current location fail
+                                  }
+                              });
     }
 }

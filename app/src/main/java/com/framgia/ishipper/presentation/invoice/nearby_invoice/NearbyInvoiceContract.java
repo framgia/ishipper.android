@@ -2,6 +2,7 @@ package com.framgia.ishipper.presentation.invoice.nearby_invoice;
 
 import com.directions.route.Route;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.User;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -43,5 +44,7 @@ public interface NearbyInvoiceContract {
         void clickSearchView();
 
         void showInvoiceDetail(Invoice invoice);
+
+        void updateCurrentLocation(User currentUser);
     }
 }

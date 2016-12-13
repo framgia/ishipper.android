@@ -56,8 +56,10 @@ class SettingPresenter implements SettingContact.Presenter {
                     String.valueOf(favoriteLocation));
             if (mPlace != null) {
                 params.put(APIDefinition.UserSetting.PARAM_ADDRESS, mPlace.getAddress().toString());
-                params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
-                params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
+                params.put(APIDefinition.UserSetting.PARAM_FAVORITE_LATITUDE,
+                           String.valueOf(mPlace.getLatLng().latitude));
+                params.put(APIDefinition.UserSetting.PARAM_FAVORITE_LONGITUDE,
+                           String.valueOf(mPlace.getLatLng().longitude));
             }
             mActivity.showDialog();
             params.put(APIDefinition.UserSetting.PARAM_RADIUS, String.valueOf(invoiceRadius));
