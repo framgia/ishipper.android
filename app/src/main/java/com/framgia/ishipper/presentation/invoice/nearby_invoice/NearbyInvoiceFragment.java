@@ -200,6 +200,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                 mGoogleMap, new LatLng(location.getLatitude(), location.getLongitude()));
         mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
                 new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
+        mPresenter.updateCurrentLocation(mCurrentUser);
     }
 
     @Override
@@ -301,6 +302,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements
 
     @Override
     public void onLocationChanged(Location location) {
+        mCurrentUser.setLatitude(location.getLatitude());
+        mCurrentUser.setLongitude(location.getLongitude());
         onLocationChange(location);
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         dismissLoadingDialog();

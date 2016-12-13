@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
@@ -11,6 +12,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
 import com.framgia.ishipper.net.data.UpdateProfileData;
@@ -156,29 +158,25 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
 
     @Override
     public void updateCurrentLocation(User currentUser) {
+        ((BaseActivity) mContext).showDialog();
         HashMap<String, String> params = new HashMap<>();
+        params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(currentUser.getLatitude()));
+        params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(currentUser.getLongitude()));
+        API.updateUserSetting(currentUser.getAuthenticationToken(),
+                              params,
+                              new API.APICallback<APIResponse<EmptyData>>() {
+                                  @Override
+                                  public void onResponse(APIResponse<EmptyData> response) {
+                                      ((BaseActivity) mContext).dismissDialog();
+                                      //TODO: on update current location success
+                                  }
 
-        params.put(APIDefinition.PutUpdateProfile.PARAM_NAME, currentUser.getName());
-        params.put(APIDefinition.PutUpdateProfile.USER_CURRENT_PASSWORD, currentUser.getPassword());
-        params.put(APIDefinition.PutUpdateProfile.PARAM_LATITUDE,
-                   String.valueOf(currentUser.getLatitude()));
-        params.put(APIDefinition.PutUpdateProfile.PARAM_LONGITUDE,
-                   String.valueOf(currentUser.getLongitude()));
-
-        API.putUpdateProfile(params, new API.APICallback<APIResponse<UpdateProfileData>>() {
-            @Override
-            public void onResponse(
-                    APIResponse<UpdateProfileData> response) {
-                //TODO: updated location success
-                Log.d(TAG, response.getMessage());
-            }
-
-            @Override
-            public void onFailure(int code, String message) {
-                //TODO: updated location fail
-                Log.d(TAG, message);
-            }
-        });
+                                  @Override
+                                  public void onFailure(int code, String message) {
+                                      ((BaseActivity) mContext).dismissDialog();
+                                      //TODO: on update current location fail
+                                  }
+                              });
     }
 
     /**
