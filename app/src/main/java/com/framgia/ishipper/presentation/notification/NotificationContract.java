@@ -1,5 +1,6 @@
 package com.framgia.ishipper.presentation.notification;
 
+import android.content.Intent;
 import com.framgia.ishipper.model.Notification;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIResponse;
@@ -14,6 +15,8 @@ import java.util.List;
 public class NotificationContract {
     interface View {
         void updateListNoti(APIResponse<ListNotificationData> response);
+
+        void addNewNotification(Intent intent);
     }
 
     interface Presenter {

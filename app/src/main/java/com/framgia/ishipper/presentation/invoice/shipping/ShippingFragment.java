@@ -68,6 +68,8 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
 
     @Override
     public void initViews() {
+        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(this);
         mPresenter = new ShippingPresenter(this, this);
         mAdapter = new OrderShippingAdapter(mInvoiceList, this);
         mRvOrders.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
@@ -83,8 +85,6 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mMapFragment.getMapAsync(this);
     }
 
     @Override
@@ -195,7 +195,9 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
         }
 
         if (mPresenter.getCurrentLocation() != null) latLngs.add(mPresenter.getCurrentLocation());
-        MapUtils.updateZoomMap(mMap, latLngs);
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        MapUtils.updateZoomMap(mMap, width, height, latLngs);
     }
 
     @Override
@@ -230,7 +232,8 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
         mCurrentMarker = mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position))
                 .position(location));
-
-        MapUtils.updateZoomMap(mMap, latLngs);
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        MapUtils.updateZoomMap(mMap, width, height, latLngs);
     }
 }

@@ -134,10 +134,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                                              closedByServer);
                         if (closedByServer) {
                             Log.d(TAG, "socket disconnected by server");
+                            if (mWebSocket != null) mWebSocket.connect();
                         } else {
                             Log.d(TAG, "socket disconnected by client");
                         }
-                        if (mWebSocket != null) mWebSocket.connect();
                     }
                 });
             } catch (IOException | WebSocketException e) {
