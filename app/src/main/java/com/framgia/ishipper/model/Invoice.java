@@ -26,6 +26,7 @@ public class Invoice implements Parcelable {
     public static final int STATUS_CODE_FINISHED = 4;
     public static final int STATUS_CODE_CANCEL = 5;
     public static final int STATUS_CODE_ALL = 6;
+    private static final int INVALID_USER_INVOICE = 0;
 
     @SerializedName("id") private int mId;
     @SerializedName("name") private String mName;
@@ -47,6 +48,7 @@ public class Invoice implements Parcelable {
     @SerializedName("customer_number") private String mCustomerNumber;
     @SerializedName("received") private boolean mReceived;
     @SerializedName("number_of_recipients") private String mNumOfRecipient;
+    @SerializedName("user_invoice_id") private int mUserInvoiceId;
     @SerializedName("status_histories") private ArrayList<InvoiceHistory> mHistories;
 
     public Invoice() {
@@ -73,6 +75,10 @@ public class Invoice implements Parcelable {
         if (code == Invoice.STATUS_CODE_CANCEL) return Invoice.STATUS_CANCEL;
         if (code == Invoice.STATUS_CODE_ALL) return Invoice.STATUS_ALL;
         return "";
+    }
+
+    public int getUserInvoiceId() {
+        return mUserInvoiceId;
     }
 
     public int getId() {
@@ -229,11 +235,7 @@ public class Invoice implements Parcelable {
     }
 
     public boolean isReceived() {
-        return mReceived;
-    }
-
-    public void setReceived(boolean received) {
-        mReceived = received;
+        return mUserInvoiceId != INVALID_USER_INVOICE;
     }
 
     public String getNumOfRecipient() {

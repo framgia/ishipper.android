@@ -46,5 +46,7 @@ public interface NearbyInvoiceContract {
         void showInvoiceDetail(Invoice invoice);
 
         void updateCurrentLocation(User currentUser);
+
+        void cancelAcceptOrder(int userInvoiceId);
     }
 }

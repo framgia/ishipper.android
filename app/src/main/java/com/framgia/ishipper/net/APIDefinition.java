@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
     //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.106:3001/";
+    private static final String DEV_URL = "http://192.168.1.11:3001/";
     private static final String PROD_URL = "";
 
     public static final String BASE_GOOGLE_MAP_API = "https://maps.googleapis.com";
@@ -16,6 +16,7 @@ public class APIDefinition {
     public static final String HEADER_AUTHORIZE = "Authorization";
 
     public static final String PARAM_LANGUAGE = "language";
+
     public static class RegisterUser {
         public static final String PATH = "/api/sign_up/";
         public static final String PARAM_USER_PHONE_NUMBER = "user[phone_number]";
@@ -360,6 +361,11 @@ public class APIDefinition {
         public static final String PARAM_ORIGIN = "origin";
         public static final String PARAM_DESTINATION = "destination";
         public static final String PARAM_KEY = "key";
+    }
+
+    public class PutShipperCancelReceiveInvoice {
+        public static final String PARAM_USER_INVOICE_ID = "id";
+        public static final String PATH = "/api/shipper/user_invoices/{" + PARAM_USER_INVOICE_ID + "}";
     }
 
     public class UserSetting {

@@ -284,6 +284,13 @@ public class APIServices {
                 @Header(APIDefinition.HEADER_AUTHORIZE) String token,
                 @FieldMap Map<String, String> params);
 
+        @FormUrlEncoded
+        @PUT(APIDefinition.PutShipperCancelReceiveInvoice.PATH)
+        Call<APIResponse<EmptyData>> putShipperCancelReceiveOrder(
+                @Field(APIDefinition.PutUpdateInvoiceStatus.PARAM_STATUS) String status,
+                @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+                @Path(APIDefinition.PutShipperCancelReceiveInvoice.PARAM_USER_INVOICE_ID) int id);
+
         @GET(APIDefinition.UserSetting.PATH)
         Call<APIResponse<UserSettingData>> getSetting(
                 @Header(APIDefinition.HEADER_AUTHORIZE) String token);

@@ -81,7 +81,7 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
                         mView.addListMarker(addInvoices);
                         mView.removeListMarker(removeInvoices);
                         // update invoices
-                        mView.updateInvoices(invoices);
+                        mView.updateInvoices(lastUpdateInvoices);
                     }
 
                     @Override
@@ -190,5 +190,23 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
                                       //TODO: on update current location fail
                                   }
                               });
+    }
+
+    @Override
+    public void cancelAcceptOrder(int userInvoiceId) {
+        mFragment.showLoadingDialog();
+        API.putCancelReceiveOrder(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
+                userInvoiceId, new API.APICallback<APIResponse<EmptyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<EmptyData> response) {
+                        mFragment.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onFailure(int code, String message) {
+                        mFragment.dismissLoadingDialog();
+                        mFragment.showUserMessage(message);
+                    }
+                });
     }
 }

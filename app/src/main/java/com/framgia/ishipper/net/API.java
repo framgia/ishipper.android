@@ -162,7 +162,7 @@ public abstract class API {
     }
 
     public static void updateUserSetting(String token, HashMap<String, String> params,
-            APICallback<APIResponse<EmptyData>> callback) {
+                                         APICallback<APIResponse<EmptyData>> callback) {
         client.updateUserSetting(token, params).enqueue(new RetrofitCallback<>(callback));
     }
 
@@ -320,6 +320,14 @@ public abstract class API {
             String userType,
             APICallback<APIResponse<ListNotificationData>> callback) {
         client.getUnreadNotificationCount(token, userType.toLowerCase())
+                .enqueue(new RetrofitCallback<>(callback));
+    }
+
+    public static void putCancelReceiveOrder(
+            String token,
+            int userInvoiceId,
+            APICallback<APIResponse<EmptyData>> callback) {
+        client.putShipperCancelReceiveOrder(Invoice.STATUS_INIT, token, userInvoiceId)
                 .enqueue(new RetrofitCallback<>(callback));
     }
     //endregion
