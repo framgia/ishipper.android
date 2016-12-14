@@ -100,11 +100,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
     @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
     @BindView(R.id.ll_shop_order_status) LinearLayout mLlShopOrderStatus;
-    @BindView(R.id.recyclerListInvoice) RecyclerView mRecyclerListInvoice;
-    @BindView(R.id.switcherLayout) ViewSwitcher mSwitcherLayout;
-    @BindView(R.id.tvInvoiceCount) TextView mTvInvoiceCount;
+    @BindView(R.id.rv_list_invoice) RecyclerView mRvListInvoice;
+    @BindView(R.id.switcher_layout) ViewSwitcher mSwitcherLayout;
+    @BindView(R.id.tv_invoice_count) TextView mTvInvoiceCount;
     @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
-    @BindView(R.id.btnViewChange) TextView mBtnViewChange;
+    @BindView(R.id.btn_view_change) TextView mBtnViewChange;
+    @BindView(R.id.action_cancel_accept_order) View mBtnCancelAcceptOrder;
+    @BindView(R.id.layoutEmpty) View mLayoutEmpty;
 
     private Dialog mDialog;
 
@@ -311,8 +313,10 @@ public class NearbyInvoiceFragment extends BaseFragment implements
 
     @Override
     public void updateInvoices(ArrayList<Invoice> invoices) {
-        mInvoices = invoices;
+        mInvoices.clear();
+        mInvoices.addAll(invoices);
         mAdapter.notifyDataSetChanged();
+        mLayoutEmpty.setVisibility(invoices.isEmpty() ? View.VISIBLE : View.GONE);
         mTvInvoiceCount.setText(getString(R.string.fragment_nearby_invoice_count, mInvoices.size()));
     }
 
@@ -462,20 +466,15 @@ public class NearbyInvoiceFragment extends BaseFragment implements
 
     private void showInvoiceDetailWindow(Invoice invoice) {
         mRlOrderDetail.setVisibility(View.VISIBLE);
-        mBtnNearbyReceiveOrder.setTag(invoice.getStringId());
         User mUser = invoice.getUser();
         if (invoice.isReceived()) {
-            mBtnNearbyReceiveOrder.setText(R.string.all_invoice_received);
-            mBtnNearbyReceiveOrder.setBackgroundResource(R.drawable.btn_clean_radius_background);
-            mBtnNearbyReceiveOrder.setClickable(false);
-            mBtnNearbyReceiveOrder.setTextColor(ContextCompat.getColor(getContext(),
-                    R.color.color_cancel_invoice_button));
+            mBtnCancelAcceptOrder.setVisibility(View.VISIBLE);
+            mBtnNearbyReceiveOrder.setVisibility(View.GONE);
+            mBtnCancelAcceptOrder.setTag(invoice.getUserInvoiceId());
         } else {
-            mBtnNearbyReceiveOrder.setClickable(true);
-            mBtnNearbyReceiveOrder.setText(R.string.all_register_order);
-            mBtnNearbyReceiveOrder.setBackgroundResource(R.drawable.btn_assign_accept_selector);
-            mBtnNearbyReceiveOrder.setTextColor(ContextCompat.getColor(getContext(),
-                    R.drawable.title_order_accept_selector));
+            mBtnNearbyReceiveOrder.setTag(invoice.getStringId());
+            mBtnCancelAcceptOrder.setVisibility(View.GONE);
+            mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
         }
         mTvItemOrderShopName.setText(mUser.getName());
         mRatingOrderWindow.setRating((float) mUser.getRate());
@@ -616,6 +615,11 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         mPresenter.showInvoiceDetail(invoice);
     }
 
+    @Override
+    public void onCancelAcceptOrder(Invoice invoice) {
+        mPresenter.cancelAcceptOrder(invoice.getUserInvoiceId());
+    }
+
     /**
      * Task fetch address from location in another thread
      */
@@ -645,11 +649,11 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     }
 
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order, R.id.action_detail_order,
-            R.id.rl_search_view, R.id.btnViewChange, R.id.layoutInvoiceSummary})
+            R.id.rl_search_view, R.id.btn_view_change, R.id.layoutInvoiceSummary, R.id.layoutEmpty, R.id.action_cancel_accept_order})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnViewChange:
-                if (mSwitcherLayout.getCurrentView() == mRecyclerListInvoice) {
+            case R.id.btn_view_change:
+                if (mSwitcherLayout.getCurrentView() == mRvListInvoice) {
                     mSwitcherLayout.showNext();
                     mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_list);
                 } else {
@@ -667,6 +671,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements
             case R.id.rl_search_view:
                 mPresenter.clickSearchView();
                 break;
+            case R.id.layoutEmpty:
+                mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
+                        new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
+                break;
+            case R.id.action_cancel_accept_order:
+                mPresenter.cancelAcceptOrder((int) view.getTag());
+                break;
             case R.id.layoutInvoiceSummary:
             case R.id.action_detail_order:
                 mPresenter.showInvoiceDetail(mInvoice);
@@ -676,7 +687,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
 
     private void settingRecyclerView() {
         mAdapter = new NewInvoiceAdapter(mInvoices, this);
-        mRecyclerListInvoice.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mRecyclerListInvoice.setAdapter(mAdapter);
+        mRvListInvoice.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        mRvListInvoice.setAdapter(mAdapter);
     }
 }

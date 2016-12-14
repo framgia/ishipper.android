@@ -302,9 +302,9 @@
             <TextView
                 android:id="@+id/action_cancel_accept_order"
                 style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_green_radius_background"
+                android:background="@drawable/btn_clean_radius_background"
                 android:text="@string/all_cancel_receive_order"
-                android:textColor="@drawable/title_order_accept_selector"
+                android:textColor="@color/black_80"
                 android:visibility="gone" />
 
             <TextView

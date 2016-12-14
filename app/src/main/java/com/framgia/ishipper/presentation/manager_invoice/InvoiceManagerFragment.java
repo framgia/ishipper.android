@@ -17,9 +17,8 @@ import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
 import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
-import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
+import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 
@@ -192,9 +191,8 @@ public class InvoiceManagerFragment extends BaseFragment implements
 
         private List<String> mListTitle;
 
-        OrderManagerPagerAdapter(
-                FragmentManager fm, List<ListInvoiceFragment> fragmentList,
-                List<String> orderTitleList) {
+        OrderManagerPagerAdapter(FragmentManager fm, List<ListInvoiceFragment> fragmentList,
+                                 List<String> orderTitleList) {
             super(fm);
             mListInvoiceFragments = fragmentList;
             mListTitle = orderTitleList;
@@ -202,7 +200,6 @@ public class InvoiceManagerFragment extends BaseFragment implements
 
         @Override
         public Fragment getItem(int position) {
-
             return mListInvoiceFragments.get(position);
         }
 

@@ -1,7 +1,6 @@
 package com.framgia.ishipper.ui.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +58,7 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
         @BindView(R.id.tv_item_order_ship_time) TextView mOrderShippingTime;
         @BindView(R.id.btn_item_order_register_order) TextView mBtnReceiveInvoice;
         @BindView(R.id.tv_item_order_distance) TextView mTvDistance;
+        @BindView(R.id.action_cancel_accept_order) TextView mBtnCancelAcceptOrder;
 
         public ViewHolder(View view) {
             super(view);
@@ -76,19 +76,18 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
             mCallback.onInvoiceReceiveItemClick(mInvoiceList.get(getAdapterPosition()));
         }
 
+        @OnClick(R.id.action_cancel_accept_order)
+        void cancelInvoice() {
+            mCallback.onCancelAcceptOrder(mInvoiceList.get(getAdapterPosition()));
+        }
+
         void bindData(Invoice invoice) {
             if (invoice.isReceived()) {
-                mBtnReceiveInvoice.setText(R.string.all_invoice_received);
-                mBtnReceiveInvoice.setBackgroundResource(R.drawable.btn_clean_radius_background);
-                mBtnReceiveInvoice.setClickable(false);
-                mBtnReceiveInvoice.setTextColor(ContextCompat.getColor(mContext,
-                        R.color.color_cancel_invoice_button));
+                mBtnCancelAcceptOrder.setVisibility(View.VISIBLE);
+                mBtnReceiveInvoice.setVisibility(View.GONE);
             } else {
-                mBtnReceiveInvoice.setClickable(true);
-                mBtnReceiveInvoice.setText(R.string.all_register_order);
-                mBtnReceiveInvoice.setBackgroundResource(R.drawable.btn_assign_accept_selector);
-                mBtnReceiveInvoice.setTextColor(ContextCompat.getColor(mContext,
-                        R.drawable.title_order_accept_selector));
+                mBtnCancelAcceptOrder.setVisibility(View.GONE);
+                mBtnReceiveInvoice.setVisibility(View.VISIBLE);
             }
 
             mOrderEndAddress.setText(invoice.getAddressFinish());
@@ -104,5 +103,7 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
         void onInvoiceReceiveItemClick(Invoice invoice);
 
         void onInvoiceItemClick(Invoice invoice);
+
+        void onCancelAcceptOrder(Invoice invoice);
     }
 }
