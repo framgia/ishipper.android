@@ -236,7 +236,7 @@ public abstract class API {
     }
 
     public static void postShipperReceiveInvoice(String token, String invoiceId,
-                                                 final APICallback<APIResponse<EmptyData>> callback) {
+                                                 final APICallback<APIResponse<ShowInvoiceData>> callback) {
         client.postShipperReceiveInvoice(token, invoiceId)
                 .enqueue(new RetrofitCallback<>(callback));
     }

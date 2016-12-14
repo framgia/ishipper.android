@@ -26,7 +26,7 @@ public class Invoice implements Parcelable {
     public static final int STATUS_CODE_FINISHED = 4;
     public static final int STATUS_CODE_CANCEL = 5;
     public static final int STATUS_CODE_ALL = 6;
-    private static final int INVALID_USER_INVOICE = 0;
+    public static final int INVALID_USER_INVOICE = 0;
 
     @SerializedName("id") private int mId;
     @SerializedName("name") private String mName;
@@ -322,5 +322,9 @@ public class Invoice implements Parcelable {
             return ((Invoice) o).getId() == getId();
         }
         return super.equals(o);
+    }
+
+    public void setUserInvoiceId(int userInvoiceId) {
+        mUserInvoiceId = userInvoiceId;
     }
 }

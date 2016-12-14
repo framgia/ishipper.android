@@ -22,13 +22,15 @@ public interface NearbyInvoiceContract {
 
         void updateInvoices(ArrayList<Invoice> invoices);
 
-        void onReceiveInvoiceSuccess(String message);
+        void onReceiveInvoiceSuccess(String message, Invoice invoice);
 
         void onReceiveInvoiceFail(String message);
 
         void drawRoute(ArrayList<Route> route);
 
         void updateMapAfterDrawRoute(LatLng startAddress, LatLng finishAddress);
+
+        void updateStatusReceiveInvoice(String invoiceId, int userInvoiceId);
     }
 
     interface Presenter {
@@ -47,6 +49,6 @@ public interface NearbyInvoiceContract {
 
         void updateCurrentLocation(User currentUser);
 
-        void cancelAcceptOrder(int userInvoiceId);
+        void cancelAcceptOrder(Invoice invoice);
     }
 }
