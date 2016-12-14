@@ -103,9 +103,9 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
                 API.postShipperReceiveInvoice(
                         mCurrentUser.getAuthenticationToken(),
                         invoiceId,
-                        new API.APICallback<APIResponse<EmptyData>>() {
+                        new API.APICallback<APIResponse<ShowInvoiceData>>() {
                             @Override
-                            public void onResponse(APIResponse<EmptyData> response) {
+                            public void onResponse(APIResponse<ShowInvoiceData> response) {
                                 dialog.dismiss();
                                 mActivity.showUserMessage(response.getMessage());
                             }

@@ -106,7 +106,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
     @BindView(R.id.btn_view_change) TextView mBtnViewChange;
     @BindView(R.id.action_cancel_accept_order) View mBtnCancelAcceptOrder;
-    @BindView(R.id.layoutEmpty) View mLayoutEmpty;
+    @BindView(R.id.tv_empty) View mLayoutEmpty;
 
     private Dialog mDialog;
 
@@ -321,11 +321,10 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     }
 
     @Override
-    public void onReceiveInvoiceSuccess(String message) {
+    public void onReceiveInvoiceSuccess(String message, Invoice invoice) {
         dismissLoadingDialog();
         mReceiveDialog.dismiss();
         showUserMessage(message);
-        mRlOrderDetail.setVisibility(View.GONE);
     }
 
     @Override
@@ -470,7 +469,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         if (invoice.isReceived()) {
             mBtnCancelAcceptOrder.setVisibility(View.VISIBLE);
             mBtnNearbyReceiveOrder.setVisibility(View.GONE);
-            mBtnCancelAcceptOrder.setTag(invoice.getUserInvoiceId());
+            mBtnCancelAcceptOrder.setTag(invoice.getStringId());
         } else {
             mBtnNearbyReceiveOrder.setTag(invoice.getStringId());
             mBtnCancelAcceptOrder.setVisibility(View.GONE);
@@ -513,6 +512,23 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, startAddress, finishAddress);
     }
 
+    @Override
+    public void updateStatusReceiveInvoice(String invoiceId, int userInvoiceId) {
+        mRlOrderDetail.setVisibility(View.GONE);
+        Invoice item = findInvoiceById(invoiceId);
+        if (item != null) {
+            item.setUserInvoiceId(userInvoiceId);
+            mAdapter.notifyDataSetChanged();
+
+            Marker marker = findMarkerByInvoice(item);
+            int markerResId = item.isReceived() ?
+                    R.drawable.ic_marker_shop_received : R.drawable.ic_marker_shop;
+            if (marker != null) {
+                marker.setIcon(BitmapDescriptorFactory.fromResource(markerResId));
+                mHashMap.get(marker).setUserInvoiceId(userInvoiceId);
+            }
+        }
+    }
 
     @Override
     public void showReceiveDialog(final String invoiceId) {
@@ -557,17 +573,24 @@ public class NearbyInvoiceFragment extends BaseFragment implements
                         break;
                     }
                 }
-                for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
-                    final Marker key = entry.getKey();
-                    Invoice value = entry.getValue();
-                    if (value.getId() == invoiceId) {
-                        MapUtils.setAnimatedOutMarker(key);
-                        mHashMap.remove(key);
-                        break;
-                    }
+                Marker marker = findMarkerByInvoice(invoice);
+                if (marker != null) {
+                    MapUtils.setAnimatedOutMarker(marker);
+                    mHashMap.remove(marker);
                 }
             }
         });
+    }
+
+    private Marker findMarkerByInvoice(Invoice invoice) {
+        for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
+            final Marker key = entry.getKey();
+            Invoice value = entry.getValue();
+            if (value.getId() == invoice.getId()) {
+                return key;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -617,7 +640,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
 
     @Override
     public void onCancelAcceptOrder(Invoice invoice) {
-        mPresenter.cancelAcceptOrder(invoice.getUserInvoiceId());
+        mPresenter.cancelAcceptOrder(invoice);
     }
 
     /**
@@ -649,7 +672,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements
     }
 
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order, R.id.action_detail_order,
-            R.id.rl_search_view, R.id.btn_view_change, R.id.layoutInvoiceSummary, R.id.layoutEmpty, R.id.action_cancel_accept_order})
+            R.id.rl_search_view, R.id.btn_view_change, R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_order})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_view_change:
@@ -671,12 +694,12 @@ public class NearbyInvoiceFragment extends BaseFragment implements
             case R.id.rl_search_view:
                 mPresenter.clickSearchView();
                 break;
-            case R.id.layoutEmpty:
+            case R.id.tv_empty:
                 mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
                         new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
                 break;
             case R.id.action_cancel_accept_order:
-                mPresenter.cancelAcceptOrder((int) view.getTag());
+                mPresenter.cancelAcceptOrder(findInvoiceById((String) view.getTag()));
                 break;
             case R.id.layoutInvoiceSummary:
             case R.id.action_detail_order:
@@ -689,5 +712,12 @@ public class NearbyInvoiceFragment extends BaseFragment implements
         mAdapter = new NewInvoiceAdapter(mInvoices, this);
         mRvListInvoice.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRvListInvoice.setAdapter(mAdapter);
+    }
+
+    private Invoice findInvoiceById(String invoiceId) {
+        for (Invoice invoice : mInvoices) {
+            if (invoice.getStringId().equals(invoiceId)) return invoice;
+        }
+        return null;
     }
 }

@@ -18,6 +18,7 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.presentation.route.RouteActivity;
 import com.framgia.ishipper.util.Const;
@@ -92,15 +93,18 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
     }
 
     @Override
-    public void receiveInvoice(String invoiceId) {
+    public void receiveInvoice(final String invoiceId) {
         mFragment.showLoadingDialog();
         API.postShipperReceiveInvoice(
                 Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
                 invoiceId,
-                new API.APICallback<APIResponse<EmptyData>>() {
+                new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
-                    public void onResponse(APIResponse<EmptyData> response) {
-                        mView.onReceiveInvoiceSuccess(response.getMessage());
+                    public void onResponse(APIResponse<ShowInvoiceData> response) {
+                        mView.updateStatusReceiveInvoice(invoiceId,
+                                response.getData().mInvoice.getUserInvoiceId());
+                        mView.onReceiveInvoiceSuccess(response.getMessage(),
+                                response.getData().mInvoice);
                     }
 
                     @Override
@@ -176,30 +180,31 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
         params.put(APIDefinition.UserSetting.PARAM_LATITUDE, String.valueOf(currentUser.getLatitude()));
         params.put(APIDefinition.UserSetting.PARAM_LONGITUDE, String.valueOf(currentUser.getLongitude()));
         API.updateUserSetting(currentUser.getAuthenticationToken(),
-                              params,
-                              new API.APICallback<APIResponse<EmptyData>>() {
-                                  @Override
-                                  public void onResponse(APIResponse<EmptyData> response) {
-                                      ((BaseActivity) mContext).dismissDialog();
-                                      //TODO: on update current location success
-                                  }
+                params,
+                new API.APICallback<APIResponse<EmptyData>>() {
+                    @Override
+                    public void onResponse(APIResponse<EmptyData> response) {
+                        ((BaseActivity) mContext).dismissDialog();
+                        //TODO: on update current location success
+                    }
 
-                                  @Override
-                                  public void onFailure(int code, String message) {
-                                      ((BaseActivity) mContext).dismissDialog();
-                                      //TODO: on update current location fail
-                                  }
-                              });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        ((BaseActivity) mContext).dismissDialog();
+                        //TODO: on update current location fail
+                    }
+                });
     }
 
     @Override
-    public void cancelAcceptOrder(int userInvoiceId) {
+    public void cancelAcceptOrder(final Invoice invoice) {
         mFragment.showLoadingDialog();
         API.putCancelReceiveOrder(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                userInvoiceId, new API.APICallback<APIResponse<EmptyData>>() {
+                invoice.getUserInvoiceId(), new API.APICallback<APIResponse<EmptyData>>() {
                     @Override
                     public void onResponse(APIResponse<EmptyData> response) {
                         mFragment.dismissLoadingDialog();
+                        mView.updateStatusReceiveInvoice(invoice.getStringId(), Invoice.INVALID_USER_INVOICE);
                     }
 
                     @Override

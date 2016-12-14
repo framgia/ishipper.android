@@ -153,7 +153,7 @@ public class APIServices {
 
         @FormUrlEncoded
         @POST(APIDefinition.PostShipperReceiveInvoice.PATH)
-        Call<APIResponse<EmptyData>> postShipperReceiveInvoice(
+        Call<APIResponse<ShowInvoiceData>> postShipperReceiveInvoice(
                 @Header(APIDefinition.HEADER_AUTHORIZE) String token,
                 @Field(APIDefinition.PostShipperReceiveInvoice.PARAMS_INVOICE_ID) String status);
 

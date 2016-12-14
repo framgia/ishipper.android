@@ -47,7 +47,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
         userParams.put(APIDefinition.RegisterUser.PARAM_USER_PASSWORD_CONFIRMATION,
                        currentUser.getPassword());
         userParams.put(APIDefinition.RegisterUser.PARAM_USER_NAME, currentUser.getName());
-        userParams.put(APIDefinition.RegisterUser.PARAM_USER_ROLE, currentUser.getRole());
+        userParams.put(APIDefinition.RegisterUser.PARAM_USER_ROLE, currentUser.getRole().toLowerCase());
         userParams.put(APIDefinition.RegisterUser.PARAM_USER_PLATE_NUMBER,
                        currentUser.getPlateNumber());
 
