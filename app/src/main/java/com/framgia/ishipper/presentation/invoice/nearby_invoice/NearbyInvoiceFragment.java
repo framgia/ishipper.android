@@ -489,8 +489,8 @@ public class NearbyInvoiceFragment extends BaseFragment
     @Override
     public void updateMapAfterDrawRoute(LatLng startAddress, LatLng finishAddress) {
         Point mapSize = getConfigSizeMap();
-        //        LatLng configLatLng = CommonUtils.configLatLng(startAddress, finishAddress);
-        //        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, configLatLng);
+//        LatLng configLatLng = CommonUtils.configLatLng(startAddress, finishAddress);
+//        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, configLatLng);
         MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, startAddress, finishAddress);
     }
 
@@ -668,7 +668,7 @@ public class NearbyInvoiceFragment extends BaseFragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_view_change:
-                if (mSwitcherLayout.getCurrentView() == mRvListInvoice) {
+                if (mSwitcherLayout.getCurrentView().getId() == R.id.layout_refresh) {
                     mSwitcherLayout.showNext();
                     mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_list);
                 } else {

@@ -51,7 +51,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.route.RouteActivity"/>
-        <activity android:name=".presentation.invoice.invoice_creation.ShopCreateOrderActivity"/>
+        <activity
+            android:name=".presentation.invoice.invoice_creation.ShopCreateOrderActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".presentation.authenication.register.RegisterActivity"/>
         <activity android:name=".presentation.authenication.update_pass.ForgetPasswordActivity"/>
         <activity android:name=".presentation.profile.UserProfileActivity"/>
