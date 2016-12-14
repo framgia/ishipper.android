@@ -1,10 +1,14 @@
 package com.framgia.ishipper.presentation.notification;
 
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
+import android.view.View;
+import android.widget.TextView;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
@@ -12,18 +16,19 @@ import com.framgia.ishipper.model.Notification;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListNotificationData;
-
+import com.framgia.ishipper.util.Const;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class NotificationActivity extends BaseToolbarActivity implements NotificationContract.View,
-        NotificationAdapter.OnItemClickListener {
+public class NotificationActivity extends BaseToolbarActivity
+        implements NotificationContract.View, NotificationAdapter.OnItemClickListener {
     private static final String TAG = "NotificationActivity";
 
     @BindView(R.id.rvListNotification) RecyclerView rvListNotification;
     @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.tv_new_notification) TextView mTvNewNotification;
 
     private NotificationAdapter mAdapter;
     private List<Notification> mNotificationList = new ArrayList<>();
@@ -31,8 +36,17 @@ public class NotificationActivity extends BaseToolbarActivity implements Notific
     private LinearLayoutManager mLayoutManager;
     private int mVisibleThreshold = 1;
     private boolean mIsLoading;
-    private int mPage = 0;
+    private int mPage;
     private NotificationContract.Presenter mPresenter;
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (mPresenter != null) {
+                addNewNotification(intent);
+            }
+        }
+    };
 
     @Override
     public Toolbar getToolbar() {
@@ -63,6 +77,11 @@ public class NotificationActivity extends BaseToolbarActivity implements Notific
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager =
+                        ((LinearLayoutManager) rvListNotification.getLayoutManager());
+                if (layoutManager.findFirstVisibleItemPosition() == Const.HEAD_LIST) {
+                    mTvNewNotification.setVisibility(View.GONE);
+                }
                 int totalItemCount = mLayoutManager.getItemCount();
                 int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
                 if (!mIsLoading && totalItemCount <= (lastVisibleItem + mVisibleThreshold)) {
@@ -71,6 +90,7 @@ public class NotificationActivity extends BaseToolbarActivity implements Notific
                 }
             }
         });
+        registerReceiver(mReceiver, new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
     }
 
     @Override
@@ -83,7 +103,39 @@ public class NotificationActivity extends BaseToolbarActivity implements Notific
     }
 
     @Override
+    public void addNewNotification(Intent intent) {
+        if (intent == null) return;
+        LinearLayoutManager layoutManager =
+                ((LinearLayoutManager) rvListNotification.getLayoutManager());
+        if (layoutManager.findFirstVisibleItemPosition() == Const.HEAD_LIST ||
+            mNotificationList.size() == Const.ZERO) {
+            layoutManager.scrollToPosition(Const.HEAD_LIST);
+        } else {
+            mTvNewNotification.setVisibility(View.VISIBLE);
+        }
+        Notification notification = new Notification();
+        notification.setContent(intent.getStringExtra(Const.KEY_BODY));
+        notification.setTimePost(intent.getStringExtra(Const.KEY_TITLE));
+        mNotificationList.add(Const.HEAD_LIST, notification);
+        mAdapter.notifyItemInserted(Const.HEAD_LIST);
+    }
+
+    @OnClick(R.id.tv_new_notification)
+    public void onClick(View view) {
+        LinearLayoutManager layoutManager =
+                ((LinearLayoutManager) rvListNotification.getLayoutManager());
+        layoutManager.scrollToPosition(Const.HEAD_LIST);
+        view.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onClick(Notification notification) {
         //TODO: onclick Notification
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
     }
 }

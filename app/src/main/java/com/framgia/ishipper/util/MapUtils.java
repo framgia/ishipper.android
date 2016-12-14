@@ -69,14 +69,15 @@ public class MapUtils {
         googleMap.animateCamera(cu);
     }
 
-    public static void updateZoomMap(GoogleMap googleMap, List<LatLng> points) {
+    public static void updateZoomMap(GoogleMap googleMap, int width, int height, List<LatLng>
+            points) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng item : points) {
             builder.include(item);
         }
         LatLngBounds bounds = builder.build();
-
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, MAP_PADDING);
+        int padding = (int) (width * MAP_PADDING_PERCENT);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         googleMap.animateCamera(cu);
     }
 
