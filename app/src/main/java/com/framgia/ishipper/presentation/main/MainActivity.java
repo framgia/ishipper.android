@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.main;
 
 import android.content.Intent;
 import android.os.Build;
@@ -30,12 +30,12 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
 import com.framgia.ishipper.presentation.favorite.FavoriteListFragment;
 import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
+import com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateOrderActivity;
 import com.framgia.ishipper.presentation.manager_invoice.ShipperInvoiceManagerFragment;
 import com.framgia.ishipper.presentation.manager_invoice.ShopInvoiceManagerFragment;
 import com.framgia.ishipper.presentation.notification.NotificationActivity;
 import com.framgia.ishipper.presentation.profile.UserProfileActivity;
 import com.framgia.ishipper.presentation.settings.SettingActivity;
-import com.framgia.ishipper.ui.fragment.MainContentFragment;
 import com.framgia.ishipper.ui.listener.OnInvoiceUpdate;
 import com.framgia.ishipper.ui.listener.OnShipperUpdateListener;
 import com.framgia.ishipper.ui.listener.SocketCallback;

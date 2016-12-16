@@ -1,4 +1,4 @@
-package com.framgia.ishipper.presentation.invoice.create_invoice;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -16,7 +16,7 @@ import com.framgia.ishipper.util.TextFormatUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.framgia.ishipper.ui.activity.ShopCreateOrderActivity.sInvoice;
+import static com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateOrderActivity.sInvoice;
 
 public class ShopCreateOrderStep3Fragment extends BaseFragment implements ShopCreateOrderStep3Contract.View {
 

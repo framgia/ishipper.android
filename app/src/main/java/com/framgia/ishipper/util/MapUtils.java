@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
-import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.presentation.main.MainActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -1,4 +1,4 @@
-package com.framgia.ishipper.presentation.invoice.create_invoice;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.content.Context;
 import android.location.Location;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
-import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
 import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;

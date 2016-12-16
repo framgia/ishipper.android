@@ -87,6 +87,8 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
 
                     @Override
                     public void onFailure(int code, String message) {
+                        mView.removeLoading();
+                        mFragment.showUserMessage(message);
                         Log.d(TAG, message);
                     }
                 });

@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.fragment;
+package com.framgia.ishipper.presentation.main;
 
 import android.content.Intent;
 import android.os.Bundle;

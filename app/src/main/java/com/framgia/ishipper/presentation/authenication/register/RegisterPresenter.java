@@ -8,7 +8,6 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.SignUpData;
-import com.framgia.ishipper.ui.fragment.ValidatePinFragment;
 import java.util.HashMap;
 import java.util.Map;
 

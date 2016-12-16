@@ -20,7 +20,7 @@ import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.net.data.ReportUserData;
 import com.framgia.ishipper.net.data.ShowInvoiceData;
 import com.framgia.ishipper.presentation.route.RouteActivity;
-import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.presentation.main.MainActivity;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.CancelDialog;
 
