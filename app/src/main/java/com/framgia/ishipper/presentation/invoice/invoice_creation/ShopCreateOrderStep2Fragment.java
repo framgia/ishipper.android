@@ -1,4 +1,4 @@
-package com.framgia.ishipper.presentation.invoice.create_invoice;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.view.View;
 import android.widget.Button;

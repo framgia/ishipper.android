@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.activity;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.presentation.invoice.create_invoice.ShopCreateOrderStep1Fragment;
 
 import butterknife.BindView;
 

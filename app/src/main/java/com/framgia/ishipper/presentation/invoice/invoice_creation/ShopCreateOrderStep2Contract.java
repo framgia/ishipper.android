@@ -1,4 +1,4 @@
-package com.framgia.ishipper.presentation.invoice.create_invoice;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 /**
  * Created by framgia on 18/11/2016.

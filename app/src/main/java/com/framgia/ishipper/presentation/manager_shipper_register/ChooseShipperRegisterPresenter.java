@@ -10,7 +10,7 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListShipperData;
-import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.presentation.main.MainActivity;
 import com.framgia.ishipper.util.Const;
 import com.google.gson.Gson;
 

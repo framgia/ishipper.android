@@ -1,4 +1,4 @@
-package com.framgia.ishipper.ui.fragment;
+package com.framgia.ishipper.presentation.authenication.register;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -19,7 +19,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.SignUpData;
 import com.framgia.ishipper.presentation.authenication.update_pass.ResetPasswordNewFragment;
-import com.framgia.ishipper.ui.activity.MainActivity;
+import com.framgia.ishipper.presentation.main.MainActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.InputValidate;
 

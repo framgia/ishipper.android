@@ -1,4 +1,4 @@
-package com.framgia.ishipper.presentation.invoice.create_invoice;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.app.TimePickerDialog;
 import android.text.TextUtils;
@@ -6,7 +6,6 @@ import android.widget.TimePicker;
 
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
 import com.framgia.ishipper.util.NumberFormatTextWatcher;
 
 import java.util.Calendar;

@@ -1,4 +1,4 @@
-package com.framgia.ishipper.presentation.invoice.create_invoice;
+package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -8,7 +8,6 @@ import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
-import com.framgia.ishipper.ui.activity.ShopCreateOrderActivity;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.maps.model.LatLng;

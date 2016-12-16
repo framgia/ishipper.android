@@ -16,7 +16,6 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.ui.activity.MainActivity;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.framgia.ishipper.ui.listener.OnShipperUpdateListener;
 import com.framgia.ishipper.util.CommonUtils;
@@ -279,7 +278,7 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
 
     @Override
     public void onAddressChange(String string) {
-        mTvSearchArea.setText(string);
+        if (mTvSearchArea != null) mTvSearchArea.setText(string);
     }
 
 
