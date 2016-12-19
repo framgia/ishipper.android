@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
@@ -17,8 +19,10 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.util.Const;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -130,7 +134,11 @@ public class NotificationActivity extends BaseToolbarActivity
 
     @Override
     public void onClick(Notification notification) {
-        //TODO: onclick Notification
+        Intent intent = new Intent(notification.getAction());
+        Bundle bundle= new Bundle();
+        bundle.putString(Const.KEY_INVOICE_ID, notification.getInvoice().getStringId());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.framgia.ishipper.presentation.invoice.detail;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -176,9 +177,11 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     public void initViews() {
         mPresenter = new InvoiceDetailPresenter(this, this);
         mCurrentUser = Config.getInstance().getUserInfo(this);
-        Bundle bundle = getIntent().getExtras();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
         if (bundle == null) return;
         String invoiceId;
+
         if (CommonUtils.isOpenFromNoti(this)) {
             // Explicit Intent
             invoiceId = bundle.getString(Const.FirebaseData.INVOICE_ID);
@@ -186,7 +189,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             mPresenter.readNotification(notiId);
         } else {
             // Implicit Intent
-            invoiceId = getIntent().getExtras().getString(KEY_INVOICE_ID);
+            invoiceId = bundle.getString(KEY_INVOICE_ID);
         }
 
         mPresenter.getInvoiceDetail(invoiceId);
