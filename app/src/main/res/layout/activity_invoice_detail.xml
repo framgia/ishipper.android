@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".presentation.invoice.detail.InvoiceDetailActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                         android:layout_centerVertical="true"
                         android:text="@string/all_invoice_status"
                         android:textSize="@dimen/text_size_title"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_shipping_order_status"
@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:drawableLeft="@drawable/ic_car_green"
-                        android:drawablePadding="10dp"/>
+                        android:drawablePadding="10dp" />
 
                 </RelativeLayout>
 
@@ -76,7 +76,7 @@
                             android:layout_marginBottom="@dimen/text_view_margin"
                             android:text="@string/detail_path"
                             android:textSize="@dimen/text_size_title"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/btn_detail_show_path"
@@ -87,7 +87,7 @@
                             android:layout_centerVertical="true"
                             android:padding="4dp"
                             android:text="@string/all_show_path"
-                            android:textSize="@dimen/text_size_small"/>
+                            android:textSize="@dimen/text_size_small" />
 
                     </RelativeLayout>
 
@@ -118,7 +118,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:paddingTop="5dp"
-                                    android:textSize="22sp"/>
+                                    android:textSize="22sp" />
 
                                 <ImageView
                                     android:id="@+id/iv_detail_promotion_label"
@@ -127,7 +127,7 @@
                                     android:layout_marginLeft="7dp"
                                     android:layout_marginTop="2dp"
                                     android:src="@drawable/ic_promotion_label"
-                                    android:visibility="gone"/>
+                                    android:visibility="gone" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -137,7 +137,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/all_margin_medium"
                             android:layout_marginRight="@dimen/all_margin_medium"
-                            android:background="@color/menu_divider"/>
+                            android:background="@color/menu_divider" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -161,15 +161,15 @@
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:scaleType="fitCenter"
                                         android:layout_marginTop="@dimen/all_margin_small"
-                                        android:src="@drawable/ic_detail_from"/>
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_detail_from" />
 
                                     <View
                                         android:layout_width="2dp"
                                         android:layout_height="0dp"
                                         android:layout_weight="1.0"
-                                        android:background="@drawable/dot_repeat_img"/>
+                                        android:background="@drawable/dot_repeat_img" />
                                 </LinearLayout>
 
                                 <TextView
@@ -181,7 +181,7 @@
                                     android:ellipsize="end"
                                     android:lines="1"
                                     android:textColor="@color/fiveship_common_text"
-                                    android:textSize="@dimen/text_size_content"/>
+                                    android:textSize="@dimen/text_size_content" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -194,18 +194,18 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:scaleType="fitCenter"
                                     android:layout_marginTop="@dimen/_3dp"
-                                    android:src="@drawable/ic_detail_to"/>
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_detail_to" />
 
                                 <TextView
-                                    android:layout_gravity="center_vertical"
                                     android:id="@+id/tv_detail_end"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="@dimen/all_margin_medium"
                                     android:ellipsize="end"
-                                    android:lines="1"/>
+                                    android:lines="1" />
 
                             </LinearLayout>
 
@@ -218,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/text_view_margin"
                         android:text="Bạn có 2 đơn hàng cùng đường"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -240,24 +240,28 @@
                         android:layout_marginBottom="@dimen/text_view_margin"
                         android:text="@string/detail_order_info"
                         android:textSize="@dimen/text_size_title"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-                            android:text="@string/all_order_name"/>
+                            android:layout_weight="3"
+                            android:text="@string/all_order_name" />
 
                         <TextView
                             android:id="@+id/tv_detail_order_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
+                            android:layout_weight="1"
+                            android:gravity="right" />
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -267,13 +271,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-                            android:text="@string/all_ship_price"/>
+                            android:text="@string/all_ship_price" />
 
                         <TextView
                             android:id="@+id/tv_detail_ship_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"/>
+                            android:layout_alignParentRight="true" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -284,13 +288,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-                            android:text="@string/all_order_price"/>
+                            android:text="@string/all_order_price" />
 
                         <TextView
                             android:id="@+id/tv_detail_order_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"/>
+                            android:layout_alignParentRight="true" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -301,13 +305,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-                            android:text="@string/all_ship_time"/>
+                            android:text="@string/all_ship_time" />
 
                         <TextView
                             android:id="@+id/tv_detail_ship_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"/>
+                            android:layout_alignParentRight="true" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -319,13 +323,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
 
-                            android:text="@string/all_note"/>
+                            android:text="@string/all_note" />
 
                         <TextView
                             android:id="@+id/tv_detail_note"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"/>
+                            android:layout_alignParentRight="true" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -340,7 +344,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="bottom"
-                            android:text="@string/detail_history"/>
+                            android:text="@string/detail_history" />
 
                         <ListView
                             android:id="@+id/lv_detail_history"
@@ -348,13 +352,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:divider="@color/transparent"
-                            android:scrollbars="none"/>
+                            android:scrollbars="none" />
 
                         <ImageView
                             android:id="@+id/iv_detail_expand"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_expand_more_32dp"/>
+                            android:src="@drawable/ic_expand_more_32dp" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -378,7 +382,7 @@
                         android:layout_marginBottom="@dimen/text_view_margin"
                         android:text="@string/detail_shop_infor"
                         android:textSize="@dimen/text_size_title"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -389,7 +393,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Rhodi Shop"/>
+                            android:text="Rhodi Shop" />
 
                         <ImageView
                             android:id="@+id/btn_detail_show_shop"
@@ -399,14 +403,14 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:src="@drawable/ic_info_grey_24dp"
-                            android:tint="@color/grey"/>
+                            android:tint="@color/grey" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_margin="@dimen/all_margin_small"
-                        android:background="@color/back_ground_light_grey"/>
+                        android:background="@color/back_ground_light_grey" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -417,7 +421,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="01699499499"/>
+                            android:text="01699499499" />
 
                         <ImageView
                             android:id="@+id/btn_detail_shop_call"
@@ -427,7 +431,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:src="@drawable/ic_phone_grey_24dp"
-                            android:tint="@color/colorGreenDark"/>
+                            android:tint="@color/colorGreenDark" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -453,7 +457,7 @@
                         android:layout_marginBottom="@dimen/text_view_margin"
                         android:text="@string/detail_shipper_infor"
                         android:textSize="@dimen/text_size_title"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -464,7 +468,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Rhodi Shop"/>
+                            android:text="Rhodi Shop" />
 
                         <ImageView
                             android:id="@+id/btn_detail_show_shipper"
@@ -474,14 +478,14 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:src="@drawable/ic_info_grey_24dp"
-                            android:tint="@color/grey"/>
+                            android:tint="@color/grey" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_margin="@dimen/all_margin_small"
-                        android:background="@color/back_ground_light_grey"/>
+                        android:background="@color/back_ground_light_grey" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -492,7 +496,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="01699499499"/>
+                            android:text="01699499499" />
 
                         <ImageView
                             android:id="@+id/btn_detail_shipper_call"
@@ -502,7 +506,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:src="@drawable/ic_phone_grey_24dp"
-                            android:tint="@color/colorGreenDark"/>
+                            android:tint="@color/colorGreenDark" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -510,6 +514,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/layout_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/all_margin_small"
@@ -527,7 +532,7 @@
                         android:layout_marginBottom="@dimen/text_view_margin"
                         android:text="@string/detail_customer_infor"
                         android:textSize="@dimen/text_size_title"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -538,7 +543,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Rhodi Shop"/>
+                            android:text="Rhodi Shop" />
 
                         <ImageView
                             android:id="@+id/btn_detail_customer_name"
@@ -547,14 +552,14 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:src="@drawable/ic_info_grey_24dp"
-                            android:tint="@color/grey"/>
+                            android:tint="@color/grey" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_margin="@dimen/all_margin_small"
-                        android:background="@color/back_ground_light_grey"/>
+                        android:background="@color/back_ground_light_grey" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -565,7 +570,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="01699499499"/>
+                            android:text="01699499499" />
 
                         <ImageView
                             android:id="@+id/btn_detail_customer_call"
@@ -575,7 +580,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:src="@drawable/ic_phone_grey_24dp"
-                            android:tint="@color/colorGreenDark"/>
+                            android:tint="@color/colorGreenDark" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -596,17 +601,18 @@
                     android:visibility="gone">
 
                     <ImageButton
+                        android:id="@+id/btn_cancel_invoice"
                         style="@style/btn_circle_red_border"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/activity_horizontal_margin"
                         android:src="@drawable/ic_cancel"
-                        android:tint="@color/red"/>
+                        android:tint="@color/red" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/cancelled"/>
+                        android:text="@string/cancelled" />
 
                 </LinearLayout>
 
@@ -624,13 +630,13 @@
                         android:layout_margin="@dimen/activity_horizontal_margin"
                         android:src="@drawable/ic_report_white_24dp"
                         android:tint="@color/grey"
-                        android:visibility="visible"/>
+                        android:visibility="visible" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/report"
-                        android:textAllCaps="true"/>
+                        android:textAllCaps="true" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -652,7 +658,7 @@
             android:background="@color/colorGreenDark"
             android:text="@string/detail_receive_order"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_detail_cancel_register_order"
@@ -662,7 +668,7 @@
             android:background="@color/colorGreenDark"
             android:text="@string/detail_cancel_register"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_finished_order"
@@ -672,7 +678,7 @@
             android:background="@color/colorGreenDark"
             android:text="@string/finish_order"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_take_order"
@@ -682,6 +688,6 @@
             android:background="@color/colorGreenDark"
             android:text="@string/order_status_take"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

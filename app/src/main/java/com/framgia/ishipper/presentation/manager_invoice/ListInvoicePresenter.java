@@ -1,9 +1,11 @@
 package com.framgia.ishipper.presentation.manager_invoice;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,25 @@ public class ListInvoicePresenter implements ListInvoiceContract.Presenter {
         params.put(APIDefinition.GetListInvoice.PARAM_STATUS, status);
         params.put(APIDefinition.GetListInvoice.PARAM_QUERY, nameSearch);
         requestInvoice(role, authenticationToken, params, callback);
+    }
+
+    @Override
+    public void cancelReceiveInvoice(final User currentUser, Invoice invoice) {
+        API.putCancelReceiveOrder(currentUser.getAuthenticationToken(), invoice.getUserInvoiceId(),
+            new API.APICallback<APIResponse<EmptyData>>() {
+            @Override
+            public void onResponse(APIResponse<EmptyData> response) {
+                mActivity.dismissDialog();
+                getInvoice(currentUser.getRole(), currentUser.getAuthenticationToken(), Invoice
+                        .STATUS_CODE_INIT, null);
+            }
+
+            @Override
+            public void onFailure(int code, String message) {
+                mActivity.dismissDialog();
+                mActivity.showUserMessage(message);
+            }
+        });
     }
 
     private void requestInvoice(String role, String authenticationToken,

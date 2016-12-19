@@ -243,6 +243,7 @@
     <string name="create_step_2_require_invoice_price">Bạn chưa nhập tiền hàng</string>
     <string name="create_step_2_require_ship_price">Bạn chưa nhập tiền ship</string>
     <string name="all_invoice_received">Đã Nhận Đơn</string>
+    <string name="invoice_status_init">Chờ shipper nhận</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

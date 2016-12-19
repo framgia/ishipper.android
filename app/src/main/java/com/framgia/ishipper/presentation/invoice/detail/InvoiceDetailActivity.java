@@ -58,6 +58,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
     @BindView(R.id.tv_shipping_order_status) TextView mTvOrderStatus;
     @BindView(R.id.layoutHistoryInvoice) View mLayoutHistoryInvoice;
+    @BindView(R.id.layout_customer) CardView mLayoutCustomer;
 
     private User mCurrentUser;
     private User mInvoiceUser;
@@ -127,6 +128,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             R.id.btn_detail_shop_call,
             R.id.btn_detail_receive_order,
             R.id.btn_detail_cancel_order,
+            R.id.btn_cancel_invoice,
             R.id.btn_detail_cancel_register_order,
             R.id.btn_report_user,
             R.id.btn_finished_order,
@@ -148,8 +150,9 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mPresenter.receiveInvoice(mInvoice.getStringId());
                 break;
             case R.id.btn_detail_cancel_order:
+            case R.id.btn_cancel_invoice:
                 if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT) {
-                    mPresenter.cancelInvoice(mInvoice.getId());
+                    mPresenter.cancelInvoice(mInvoice);
                 } else {
                     mPresenter.report(mInvoice);
                 }
@@ -204,10 +207,12 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         int statusColor;
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
-                if (Config.getInstance().isShop(this)) {
+                if (mCurrentUser.isShop()) {
                     textStatus = getString(R.string.order_shop_status_wait);
                 } else {
-                    textStatus = getString(R.string.order_status_wait);
+                    textStatus = invoice.isReceived()? getString(R.string.order_status_wait) :
+                            getString(R.string.invoice_status_init);
+                    mLayoutCustomer.setVisibility(View.GONE);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
                         R.drawable.ic_status_waiting,
@@ -217,7 +222,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 statusColor = getResources().getColor(R.color.color_status_waiting);
                 break;
             case Invoice.STATUS_CODE_WAITING:
-                if (Config.getInstance().isShop(this)) {
+                if (mCurrentUser.isShop()) {
                     textStatus = getString(R.string.order_shop_status_take);
                 } else {
                     textStatus = getString(R.string.order_status_take);
@@ -279,8 +284,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         }
         mTvOrderStatus.setText(textStatus);
         mTvOrderStatus.setTextColor(statusColor);
-        mTvOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
-                null, null, null);
+        mTvOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus, null, null, null);
     }
 
     @Override
@@ -304,11 +308,8 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         } else {
             switch (statusCode) {
                 case Invoice.STATUS_CODE_INIT:
-                    if (!mInvoice.isReceived()) {
-                        mBtnDetailReceiveOrder.setVisibility(View.VISIBLE);
-                        mBtnDetailCancelOrder.setVisibility(View.GONE);
-                    }
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnDetailReceiveOrder.setVisibility(mInvoice.isReceived()? View.GONE : View.VISIBLE);
+                    mBtnDetailCancelOrder.setVisibility(mInvoice.isReceived()? View.VISIBLE : View.GONE);
                     break;
                 case Invoice.STATUS_CODE_WAITING:
                     mBtnTakeOrder.setVisibility(View.VISIBLE);
@@ -346,7 +347,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
 
     @Override
     public void showUserData(User user) {
-        if (!user.isShop()) {
+        if (user.isShop()) {
             mCardviewDetailShopInfor.setVisibility(View.VISIBLE);
             mCardviewDetailShipperInfor.setVisibility(View.GONE);
             mTvDetailShopName.setText(user.getName());
@@ -361,5 +362,12 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             mTvDetailShipperName.setText(user.getName());
             mTvDetailShipperPhone.setText(user.getPhoneNumber());
         }
+    }
+
+    @Override
+    public void onCancelledReceiveInvoice() {
+        mBtnDetailCancelOrder.setVisibility(View.GONE);
+        mBtnDetailReceiveOrder.setVisibility(View.VISIBLE);
+        mTvOrderStatus.setText(getString(R.string.invoice_status_init));
     }
 }
