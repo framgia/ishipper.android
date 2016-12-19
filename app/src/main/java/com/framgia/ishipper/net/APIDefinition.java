@@ -8,7 +8,7 @@ import com.framgia.ishipper.common.Config;
 public class APIDefinition {
 
     //        private static final String DEV_URL = "http://ishipper-hatd.herokuapp.com";
-    private static final String DEV_URL = "http://192.168.1.11:3001/";
+    private static final String DEV_URL = "http://192.168.1.13:3001/";
     private static final String PROD_URL = "";
 
     public static final String BASE_GOOGLE_MAP_API = "https://maps.googleapis.com";
@@ -336,10 +336,10 @@ public class APIDefinition {
 
     public class UpdateReadNotification {
         public static final String PARAM_USER_TYPE = "user_type";
-        public static final String PARAM_NOTIFICATION_READ = "notifications[read]";
+        public static final String PARAM_NOTIFICATION_READ = "notification[read]";
         public static final String PARAM_NOTIFICATION_ID = "noti_id";
         public static final String PATH = "/api/{" + PARAM_USER_TYPE +
-                "}/nofitications/{" + PARAM_NOTIFICATION_ID + "}";
+                "}/notifications/{" + PARAM_NOTIFICATION_ID + "}";
     }
 
     public class GetAllNotification {
