@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class Notification {
     @SerializedName("id") private String mId;
     @SerializedName("click_action") private String mAction;
-    @SerializedName("invoice_id") private String invoiceId;
+    @SerializedName("invoice") private Invoice mInvoice;
     @SerializedName("content") private String mContent;
     @SerializedName("created_at") private String mTimePost;
     @SerializedName("owner_id") private String mOwnerId;
@@ -32,12 +32,12 @@ public class Notification {
         this.mAction = action;
     }
 
-    public String getInvoiceId() {
-        return invoiceId;
+    public Invoice getInvoice() {
+        return mInvoice;
     }
 
-    public void setInvoiceId(String invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setInvoice(Invoice invoice) {
+        mInvoice = invoice;
     }
 
     public String getContent() {
