@@ -18,6 +18,8 @@ public class InvoiceDetailContact {
         void showInvoiceData(Invoice invoice);
 
         void showUserData(User user);
+
+        void onCancelledReceiveInvoice();
     }
 
     interface Presenter {
@@ -29,7 +31,7 @@ public class InvoiceDetailContact {
 
         void report(Invoice invoice);
 
-        void cancelInvoice(int invoiceId);
+        void cancelInvoice(Invoice invoice);
 
         void takeInvoice(int invoiceId);
 

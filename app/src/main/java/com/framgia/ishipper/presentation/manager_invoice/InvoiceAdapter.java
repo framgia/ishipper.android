@@ -73,13 +73,20 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         String action = "";
         Drawable drawableStatus;
         int statusColor;
+        holder.mLayoutAction.setVisibility(View.VISIBLE);
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
                 if (Config.getInstance().isShop(mContext)) {
                     textStatus = mContext.getString(R.string.order_shop_status_wait);
                     action = mContext.getString(R.string.action_shop_wait);
                 } else {
-                    textStatus = mContext.getString(R.string.order_status_wait);
+                    if (holder.mInvoice.isReceived()) {
+                        textStatus = mContext.getString(R.string.order_status_wait);
+                        holder.mBtnCancelAcceptOrder.setVisibility(View.VISIBLE);
+                        holder.mLayoutAction.setVisibility(View.GONE);
+                    } else {
+                        textStatus = mContext.getString(R.string.invoice_status_init);
+                    }
                     action = "";
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
@@ -161,7 +168,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 statusColor = mContext.getResources().getColor(R.color.colorAccent);
                 break;
         }
-        holder.mLayoutAction.setVisibility(View.VISIBLE);
         holder.mShopOrderStatus.setVisibility(View.GONE);
         holder.mTvShippingOrderStatus.setVisibility(View.VISIBLE);
         holder.mTvShippingOrderStatus.setText(textStatus);
@@ -256,6 +262,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         @BindView(R.id.btn_action_item_order) TextView mBtnActionItemOrder;
         @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
         @BindView(R.id.tv_number_shipper_register) TextView mTvNumShipRegister;
+        @BindView(R.id.action_cancel_accept_order) TextView mBtnCancelAcceptOrder;
         @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
 
         public ViewHolder(View view) {
@@ -265,6 +272,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             mView.setOnClickListener(this);
             mBtnActionItemOrder.setOnClickListener(this);
             mBtnCancelItemOrder.setOnClickListener(this);
+            mBtnCancelAcceptOrder.setOnClickListener(this);
         }
 
         @Override
@@ -272,7 +280,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             if (view.getId() == mView.getId() && mClickViewListener != null) {
                 mClickViewListener.onclickViewListener(mInvoice);
             }
-            if (view.getId() == R.id.btn_cancel_item_order && mClickCancelListener != null) {
+            if (view.getId() == R.id.action_cancel_accept_order && mClickCancelListener != null) {
                 mClickCancelListener.onClickCancelListener(mInvoice);
             }
             if (view.getId() == R.id.btn_action_item_order && mClickActionListener != null) {

@@ -108,6 +108,7 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
                             public void onResponse(APIResponse<ShowInvoiceData> response) {
                                 dialog.dismiss();
                                 mActivity.showUserMessage(response.getMessage());
+                                getInvoiceDetail(response.getData().mInvoice.getStringId());
                             }
 
                             @Override
@@ -183,27 +184,44 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
     }
 
     @Override
-    public void cancelInvoice(final int invoiceId) {
+    public void cancelInvoice(final Invoice invoice) {
         mActivity.showDialog();
-        API.putUpdateInvoiceStatus(mCurrentUser.getRole(), String.valueOf(invoiceId),
-                mCurrentUser.getAuthenticationToken(), Invoice.STATUS_CANCEL,
-                new API.APICallback<APIResponse<InvoiceData>>() {
-                    @Override
-                    public void onResponse(APIResponse<InvoiceData> response) {
-                        mActivity.dismissDialog();
-                        mActivity.showUserMessage(response.getMessage());
-                        Intent intent = new Intent();
-                        intent.putExtra(KEY_INVOICE_ID, invoiceId);
-                        mActivity.setResult(Activity.RESULT_OK, intent);
-                        mActivity.onBackPressed();
-                    }
+        if (mCurrentUser.isShop()) {
+            API.putUpdateInvoiceStatus(mCurrentUser.getRole(), String.valueOf(invoice),
+               mCurrentUser.getAuthenticationToken(), Invoice.STATUS_CANCEL,
+               new API.APICallback<APIResponse<InvoiceData>>() {
+                   @Override
+                   public void onResponse(APIResponse<InvoiceData> response) {
+                       mActivity.dismissDialog();
+                       mActivity.showUserMessage(response.getMessage());
+                       Intent intent = new Intent();
+                       intent.putExtra(KEY_INVOICE_ID, invoice.getId());
+                       mActivity.setResult(Activity.RESULT_OK, intent);
+                       mActivity.onBackPressed();
+                   }
 
-                    @Override
-                    public void onFailure(int code, String message) {
-                        mActivity.dismissDialog();
-                        mActivity.showUserMessage(message);
-                    }
-                });
+                   @Override
+                   public void onFailure(int code, String message) {
+                       mActivity.dismissDialog();
+                       mActivity.showUserMessage(message);
+                   }
+               });
+        } else {
+            API.putCancelReceiveOrder(mCurrentUser.getAuthenticationToken(), invoice.getUserInvoiceId(),
+                                      new API.APICallback<APIResponse<EmptyData>>() {
+                @Override
+                public void onResponse(APIResponse<EmptyData> response) {
+                    mActivity.dismissDialog();
+                    mView.onCancelledReceiveInvoice();
+                }
+
+                @Override
+                public void onFailure(int code, String message) {
+                    mActivity.dismissDialog();
+                    mActivity.showUserMessage(message);
+                }
+            });
+        }
     }
 
     @Override

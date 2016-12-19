@@ -203,6 +203,11 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     }
 
     @Override
+    public void onCancelledReceiveInvoice() {
+        mInvoiceAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void notifyChangedData(OnGetInvoiceListener listener) {
         initAdapter(mContext);
         mPresenter.getInvoice(mCurrentUser.getRole(),
@@ -296,7 +301,9 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
 
     @Override
     public void onClickCancelListener(Invoice invoice) {
-        if (mOnActionClickListener != null) {
+        if (!mCurrentUser.isShop() && invoice.getStatusCode() == Invoice.STATUS_CODE_INIT) {
+            mPresenter.cancelReceiveInvoice(mCurrentUser, invoice);
+        } else if (mOnActionClickListener != null) {
             mOnActionClickListener.onClickCancel(invoice);
         }
     }
