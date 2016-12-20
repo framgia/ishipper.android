@@ -65,25 +65,25 @@ public class FilterInvoicePresenter implements FilterInvoiceContract.Presenter {
                 mView.showView(textView, seekbarFilterRadius);
                 break;
             case R.id.btn_filter_invoice:
-                LatLng currentLatLng = MapUtils.getLocationFromAddress(mActivity, startAddress);
                 Map<String, String> params = new HashMap<>();
 
                 if (mView.isVisible(seekbarFilterRadius)) {
+                    LatLng currentLatLng = MapUtils.getLocationFromAddress(mActivity, startAddress);
                     if (currentLatLng == null) {
                         mActivity.showUserMessage(
                                 mActivity.getString(R.string.activity_filter_msg_start_address));
                         return;
+                    } else {
+                        params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LAT,
+                                currentLatLng.latitude + "");
+                        params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LONG,
+                                currentLatLng.longitude + "");
+                        params.put(APIDefinition.FilterInvoice.PARAM_RADIUS,
+                                seekbarFilterRadius.getSelectedMaxValue() + "");
                     }
                 }
 
-                if (currentLatLng != null) {
-                    params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LAT,
-                            currentLatLng.latitude + "");
-                    params.put(APIDefinition.FilterInvoice.PARAM_CURRENT_LONG,
-                            currentLatLng.longitude + "");
-                    params.put(APIDefinition.FilterInvoice.PARAM_RADIUS,
-                            seekbarFilterRadius.getSelectedMaxValue() + "");
-                }
+
                 if (mView.isVisible(seekbarFilterDistance)) {
                     params.put(APIDefinition.FilterInvoice.PARAM_MIN_DISTANCE,
                             seekbarFilterDistance.getSelectedMinValue() + "");
