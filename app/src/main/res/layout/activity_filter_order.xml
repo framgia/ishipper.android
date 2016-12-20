@@ -57,6 +57,7 @@
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
                         app:activeColor="@color/colorPrimary"
+                        app:barHeight="@dimen/range_bar_height"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
                     <TextView
@@ -74,6 +75,7 @@
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
                         app:activeColor="@color/colorPrimary"
+                        app:barHeight="@dimen/range_bar_height"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
 
@@ -92,6 +94,7 @@
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
                         app:activeColor="@color/colorPrimary"
+                        app:barHeight="@dimen/range_bar_height"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
 
@@ -110,6 +113,7 @@
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
                         app:activeColor="@color/colorPrimary"
+                        app:barHeight="@dimen/range_bar_height"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
 
 
@@ -143,11 +147,16 @@
                         android:layout_marginTop="@dimen/activity_vertical_margin"
                         android:text="@string/map_start_point"/>
 
-                    <EditText
+                    <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
                         android:id="@+id/edt_address_start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_content"/>
+                        android:lines="1"
+                        android:selectAllOnFocus="true"
+                        android:textSize="@dimen/text_size_content"
+                        app:pacv_googleMapsApiKey="@string/google_maps_key"
+                        app:pacv_historyFile="@null"
+                        app:pacv_languageCode="vi"/>
 
                     <TextView
                         android:id="@+id/tv_filter_radius"
@@ -164,6 +173,7 @@
                         app:absoluteMinValue="0"
                         app:activateOnDefaultValues="true"
                         app:activeColor="@color/colorPrimary"
+                        app:barHeight="@dimen/range_bar_height"
                         app:singleThumb="true"
                         app:textAboveThumbsColor="@color/colorPrimary"/>
                 </LinearLayout>

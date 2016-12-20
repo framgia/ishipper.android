@@ -20,12 +20,12 @@ public class FilterInvoiceActivity extends BaseToolbarActivity implements Filter
     public static final String INTENT_FILTER_DATA = "INTENT_FILTER_DATA";
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.seekbar_filter_order_price) RangeSeekBar mSeekbarFilterOrderPrice;
-    @BindView(R.id.seekbar_filter_ship_price) RangeSeekBar mSeekbarFilterShipPrice;
-    @BindView(R.id.seekbar_filter_distance) RangeSeekBar mSeekbarFilterDistance;
-    @BindView(R.id.seekbar_filter_weight) RangeSeekBar mSeekbarFilterWeight;
+    @BindView(R.id.seekbar_filter_order_price) RangeSeekBar<Integer> mSeekbarFilterOrderPrice;
+    @BindView(R.id.seekbar_filter_ship_price) RangeSeekBar<Integer> mSeekbarFilterShipPrice;
+    @BindView(R.id.seekbar_filter_distance) RangeSeekBar<Integer> mSeekbarFilterDistance;
+    @BindView(R.id.seekbar_filter_weight) RangeSeekBar<Integer> mSeekbarFilterWeight;
     @BindView(R.id.edt_address_start) EditText mEdtAddressStart;
-    @BindView(R.id.seekbar_filter_radius) RangeSeekBar mSeekbarFilterRadius;
+    @BindView(R.id.seekbar_filter_radius) RangeSeekBar<Integer> mSeekbarFilterRadius;
     @BindView(R.id.btn_filter_invoice) Button mBtnFilterInvoice;
 
     private FilterInvoiceContract.Presenter mPresenter;
