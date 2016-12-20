@@ -3,11 +3,11 @@ package com.framgia.ishipper.presentation.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
-import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
@@ -15,7 +15,6 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.GetUserData;
 import com.framgia.ishipper.net.data.ShipperNearbyData;
-import com.framgia.ishipper.net.data.UpdateProfileData;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -25,6 +24,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +39,17 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
     private NearbyShipperContract.View mView;
     private Context mContext;
     private FetchAddressTask task;
+    private ArrayList<User> mShippers = new ArrayList<>();
 
     public NearbyShipperPresenter(BaseFragment fragment, NearbyShipperContract.View view) {
         mFragment = fragment;
         mView = view;
         mContext = fragment.getContext();
+    }
+
+    @Override
+    public int getListSize() {
+        return mShippers.size();
     }
 
     @Override
@@ -53,10 +59,10 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
     }
 
     @Override
-    public void getShipperInfo(User shipper) {
+    public void getShipperInfo(int post) {
         /** get shop information */
         API.getUser(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                    String.valueOf(shipper.getId()),
+                    String.valueOf(mShippers.get(post).getId()),
                     new API.APICallback<APIResponse<GetUserData>>() {
                         @Override
                         public void onResponse(APIResponse<GetUserData> response) {
@@ -104,7 +110,25 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
                              userParams, new API.APICallback<APIResponse<ShipperNearbyData>>() {
                     @Override
                     public void onResponse(APIResponse<ShipperNearbyData> response) {
-                        mView.onGetShipperNearbyComplete(response.getData().getUsers());
+                        ArrayList<User> lastUpdateShippers = (ArrayList<User>) response.getData().getUsers();
+                        // init common list invoices
+                        ArrayList<User> commonShippers = new ArrayList<>(mShippers);
+                        // get common invoices between previous list invoices and new update invoices
+                        commonShippers.retainAll(lastUpdateShippers);
+                        // init list invoices need to be removed
+                        ArrayList<User> removeShippers = new ArrayList<>(mShippers);
+                        // init list invoices need to be added
+                        ArrayList<User> addShippers = new ArrayList<>(lastUpdateShippers);
+                        // get invoices need to be added
+                        addShippers.removeAll(commonShippers);
+                        // get invoices need to be removed
+                        removeShippers.removeAll(commonShippers);
+                        mView.addListMarker(addShippers);
+                        mView.removeListMarker(removeShippers);
+                        // update invoices
+                        mShippers.clear();
+                        mShippers.addAll(lastUpdateShippers);
+//                        mView.onGetShipperNearbyComplete(mShippers);
                     }
 
                     @Override
@@ -123,34 +147,34 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
 
     @Override
     public void addShipper(
-            User user, ArrayList<User> shipperList, HashMap<Integer, Marker> userMap) {
-        LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
+            User shipper, HashMap<Marker, User> shipperMap) {
+        LatLng latLng = new LatLng(shipper.getLatitude(), shipper.getLongitude());
         final Marker marker = mView.addMark(latLng);
         MapUtils.setAnimatedInMarker(marker);
-        if (! userMap.containsKey(Integer.valueOf(user.getId()))) {
-            shipperList.add(user);
+        if (! shipperMap.containsKey(Integer.valueOf(shipper.getId()))) {
+            mShippers.add(shipper);
         }
-        userMap.put(Integer.valueOf(user.getId()), marker);
+        shipperMap.put(marker, shipper);
     }
 
     @Override
     public void removeShipper(
-            User user, ArrayList<User> shipperList, HashMap<Integer, Marker> userMap) {
-        for (User shipper : shipperList) {
-            if (shipper.getId().equals(user.getId())) {
+            User mShipper, HashMap<Marker, User> shipperMap) {
+        for (User shipper : mShippers) {
+            if (shipper.getId().equals(mShipper.getId())) {
                 /**
                  *  Find shipper on Hashmap and remove it
                  */
-                for (Map.Entry<Integer, Marker> entry : userMap.entrySet()) {
-                    int key = entry.getKey();
-                    Marker value = entry.getValue();
-                    if (key == Integer.valueOf(user.getId())) {
-                        MapUtils.setAnimatedOutMarker(value);
-                        userMap.remove(key);
+                for (Map.Entry<Marker, User> entry : shipperMap.entrySet()) {
+                    Marker key = entry.getKey();
+                    User value = entry.getValue();
+                    if (value.getId().equals(mShipper.getId())) {
+                        MapUtils.setAnimatedOutMarker(key);
+                        shipperMap.remove(key);
                         break;
                     }
                 }
-                shipperList.remove(shipper);
+                mShippers.remove(shipper);
                 break;
             }
         }

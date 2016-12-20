@@ -3,11 +3,9 @@ package com.framgia.ishipper.presentation.main;
 import android.content.Intent;
 
 import com.framgia.ishipper.model.User;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,22 +13,26 @@ import java.util.List;
  * Created by HungNT on 11/28/16.
  */
 
-public class NearbyShipperContract {
+public interface NearbyShipperContract {
     interface View {
 
         void onSearchAreaComplete(CharSequence name, LatLng latLng);
 
-        void onGetShipperNearbyComplete(List<User> users);
-
         void onAddressChange(String string);
+
+        void addListMarker(List<User> shipperList);
+
+        void removeListMarker(List<User> shipperList);
 
         Marker addMark(LatLng latLng);
     }
 
     interface Presenter {
+        int getListSize();
+
         void getPlace(Intent place);
 
-        void getShipperInfo(User shipper);
+        void getShipperInfo(int pos);
 
         void startSearchPlace();
 
@@ -38,9 +40,9 @@ public class NearbyShipperContract {
 
         void getAddressFromLatLng(LatLng latLng);
 
-        void addShipper(User user, ArrayList<User> shipperList, HashMap<Integer, Marker> userMap);
+        void addShipper(User user, HashMap<Marker, User> shipperMap);
 
-        void removeShipper(User user, ArrayList<User> shipperList, HashMap<Integer, Marker> userMap);
+        void removeShipper(User user, HashMap<Marker, User> shipperMap);
 
         void updateCurrentLocation(User currentUser);
     }

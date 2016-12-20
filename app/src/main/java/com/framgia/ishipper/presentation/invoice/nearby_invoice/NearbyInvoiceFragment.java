@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
 import com.directions.route.Route;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
@@ -69,10 +70,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -119,7 +122,7 @@ public class NearbyInvoiceFragment extends BaseFragment
     private Invoice mInvoice;
     private FetchAddressTask mTask;
     private ArrayList<Invoice> mInvoices = new ArrayList<>();
-    private HashMap<Marker, Invoice> mHashMap = new HashMap<>();
+    private HashMap<Marker, Invoice> mInvoiceMap = new HashMap<>();
     private boolean mAutoRefresh = true;
     private int mRadius;
     private NearbyInvoiceContract.Presenter mPresenter;
@@ -340,11 +343,11 @@ public class NearbyInvoiceFragment extends BaseFragment
     @Override
     public void removeListMarker(List<Invoice> invoiceList) {
         for (Invoice invoice : invoiceList) {
-            for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
+            for (Map.Entry<Marker, Invoice> entry : mInvoiceMap.entrySet()) {
                 Marker key = entry.getKey();
                 Invoice value = entry.getValue();
                 if (value.getId() == invoice.getId()) {
-                    mHashMap.remove(key);
+                    mInvoiceMap.remove(key);
                     key.remove();
                     break;
                 }
@@ -364,8 +367,8 @@ public class NearbyInvoiceFragment extends BaseFragment
                         .icon(BitmapDescriptorFactory.fromResource(markerResId)));
         MapUtils.setAnimatedInMarker(marker);
 
-        /** save position of invoice with marker id to hashmap */
-        mHashMap.put(marker, invoice);
+        /** save invoice with marker to hashmap */
+        mInvoiceMap.put(marker, invoice);
     }
 
     private Point getConfigSizeMap() {
@@ -418,11 +421,11 @@ public class NearbyInvoiceFragment extends BaseFragment
             @Override
             public boolean onMarkerClick(Marker marker) {
                 // Check if marker is not in list of marker invoices, don't need to do anything
-                if (!mHashMap.containsKey(marker)) {
+                if (!mInvoiceMap.containsKey(marker)) {
                     return false;
                 }
                 switchAutoRefresh(false);
-                mInvoice = mHashMap.get(marker);
+                mInvoice = mInvoiceMap.get(marker);
                 showInvoiceDetailWindow(mInvoice);
                 removeRoute();
 
@@ -507,7 +510,7 @@ public class NearbyInvoiceFragment extends BaseFragment
                     R.drawable.ic_marker_shop;
             if (marker != null) {
                 marker.setIcon(BitmapDescriptorFactory.fromResource(markerResId));
-                mHashMap.get(marker).setUserInvoiceId(userInvoiceId);
+                mInvoiceMap.get(marker).setUserInvoiceId(userInvoiceId);
             }
         }
     }
@@ -566,14 +569,14 @@ public class NearbyInvoiceFragment extends BaseFragment
                 Marker marker = findMarkerByInvoice(invoice);
                 if (marker != null) {
                     MapUtils.setAnimatedOutMarker(marker);
-                    mHashMap.remove(marker);
+                    mInvoiceMap.remove(marker);
                 }
             }
         });
     }
 
     private Marker findMarkerByInvoice(Invoice invoice) {
-        for (Map.Entry<Marker, Invoice> entry : mHashMap.entrySet()) {
+        for (Map.Entry<Marker, Invoice> entry : mInvoiceMap.entrySet()) {
             final Marker key = entry.getKey();
             Invoice value = entry.getValue();
             if (value.getId() == invoice.getId()) {

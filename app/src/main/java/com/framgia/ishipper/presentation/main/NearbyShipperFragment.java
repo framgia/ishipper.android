@@ -39,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,8 +55,7 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private GoogleMap mGoogleMap;
-    private ArrayList<User> shipperList = new ArrayList<>();
-    private HashMap<Integer, Marker> mUserMap = new HashMap<>();
+    private HashMap<Marker, User> mShipperMap = new HashMap<>();
     private SupportMapFragment mMapFragment;
     private User mCurrentUser;
     private Context mContext;
@@ -247,10 +245,10 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
             public boolean onMarkerClick(Marker marker) {
                 String id = marker.getId();
                 int pos = Integer.parseInt(id.replace("m", ""));
-                if (pos >= shipperList.size()) {
+                if (pos >= mPresenter.getListSize()) {
                     return false;
                 }
-                mPresenter.getShipperInfo(shipperList.get(pos));
+                mPresenter.getShipperInfo(pos);
                 return true;
             }
         });
@@ -269,46 +267,51 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     }
 
     @Override
-    public void onGetShipperNearbyComplete(List<User> users) {
-        mGoogleMap.clear();
-        for (User user : users) {
-            mPresenter.addShipper(user, shipperList, mUserMap);
-        }
-    }
-
-    @Override
     public void onAddressChange(String string) {
         if (mTvSearchArea != null) mTvSearchArea.setText(string);
     }
 
+    @Override
+    public void addListMarker(List<User> shipperList) {
+        for (User shipper : shipperList) {
+            mPresenter.addShipper(shipper, mShipperMap);
+        }
+    }
+
+    @Override
+    public void removeListMarker(List<User> shipperList) {
+        for (User shipper : shipperList) {
+            mPresenter.removeShipper(shipper, mShipperMap);
+        }
+    }
 
     @Override
     public Marker addMark(LatLng latLng) {
         return mGoogleMap.addMarker(new MarkerOptions()
-                   .position(latLng)
-                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
     }
 
 
     @Override
-    public void onShipperOnline(final User user) {
-        if (user == null) return;
+    public void onShipperOnline(final User shipper) {
+        if (shipper == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mPresenter.addShipper(user, shipperList, mUserMap);
-                }
-            });
+                mPresenter.addShipper(shipper, mShipperMap);
+            }
+        });
     }
 
     @Override
-    public void onShipperOffline(final User user) {
-        if (user == null) return;
+    public void onShipperOffline(final User shipper) {
+        if (shipper == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mPresenter.removeShipper(user, shipperList, mUserMap);
-                }
-            });
+                mPresenter.removeShipper(shipper, mShipperMap);
+            }
+        });
     }
 }
