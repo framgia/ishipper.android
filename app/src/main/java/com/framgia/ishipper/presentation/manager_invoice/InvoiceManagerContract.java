@@ -28,7 +28,5 @@ public interface InvoiceManagerContract {
         void actionFinishInvoice(Invoice invoice);
 
         void startDetailInvoiceActivity(Invoice invoice);
-
-        void startListShipperRegActivity(Invoice invoice);
     }
 }

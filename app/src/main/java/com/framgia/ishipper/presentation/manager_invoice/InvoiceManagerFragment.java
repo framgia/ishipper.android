@@ -135,9 +135,6 @@ public class InvoiceManagerFragment extends BaseFragment implements
     @Override
     public void onClickAction(final Invoice invoice) {
         switch (invoice.getStatusCode()) {
-            case Invoice.STATUS_CODE_INIT:
-                mPresenter.startListShipperRegActivity(invoice);
-                break;
             case Invoice.STATUS_CODE_WAITING:
                 mPresenter.actionTakeInvoice(invoice);
                 break;
@@ -176,7 +173,6 @@ public class InvoiceManagerFragment extends BaseFragment implements
             }
             switch (requestCode) {
                 case Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER:
-                    notifyChangeTab(Invoice.STATUS_CODE_INIT);
                     notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
                     break;
                 case InvoiceDetailActivity.REQUEST_INVOICE_ID:

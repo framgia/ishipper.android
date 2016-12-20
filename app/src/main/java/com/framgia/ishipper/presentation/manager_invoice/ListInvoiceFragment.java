@@ -1,5 +1,6 @@
 package com.framgia.ishipper.presentation.manager_invoice;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.util.Const;
 import com.google.gson.Gson;
 
@@ -195,6 +198,15 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK || data == null) return;
+        Fragment fragment = getFragmentManager().findFragmentByTag(InvoiceManagerFragment.class.getName());
+        if (fragment != null) fragment.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER) notifyChangedData(null);
+    }
+
+    @Override
     public void addListInvoice(List<Invoice> invoiceList) {
         mInvoiceList.clear();
         mInvoiceList.addAll(invoiceList);
@@ -311,7 +323,11 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     @Override
     public void onClickActionListener(Invoice invoice) {
         if (mOnActionClickListener != null) {
-            mOnActionClickListener.onClickAction(invoice);
+            if (invoice.getStatusCode() == Invoice.STATUS_CODE_INIT) {
+                mPresenter.startListShipperRegActivity(invoice);
+            } else {
+                mOnActionClickListener.onClickAction(invoice);
+            }
         }
     }
 

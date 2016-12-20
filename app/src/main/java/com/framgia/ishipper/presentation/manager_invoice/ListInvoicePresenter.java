@@ -1,5 +1,7 @@
 package com.framgia.ishipper.presentation.manager_invoice;
+import android.content.Intent;
 import com.framgia.ishipper.base.BaseActivity;
+import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -7,6 +9,8 @@ import com.framgia.ishipper.net.APIDefinition;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListInvoiceData;
+import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
+import com.framgia.ishipper.util.Const;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +22,13 @@ public class ListInvoicePresenter implements ListInvoiceContract.Presenter {
 
     private BaseActivity mActivity;
     private ListInvoiceContract.View mView;
+    private BaseFragment mFragment;
 
     public ListInvoicePresenter(
             BaseActivity activity, ListInvoiceContract.View view) {
         mActivity = activity;
         mView = view;
+        if (view instanceof BaseFragment) mFragment = (BaseFragment) view;
     }
 
     @Override
@@ -83,5 +89,12 @@ public class ListInvoicePresenter implements ListInvoiceContract.Presenter {
                                mView.dismissLoading();
                            }
                        });
+    }
+
+    @Override
+    public void startListShipperRegActivity(Invoice invoice) {
+        Intent intent = new Intent(mActivity, ChooseShipperRegisterActivity.class);
+        intent.putExtra(Const.KEY_INVOICE_ID, invoice.getStringId());
+        mFragment.startActivityForResult(intent, Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER);
     }
 }
