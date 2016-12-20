@@ -111,4 +111,8 @@
     <dimen name="all_divider_width">0.5dp</dimen>
     <dimen name="fragment_create_1_dialog_loading_size">25dp</dimen>
     <dimen name="range_bar_height">1.5dp</dimen>
+    <dimen name="img_collapse_item_invoice">30dp</dimen>
+    <dimen name="item_invoice_shipping_price_width">65dp</dimen>
+    <dimen name="view_directory_width">3dp</dimen>
+    <dimen name="all_margin_tiny">1dp</dimen>
 </resources>

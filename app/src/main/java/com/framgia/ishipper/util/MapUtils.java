@@ -3,6 +3,7 @@ package com.framgia.ishipper.util;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -14,12 +15,15 @@ import com.framgia.ishipper.presentation.main.MainActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,6 +81,7 @@ public class MapUtils {
         }
         LatLngBounds bounds = builder.build();
         int padding = (int) (width * MAP_PADDING_PERCENT);
+
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         googleMap.animateCamera(cu);
     }

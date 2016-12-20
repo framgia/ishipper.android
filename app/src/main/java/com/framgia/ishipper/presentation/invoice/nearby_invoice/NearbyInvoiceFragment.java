@@ -24,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -95,7 +97,7 @@ public class NearbyInvoiceFragment extends BaseFragment
     @BindView(R.id.tv_item_order_price) TextView mTvNearbyOrderPrice;
     @BindView(R.id.btn_item_order_show_path) TextView mBtnNearbyShowPath;
     @BindView(R.id.btn_item_order_register_order) TextView mBtnNearbyReceiveOrder;
-    @BindView(R.id.window_invoice_detail) RelativeLayout mRlOrderDetail;
+    @BindView(R.id.layout_invoice_detail) RelativeLayout mRlOrderDetail;
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
     @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
     @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
@@ -108,6 +110,9 @@ public class NearbyInvoiceFragment extends BaseFragment
     @BindView(R.id.action_cancel_accept_order) View mBtnCancelAcceptOrder;
     @BindView(R.id.tv_empty) View mLayoutEmpty;
     @BindView(R.id.layout_refresh) SwipeRefreshLayout mLayoutRefresh;
+    @BindView(R.id.rl_search_view) LinearLayout mLayoutSearch;
+    @BindView(R.id.layout_expand_item) LinearLayout mLayoutExpandItem;
+    @BindView(R.id.img_collapse_item_invoice) ImageView mImageCollapseItemInvoice;
 
     private Dialog mDialog;
 
@@ -128,6 +133,7 @@ public class NearbyInvoiceFragment extends BaseFragment
     private NearbyInvoiceContract.Presenter mPresenter;
     private AlertDialog mReceiveDialog;
     private NewInvoiceAdapter mAdapter;
+    private boolean mIsCollapse;
 
     public static NearbyInvoiceFragment newInstance() {
         return new NearbyInvoiceFragment();
@@ -374,11 +380,7 @@ public class NearbyInvoiceFragment extends BaseFragment
     private Point getConfigSizeMap() {
         int widthMap = mMapFragment.getView().getWidth();
         int heightMap;
-        if (mRlOrderDetail.getVisibility() == View.VISIBLE) {
-            heightMap = mMapFragment.getView().getHeight() + 2 * mRlOrderDetail.getHeight();
-        } else {
-            heightMap = mMapFragment.getView().getHeight();
-        }
+        heightMap = mMapFragment.getView().getHeight();
         return new Point(widthMap, heightMap);
     }
 
@@ -426,13 +428,13 @@ public class NearbyInvoiceFragment extends BaseFragment
                 }
                 switchAutoRefresh(false);
                 mInvoice = mInvoiceMap.get(marker);
-                showInvoiceDetailWindow(mInvoice);
                 removeRoute();
-
+                hideSearchArea();
                 mMakerEndOrder = mGoogleMap.addMarker(new MarkerOptions().position(
                         new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish())));
                 mPresenter.getRoute(new LatLng(mInvoice.getLatStart(), mInvoice.getLngStart()),
                                     new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish()));
+                showInvoiceDetailWindow(mInvoice);
                 return true;
             }
         });
@@ -440,7 +442,8 @@ public class NearbyInvoiceFragment extends BaseFragment
             @Override
             public void onMapClick(LatLng latLng) {
                 switchAutoRefresh(true);
-                mRlOrderDetail.setVisibility(View.GONE);
+                showSearchArea();
+                hideInvoiceDetailWindow();
                 removeRoute();
             }
         });
@@ -453,8 +456,10 @@ public class NearbyInvoiceFragment extends BaseFragment
         }
     }
 
-    private void showInvoiceDetailWindow(Invoice invoice) {
+    @Override
+    public void showInvoiceDetailWindow(Invoice invoice) {
         mRlOrderDetail.setVisibility(View.VISIBLE);
+        mImageCollapseItemInvoice.setVisibility(View.VISIBLE);
         User mUser = invoice.getUser();
         if (invoice.isReceived()) {
             mBtnCancelAcceptOrder.setVisibility(View.VISIBLE);
@@ -473,6 +478,12 @@ public class NearbyInvoiceFragment extends BaseFragment
         mTvNearbyShipTime.setText(invoice.getDeliveryTime());
         mTvNearbyShipPrice.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
         mTvNearbyOrderPrice.setText(TextFormatUtils.formatPrice(invoice.getPrice()));
+    }
+
+    @Override
+    public void hideInvoiceDetailWindow() {
+        if (mRlOrderDetail != null) mRlOrderDetail.setVisibility(View.GONE);
+        mImageCollapseItemInvoice.setVisibility(View.GONE);
     }
 
     @Override
@@ -519,6 +530,19 @@ public class NearbyInvoiceFragment extends BaseFragment
     public void removeLoading() {
         if (mLayoutRefresh != null && mLayoutRefresh.isRefreshing()) {
             mLayoutRefresh.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void hideSearchArea() {
+        if (mLayoutSearch != null && mLayoutSearch.getVisibility() == View.VISIBLE)
+            mLayoutSearch.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showSearchArea() {
+        if (mLayoutSearch != null && mLayoutSearch.getVisibility() == View.GONE) {
+            mLayoutSearch.setVisibility(View.VISIBLE);
         }
     }
 
@@ -620,6 +644,10 @@ public class NearbyInvoiceFragment extends BaseFragment
                                 mCurrentUser.getLongitude()), mRadius);
             }
         });
+
+        Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.rotate_180);
+        anim.setFillAfter(true);
+        mImageCollapseItemInvoice.startAnimation(anim);
     }
 
     @Override
@@ -637,37 +665,10 @@ public class NearbyInvoiceFragment extends BaseFragment
         mPresenter.cancelAcceptOrder(invoice);
     }
 
-    /**
-     * Task fetch address from location in another thread
-     */
-    private class FetchAddressTask extends AsyncTask<LatLng, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (mTvSearchArea != null) {
-                mTvSearchArea.setText(R.string.all_symbol_loading);
-            }
-        }
-
-        @Override
-        protected String doInBackground(LatLng... latLngs) {
-            mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
-                 latLngs[0], mRadius);
-            return MapUtils.getAddressFromLocation(mContext, latLngs[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String address) {
-            super.onPostExecute(address);
-            if (mTvSearchArea != null) {
-                mTvSearchArea.setText(address);
-            }
-        }
-    }
-
     @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-                     R.id.action_detail_order, R.id.rl_search_view, R.id.btn_view_change,
-                     R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_order})
+             R.id.action_detail_order, R.id.rl_search_view, R.id.btn_view_change,
+             R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_order,
+             R.id.img_collapse_item_invoice})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_view_change:
@@ -700,6 +701,19 @@ public class NearbyInvoiceFragment extends BaseFragment
             case R.id.action_detail_order:
                 mPresenter.showInvoiceDetail(mInvoice);
                 break;
+            case R.id.img_collapse_item_invoice:
+                Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.rotate_180);
+                anim.setFillAfter(true);
+                if (mIsCollapse) {
+                    mImageCollapseItemInvoice.startAnimation(anim);
+                    mLayoutExpandItem.setVisibility(View.VISIBLE);
+                } else {
+                    anim = AnimationUtils.loadAnimation(mContext, R.anim.rotate_180_reverse);
+                    mImageCollapseItemInvoice.startAnimation(anim);
+                    mLayoutExpandItem.setVisibility(View.GONE);
+                }
+                mIsCollapse = !mIsCollapse;
+                break;
         }
     }
 
@@ -715,5 +729,29 @@ public class NearbyInvoiceFragment extends BaseFragment
             if (invoice.getStringId().equals(invoiceId)) return invoice;
         }
         return null;
+    }
+
+    /**
+     * Task fetch address from location in another thread
+     */
+    private class FetchAddressTask extends AsyncTask<LatLng, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (mTvSearchArea != null) mTvSearchArea.setText(R.string.all_symbol_loading);
+        }
+
+        @Override
+        protected String doInBackground(LatLng... latLngs) {
+            mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
+                                         latLngs[0], mRadius);
+            return MapUtils.getAddressFromLocation(mContext, latLngs[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String address) {
+            super.onPostExecute(address);
+            if (mTvSearchArea != null) mTvSearchArea.setText(address);
+        }
     }
 }

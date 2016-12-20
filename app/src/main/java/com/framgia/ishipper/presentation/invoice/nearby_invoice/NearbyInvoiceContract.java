@@ -26,6 +26,10 @@ public interface NearbyInvoiceContract {
 
         void onReceiveInvoiceFail(String message);
 
+        void showInvoiceDetailWindow(Invoice invoice);
+
+        void hideInvoiceDetailWindow();
+
         void drawRoute(ArrayList<Route> route);
 
         void updateMapAfterDrawRoute(LatLng startAddress, LatLng finishAddress);
@@ -33,6 +37,11 @@ public interface NearbyInvoiceContract {
         void updateStatusReceiveInvoice(String invoiceId, int userInvoiceId);
 
         void removeLoading();
+
+        void hideSearchArea();
+
+        void showSearchArea();
+
     }
 
     interface Presenter {
