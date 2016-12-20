@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.Const.Firebase;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -71,6 +72,7 @@ public class LoginActivity extends BaseActivity implements
 
     @OnClick({R.id.btnShop, R.id.btnShipper, R.id.btnRegister, R.id.btnForgotPass, R.id.btnLogin})
     public void onClick(View view) {
+        CommonUtils.hideKeyboard(this);
         switch (view.getId()) {
             case R.id.btnRegister:
                 mPresenter.startRegisterActivity();

@@ -30,6 +30,14 @@
             android:layout_marginBottom="16.5dp"
             android:src="@drawable/ic_map_picker_start"
             android:visibility="visible"/>
+
+        <ProgressBar
+            android:id="@+id/loading_dialog"
+            android:visibility="gone"
+            android:layout_width="@dimen/fragment_create_1_dialog_loading_size"
+            android:layout_height="@dimen/fragment_create_1_dialog_loading_size"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/all_margin_medium"/>
     </FrameLayout>
 
     <LinearLayout
@@ -54,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/fragment_create_step1_start_point_hint"
+                android:lines="1"
                 android:selectAllOnFocus="true"
                 android:textSize="@dimen/text_size_content"
                 app:pacv_googleMapsApiKey="@string/google_maps_key"
@@ -83,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/fragment_create_step1_end_point_hint"
+                android:lines="1"
                 android:selectAllOnFocus="true"
                 android:textSize="@dimen/text_size_content"
                 app:pacv_googleMapsApiKey="@string/google_maps_key"

@@ -36,11 +36,11 @@ public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contra
         if (mGetDistanceTask != null && !mGetDistanceTask.isCancelled()) {
             mGetDistanceTask.cancel(true);
         }
-
+        mView.showMapLoadingIndicator(true);
         mGetDistanceTask = MapUtils.routing(mLatLngStart, mLatLngFinish, new RoutingListener() {
             @Override
             public void onRoutingFailure(RouteException e) {
-
+                mView.showMapLoadingIndicator(false);
             }
 
             @Override
@@ -50,6 +50,7 @@ public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contra
 
             @Override
             public void onRoutingSuccess(ArrayList<Route> arrayList, int i) {
+                mView.showMapLoadingIndicator(false);
                 int distance = arrayList.get(0).getDistanceValue();
                 // Show distance
                 mView.onDistanceResponse(CommonUtils.convertMetreToKm(distance));
@@ -57,25 +58,19 @@ public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contra
 
             @Override
             public void onRoutingCancelled() {
-
+                mView.showMapLoadingIndicator(false);
             }
         });
     }
 
     @Override
     public void confirmPickLocation() {
-        if (mLatLngStart == null) {
-            mFragment.showUserMessage(R.string.msg_start_location_require);
-            return;
-        } else if (mLatLngFinish == null) {
-            mFragment.showUserMessage(R.string.msg_end_location_require);
-            return;
-        }
+        if (!validateInput()) return;
         mView.updateDoneUI();
         MapUtils.routing(mLatLngStart, mLatLngFinish, new RoutingListener() {
             @Override
             public void onRoutingFailure(RouteException e) {
-
+                mView.showMapLoadingIndicator(false);
             }
 
             @Override
@@ -92,15 +87,24 @@ public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contra
                     polyOptions.width(8);
                     polyOptions.addAll(arrayList.get(j).getPoints());
                 }
-
                 mView.onRoutingSuccess(polyOptions);
             }
 
             @Override
             public void onRoutingCancelled() {
-
             }
         });
+    }
+
+    public boolean validateInput() {
+        if (mLatLngStart == null) {
+            mFragment.showUserMessage(R.string.msg_start_location_require);
+            return false;
+        } else if (mLatLngFinish == null) {
+            mFragment.showUserMessage(R.string.msg_end_location_require);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -118,7 +122,6 @@ public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contra
     public void reset() {
         mLatLngStart = null;
         mLatLngFinish = null;
-
         mView.clear();
     }
 

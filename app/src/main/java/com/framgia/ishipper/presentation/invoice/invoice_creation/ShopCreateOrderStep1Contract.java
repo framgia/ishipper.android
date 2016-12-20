@@ -29,6 +29,8 @@ public interface ShopCreateOrderStep1Contract {
         void onEndLocationSave(LatLng endLocation);
 
         void onStartLocationSave(LatLng startLocation);
+
+        void showMapLoadingIndicator(boolean isActive);
     }
 
     interface Presenter {

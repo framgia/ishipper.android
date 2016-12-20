@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.NumberFormatTextWatcher;
 
 import butterknife.BindView;
@@ -57,6 +58,7 @@ public class ShopCreateOrderStep2Fragment extends BaseFragment
                 break;
             case R.id.btn_submit:
                 // Set invoice
+                CommonUtils.hideKeyboard(getActivity());
                 if (!mPresenter.validateDataInput(
                         mEdtCustomerName.getText().toString(),
                         mEdtOrderWeight.getText().toString(),

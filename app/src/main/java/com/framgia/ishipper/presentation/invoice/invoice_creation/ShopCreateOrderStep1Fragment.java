@@ -11,10 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -40,6 +42,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 
+import static com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateOrderActivity.sInvoice;
 import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_LANGUAGE_CODE;
 import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_RADIUS;
 
@@ -58,6 +61,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
     @BindView(R.id.btnPickStart) ImageView mBtnPickStart;
     @BindView(R.id.btnPickEnd) ImageView mBtnPickEnd;
     @BindView(R.id.tvDistance) TextView mTvDistance;
+    @BindView(R.id.loading_dialog) ProgressBar mProgressLoading;
 
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
@@ -69,6 +73,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
     private float mDistance;
     private boolean mDisableCameraChange;
     private ShopCreateOrderStep1Presenter mPresenter;
+    private boolean mAlreadyLoaded;
 
     @Override
     public void onAttach(Context context) {
@@ -83,11 +88,17 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
 
     @Override
     public void initViews() {
-        mPresenter = new ShopCreateOrderStep1Presenter(this, this);
+        if (mAlreadyLoaded) {
+            updateDoneUI();
+            onDistanceResponse((float) sInvoice.getDistance());
+            return;
+        }
+        mAlreadyLoaded = true;
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.layoutMapContainer, mapFragment).commit();
+
         // Connect To Google Api
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(getContext())
@@ -100,16 +111,18 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
         mEdtAddressStart.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
+                CommonUtils.hideKeyboardFrom(getContext(), mEdtAddressStart);
                 mEdtAddressStart.clearFocus();
                 mEdtAddressStart.getDetailsFor(place, new DetailsCallback() {
                     @Override
                     public void onSuccess(PlaceDetails placeDetails) {
                         LatLng place = new LatLng(placeDetails.geometry.location.lat,
                                 placeDetails.geometry.location.lng);
-                        mPresenter.saveLatLngStart(place);
+                        mPresenter.setStartLocation(place);
                         mDisableCameraChange = true;
                         MapUtils.zoomToPosition(mMap, place);
                         mPresenter.getDistance();
+                        mPresenter.confirmPickLocation();
                     }
 
                     @Override
@@ -123,6 +136,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
         mEdtAddressEnd.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
+                CommonUtils.hideKeyboardFrom(getContext(), mEdtAddressEnd);
                 mEdtAddressEnd.clearFocus();
                 mEdtAddressEnd.getDetailsFor(place, new DetailsCallback() {
                     @Override
@@ -130,9 +144,10 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                         LatLng place = new LatLng(placeDetails.geometry.location.lat,
                                 placeDetails.geometry.location.lng);
                         mDisableCameraChange = true;
-                        mPresenter.saveLatLngEnd(place);
+                        mPresenter.setEndLocation(place);
                         MapUtils.zoomToPosition(mMap, place);
                         mPresenter.getDistance();
+                        mPresenter.confirmPickLocation();
                     }
 
                     @Override
@@ -142,6 +157,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                 });
             }
         });
+        mPresenter = new ShopCreateOrderStep1Presenter(this, this);
     }
 
     @OnFocusChange({R.id.edt_address_start, R.id.edt_address_end})
@@ -149,12 +165,20 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
         switch (view.getId()) {
             case R.id.edt_address_start:
                 if (hasFocus && mStatus != PICK_START_POINT) {
-                    mPresenter.onSuggestStartClick(mMap.getCameraPosition().target);
+                    // save previous end location
+                    if (mStatus == PICK_END_POINT) {
+                        mPresenter.setEndLocation(mMap.getCameraPosition().target);
+                    }
+                    pickStartLocation();
                 }
                 break;
             case R.id.edt_address_end:
                 if (hasFocus && mStatus != PICK_END_POINT) {
-                    mPresenter.onSuggestEndClick(mMap.getCameraPosition().target);
+                    // save previous start location
+                    if (mStatus == PICK_START_POINT) {
+                        mPresenter.setStartLocation(mMap.getCameraPosition().target);
+                    }
+                    pickEndLocation();
                 }
                 break;
         }
@@ -162,6 +186,8 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
 
     @OnClick({R.id.btnPickStart, R.id.btnPickEnd, R.id.btnContinue})
     public void onClick(View view) {
+        CommonUtils.hideKeyboard(getActivity());
+        if (mProgressLoading.getVisibility() == View.VISIBLE) return;
         switch (view.getId()) {
             case R.id.btnPickStart:
                 // user is picking start point, goto done pick
@@ -184,7 +210,6 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                     mPresenter.reset();
                     pickStartLocation();
                 }
-
                 break;
             case R.id.btnPickEnd:
                 // if user is picking end point
@@ -205,6 +230,10 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                 }
                 break;
             case R.id.btnContinue:
+                if (!mPresenter.validateInput()) return;
+                if (mStatus == PICK_END_POINT) {
+                    mPresenter.setEndLocation(mMap.getCameraPosition().target);
+                }
                 mPresenter.confirmPickLocation();
                 mPresenter.saveInvoiceData(mEdtAddressStart.getText().toString(),
                         mEdtAddressEnd.getText().toString(), mDistance);
@@ -258,10 +287,10 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
             mMarkerStart = null;
         }
 
+        mBtnPickEnd.setImageResource(R.drawable.ic_map_picker_end);
         mImgPickPosition.setImageResource(R.drawable.ic_map_picker_start);
         mBtnPickStart.setImageResource(R.drawable.ic_done);
         removePath();
-
     }
 
     @Override
@@ -272,6 +301,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
             mMarkerEnd.remove();
             mMarkerEnd = null;
         }
+        mBtnPickStart.setImageResource(R.drawable.ic_map_picker_start);
         mImgPickPosition.setImageResource(R.drawable.ic_map_picker_end);
         mBtnPickEnd.setImageResource(R.drawable.ic_done);
         removePath();
@@ -307,9 +337,15 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_picker_start)));
     }
 
+    @Override
+    public void showMapLoadingIndicator(boolean isActive) {
+        mProgressLoading.setVisibility(isActive ? View.VISIBLE : View.GONE);
+    }
+
     private void removePath() {
         if (mPolylineRoute != null) {
             mPolylineRoute.remove();
+            mPolylineRoute = null;
         }
     }
 
@@ -330,7 +366,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                     mDisableCameraChange = false;
                     return;
                 }
-
+                CommonUtils.hideKeyboard(getActivity());
                 if (mStatus == NONE) return;
                 LatLng position = new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude);
                 if (mStatus == PICK_START_POINT) {
@@ -369,6 +405,11 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
     public void onConnectionSuspended(int i) {
 
     }
@@ -398,6 +439,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            showMapLoadingIndicator(true);
             if (mStatus == PICK_START_POINT) {
                 mEdtAddressStart.setText(R.string.all_symbol_loading);
             } else if (mStatus == PICK_END_POINT) {
@@ -415,6 +457,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
         @Override
         protected void onPostExecute(String address) {
             super.onPostExecute(address);
+            showMapLoadingIndicator(false);
             if (mStatus == NONE) return;
             PlacesAutocompleteTextView tvShowing;
             tvShowing = mStatus == PICK_START_POINT ? mEdtAddressStart : mEdtAddressEnd;
