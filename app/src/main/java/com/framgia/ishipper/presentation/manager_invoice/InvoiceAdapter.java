@@ -74,6 +74,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         Drawable drawableStatus;
         int statusColor;
         holder.mLayoutAction.setVisibility(View.VISIBLE);
+        holder.mBtnCancelAcceptOrder.setVisibility(View.GONE);
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
                 if (Config.getInstance().isShop(mContext)) {

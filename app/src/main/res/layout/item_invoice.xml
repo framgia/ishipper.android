@@ -5,11 +5,11 @@
     android:id="@+id/window_invoice_detail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_5dp"
-    android:layout_marginLeft="@dimen/_5dp"
-    android:layout_marginRight="@dimen/_5dp"
-    android:clickable="true"
+    android:layout_marginBottom="@dimen/all_margin_small"
+    android:layout_marginLeft="@dimen/all_margin_small"
+    android:layout_marginRight="@dimen/all_margin_small"
     android:background="@drawable/background_state"
+    android:clickable="true"
     android:visibility="visible">
 
     <LinearLayout
@@ -20,7 +20,7 @@
         <LinearLayout
             android:id="@+id/ll_order_status"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -28,8 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_car_green"
-                android:drawablePadding="@dimen/_10dp"
-                android:padding="@dimen/_10dp"
+                android:drawablePadding="@dimen/all_padding_medium"
+                android:padding="@dimen/all_padding_medium"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -37,17 +37,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/_10dp"
+                android:paddingBottom="@dimen/all_padding_medium"
                 android:paddingLeft="@dimen/activity_vertical_margin"
-                android:paddingRight="@dimen/activity_vertical_margin"
-                android:paddingTop="@dimen/_3dp">
+                android:paddingRight="@dimen/activity_horizontal_padding"
+                android:paddingTop="@dimen/all_padding_small">
 
                 <TextView
                     android:id="@+id/tv_item_order_shop_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_order_green"
-                    android:drawablePadding="@dimen/_10dp"
+                    android:drawablePadding="@dimen/all_padding_medium"
                     android:gravity="bottom"
                     android:visibility="visible" />
 
@@ -56,322 +56,327 @@
                     style="@style/star_rating_bar_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_marginTop="@dimen/all_margin_small"
                     android:isIndicator="true"
-                    android:rating="3.7"
                     android:stepSize="0.1" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#f0f0f0" />
-
         <LinearLayout
-            android:id="@+id/action_detail_order"
+            android:id="@+id/layout_expand_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/all_divider_height"
+                android:background="#f0f0f0" />
 
             <LinearLayout
-                android:layout_width="@dimen/_65"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+                android:id="@+id/action_detail_order"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="@dimen/all_padding_medium">
 
                 <LinearLayout
-                    android:layout_width="@dimen/_65"
+                    android:layout_width="@dimen/item_invoice_shipping_price_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="@dimen/item_invoice_shipping_price_width"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:text="@string/all_ship_price"
+                            android:textAllCaps="true"
+                            android:textSize="@dimen/text_size_small" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_item_order_ship_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/all_padding_small"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_size_title" />
+
+                            <ImageView
+                                android:id="@+id/iv_detail_promotion_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/all_margin_small"
+                                android:layout_marginTop="@dimen/all_margin_small"
+                                android:src="@drawable/ic_promotion_label"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/all_margin_medium"
+                    android:layout_marginRight="@dimen/all_margin_medium"
+                    android:background="@color/menu_divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:text="@string/all_ship_price"
-                        android:textAllCaps="true"
-                        android:textSize="@dimen/text_size_small" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_item_order_ship_price"
+                        <LinearLayout
                             android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/all_margin_small"
+                            android:layout_marginRight="@dimen/all_margin_medium"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/all_margin_small"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_detail_from" />
+
+                            <View
+                                android:layout_width="@dimen/view_directory_width"
+                                android:layout_height="0dp"
+                                android:layout_weight="1.0"
+                                android:background="@drawable/dot_repeat_img" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_item_order_from"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/_5dp"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/text_size_title" />
+                            android:layout_marginBottom="@dimen/all_margin_medium"
+                            android:drawablePadding="@dimen/activity_horizontal_padding"
+                            android:ellipsize="end"
+                            android:maxLines="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/delivery_to_address_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/all_margin_tiny"
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/iv_detail_promotion_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_7dp"
-                            android:layout_marginTop="@dimen/_3dp"
-                            android:src="@drawable/ic_promotion_label"
-                            android:visibility="gone" />
-                    </LinearLayout>
-                </LinearLayout>
+                            android:layout_marginTop="@dimen/item_invoice_icon_delivery_to_margin"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_detail_to" />
 
+                        <TextView
+                            android:id="@+id/tv_item_order_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/all_margin_medium"
+                            android:ellipsize="end"
+                            android:maxLines="1" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_15dp"
-                android:layout_marginRight="@dimen/_15dp"
-                android:background="@color/menu_divider" />
+            <LinearLayout
+                android:id="@+id/layoutInvoiceSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_padding"
+                    android:paddingRight="0dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        style="@style/order_detail_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/all_distance" />
+
+                    <TextView
+                        android:id="@+id/tv_item_order_distance"
+                        style="@style/order_detail_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/all_padding_medium">
+
+                    <TextView
+                        style="@style/order_detail_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@string/all_ship_time" />
+
+                    <TextView
+                        android:id="@+id/tv_item_order_ship_time"
+                        style="@style/order_detail_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/all_padding_medium">
+
+                    <TextView
+                        style="@style/order_detail_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/all_order_price" />
+
+                    <TextView
+                        android:id="@+id/tv_item_order_price"
+                        style="@style/order_detail_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red"
+                        android:textStyle="normal" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_4"
-                        android:layout_marginRight="@dimen/_10dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_marginTop="@dimen/all_margin_small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_detail_from" />
-
-                        <View
-                            android:layout_width="@dimen/_3dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1.0"
-                            android:background="@drawable/dot_repeat_img" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_item_order_from"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_10dp"
-                        android:drawablePadding="@dimen/_15dp"
-                        android:ellipsize="end"
-                        android:maxLines="1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/delivery_to_address_box"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitCenter"
-                        android:layout_marginTop="@dimen/item_invoice_icon_delivery_to_margin"
-                        android:src="@drawable/ic_detail_to" />
-
-                    <TextView
-                        android:id="@+id/tv_item_order_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10dp"
-                        android:ellipsize="end"
-                        android:maxLines="1" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutInvoiceSummary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/_15dp"
-                android:paddingRight="0dp"
-                android:visibility="visible">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/all_padding_small"
+                android:paddingLeft="@dimen/all_padding_medium"
+                android:paddingRight="@dimen/all_padding_medium"
+                android:paddingTop="@dimen/all_padding_medium">
 
                 <TextView
-                    style="@style/order_detail_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/all_distance" />
-
-                <TextView
-                    android:id="@+id/tv_item_order_distance"
-                    style="@style/order_detail_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/_10dp"
-                android:paddingRight="0dp">
-
-                <TextView
-                    style="@style/order_detail_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text="@string/all_ship_time" />
-
-                <TextView
-                    android:id="@+id/tv_item_order_ship_time"
-                    style="@style/order_detail_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/_10dp"
-                android:paddingRight="0dp">
-
-                <TextView
-                    style="@style/order_detail_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/all_order_price" />
-
-                <TextView
-                    android:id="@+id/tv_item_order_price"
-                    style="@style/order_detail_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red"
-                    android:textStyle="normal" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/_3dp"
-            android:paddingLeft="@dimen/_10dp"
-            android:paddingRight="@dimen/_10dp"
-            android:paddingTop="@dimen/_10dp">
-
-            <TextView
-                android:id="@+id/btn_item_order_show_path"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_clean_radius_background"
-                android:text="@string/all_show_path"
-                android:textColor="#959595"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/btn_item_order_register_order"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_assign_accept_selector"
-                android:text="@string/all_register_order"
-                android:visibility="gone"
-                android:textColor="@drawable/title_order_accept_selector"/>
-
-            <TextView
-                android:id="@+id/action_cancel_accept_order"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_clean_radius_background"
-                android:text="@string/all_cancel_receive_order"
-                android:textColor="@color/black_80"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/action_call_order"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_clean_radius_background"
-                android:text="@string/all_call_order"
-                android:textColor="#959595"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/action_receive_order"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_green_radius_background"
-                android:text="@string/all_receive_order"
-                android:textColor="@drawable/title_order_accept_selector"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/btn_nearby_done_order"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_green_radius_background"
-                android:text="@string/all_done_order"
-                android:textColor="@android:color/white"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/btn_cancel_item_order"
-                style="@style/ButtonShippingOrderAct"
-                android:background="@drawable/btn_clean_radius_background"
-                android:text="@string/cancelled"
-                android:textColor="@color/color_cancel_invoice_button"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:id="@+id/layout_action"
-                android:layout_width="0dp"
-                android:visibility="gone"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/btn_action_item_order"
+                    android:id="@+id/btn_item_order_show_path"
                     style="@style/ButtonShippingOrderAct"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/all_margin_medium"
+                    android:background="@drawable/btn_clean_radius_background"
+                    android:text="@string/all_show_path"
+                    android:textColor="#959595"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/btn_item_order_register_order"
+                    style="@style/ButtonShippingOrderAct"
                     android:background="@drawable/btn_assign_accept_selector"
-                    android:text="@string/action_shipper_take"
+                    android:text="@string/all_register_order"
+                    android:textColor="@drawable/title_order_accept_selector"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/action_cancel_accept_order"
+                    style="@style/ButtonShippingOrderAct"
+                    android:background="@drawable/btn_clean_radius_background"
+                    android:text="@string/all_cancel_receive_order"
+                    android:textColor="@color/black_80"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/action_call_order"
+                    style="@style/ButtonShippingOrderAct"
+                    android:background="@drawable/btn_clean_radius_background"
+                    android:text="@string/all_call_order"
+                    android:textColor="#959595"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/action_receive_order"
+                    style="@style/ButtonShippingOrderAct"
+                    android:background="@drawable/btn_green_radius_background"
+                    android:text="@string/all_receive_order"
+                    android:textColor="@drawable/title_order_accept_selector"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/btn_nearby_done_order"
+                    style="@style/ButtonShippingOrderAct"
+                    android:background="@drawable/btn_green_radius_background"
+                    android:text="@string/all_done_order"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tv_number_shipper_register"
-                    android:layout_width="@dimen/size_number_shipper_register"
-                    android:layout_height="@dimen/size_number_shipper_register"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/rounded_square"
-                    android:gravity="center"
-                    android:minWidth="@dimen/badge_size"
-                    android:paddingLeft="@dimen/badge_padding"
-                    android:paddingRight="@dimen/badge_padding"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_number_shipper_register"
+                    android:id="@+id/btn_cancel_item_order"
+                    style="@style/ButtonShippingOrderAct"
+                    android:background="@drawable/btn_clean_radius_background"
+                    android:text="@string/cancelled"
+                    android:textColor="@color/color_cancel_invoice_button"
                     android:visibility="gone" />
-            </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_action"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/btn_action_item_order"
+                        style="@style/ButtonShippingOrderAct"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/all_margin_medium"
+                        android:background="@drawable/btn_assign_accept_selector"
+                        android:text="@string/action_shipper_take"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_number_shipper_register"
+                        android:layout_width="@dimen/size_number_shipper_register"
+                        android:layout_height="@dimen/size_number_shipper_register"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/rounded_square"
+                        android:gravity="center"
+                        android:minWidth="@dimen/badge_size"
+                        android:paddingLeft="@dimen/badge_padding"
+                        android:paddingRight="@dimen/badge_padding"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_number_shipper_register"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

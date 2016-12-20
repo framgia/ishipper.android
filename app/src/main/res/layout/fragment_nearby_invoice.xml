@@ -17,7 +17,7 @@
             android:id="@+id/tv_invoice_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/btn_view_change"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/fragment_nearby_order_view_in_map"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/text_size_button"/>
+            android:textSize="@dimen/text_size_button" />
 
     </LinearLayout>
 
@@ -79,23 +79,39 @@
                     map:uiRotateGestures="true"
                     map:uiScrollGestures="true"
                     map:uiTiltGestures="true"
-                    map:uiZoomGestures="true"/>
+                    map:uiZoomGestures="true" />
 
                 <ImageView
                     android:id="@+id/img_nearby_order_pos_marker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_map_picker_start"/>
+                    android:src="@drawable/ic_map_picker_start" />
             </RelativeLayout>
 
-            <include
-                layout="@layout/item_invoice"
+            <RelativeLayout
+                android:id="@+id/layout_invoice_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignParentBottom="true">
 
-            <include layout="@layout/searchview_layout"/>
+                <include
+                    layout="@layout/item_invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/img_collapse_item_invoice"
+                    android:layout_width="@dimen/img_collapse_item_invoice"
+                    android:layout_height="@dimen/img_collapse_item_invoice"
+                    android:layout_alignRight="@+id/window_invoice_detail"
+                    android:layout_alignTop="@+id/window_invoice_detail"
+                    android:layout_margin="@dimen/all_margin_small"
+                    android:src="@drawable/ic_expand_map"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <include layout="@layout/searchview_layout" />
         </RelativeLayout>
     </ViewSwitcher>
 </LinearLayout>
