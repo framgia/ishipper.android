@@ -179,7 +179,7 @@
                                     android:layout_marginBottom="@dimen/activity_invoice_detail_detail_margin_bottom"
                                     android:drawablePadding="@dimen/activity_invoice_detail_start_padding"
                                     android:ellipsize="end"
-                                    android:lines="1"
+                                    android:maxLines="2"
                                     android:textColor="@color/fiveship_common_text"
                                     android:textSize="@dimen/text_size_content" />
                             </LinearLayout>
@@ -188,7 +188,7 @@
                                 android:id="@+id/delivery_to_address_box"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
+                                android:layout_marginTop="@dimen/all_margin_tiny"
                                 android:orientation="horizontal">
 
                                 <ImageView
@@ -205,7 +205,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="@dimen/all_margin_medium"
                                     android:ellipsize="end"
-                                    android:lines="1" />
+                                    android:maxLines="2" />
 
                             </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.framgia.ishipper.presentation.manager_invoice;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
@@ -48,10 +49,17 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mView.setSelected(mPositionHighlight == position);
+        if (mPositionHighlight == position) highlightItem(holder.mView);
         holder.mInvoice = mInvoiceList.get(position);
         setStatus(holder);
         displayData(holder);
+    }
+
+    private void highlightItem(View view) {
+        mPositionHighlight = Const.POSITION_HIGHLIGHT_DEFAULT;
+        TransitionDrawable transition = (TransitionDrawable) view.getBackground();
+        transition.startTransition(Const.TIME_HIGHLIGHT_INVOICE);
+        transition.reverseTransition(Const.TIME_REVERSE_HIGHLIGHT_INVOICE);
     }
 
     private void displayData(ViewHolder holder) {

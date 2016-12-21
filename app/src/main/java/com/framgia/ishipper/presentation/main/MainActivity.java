@@ -164,13 +164,13 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                 break;
             case R.id.nav_ship_management:
                 mSelectedId = id;
-                getToolbar().setTitle(getString(R.string.nav_shop_management_item));
+                getToolbar().setTitle(getString(R.string.nav_ship_management_item));
                 fragment = FavoriteListFragment.newInstance();
                 tag = FavoriteListFragment.class.getName();
                 break;
             case R.id.nav_shop_management:
                 mSelectedId = id;
-                getToolbar().setTitle(getString(R.string.nav_ship_management_item));
+                getToolbar().setTitle(getString(R.string.nav_shop_management_item));
                 fragment = FavoriteListFragment.newInstance();
                 tag = FavoriteListFragment.class.getName();
                 break;

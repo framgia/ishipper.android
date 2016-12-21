@@ -187,7 +187,7 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
     public void cancelInvoice(final Invoice invoice) {
         mActivity.showDialog();
         if (mCurrentUser.isShop()) {
-            API.putUpdateInvoiceStatus(mCurrentUser.getRole(), String.valueOf(invoice),
+            API.putUpdateInvoiceStatus(mCurrentUser.getRole(), invoice.getStringId(),
                mCurrentUser.getAuthenticationToken(), Invoice.STATUS_CANCEL,
                new API.APICallback<APIResponse<InvoiceData>>() {
                    @Override
