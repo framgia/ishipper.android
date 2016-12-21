@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.InputValidate;
 
 import butterknife.BindView;
@@ -44,6 +45,7 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
 
     @OnClick(R.id.btnDone)
     public void onClick() {
+        CommonUtils.hideKeyboard(this);
         clearError();
         mPresenter.requestRegister(mCurrentUser,
                                    mEdtPlateNumber.getText().toString(),

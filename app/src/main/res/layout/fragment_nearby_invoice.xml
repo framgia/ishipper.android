@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -76,7 +76,7 @@
                     android:layout_height="match_parent"
                     map:mapType="normal"
                     map:uiCompass="false"
-                    map:uiRotateGestures="true"
+                    map:uiRotateGestures="false"
                     map:uiScrollGestures="true"
                     map:uiTiltGestures="true"
                     map:uiZoomGestures="true" />
@@ -85,9 +85,10 @@
                     android:id="@+id/img_nearby_order_pos_marker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/map_anchor_margin"
                     android:src="@drawable/ic_map_picker_start" />
-            </RelativeLayout>
+            </FrameLayout>
 
             <RelativeLayout
                 android:id="@+id/layout_invoice_detail"

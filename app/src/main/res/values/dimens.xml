@@ -116,4 +116,5 @@
     <dimen name="view_directory_width">3dp</dimen>
     <dimen name="all_margin_tiny">1dp</dimen>
     <dimen name="button_register_margin_bottom">30dp</dimen>
+    <dimen name="map_anchor_margin">16.5dp</dimen>
 </resources>

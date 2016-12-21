@@ -43,6 +43,16 @@ public class StorageUtils {
         return editor.commit();
     }
 
+    public static boolean setValue(Context context, String key, float value) {
+        SharedPreferences preferences = getSharedPreferences(context);
+        if (preferences == null) {
+            return false;
+        }
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putFloat(key, value);
+        return editor.commit();
+    }
+
     public static boolean getBooleanValue(Context context, String key) {
         SharedPreferences preferences = getSharedPreferences(context);
         return preferences != null && preferences.getBoolean(key, false);

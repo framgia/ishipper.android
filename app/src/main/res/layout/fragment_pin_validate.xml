@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/all_margin_large"
+            android:inputType="number"
             android:layout_marginRight="@dimen/all_margin_large"
             android:layout_marginTop="@dimen/all_margin_small"
             android:gravity="center"
