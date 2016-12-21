@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.util.TextFormatUtils;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -231,7 +232,8 @@ public class Invoice implements Parcelable {
 
     public String getInvoiceDesc() {
         if (!CommonUtils.stringIsValid(mDescription)) mDescription = "";
-        return String.format("Ship +%s, Thu %s\n%s", mShippingPrice, mPrice, mDescription);
+        return String.format("Ship +%s, Thu %s\n%s", TextFormatUtils.formatPrice(mShippingPrice),
+                TextFormatUtils.formatPrice(mPrice), mDescription);
     }
 
     public boolean isReceived() {

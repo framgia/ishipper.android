@@ -24,6 +24,13 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import java.util.HashMap;
 
+import static com.framgia.ishipper.util.Const.Storage.KEY_SETTING_ADDRESS;
+import static com.framgia.ishipper.util.Const.Storage.KEY_SETTING_INVOICE_RADIUS;
+import static com.framgia.ishipper.util.Const.Storage.KEY_SETTING_LATITUDE;
+import static com.framgia.ishipper.util.Const.Storage.KEY_SETTING_LOCATION;
+import static com.framgia.ishipper.util.Const.Storage.KEY_SETTING_LONGITUDE;
+import static com.framgia.ishipper.util.Const.Storage.KEY_SETTING_NOTIFICATION;
+
 /**
  * Created by HungNT on 11/22/16.
  */
@@ -57,9 +64,9 @@ class SettingPresenter implements SettingContact.Presenter {
             if (mPlace != null) {
                 params.put(APIDefinition.UserSetting.PARAM_ADDRESS, mPlace.getAddress().toString());
                 params.put(APIDefinition.UserSetting.PARAM_FAVORITE_LATITUDE,
-                           String.valueOf(mPlace.getLatLng().latitude));
+                        String.valueOf(mPlace.getLatLng().latitude));
                 params.put(APIDefinition.UserSetting.PARAM_FAVORITE_LONGITUDE,
-                           String.valueOf(mPlace.getLatLng().longitude));
+                        String.valueOf(mPlace.getLatLng().longitude));
             }
             mActivity.showDialog();
             params.put(APIDefinition.UserSetting.PARAM_RADIUS, String.valueOf(invoiceRadius));
@@ -85,19 +92,41 @@ class SettingPresenter implements SettingContact.Presenter {
 
     @Override
     public void saveSettingLocal(boolean receiveNotification, boolean favoriteLocation, int invoiceRadius, Place mPlace) {
-        StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_NOTIFICATION,
+        StorageUtils.setValue(mContext, KEY_SETTING_NOTIFICATION,
                 receiveNotification);
         StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_INVOICE_RADIUS, invoiceRadius);
-        StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LOCATION, favoriteLocation);
+        StorageUtils.setValue(mContext, KEY_SETTING_LOCATION, favoriteLocation);
         if (mPlace == null) {
-            StorageUtils.remove(mContext, Const.Storage.KEY_SETTING_ADDRESS);
+            StorageUtils.remove(mContext, KEY_SETTING_ADDRESS);
             StorageUtils.remove(mContext, Const.Storage.KEY_SETTING_LATITUDE);
             StorageUtils.remove(mContext, Const.Storage.KEY_SETTING_LONGITUDE);
         } else {
-            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_ADDRESS, mPlace.getAddress().toString());
-            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LATITUDE, String.valueOf(mPlace.getLatLng().latitude));
-            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LONGITUDE, String.valueOf(mPlace.getLatLng().longitude));
+            StorageUtils.setValue(mContext, KEY_SETTING_ADDRESS,
+                    mPlace.getAddress().toString());
+            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LATITUDE,
+                    String.valueOf(mPlace.getLatLng().latitude));
+            StorageUtils.setValue(mContext, Const.Storage.KEY_SETTING_LONGITUDE,
+                    String.valueOf(mPlace.getLatLng().longitude));
         }
+    }
+
+    private UserSetting getSettingFromLocal() {
+        UserSetting setting = new UserSetting();
+        setting.setReceiveNotification(
+                StorageUtils.getBooleanValue(mContext, KEY_SETTING_NOTIFICATION, true));
+        setting.setRadiusDisplay(StorageUtils.getIntValue(mContext,
+                KEY_SETTING_INVOICE_RADIUS, Const.SETTING_INVOICE_RADIUS_DEFAULT));
+        setting.setFavoriteLocation(StorageUtils.getBooleanValue(mContext,
+                KEY_SETTING_LOCATION, false));
+
+        if (!setting.isFavoriteLocation()) return setting;
+        setting.setAddress(StorageUtils.getStringValue(mContext,
+                KEY_SETTING_ADDRESS));
+        setting.setLatitude(StorageUtils.getStringValue(mContext,
+                KEY_SETTING_LATITUDE));
+        setting.setLongitude(StorageUtils.getStringValue(mContext,
+                KEY_SETTING_LONGITUDE));
+        return setting;
     }
 
     @Override
@@ -124,7 +153,6 @@ class SettingPresenter implements SettingContact.Presenter {
 
     @Override
     public void getSetting() {
-        //TODO get setting from server
         mActivity.showDialog();
         API.getUserSetting(mCurrentUser.getAuthenticationToken(),
                 new API.APICallback<APIResponse<UserSettingData>>() {
@@ -145,6 +173,14 @@ class SettingPresenter implements SettingContact.Presenter {
                     public void onFailure(int code, String message) {
                         mActivity.dismissDialog();
                         mActivity.showUserMessage(message);
+                        UserSetting setting = getSettingFromLocal();
+                        mView.activeNotification(setting.isReceiveNotification());
+                        mView.setRadiusDisplay(setting.getRadiusDisplay());
+                        if (setting.isFavoriteLocation()) {
+                            mView.setPlace(setting.getAddress());
+                        } else {
+                            mView.setFavoriteCheckbox(false);
+                        }
                     }
                 });
     }
