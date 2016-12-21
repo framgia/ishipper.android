@@ -103,7 +103,7 @@ public class Const {
     }
 
     public class Setting {
-        public static final int PER_PAGE = 12;
+        public static final int PER_PAGE = 30;
     }
 
     public class Broadcast {

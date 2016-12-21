@@ -14,7 +14,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.SignInData;
 import com.framgia.ishipper.presentation.authenication.register.RegisterActivity;
 import com.framgia.ishipper.presentation.authenication.update_pass.ForgetPasswordActivity;
-import com.framgia.ishipper.presentation.main.MainActivity;
+import com.framgia.ishipper.presentation.notification.NotificationActivity;
 import com.framgia.ishipper.util.InputValidate;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -84,7 +84,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void startMainActivity() {
-        mLoginActivity.startActivity(new Intent(mLoginActivity, MainActivity.class));
+        mLoginActivity.startActivity(new Intent(mLoginActivity, NotificationActivity.class));
         mLoginActivity.finish();
     }
 
