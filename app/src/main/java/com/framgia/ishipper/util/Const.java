@@ -45,6 +45,8 @@ public class Const {
 
     public static final long AUTO_COMPLETE_PLACE_RADIUS = 2000;
     public static final String AUTO_COMPLETE_PLACE_LANGUAGE_CODE = "vi";
+    public static final int TIME_HIGHLIGHT_INVOICE = 500;
+    public static final int TIME_REVERSE_HIGHLIGHT_INVOICE = 4000;
 
     public class RequestCode {
 
