@@ -39,5 +39,7 @@ public interface ListInvoiceContract {
                 ListInvoiceFragment.OnGetInvoiceListener callback);
 
         void cancelReceiveInvoice(User currentUser, Invoice invoice);
+
+        void startListShipperRegActivity(Invoice invoice);
     }
 }

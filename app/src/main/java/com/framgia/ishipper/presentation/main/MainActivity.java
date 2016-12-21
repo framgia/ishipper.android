@@ -31,6 +31,7 @@ import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
 import com.framgia.ishipper.presentation.favorite.FavoriteListFragment;
 import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
 import com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateOrderActivity;
+import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerFragment;
 import com.framgia.ishipper.presentation.manager_invoice.ShipperInvoiceManagerFragment;
 import com.framgia.ishipper.presentation.manager_invoice.ShopInvoiceManagerFragment;
 import com.framgia.ishipper.presentation.notification.NotificationActivity;
@@ -146,13 +147,13 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                             ShipperInvoiceManagerFragment.instantiate(MainActivity.this,
                                                                       ShopInvoiceManagerFragment.class.getName(),
                                                                       null);
-                    tag = ShipperInvoiceManagerFragment.class.getName();
+                    tag = InvoiceManagerFragment.class.getName();
                 } else {
                     fragment =
                             ShipperInvoiceManagerFragment.instantiate(MainActivity.this,
                                                                       ShipperInvoiceManagerFragment.class.getName(),
                                                                       null);
-                    tag = ShipperInvoiceManagerFragment.class.getName();
+                    tag = InvoiceManagerFragment.class.getName();
                 }
                 break;
             case R.id.nav_fb_order:

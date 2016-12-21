@@ -99,11 +99,4 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
         mFragment.startActivityForResult(intent,
                                          InvoiceDetailActivity.REQUEST_INVOICE_ID);
     }
-
-    @Override
-    public void startListShipperRegActivity(Invoice invoice) {
-        Intent intent = new Intent(mActivity, ChooseShipperRegisterActivity.class);
-        intent.putExtra(Const.KEY_INVOICE_ID, invoice.getStringId());
-        mFragment.startActivityForResult(intent, Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER);
-    }
 }
