@@ -1,60 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.framgia.ishipper.presentation.route.RouteActivity">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/layoutToolbar"
-        layout="@layout/toolbar"/>
-
-    <android.support.design.widget.CoordinatorLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <include
+            android:id="@+id/layoutToolbar"
+            layout="@layout/toolbar"/>
+
+        <fragment
+            android:layout_below="@+id/layoutToolbar"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"/>
 
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <LinearLayout
+            android:layout_below="@+id/layoutToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10dp"
+            android:background="@drawable/background_shadow"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="@dimen/_10dp">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/img_start_address"
-                        android:layout_width="@dimen/icon_address_width"
-                        android:layout_height="@dimen/icon_address_height"
-                        android:layout_marginLeft="@dimen/_5dp"
-                        android:src="@drawable/ic_status_pick"/>
+                        android:layout_width="@dimen/start_icon_size"
+                        android:layout_height="@dimen/start_icon_size"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_detail_from"/>
 
-                    <TextView
-                        android:id="@+id/shipping_from"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10dp"
-                        android:textSize="@dimen/text_size_content_plus"/>
+                    <View
+                        android:layout_width="@dimen/view_directory_width"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/dot_repeat_img"/>
                 </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_finish_address"
+                        android:layout_width="@dimen/end_icon_size"
+                        android:layout_height="@dimen/end_icon_size"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_detail_to"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/shipping_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10dp"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -63,56 +91,65 @@
                     android:layout_marginTop="@dimen/_5dp"
                     android:background="@color/menu_divider"/>
 
-                <LinearLayout
-                    android:id="@+id/delivery_to_address_box"
+                <TextView
+                    android:id="@+id/orderEndAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10dp"/>
 
-                    <ImageView
-                        android:id="@+id/img_finish_address"
-                        android:layout_width="@dimen/icon_address_width"
-                        android:layout_height="@dimen/icon_address_height"
-                        android:layout_marginLeft="@dimen/_5dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_status_delivering"/>
-
-                    <TextView
-                        android:id="@+id/orderEndAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10dp"
-                        android:textSize="@dimen/text_size_content_plus"/>
-
-                </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
 
-        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        app:behavior_peekHeight="@dimen/rv_guide_path_height"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_padding"
+            android:text="@string/detail_route_path"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/_5dp"
+            android:layout_marginTop="@dimen/_5dp"
+            android:background="@color/menu_divider"/>
 
         <LinearLayout
-            android:id="@+id/layout_bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            app:behavior_peekHeight="@dimen/rv_guide_path_height"
-            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_detail_guide_path"
+                android:id="@+id/rv_detail_route"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
                 android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/rc_guide_path_empty"
+                android:id="@+id/rc_empty_route"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/activity_vertical_padding"
                 android:visibility="gone"/>
+
+            <ProgressBar
+                android:id="@+id/pb_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
         </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

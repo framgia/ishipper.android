@@ -27,6 +27,7 @@ public class RouteContract {
                      int finishIcon);
         void onGetListStepSuccess(Response<ListRouteData> response);
         void onGetListStepFail();
+        void setVisibilityProgressBar(int visibility);
     }
 
     interface Presenter {

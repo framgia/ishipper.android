@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import com.directions.route.Route;
 import com.directions.route.RouteException;
@@ -62,8 +63,8 @@ public class RoutePresenter implements RouteContract.Presenter {
                         new LatLng(invoice.getLatFinish(), invoice.getLngFinish()),
                         invoice.getAddressStart(),
                         invoice.getAddressFinish(),
-                        R.drawable.ic_shop,
-                        R.drawable.ic_destination
+                        R.drawable.ic_map_picker_start,
+                        R.drawable.ic_map_picker_end
                 );
                 break;
             case Invoice.STATUS_CODE_WAITING:
@@ -73,7 +74,7 @@ public class RoutePresenter implements RouteContract.Presenter {
                         mContext.getString(R.string.all_current_position),
                         invoice.getAddressStart(),
                         R.drawable.ic_current_position,
-                        R.drawable.ic_shop
+                        R.drawable.ic_map_picker_start
                 );
                 break;
             default:
@@ -83,7 +84,7 @@ public class RoutePresenter implements RouteContract.Presenter {
                         mContext.getString(R.string.all_current_position),
                         invoice.getAddressFinish(),
                         R.drawable.ic_current_position,
-                        R.drawable.ic_destination
+                        R.drawable.ic_map_picker_end
                 );
                 break;
         }
@@ -91,7 +92,7 @@ public class RoutePresenter implements RouteContract.Presenter {
 
     @Override
     public void showPath(
-            final GoogleMap map,final LatLng startLatLng, final LatLng finishLatLng) {
+            final GoogleMap map, final LatLng startLatLng, final LatLng finishLatLng) {
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
@@ -138,14 +139,17 @@ public class RoutePresenter implements RouteContract.Presenter {
         userParams.put(APIDefinition.GetListRoutes.PARAM_DESTINATION, finishAddress);
         userParams.put(APIDefinition.GetListRoutes.PARAM_KEY, mContext.getString(R.string.google_maps_key));
         userParams.put(APIDefinition.PARAM_LANGUAGE, Const.Language.VIETNAMESE);
+        mView.setVisibilityProgressBar(View.VISIBLE);
         API.getListRoutes(userParams, new Callback<ListRouteData>() {
             @Override
             public void onResponse(Call<ListRouteData> call, Response<ListRouteData> response) {
+                mView.setVisibilityProgressBar(View.GONE);
                 mView.onGetListStepSuccess(response);
             }
 
             @Override
             public void onFailure(Call<ListRouteData> call, Throwable t) {
+                mView.setVisibilityProgressBar(View.GONE);
                 mView.onGetListStepFail();
             }
         });
