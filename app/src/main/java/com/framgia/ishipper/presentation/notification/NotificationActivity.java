@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ public class NotificationActivity extends BaseToolbarActivity
     private List<Notification> mNotificationList = new ArrayList<>();
     private User mCurrentUser;
     private LinearLayoutManager mLayoutManager;
-    private int mVisibleThreshold = 1;
+    private int mVisibleThreshold = 5;
     private boolean mIsLoading;
     private int mPage;
     private NotificationContract.Presenter mPresenter;
@@ -88,9 +89,12 @@ public class NotificationActivity extends BaseToolbarActivity
                 }
                 int totalItemCount = mLayoutManager.getItemCount();
                 int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                Log.d(TAG, "totalCount: " + totalItemCount);
+                Log.d(TAG, "lastVisible: " + lastVisibleItem);
                 if (!mIsLoading && totalItemCount <= (lastVisibleItem + mVisibleThreshold)) {
-                    mPresenter.loadMore(mNotificationList, mAdapter, mCurrentUser, ++mPage);
+                    //Load more data for recycle view
                     mIsLoading = true;
+                    mPresenter.loadMore(mNotificationList, mAdapter, mCurrentUser, ++mPage);
                 }
             }
         });
@@ -101,8 +105,10 @@ public class NotificationActivity extends BaseToolbarActivity
     public void updateListNoti(APIResponse<ListNotificationData> response) {
         mNotificationList.remove(mNotificationList.size() - 1);
         mAdapter.notifyItemRemoved(mNotificationList.size());
-        mNotificationList.addAll(response.getData().getNotifications());
-        mAdapter.notifyDataSetChanged();
+        if (response.getData().getNotifications().size() > 0) {
+            mNotificationList.addAll(response.getData().getNotifications());
+            mAdapter.notifyDataSetChanged();
+        }
         mIsLoading = false;
     }
 
@@ -112,7 +118,7 @@ public class NotificationActivity extends BaseToolbarActivity
         LinearLayoutManager layoutManager =
                 ((LinearLayoutManager) rvListNotification.getLayoutManager());
         if (layoutManager.findFirstVisibleItemPosition() == Const.HEAD_LIST ||
-            mNotificationList.size() == Const.ZERO) {
+                mNotificationList.size() == Const.ZERO) {
             layoutManager.scrollToPosition(Const.HEAD_LIST);
         } else {
             mTvNewNotification.setVisibility(View.VISIBLE);
@@ -135,7 +141,7 @@ public class NotificationActivity extends BaseToolbarActivity
     @Override
     public void onClick(Notification notification) {
         Intent intent = new Intent(notification.getAction());
-        Bundle bundle= new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString(Const.KEY_INVOICE_ID, notification.getInvoice().getStringId());
         intent.putExtras(bundle);
         startActivity(intent);

@@ -25,7 +25,7 @@ public class NotificationPresenter implements NotificationContract.Presenter {
 
     @Override
     public void loadMore(List<Notification> notifications,
-                         NotificationAdapter adapter, User currentUser, int page) {
+                         NotificationAdapter adapter, final User currentUser, final int page) {
         notifications.add(null);
         adapter.notifyItemInserted(notifications.size() - 1);
         API.getAllNotification(
@@ -44,7 +44,6 @@ public class NotificationPresenter implements NotificationContract.Presenter {
                         mActivity.showUserMessage(message);
                     }
                 }
-
         );
     }
 }

@@ -2,6 +2,7 @@ package com.framgia.ishipper.presentation.notification;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class NotificationAdapter extends
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof LoadingViewHolder) {
+            Log.d("NotificationActivity", "position " + position);
             ((LoadingViewHolder) holder).bindData();
         } else {
             ((NotificationViewHolder) holder).bindData(mNotificationList.get(position));
