@@ -38,9 +38,9 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     @BindView(R.id.tv_detail_start) TextView mTvDetailStart;
     @BindView(R.id.tv_detail_end) TextView mTvDetailEnd;
     @BindView(R.id.tv_detail_suggest) TextView mTvDetailSuggest;
-    @BindView(R.id.tv_detail_order_name) TextView mTvDetailOrderName;
+    @BindView(R.id.tv_detail_invoice_name) TextView mTvDetailInvoiceName;
     @BindView(R.id.tv_detail_ship_price) TextView mTvDetailShipPrice;
-    @BindView(R.id.tv_detail_order_price) TextView mTvDetailOrderPrice;
+    @BindView(R.id.tv_detail_invoice_price) TextView mTvDetailInvoicePrice;
     @BindView(R.id.tv_detail_ship_time) TextView mTvDetailShipTime;
     @BindView(R.id.tv_detail_note) TextView mTvDetailNote;
     @BindView(R.id.tv_detail_shop_name) TextView mTvDetailShopName;
@@ -51,13 +51,13 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     @BindView(R.id.cardview_detail_shipper_infor) CardView mCardviewDetailShipperInfor;
     @BindView(R.id.tv_detail_customer_name) TextView mDetailCustomerName;
     @BindView(R.id.tv_detail_customer_phone) TextView mDetailCustomerPhone;
-    @BindView(R.id.btn_detail_receive_order) Button mBtnDetailReceiveOrder;
-    @BindView(R.id.btn_detail_cancel_register_order) Button mBtnDetailCancelRegisterOrder;
-    @BindView(R.id.btn_detail_cancel_order) View mBtnDetailCancelOrder;
+    @BindView(R.id.btn_detail_receive_invoice) Button mBtnDetailReceiveInvoice;
+    @BindView(R.id.btn_detail_cancel_register_invoice) Button mBtnDetailCancelRegisterInvoice;
+    @BindView(R.id.btn_detail_cancel_invoice) View mBtnDetailCancelInvoice;
     @BindView(R.id.btn_report_user) View mBtnReportUser;
-    @BindView(R.id.btn_finished_order) Button mBtnFinishedOrder;
-    @BindView(R.id.btn_take_order) Button mBtnTakeOrder;
-    @BindView(R.id.tv_shipping_order_status) TextView mTvOrderStatus;
+    @BindView(R.id.btn_finished_invoice) Button mBtnFinishedInvoice;
+    @BindView(R.id.btn_take_invoice) Button mBtnTakeInvoice;
+    @BindView(R.id.tv_shipping_invoice_status) TextView mTvInvoiceStatus;
     @BindView(R.id.layoutHistoryInvoice) View mLayoutHistoryInvoice;
     @BindView(R.id.layout_customer) CardView mLayoutCustomer;
 
@@ -73,7 +73,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
 
     @Override
     public int getActivityTitle() {
-        return R.string.title_activity_order_detail;
+        return R.string.title_activity_invoice_detail;
     }
 
     @Override
@@ -127,13 +127,13 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             R.id.btn_detail_show_shop,
             R.id.btn_detail_show_path,
             R.id.btn_detail_shop_call,
-            R.id.btn_detail_receive_order,
-            R.id.btn_detail_cancel_order,
+            R.id.btn_detail_receive_invoice,
+            R.id.btn_detail_cancel_invoice,
             R.id.btn_cancel_invoice,
-            R.id.btn_detail_cancel_register_order,
+            R.id.btn_detail_cancel_register_invoice,
             R.id.btn_report_user,
-            R.id.btn_finished_order,
-            R.id.btn_take_order
+            R.id.btn_finished_invoice,
+            R.id.btn_take_invoice
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -147,10 +147,10 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 break;
             case R.id.btn_detail_shop_call:
                 break;
-            case R.id.btn_detail_receive_order:
+            case R.id.btn_detail_receive_invoice:
                 mPresenter.receiveInvoice(mInvoice.getStringId());
                 break;
-            case R.id.btn_detail_cancel_order:
+            case R.id.btn_detail_cancel_invoice:
             case R.id.btn_cancel_invoice:
                 if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT) {
                     mPresenter.cancelInvoice(mInvoice);
@@ -158,16 +158,16 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                     mPresenter.report(mInvoice);
                 }
                 break;
-            case R.id.btn_detail_cancel_register_order:
+            case R.id.btn_detail_cancel_register_invoice:
                 // TODO: 25/08/2016 cancel register order
                 break;
             case R.id.btn_report_user:
                 mPresenter.report(mInvoice);
                 break;
-            case R.id.btn_finished_order:
+            case R.id.btn_finished_invoice:
                 mPresenter.finishedInvoice(mInvoice.getStringId());
                 break;
-            case R.id.btn_take_order:
+            case R.id.btn_take_invoice:
                 mPresenter.takeInvoice(mInvoice.getId());
                 break;
         }
@@ -211,9 +211,9 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         switch (status) {
             case Invoice.STATUS_CODE_INIT:
                 if (mCurrentUser.isShop()) {
-                    textStatus = getString(R.string.order_shop_status_wait);
+                    textStatus = getString(R.string.invoice_shop_status_wait);
                 } else {
-                    textStatus = invoice.isReceived()? getString(R.string.order_status_wait) :
+                    textStatus = invoice.isReceived()? getString(R.string.invoice_status_wait) :
                             getString(R.string.invoice_status_init);
                     mLayoutCustomer.setVisibility(View.GONE);
                 }
@@ -226,9 +226,9 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 break;
             case Invoice.STATUS_CODE_WAITING:
                 if (mCurrentUser.isShop()) {
-                    textStatus = getString(R.string.order_shop_status_take);
+                    textStatus = getString(R.string.invoice_shop_status_take);
                 } else {
-                    textStatus = getString(R.string.order_status_take);
+                    textStatus = getString(R.string.invoice_status_take);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         getResources(),
@@ -239,7 +239,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_SHIPPING:
-                textStatus = getString(R.string.order_status_shipping);
+                textStatus = getString(R.string.invoice_status_shipping);
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
                         R.drawable.ic_status_delivering,
                         null
@@ -248,7 +248,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
-                textStatus = getString(R.string.order_status_delivered);
+                textStatus = getString(R.string.invoice_status_delivered);
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
                         R.drawable.ic_status_delivered,
                         null
@@ -257,7 +257,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_FINISHED:
-                textStatus = getString(R.string.order_status_finished);
+                textStatus = getString(R.string.invoice_status_finished);
                 drawableStatus = ResourcesCompat.getDrawable(getResources(),
                         R.drawable.ic_status_finish,
                         null
@@ -266,7 +266,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_CANCEL:
-                textStatus = getString(R.string.order_status_cancelled);
+                textStatus = getString(R.string.invoice_status_cancelled);
                 drawableStatus = ResourcesCompat.getDrawable(
                         getResources(),
                         R.drawable.ic_cancel,
@@ -285,25 +285,25 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 statusColor = getResources().getColor(R.color.colorAccent);
                 break;
         }
-        mTvOrderStatus.setText(textStatus);
-        mTvOrderStatus.setTextColor(statusColor);
-        mTvOrderStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus, null, null, null);
+        mTvInvoiceStatus.setText(textStatus);
+        mTvInvoiceStatus.setTextColor(statusColor);
+        mTvInvoiceStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus, null, null, null);
     }
 
     @Override
     public void showActionButton(int statusCode) {
-        mBtnDetailCancelOrder.setVisibility(View.VISIBLE);
+        mBtnDetailCancelInvoice.setVisibility(View.VISIBLE);
         if (mCurrentUser.isShop()) {
             switch (statusCode) {
                 case Invoice.STATUS_CODE_SHIPPED:
-                    mBtnFinishedOrder.setVisibility(View.VISIBLE);
+                    mBtnFinishedInvoice.setVisibility(View.VISIBLE);
                     break;
                 case Invoice.STATUS_CODE_FINISHED:
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
 //                    mBtnReportUser.setVisibility(View.VISIBLE);
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -311,24 +311,24 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         } else {
             switch (statusCode) {
                 case Invoice.STATUS_CODE_INIT:
-                    mBtnDetailReceiveOrder.setVisibility(mInvoice.isReceived()? View.GONE : View.VISIBLE);
-                    mBtnDetailCancelOrder.setVisibility(mInvoice.isReceived()? View.VISIBLE : View.GONE);
+                    mBtnDetailReceiveInvoice.setVisibility(mInvoice.isReceived()? View.GONE : View.VISIBLE);
+                    mBtnDetailCancelInvoice.setVisibility(mInvoice.isReceived()? View.VISIBLE : View.GONE);
                     break;
                 case Invoice.STATUS_CODE_WAITING:
-                    mBtnTakeOrder.setVisibility(View.VISIBLE);
+                    mBtnTakeInvoice.setVisibility(View.VISIBLE);
                     break;
                 case Invoice.STATUS_CODE_SHIPPING:
-                    mBtnFinishedOrder.setVisibility(View.VISIBLE);
+                    mBtnFinishedInvoice.setVisibility(View.VISIBLE);
                     break;
                 case Invoice.STATUS_CODE_SHIPPED:
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_FINISHED:
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
 //                    mBtnReportUser.setVisibility(View.VISIBLE);
-                    mBtnDetailCancelOrder.setVisibility(View.GONE);
+                    mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -341,8 +341,8 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         mTvDetailDistance.setText(TextFormatUtils.formatDistance(invoice.getDistance()));
         mTvDetailStart.setText(invoice.getAddressStart());
         mTvDetailEnd.setText(invoice.getAddressFinish());
-        mTvDetailOrderName.setText(invoice.getName());
-        mTvDetailOrderPrice.setText(TextFormatUtils.formatPrice(invoice.getPrice()));
+        mTvDetailInvoiceName.setText(invoice.getName());
+        mTvDetailInvoicePrice.setText(TextFormatUtils.formatPrice(invoice.getPrice()));
         mTvDetailShipPrice.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
         mTvDetailShipTime.setText(invoice.getDeliveryTime());
         mTvDetailNote.setText(invoice.getDescription());
@@ -369,8 +369,8 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
 
     @Override
     public void onCancelledReceiveInvoice() {
-        mBtnDetailCancelOrder.setVisibility(View.GONE);
-        mBtnDetailReceiveOrder.setVisibility(View.VISIBLE);
-        mTvOrderStatus.setText(getString(R.string.invoice_status_init));
+        mBtnDetailCancelInvoice.setVisibility(View.GONE);
+        mBtnDetailReceiveInvoice.setVisibility(View.VISIBLE);
+        mTvInvoiceStatus.setText(getString(R.string.invoice_status_init));
     }
 }

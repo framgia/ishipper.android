@@ -18,13 +18,13 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ll_order_status"
+            android:id="@+id/ll_invoice_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_shipping_order_status"
+                android:id="@+id/tv_shipping_invoice_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_car_green"
@@ -33,7 +33,7 @@
                 android:visibility="gone" />
 
             <LinearLayout
-                android:id="@+id/ll_shop_order_status"
+                android:id="@+id/ll_shop_invoice_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -43,16 +43,16 @@
                 android:paddingTop="@dimen/all_padding_small">
 
                 <TextView
-                    android:id="@+id/tv_item_order_shop_name"
+                    android:id="@+id/tv_item_invoice_shop_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_order_green"
+                    android:drawableLeft="@drawable/ic_invoice_green"
                     android:drawablePadding="@dimen/all_padding_medium"
                     android:gravity="bottom"
                     android:visibility="visible" />
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/rating_order_window"
+                    android:id="@+id/rating_invoice_window"
                     style="@style/star_rating_bar_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 android:background="#f0f0f0" />
 
             <LinearLayout
-                android:id="@+id/action_detail_order"
+                android:id="@+id/action_detail_invoice"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -108,7 +108,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_item_order_ship_price"
+                                android:id="@+id/tv_item_invoice_ship_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="@dimen/all_padding_small"
@@ -168,7 +168,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/tv_item_order_from"
+                            android:id="@+id/tv_item_invoice_from"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/all_margin_medium"
@@ -192,7 +192,7 @@
                             android:src="@drawable/ic_detail_to" />
 
                         <TextView
-                            android:id="@+id/tv_item_order_to"
+                            android:id="@+id/tv_item_invoice_to"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/all_margin_medium"
@@ -221,14 +221,14 @@
                     android:visibility="visible">
 
                     <TextView
-                        style="@style/order_detail_label"
+                        style="@style/invoice_detail_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/all_distance" />
 
                     <TextView
-                        android:id="@+id/tv_item_order_distance"
-                        style="@style/order_detail_content"
+                        android:id="@+id/tv_item_invoice_distance"
+                        style="@style/invoice_detail_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -241,15 +241,15 @@
                     android:paddingLeft="@dimen/all_padding_medium">
 
                     <TextView
-                        style="@style/order_detail_label"
+                        style="@style/invoice_detail_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:text="@string/all_ship_time" />
 
                     <TextView
-                        android:id="@+id/tv_item_order_ship_time"
-                        style="@style/order_detail_content"
+                        android:id="@+id/tv_item_invoice_ship_time"
+                        style="@style/invoice_detail_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -257,19 +257,19 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/all_padding_medium">
 
                     <TextView
-                        style="@style/order_detail_label"
+                        style="@style/invoice_detail_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/all_order_price" />
+                        android:text="@string/all_invoice_price" />
 
                     <TextView
-                        android:id="@+id/tv_item_order_price"
-                        style="@style/order_detail_content"
+                        android:id="@+id/tv_item_invoice_price"
+                        style="@style/invoice_detail_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/red"
@@ -287,56 +287,56 @@
                 android:paddingTop="@dimen/all_padding_medium">
 
                 <TextView
-                    android:id="@+id/btn_item_order_show_path"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/btn_item_invoice_show_path"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_clean_radius_background"
                     android:text="@string/all_show_path"
                     android:textColor="#959595"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/btn_item_order_register_order"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/btn_item_invoice_register"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_assign_accept_selector"
                     android:text="@string/all_register_order"
                     android:textColor="@drawable/title_order_accept_selector"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/action_cancel_accept_order"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/action_cancel_accept_invoice"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_clean_radius_background"
                     android:text="@string/all_cancel_receive_order"
                     android:textColor="@color/black_80"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/action_call_order"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/action_call_invoice"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_clean_radius_background"
                     android:text="@string/all_call_order"
                     android:textColor="#959595"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/action_receive_order"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/action_receive_invoice"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_green_radius_background"
                     android:text="@string/all_receive_order"
                     android:textColor="@drawable/title_order_accept_selector"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/btn_nearby_done_order"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/btn_nearby_done_invoice"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_green_radius_background"
                     android:text="@string/all_done_order"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/btn_cancel_item_order"
-                    style="@style/ButtonShippingOrderAct"
+                    android:id="@+id/btn_cancel_item_invoice"
+                    style="@style/ButtonShippingInvoiceAct"
                     android:background="@drawable/btn_clean_radius_background"
                     android:text="@string/cancelled"
                     android:textColor="@color/color_cancel_invoice_button"
@@ -350,8 +350,8 @@
                     android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/btn_action_item_order"
-                        style="@style/ButtonShippingOrderAct"
+                        android:id="@+id/btn_action_item_invoice"
+                        style="@style/ButtonShippingInvoiceAct"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/all_margin_medium"
                         android:background="@drawable/btn_assign_accept_selector"

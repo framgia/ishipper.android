@@ -6,7 +6,7 @@ import com.framgia.ishipper.model.Invoice;
  * Created by framgia on 18/11/2016.
  */
 
-public interface ShopCreateOrderStep3Contract {
+public interface ShopCreateInvoiceStep3Contract {
     interface View {
 
     }

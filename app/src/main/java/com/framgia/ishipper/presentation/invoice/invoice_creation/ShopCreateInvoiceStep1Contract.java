@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
  * Created by framgia on 18/11/2016.
  */
 
-public interface ShopCreateOrderStep1Contract {
+public interface ShopCreateInvoiceStep1Contract {
     interface View {
         void moveTo(Marker marker);
 

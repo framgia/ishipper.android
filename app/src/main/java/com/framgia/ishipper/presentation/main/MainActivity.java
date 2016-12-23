@@ -30,7 +30,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.presentation.authenication.login.LoginActivity;
 import com.framgia.ishipper.presentation.favorite.FavoriteListFragment;
 import com.framgia.ishipper.presentation.fb_invoice.FBInvoiceFragment;
-import com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateOrderActivity;
+import com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateInvoiceActivity;
 import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerFragment;
 import com.framgia.ishipper.presentation.manager_invoice.ShipperInvoiceManagerFragment;
 import com.framgia.ishipper.presentation.manager_invoice.ShopInvoiceManagerFragment;
@@ -175,7 +175,7 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                 tag = FavoriteListFragment.class.getName();
                 break;
             case R.id.nav_create_order:
-                startActivity(new Intent(this, ShopCreateOrderActivity.class));
+                startActivity(new Intent(this, ShopCreateInvoiceActivity.class));
                 return;
             case R.id.nav_sign_out:
                 signOut();

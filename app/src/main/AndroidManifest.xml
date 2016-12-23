@@ -52,7 +52,7 @@
         </activity>
         <activity android:name=".presentation.route.RouteActivity"/>
         <activity
-            android:name=".presentation.invoice.invoice_creation.ShopCreateOrderActivity"
+            android:name=".presentation.invoice.invoice_creation.ShopCreateInvoiceActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".presentation.authenication.register.RegisterActivity"/>
         <activity android:name=".presentation.authenication.update_pass.ForgetPasswordActivity"/>

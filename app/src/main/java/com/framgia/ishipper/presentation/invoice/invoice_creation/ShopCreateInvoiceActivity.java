@@ -12,8 +12,8 @@ import com.framgia.ishipper.model.Invoice;
 
 import butterknife.BindView;
 
-public class ShopCreateOrderActivity extends BaseToolbarActivity {
-    private static final String TAG = "ShopCreateOrderActivity";
+public class ShopCreateInvoiceActivity extends BaseToolbarActivity {
+    private static final String TAG = "ShopCreateInvoiceActivity";
     public static Invoice sInvoice = new Invoice();
     @BindView(R.id.toolbar) Toolbar mToolbar;
 
@@ -58,7 +58,7 @@ public class ShopCreateOrderActivity extends BaseToolbarActivity {
     public void initViews() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, new ShopCreateOrderStep1Fragment())
+                .replace(R.id.container, new ShopCreateInvoiceStep1Fragment())
                 .commit();
     }
 }
