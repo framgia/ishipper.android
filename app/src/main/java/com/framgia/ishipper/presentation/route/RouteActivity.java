@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.directions.route.Route;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Response;
 
 public class RouteActivity extends BaseToolbarActivity implements
@@ -49,6 +51,7 @@ public class RouteActivity extends BaseToolbarActivity implements
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "RouteActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    @BindView(R.id.pb_route) ProgressBar mPbRoute;
     private Invoice mInvoice;
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap;
@@ -58,13 +61,13 @@ public class RouteActivity extends BaseToolbarActivity implements
     private BottomSheetBehavior<View> mBottomSheetBehavior;
     private RouteContract.Presenter mPresenter;
 
-    @BindView(R.id.rv_detail_guide_path) RecyclerView mRvGuidePath;
+    @BindView(R.id.rv_detail_route) RecyclerView mRvGuidePath;
     @BindView(R.id.img_start_address) ImageView mImgStartAddress;
     @BindView(R.id.img_finish_address) ImageView mImgFinishAddress;
     @BindView(R.id.shipping_from) TextView mTvStartAddress;
     @BindView(R.id.orderEndAddress) TextView mTvFinishAddress;
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.rc_guide_path_empty) TextView mTvEmpty;
+    @BindView(R.id.rc_empty_route) TextView mTvEmpty;
     @BindView(R.id.layout_bottom_sheet) View mBottomSheetView;
 
     @Override
@@ -132,6 +135,11 @@ public class RouteActivity extends BaseToolbarActivity implements
     public void onGetListStepFail() {
         mTvEmpty.setVisibility(View.VISIBLE);
         mTvEmpty.setText(R.string.cant_get_guide_for_route);
+    }
+
+    @Override
+    public void setVisibilityProgressBar(int visibility) {
+        mPbRoute.setVisibility(visibility);
     }
 
 
@@ -215,15 +223,6 @@ public class RouteActivity extends BaseToolbarActivity implements
     }
 
     @Override
-    public void onBackPressed() {
-        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void initViews() {
         mPresenter = new RoutePresenter(this, this, this);
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -239,5 +238,11 @@ public class RouteActivity extends BaseToolbarActivity implements
         }
         mPresenter.getListStep(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
         mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetView);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
     }
 }

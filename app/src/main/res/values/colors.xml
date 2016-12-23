@@ -32,7 +32,7 @@
     <color name="color_status_delivered">#6258c6</color>
     <color name="color_status_finish">#28a277</color>
     <color name="transparent">#00000000</color>
-    <color name="shadow_color">#4D000000</color>
+    <color name="shadow_color">#26000000</color>
     <color name="background_list_order">#DBDDE2</color>
     <color name="invoice_change_status">#ffe0b2</color>
     <color name="grey">#bdbdbd</color>
