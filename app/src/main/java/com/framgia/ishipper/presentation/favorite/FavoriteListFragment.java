@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
@@ -24,22 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
+import butterknife.OnClick;
 
 public class FavoriteListFragment extends BaseFragment implements FavoriteListContract.View {
     private static final String TAG = "FavoriteListFragment";
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-    private Unbinder mUnbinder;
+    @BindView(R.id.emptyView) LinearLayout mLayoutEmpty;
     private Context mContext;
     private FavoriteListAdapter mFavoriteListAdapter;
     private List<User> mFavoriteList = new ArrayList<>();
     private User mCurrentUser;
     private FavoriteListPresenter mPresenter;
-
-
-    public FavoriteListFragment() {
-    }
 
     public static FavoriteListFragment newInstance() {
         return new FavoriteListFragment();
@@ -66,7 +63,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_blacklist_shipper;
+        return R.layout.fragment_favorite_user;
     }
 
     @Override
@@ -139,13 +136,27 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
         mFavoriteList.clear();
         if (listUserData != null) {
             mFavoriteList.addAll(listUserData.getShippersList());
+        } else {
+            showEmptyLayout(true);
         }
+        showEmptyLayout(mFavoriteList.isEmpty());
         mFavoriteListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void insertUser(int index, User favoriteUser) {
+        showEmptyLayout(true);
         mFavoriteList.add(Const.ZERO, favoriteUser);
         mFavoriteListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showEmptyLayout(boolean active) {
+        mLayoutEmpty.setVisibility(active ? View.VISIBLE : View.GONE);
+    }
+
+    @OnClick(R.id.layoutEmpty)
+    public void onClick() {
+        mPresenter.getFavoriteList(mCurrentUser);
     }
 }

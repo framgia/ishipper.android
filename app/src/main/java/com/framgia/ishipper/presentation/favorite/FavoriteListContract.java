@@ -15,6 +15,8 @@ public interface FavoriteListContract {
         void showListUser(ListUserData listUserData);
 
         void insertUser(int index, User favoriteUser);
+
+        void showEmptyLayout(boolean active);
     }
 
     interface Presenter {

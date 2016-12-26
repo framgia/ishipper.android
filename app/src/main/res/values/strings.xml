@@ -245,6 +245,8 @@
     <string name="all_invoice_received">Đã Nhận Đơn</string>
     <string name="invoice_status_init">Chờ shipper nhận</string>
     <string name="detail_route_path">Đường đi chi tiết</string>
+    <string name="all_msg_empty_favorite">Hiện chưa có người dùng nào trong danh sách, thêm hoặc click vào đây để tải lại</string>
+    <string name="msg_fragment_list_invoice_empty">Hiện chưa có đơn hàng nào!</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

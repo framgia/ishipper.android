@@ -25,7 +25,7 @@ import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
+import com.framgia.ishipper.ui.view.EmptyView;
 import com.framgia.ishipper.util.Const;
 import com.google.gson.Gson;
 
@@ -46,6 +46,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     @BindView(R.id.layout_refresh) SwipeRefreshLayout mLayoutRefresh;
     @BindView(R.id.edtSearch) EditText mEdtSearch;
     @BindView(R.id.imgSearch) ImageView mImgSearch;
+    @BindView(R.id.emptyView) EmptyView mEmptyView;
 
     private String mTitle;
     private int mStatusCode;
@@ -64,7 +65,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
             if (intent == null) return;
             if (intent.hasExtra(Const.KEY_INVOICE)) {
                 Invoice invoice = new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE),
-                                                      Invoice.class);
+                        Invoice.class);
                 switch (mStatusCode) {
                     case Invoice.STATUS_CODE_INIT:
                         if (mCurrentUser.isShop()) {
@@ -90,6 +91,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
                     mInvoiceList.remove(in);
                     mInvoiceAdapter.setPositionHighlight(Const.POSITION_HIGHLIGHT_DEFAULT);
                     mInvoiceAdapter.notifyDataSetChanged();
+                    mEmptyView.active(mInvoiceList.isEmpty());
                     return;
                 }
             }
@@ -97,6 +99,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         if (!isHave && invoice.getStatusCode() == mStatusCode) {
             mInvoiceList.add(Const.HEAD_LIST, invoice);
             mInvoiceAdapter.setPositionHighlight(Const.HEAD_LIST);
+            mEmptyView.active(mInvoiceList.isEmpty());
             mInvoiceAdapter.notifyDataSetChanged();
         }
     }
@@ -137,7 +140,6 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setEvent();
-
     }
 
     @Override
@@ -155,8 +157,8 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         mRecyclerView.setAdapter(mInvoiceAdapter);
         mLayoutRefresh.setColorSchemeColors(Color.GREEN, Color.RED, Color.BLUE);
         mPresenter.getInvoice(Config.getInstance().getUserInfo(mContext).getRole(),
-                   Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                   mStatusCode, null);
+                Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
+                mStatusCode, null);
     }
 
     @Override
@@ -210,6 +212,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     public void addListInvoice(List<Invoice> invoiceList) {
         mInvoiceList.clear();
         mInvoiceList.addAll(invoiceList);
+        mEmptyView.active(mInvoiceList.isEmpty());
         mInvoiceAdapter.setPositionHighlight(Const.DEFAULT_HIGHLIGHT_POSITION);
         mInvoiceAdapter.notifyDataSetChanged();
     }
@@ -253,7 +256,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     public void dismissLoading() {
         if (mLayoutLoading != null) mLayoutLoading.setVisibility(View.GONE);
         if (mRecyclerView != null) mRecyclerView.setVisibility(View.VISIBLE);
-        if (mLayoutRefresh!= null && mLayoutRefresh.isRefreshing()) {
+        if (mLayoutRefresh != null && mLayoutRefresh.isRefreshing()) {
             mLayoutRefresh.setRefreshing(false);
         }
     }
@@ -298,11 +301,6 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         if (context instanceof BaseActivity) {
             mActivity = (BaseActivity) context;
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override

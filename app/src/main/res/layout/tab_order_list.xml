@@ -24,9 +24,9 @@
                 android:layout_height="40dp"
                 android:background="@color/white"
                 android:hint="@string/search_hint"
+                android:maxLines="1"
                 android:paddingLeft="@dimen/all_padding_medium"
-                android:textSize="@dimen/text_size_content"
-                android:maxLines="1"/>
+                android:textSize="@dimen/text_size_content" />
 
             <ImageView
                 android:id="@+id/imgSearch"
@@ -37,18 +37,31 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_search_black_24dp"/>
+                android:src="@drawable/ic_search_black_24dp" />
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
-            android:name="com.framgia.ishipper.ui.fragments.OrderListFragment"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/layoutSearch"
-            android:layout_marginTop="@dimen/all_margin_small"
-            app:layoutManager="LinearLayoutManager"
-            tools:context="com.framgia.ishipper.presentation.manager_invoice.ListInvoiceFragment"/>
+            android:orientation="vertical"
+            android:layout_below="@id/layoutSearch">
+
+            <com.framgia.ishipper.ui.view.EmptyView
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:textHint="@string/msg_fragment_list_invoice_empty" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
+                android:name="com.framgia.ishipper.ui.fragments.OrderListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/all_margin_small"
+                app:layoutManager="LinearLayoutManager"
+                tools:context="com.framgia.ishipper.presentation.manager_invoice.ListInvoiceFragment" />
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/layout_loading"
@@ -59,7 +72,7 @@
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true" />
         </RelativeLayout>
     </RelativeLayout>
 

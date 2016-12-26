@@ -50,6 +50,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         mPresenter = new InvoiceManagerPresenter(this, mActivity, this);
     }
 

@@ -17,6 +17,8 @@ public interface BlackListContract {
         void showListUser(ListUserData listUserData);
 
         void insertUser(int index, User blockUser);
+
+        void showEmptyLayout(boolean active);
     }
 
     interface Presenter {

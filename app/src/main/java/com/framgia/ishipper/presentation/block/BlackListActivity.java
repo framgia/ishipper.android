@@ -2,19 +2,19 @@ package com.framgia.ishipper.presentation.block;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.data.ListUserData;
+import com.framgia.ishipper.ui.view.EmptyView;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 
@@ -31,25 +31,21 @@ public class BlackListActivity extends BaseToolbarActivity implements BlackListC
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.emptyView) EmptyView mEmptyView;
     private BlackListAdapter mBlackListAdapter;
     private List<User> mBlackListUser;
     private User mCurrentUser;
     private BlackListPresenter mPresenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initViews();
+    public void initViews() {
+        mCurrentUser = Config.getInstance().getUserInfo(getBaseContext());
         mPresenter = new BlackListPresenter(this, this);
         mPresenter.getBlackList(mCurrentUser);
-    }
-
-    @Override
-    public void initViews() {
         mCurrentUser = Config.getInstance().getUserInfo(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBlackListUser = new ArrayList<>();
-        mBlackListAdapter = new BlackListAdapter(BlackListActivity.this, mBlackListUser);
+        mBlackListAdapter = new BlackListAdapter(this, mBlackListUser);
         mRecyclerView.setAdapter(mBlackListAdapter);
     }
 
@@ -114,15 +110,24 @@ public class BlackListActivity extends BaseToolbarActivity implements BlackListC
         mBlackListAdapter.getUserList().clear();
         if (listUser != null) {
             mBlackListAdapter.getUserList().addAll(listUser.getShippersList());
+        } else {
+            showEmptyLayout(true);
         }
+        showEmptyLayout(mBlackListUser.isEmpty());
         mBlackListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void insertUser(int index, User blockUser) {
+        showEmptyLayout(false);
         mBlackListUser.add(index, blockUser);
         mBlackListAdapter.notifyDataSetChanged();
         mRecyclerView.getLayoutManager().scrollToPosition(Const.ZERO);
+    }
+
+    @Override
+    public void showEmptyLayout(boolean active) {
+        mEmptyView.setVisibility(active ? View.VISIBLE : View.GONE);
     }
 
     @Override
