@@ -158,14 +158,18 @@ public class CommonUtils {
         }
 
         // Get total height of all item dividers.
-        int totalDividersHeight = listView.getDividerHeight() *
-                (numberOfItems - 1);
-
+        int totalDividersHeight = listView.getDividerHeight() * (numberOfItems);
         // Set list height.
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalItemsHeight + totalDividersHeight;
+        if (numberOfItems != Const.ZERO) params.height += fixHeight(listView);
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private static int fixHeight(ListView listView) {
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) listView.getLayoutParams();
+        return listView.getPaddingTop() + listView.getPaddingBottom() + lp.bottomMargin + lp.topMargin;
     }
 
     /**

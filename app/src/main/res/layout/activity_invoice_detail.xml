@@ -334,6 +334,7 @@
                         android:id="@+id/layoutHistoryInvoice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -350,6 +351,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:divider="@color/transparent"
+                            android:paddingBottom="@dimen/all_padding_medium"
                             android:scrollbars="none" />
 
                         <ImageView
