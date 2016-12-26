@@ -19,13 +19,13 @@ import java.util.ArrayList;
  * Created by framgia on 18/11/2016.
  */
 
-public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contract.Presenter {
-    private final ShopCreateOrderStep1Contract.View mView;
+public class ShopCreateInvoiceStep1Presenter implements ShopCreateInvoiceStep1Contract.Presenter {
+    private final ShopCreateInvoiceStep1Contract.View mView;
     private BaseFragment mFragment;
     private AsyncTask mGetDistanceTask;
     private LatLng mLatLngStart, mLatLngFinish;
 
-    public ShopCreateOrderStep1Presenter(ShopCreateOrderStep1Contract.View view, BaseFragment fragment) {
+    public ShopCreateInvoiceStep1Presenter(ShopCreateInvoiceStep1Contract.View view, BaseFragment fragment) {
         mView = view;
         mFragment = fragment;
     }
@@ -109,13 +109,13 @@ public class ShopCreateOrderStep1Presenter implements ShopCreateOrderStep1Contra
 
     @Override
     public void saveInvoiceData(String startAddress, String endAddress, float distance) {
-        ShopCreateOrderActivity.sInvoice.setAddressStart(startAddress);
-        ShopCreateOrderActivity.sInvoice.setLatStart((float) mLatLngStart.latitude);
-        ShopCreateOrderActivity.sInvoice.setLngStart((float) mLatLngStart.longitude);
-        ShopCreateOrderActivity.sInvoice.setAddressFinish(endAddress);
-        ShopCreateOrderActivity.sInvoice.setLatFinish((float) mLatLngFinish.latitude);
-        ShopCreateOrderActivity.sInvoice.setLngFinish((float) mLatLngFinish.longitude);
-        ShopCreateOrderActivity.sInvoice.setDistance(distance);
+        ShopCreateInvoiceActivity.sInvoice.setAddressStart(startAddress);
+        ShopCreateInvoiceActivity.sInvoice.setLatStart((float) mLatLngStart.latitude);
+        ShopCreateInvoiceActivity.sInvoice.setLngStart((float) mLatLngStart.longitude);
+        ShopCreateInvoiceActivity.sInvoice.setAddressFinish(endAddress);
+        ShopCreateInvoiceActivity.sInvoice.setLatFinish((float) mLatLngFinish.latitude);
+        ShopCreateInvoiceActivity.sInvoice.setLngFinish((float) mLatLngFinish.longitude);
+        ShopCreateInvoiceActivity.sInvoice.setDistance(distance);
     }
 
     @Override

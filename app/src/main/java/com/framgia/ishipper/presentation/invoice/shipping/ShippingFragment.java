@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.ui.adapter.OrderShippingAdapter;
+import com.framgia.ishipper.ui.adapter.InvoiceShippingAdapter;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +38,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class ShippingFragment extends BaseFragment implements OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener, OrderShippingAdapter.OnItemClickListener, ShippingContract.View {
+        GoogleMap.OnMarkerClickListener, InvoiceShippingAdapter.OnItemClickListener, ShippingContract.View {
 
     @BindView(R.id.layoutMap) View mLayoutMap;
     @BindView(R.id.rvOrders) RecyclerView mRvOrders;
@@ -55,7 +55,7 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
     private boolean mIsCheck;
     private boolean mPermissionDenied;
     private boolean mIsExpand;
-    private OrderShippingAdapter mAdapter;
+    private InvoiceShippingAdapter mAdapter;
     private Context mContext;
     private ShippingPresenter mPresenter;
     private HashMap<Marker, Invoice> mHashMapMarker = new HashMap<>();
@@ -71,7 +71,7 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
         mPresenter = new ShippingPresenter(this, this);
-        mAdapter = new OrderShippingAdapter(mInvoiceList, this);
+        mAdapter = new InvoiceShippingAdapter(mInvoiceList, this);
         mRvOrders.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRvOrders.setAdapter(mAdapter);
     }

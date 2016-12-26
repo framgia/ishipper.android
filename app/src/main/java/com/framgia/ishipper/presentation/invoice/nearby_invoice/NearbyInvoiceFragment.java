@@ -89,25 +89,25 @@ public class NearbyInvoiceFragment extends BaseFragment
     private static final int REQUEST_FILTER = 0x1234;
 
     @BindView(R.id.img_nearby_order_pos_marker) ImageView mImgPosMarker;
-    @BindView(R.id.tv_item_order_ship_price) TextView mTvNearbyShipPrice;
-    @BindView(R.id.tv_item_order_from) TextView mTvNearbyFrom;
-    @BindView(R.id.tv_item_order_to) TextView mTvNearbyTo;
-    @BindView(R.id.tv_item_order_distance) TextView mTvNearbyDistance;
-    @BindView(R.id.tv_item_order_ship_time) TextView mTvNearbyShipTime;
-    @BindView(R.id.tv_item_order_price) TextView mTvNearbyOrderPrice;
-    @BindView(R.id.btn_item_order_show_path) TextView mBtnNearbyShowPath;
-    @BindView(R.id.btn_item_order_register_order) TextView mBtnNearbyReceiveOrder;
+    @BindView(R.id.tv_item_invoice_ship_price) TextView mTvNearbyShipPrice;
+    @BindView(R.id.tv_item_invoice_from) TextView mTvNearbyFrom;
+    @BindView(R.id.tv_item_invoice_to) TextView mTvNearbyTo;
+    @BindView(R.id.tv_item_invoice_distance) TextView mTvNearbyDistance;
+    @BindView(R.id.tv_item_invoice_ship_time) TextView mTvNearbyShipTime;
+    @BindView(R.id.tv_item_invoice_price) TextView mTvNearbyOrderPrice;
+    @BindView(R.id.btn_item_invoice_show_path) TextView mBtnNearbyShowPath;
+    @BindView(R.id.btn_item_invoice_register) TextView mBtnNearbyReceiveOrder;
     @BindView(R.id.layout_invoice_detail) RelativeLayout mRlOrderDetail;
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
-    @BindView(R.id.rating_order_window) AppCompatRatingBar mRatingOrderWindow;
-    @BindView(R.id.tv_item_order_shop_name) TextView mTvItemOrderShopName;
-    @BindView(R.id.ll_shop_order_status) LinearLayout mLlShopOrderStatus;
+    @BindView(R.id.rating_invoice_window) AppCompatRatingBar mRatingOrderWindow;
+    @BindView(R.id.tv_item_invoice_shop_name) TextView mTvItemOrderShopName;
+    @BindView(R.id.ll_shop_invoice_status) LinearLayout mLlShopOrderStatus;
     @BindView(R.id.rv_list_invoice) RecyclerView mRvListInvoice;
     @BindView(R.id.switcher_layout) ViewSwitcher mSwitcherLayout;
     @BindView(R.id.tv_invoice_count) TextView mTvInvoiceCount;
     @BindView(R.id.layout_action) RelativeLayout mLayoutAction;
     @BindView(R.id.btn_view_change) TextView mBtnViewChange;
-    @BindView(R.id.action_cancel_accept_order) View mBtnCancelAcceptOrder;
+    @BindView(R.id.action_cancel_accept_invoice) View mBtnCancelAcceptOrder;
     @BindView(R.id.tv_empty) View mLayoutEmpty;
     @BindView(R.id.layout_refresh) SwipeRefreshLayout mLayoutRefresh;
     @BindView(R.id.rl_search_view) LinearLayout mLayoutSearch;
@@ -665,9 +665,9 @@ public class NearbyInvoiceFragment extends BaseFragment
         mPresenter.cancelAcceptOrder(invoice);
     }
 
-    @OnClick({R.id.btn_item_order_show_path, R.id.btn_item_order_register_order,
-             R.id.action_detail_order, R.id.rl_search_view, R.id.btn_view_change,
-             R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_order,
+    @OnClick({R.id.btn_item_invoice_show_path, R.id.btn_item_invoice_register,
+             R.id.action_detail_invoice, R.id.rl_search_view, R.id.btn_view_change,
+             R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_invoice,
              R.id.img_collapse_item_invoice})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -680,10 +680,10 @@ public class NearbyInvoiceFragment extends BaseFragment
                     mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_map);
                 }
                 break;
-            case R.id.btn_item_order_show_path:
+            case R.id.btn_item_invoice_show_path:
                 mPresenter.showPath(mInvoice);
                 break;
-            case R.id.btn_item_order_register_order:
+            case R.id.btn_item_invoice_register:
                 String invoiceId = (String) view.getTag();
                 showReceiveDialog(invoiceId);
                 break;
@@ -694,11 +694,11 @@ public class NearbyInvoiceFragment extends BaseFragment
                 mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
                      new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
                 break;
-            case R.id.action_cancel_accept_order:
+            case R.id.action_cancel_accept_invoice:
                 mPresenter.cancelAcceptOrder(findInvoiceById((String) view.getTag()));
                 break;
             case R.id.layoutInvoiceSummary:
-            case R.id.action_detail_order:
+            case R.id.action_detail_invoice:
                 mPresenter.showInvoiceDetail(mInvoice);
                 break;
             case R.id.img_collapse_item_invoice:

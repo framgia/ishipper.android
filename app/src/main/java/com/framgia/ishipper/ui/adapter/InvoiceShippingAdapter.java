@@ -24,13 +24,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdapter.ViewHolder> {
+public class InvoiceShippingAdapter extends RecyclerView.Adapter<InvoiceShippingAdapter.ViewHolder> {
 
     private List<Invoice> mInvoiceList;
     private OnItemClickListener mListener;
     private Context mContext;
 
-    public OrderShippingAdapter(List<Invoice> invoiceList, OnItemClickListener listener) {
+    public InvoiceShippingAdapter(List<Invoice> invoiceList, OnItemClickListener listener) {
         mInvoiceList = invoiceList;
         mListener = listener;
     }
@@ -59,17 +59,17 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_item_order_to) TextView mOrderEndAddress;
-        @BindView(R.id.tv_item_order_from) TextView mOrderStartAddress;
-        @BindView(R.id.tv_item_order_price) TextView mOrderPrePay;
-        @BindView(R.id.tv_item_order_ship_price) TextView mOrderShippingCost;
-        @BindView(R.id.tv_item_order_ship_time) TextView mOrderShippingTime;
+        @BindView(R.id.tv_item_invoice_to) TextView mOrderEndAddress;
+        @BindView(R.id.tv_item_invoice_from) TextView mOrderStartAddress;
+        @BindView(R.id.tv_item_invoice_price) TextView mOrderPrePay;
+        @BindView(R.id.tv_item_invoice_ship_price) TextView mOrderShippingCost;
+        @BindView(R.id.tv_item_invoice_ship_time) TextView mOrderShippingTime;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ButterKnife.findById(view, R.id.btn_nearby_done_order).setVisibility(View.VISIBLE);
-            ButterKnife.findById(view, R.id.action_call_order).setVisibility(View.VISIBLE);
+            ButterKnife.findById(view, R.id.btn_nearby_done_invoice).setVisibility(View.VISIBLE);
+            ButterKnife.findById(view, R.id.action_call_invoice).setVisibility(View.VISIBLE);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,7 +78,7 @@ public class OrderShippingAdapter extends RecyclerView.Adapter<OrderShippingAdap
             });
         }
 
-        @OnClick(R.id.btn_nearby_done_order)
+        @OnClick(R.id.btn_nearby_done_invoice)
         public void doneOrder() {
             final int pos = getAdapterPosition();
             Invoice invoice = mInvoiceList.get(pos);

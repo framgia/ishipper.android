@@ -42,13 +42,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 
-import static com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateOrderActivity.sInvoice;
+import static com.framgia.ishipper.presentation.invoice.invoice_creation.ShopCreateInvoiceActivity.sInvoice;
 import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_LANGUAGE_CODE;
 import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_RADIUS;
 
-public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapReadyCallback,
+public class ShopCreateInvoiceStep1Fragment extends BaseFragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ShopCreateOrderStep1Contract.View {
+        ShopCreateInvoiceStep1Contract.View {
     private static final String TAG = "ShopCreateOrder1";
     private final int NONE = 1;
     private final int PICK_START_POINT = 2;
@@ -72,7 +72,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
     private FetchAddressTask task;
     private float mDistance;
     private boolean mDisableCameraChange;
-    private ShopCreateOrderStep1Presenter mPresenter;
+    private ShopCreateInvoiceStep1Presenter mPresenter;
     private boolean mAlreadyLoaded;
 
     @Override
@@ -157,7 +157,7 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                 });
             }
         });
-        mPresenter = new ShopCreateOrderStep1Presenter(this, this);
+        mPresenter = new ShopCreateInvoiceStep1Presenter(this, this);
     }
 
     @OnFocusChange({R.id.edt_address_start, R.id.edt_address_end})
@@ -237,8 +237,8 @@ public class ShopCreateOrderStep1Fragment extends BaseFragment implements OnMapR
                 mPresenter.confirmPickLocation();
                 mPresenter.saveInvoiceData(mEdtAddressStart.getText().toString(),
                         mEdtAddressEnd.getText().toString(), mDistance);
-                ((ShopCreateOrderActivity) getActivity()).addFragment(
-                        new ShopCreateOrderStep2Fragment());
+                ((ShopCreateInvoiceActivity) getActivity()).addFragment(
+                        new ShopCreateInvoiceStep2Fragment());
                 break;
         }
     }

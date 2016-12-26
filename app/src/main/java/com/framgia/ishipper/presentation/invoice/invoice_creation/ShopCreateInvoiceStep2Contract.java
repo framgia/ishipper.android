@@ -4,7 +4,7 @@ package com.framgia.ishipper.presentation.invoice.invoice_creation;
  * Created by framgia on 18/11/2016.
  */
 
-public interface ShopCreateOrderStep2Contract {
+public interface ShopCreateInvoiceStep2Contract {
     interface View {
 
         void validateNameFailure();

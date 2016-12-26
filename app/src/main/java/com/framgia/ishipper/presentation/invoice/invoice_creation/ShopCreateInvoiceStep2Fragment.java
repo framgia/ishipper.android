@@ -20,8 +20,8 @@ import static com.framgia.ishipper.R.string.tomorrow;
 /**
  * Created by vuduychuong1994 on 7/22/16.
  */
-public class ShopCreateOrderStep2Fragment extends BaseFragment
-        implements RadioGroup.OnCheckedChangeListener, ShopCreateOrderStep2Contract.View {
+public class ShopCreateInvoiceStep2Fragment extends BaseFragment
+        implements RadioGroup.OnCheckedChangeListener, ShopCreateInvoiceStep2Contract.View {
 
     @BindView(R.id.edt_order_name) EditText mEdtOrderName;
     @BindView(R.id.edt_order_weight) EditText mEdtOrderWeight;
@@ -34,7 +34,7 @@ public class ShopCreateOrderStep2Fragment extends BaseFragment
     @BindView(R.id.btn_submit) Button mBtnSubmit;
     @BindView(R.id.edt_note) EditText mEdtNote;
 
-    private ShopCreateOrderStep2Presenter mPresenter;
+    private ShopCreateInvoiceStep2Presenter mPresenter;
 
     @Override
     public int getLayoutId() {
@@ -43,7 +43,7 @@ public class ShopCreateOrderStep2Fragment extends BaseFragment
 
     @Override
     public void initViews() {
-        mPresenter = new ShopCreateOrderStep2Presenter(this, this);
+        mPresenter = new ShopCreateInvoiceStep2Presenter(this, this);
         mEdtOrderPrice.addTextChangedListener(new NumberFormatTextWatcher(mEdtOrderPrice));
         mEdtShipPrice.addTextChangedListener(new NumberFormatTextWatcher(mEdtShipPrice));
         mRgPickTime.setOnCheckedChangeListener(this);

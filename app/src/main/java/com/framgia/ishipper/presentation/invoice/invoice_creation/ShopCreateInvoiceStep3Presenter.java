@@ -20,12 +20,12 @@ import java.util.Map;
  * Created by framgia on 18/11/2016.
  */
 
-public class ShopCreateOrderStep3Presenter implements ShopCreateOrderStep3Contract.Presenter {
-    private final ShopCreateOrderStep3Contract.View mView;
+public class ShopCreateInvoiceStep3Presenter implements ShopCreateInvoiceStep3Contract.Presenter {
+    private final ShopCreateInvoiceStep3Contract.View mView;
     private BaseFragment mFragment;
     private Context mContext;
 
-    public ShopCreateOrderStep3Presenter(ShopCreateOrderStep3Contract.View view, BaseFragment fragment) {
+    public ShopCreateInvoiceStep3Presenter(ShopCreateInvoiceStep3Contract.View view, BaseFragment fragment) {
         mView = view;
         mFragment = fragment;
         mContext = fragment.getContext();

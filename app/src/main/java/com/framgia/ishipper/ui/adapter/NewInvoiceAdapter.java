@@ -51,14 +51,15 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_item_order_to) TextView mOrderEndAddress;
-        @BindView(R.id.tv_item_order_from) TextView mOrderStartAddress;
-        @BindView(R.id.tv_item_order_price) TextView mOrderPrePay;
-        @BindView(R.id.tv_item_order_ship_price) TextView mOrderShippingCost;
-        @BindView(R.id.tv_item_order_ship_time) TextView mOrderShippingTime;
-        @BindView(R.id.btn_item_order_register_order) TextView mBtnReceiveInvoice;
-        @BindView(R.id.tv_item_order_distance) TextView mTvDistance;
-        @BindView(R.id.action_cancel_accept_order) TextView mBtnCancelAcceptOrder;
+        @BindView(R.id.tv_item_invoice_shop_name) TextView mInvoiceShopName;
+        @BindView(R.id.tv_item_invoice_to) TextView mInvoiceEndAddress;
+        @BindView(R.id.tv_item_invoice_from) TextView mInvoiceStartAddress;
+        @BindView(R.id.tv_item_invoice_price) TextView mInvoicePrePay;
+        @BindView(R.id.tv_item_invoice_ship_price) TextView mInvoiceShippingCost;
+        @BindView(R.id.tv_item_invoice_ship_time) TextView mInvoiceShippingTime;
+        @BindView(R.id.btn_item_invoice_register) TextView mBtnReceiveInvoice;
+        @BindView(R.id.tv_item_invoice_distance) TextView mTvDistance;
+        @BindView(R.id.action_cancel_accept_invoice) TextView mBtnCancelAcceptInvoice;
 
         public ViewHolder(View view) {
             super(view);
@@ -66,35 +67,36 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
             mBtnReceiveInvoice.setVisibility(View.VISIBLE);
         }
 
-        @OnClick({R.id.layoutInvoiceSummary, R.id.action_detail_order})
+        @OnClick({R.id.layoutInvoiceSummary, R.id.action_detail_invoice})
         void showInvoiceDetail() {
             mCallback.onInvoiceItemClick(mInvoiceList.get(getAdapterPosition()));
         }
 
-        @OnClick(R.id.btn_item_order_register_order)
+        @OnClick(R.id.btn_item_invoice_register)
         void receiveInvoice() {
             mCallback.onInvoiceReceiveItemClick(mInvoiceList.get(getAdapterPosition()));
         }
 
-        @OnClick(R.id.action_cancel_accept_order)
+        @OnClick(R.id.action_cancel_accept_invoice)
         void cancelInvoice() {
             mCallback.onCancelAcceptOrder(mInvoiceList.get(getAdapterPosition()));
         }
 
         void bindData(Invoice invoice) {
             if (invoice.isReceived()) {
-                mBtnCancelAcceptOrder.setVisibility(View.VISIBLE);
+                mBtnCancelAcceptInvoice.setVisibility(View.VISIBLE);
                 mBtnReceiveInvoice.setVisibility(View.GONE);
             } else {
-                mBtnCancelAcceptOrder.setVisibility(View.GONE);
+                mBtnCancelAcceptInvoice.setVisibility(View.GONE);
                 mBtnReceiveInvoice.setVisibility(View.VISIBLE);
             }
 
-            mOrderEndAddress.setText(invoice.getAddressFinish());
-            mOrderStartAddress.setText(invoice.getAddressStart());
-            mOrderPrePay.setText(String.valueOf(TextFormatUtils.formatPrice(invoice.getPrice())));
-            mOrderShippingCost.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
-            mOrderShippingTime.setText(invoice.getDeliveryTime());
+            mInvoiceShopName.setText(invoice.getUser().getName());
+            mInvoiceEndAddress.setText(invoice.getAddressFinish());
+            mInvoiceStartAddress.setText(invoice.getAddressStart());
+            mInvoicePrePay.setText(String.valueOf(TextFormatUtils.formatPrice(invoice.getPrice())));
+            mInvoiceShippingCost.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
+            mInvoiceShippingTime.setText(invoice.getDeliveryTime());
             mTvDistance.setText(TextFormatUtils.formatDistance(invoice.getDistance()));
         }
     }

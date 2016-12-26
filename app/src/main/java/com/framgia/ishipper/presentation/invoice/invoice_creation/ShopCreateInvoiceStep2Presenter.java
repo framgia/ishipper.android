@@ -15,11 +15,11 @@ import java.util.Locale;
  * Created by framgia on 18/11/2016.
  */
 
-public class ShopCreateOrderStep2Presenter implements ShopCreateOrderStep2Contract.Presenter {
-    private final ShopCreateOrderStep2Contract.View mView;
+public class ShopCreateInvoiceStep2Presenter implements ShopCreateInvoiceStep2Contract.Presenter {
+    private final ShopCreateInvoiceStep2Contract.View mView;
     private BaseFragment mFragment;
 
-    public ShopCreateOrderStep2Presenter(ShopCreateOrderStep2Contract.View view, BaseFragment fragment) {
+    public ShopCreateInvoiceStep2Presenter(ShopCreateInvoiceStep2Contract.View view, BaseFragment fragment) {
         mView = view;
         mFragment = fragment;
     }
@@ -52,19 +52,19 @@ public class ShopCreateOrderStep2Presenter implements ShopCreateOrderStep2Contra
     @Override
     public void saveInvoice(String name, String weight, String orderPrice, String shipPrice,
                             String time, String customerName, String customerPhone, String note) {
-        ShopCreateOrderActivity.sInvoice.setName(name);
-        ShopCreateOrderActivity.sInvoice.setWeight(Float.valueOf(weight));
-        ShopCreateOrderActivity.sInvoice.setPrice(NumberFormatTextWatcher.getValueFromText(orderPrice));
-        ShopCreateOrderActivity.sInvoice.setShippingPrice(NumberFormatTextWatcher.getValueFromText(shipPrice));
-        ShopCreateOrderActivity.sInvoice.setDeliveryTime(time);
-        ShopCreateOrderActivity.sInvoice.setCustomerName(customerName);
-        ShopCreateOrderActivity.sInvoice.setCustomerNumber(customerPhone);
-        ShopCreateOrderActivity.sInvoice.setDescription(note);
-        ShopCreateOrderActivity.sInvoice.setStatus(Invoice.STATUS_INIT);
+        ShopCreateInvoiceActivity.sInvoice.setName(name);
+        ShopCreateInvoiceActivity.sInvoice.setWeight(Float.valueOf(weight));
+        ShopCreateInvoiceActivity.sInvoice.setPrice(NumberFormatTextWatcher.getValueFromText(orderPrice));
+        ShopCreateInvoiceActivity.sInvoice.setShippingPrice(NumberFormatTextWatcher.getValueFromText(shipPrice));
+        ShopCreateInvoiceActivity.sInvoice.setDeliveryTime(time);
+        ShopCreateInvoiceActivity.sInvoice.setCustomerName(customerName);
+        ShopCreateInvoiceActivity.sInvoice.setCustomerNumber(customerPhone);
+        ShopCreateInvoiceActivity.sInvoice.setDescription(note);
+        ShopCreateInvoiceActivity.sInvoice.setStatus(Invoice.STATUS_INIT);
 
-        if (mFragment.getActivity() instanceof ShopCreateOrderActivity) {
-            ((ShopCreateOrderActivity) mFragment.getActivity())
-                    .addFragment(new ShopCreateOrderStep3Fragment());
+        if (mFragment.getActivity() instanceof ShopCreateInvoiceActivity) {
+            ((ShopCreateInvoiceActivity) mFragment.getActivity())
+                    .addFragment(new ShopCreateInvoiceStep3Fragment());
         }
     }
 

@@ -42,7 +42,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_shipping_order_status"
+                        android:id="@+id/tv_shipping_invoice_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -92,7 +92,7 @@
                     </RelativeLayout>
 
                     <LinearLayout
-                        android:id="@+id/action_detail_order"
+                        android:id="@+id/action_detail_invoice"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
@@ -238,7 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/text_view_margin"
-                        android:text="@string/detail_order_info"
+                        android:text="@string/detail_invoice_info"
                         android:textSize="@dimen/text_size_title"
                         android:textStyle="bold" />
 
@@ -251,10 +251,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-                            android:text="@string/all_order_name" />
+                            android:text="@string/all_invoice_name" />
 
                         <TextView
-                            android:id="@+id/tv_detail_order_name"
+                            android:id="@+id/tv_detail_invoice_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -286,10 +286,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/text_view_margin"
-                            android:text="@string/all_order_price" />
+                            android:text="@string/all_invoice_price" />
 
                         <TextView
-                            android:id="@+id/tv_detail_order_price"
+                            android:id="@+id/tv_detail_invoice_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true" />
@@ -592,7 +592,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/btn_detail_cancel_order"
+                    android:id="@+id/btn_detail_cancel_invoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -649,7 +649,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_detail_receive_order"
+            android:id="@+id/btn_detail_receive_invoice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -659,7 +659,7 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/btn_detail_cancel_register_order"
+            android:id="@+id/btn_detail_cancel_register_invoice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -669,7 +669,7 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/btn_finished_order"
+            android:id="@+id/btn_finished_invoice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -679,12 +679,12 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/btn_take_order"
+            android:id="@+id/btn_take_invoice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorGreenDark"
-            android:text="@string/order_status_take"
+            android:text="@string/invoice_status_take"
             android:textColor="@android:color/white"
             android:visibility="gone" />
     </LinearLayout>
