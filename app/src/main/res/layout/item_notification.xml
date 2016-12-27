@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_notification"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/all_padding_small"
     android:paddingLeft="@dimen/all_padding_medium"
@@ -14,7 +15,7 @@
         android:layout_width="@dimen/avatar_search_size"
         android:layout_height="@dimen/avatar_search_size"
         android:layout_marginRight="@dimen/all_margin_medium"
-        android:src="@drawable/anonymous_account"/>
+        android:src="@drawable/anonymous_account" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="3"
-            android:textSize="@dimen/text_size_content"/>
+            android:textSize="@dimen/text_size_content" />
 
         <TextView
             android:id="@+id/tvTimePost"
@@ -35,6 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3dp"
             android:maxLines="1"
-            android:textSize="@dimen/text_size_small"/>
+            android:textSize="@dimen/text_size_small" />
     </LinearLayout>
 </LinearLayout>
