@@ -87,14 +87,15 @@ public class InvoiceManagerFragment extends BaseFragment implements
 
     @Override
     public void notifyChangeTab(final int type) {
-        if (mListOrderFragment.size() > type) {
+        if (mListOrderFragment.size() > type && mListOrderFragment.get(type).isAvaiable()) {
             mListOrderFragment.get(type).notifyChangedData(null);
         }
     }
 
     @Override
     public void notifyChangeTab(final int type, final boolean isShowNewInvoice, final int invoiceId) {
-        if (mListOrderFragment.size() > type) {
+        mViewPager.setCurrentItem(type, true);
+        if (mListOrderFragment.size() > type && mListOrderFragment.get(type).isAvaiable()) {
             mListOrderFragment.get(type)
                     .notifyChangedData(new ListInvoiceFragment.OnGetInvoiceListener() {
                         @Override
@@ -129,7 +130,6 @@ public class InvoiceManagerFragment extends BaseFragment implements
 
     @Override
     public void showInvoiceOnScreen(int statusCodeShipping, int invoiceId) {
-        mViewPager.setCurrentItem(statusCodeShipping, true);
         mListOrderFragment.get(statusCodeShipping).moveListToInvoice(invoiceId);
     }
 
@@ -137,13 +137,13 @@ public class InvoiceManagerFragment extends BaseFragment implements
     public void onClickAction(final Invoice invoice) {
         switch (invoice.getStatusCode()) {
             case Invoice.STATUS_CODE_WAITING:
-                mPresenter.actionTakeInvoice(invoice);
+                mPresenter.actionTakeInvoice(mViewPager.getCurrentItem(), invoice);
                 break;
             case Invoice.STATUS_CODE_SHIPPING:
-                mPresenter.actionShippedInvoice(invoice);
+                mPresenter.actionShippedInvoice(mViewPager.getCurrentItem(), invoice);
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
-                mPresenter.actionFinishInvoice(invoice);
+                mPresenter.actionFinishInvoice(mViewPager.getCurrentItem(), invoice);
                 break;
         }
     }

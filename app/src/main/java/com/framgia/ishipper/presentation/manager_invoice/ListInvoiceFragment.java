@@ -91,7 +91,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
                     mInvoiceList.remove(in);
                     mInvoiceAdapter.setPositionHighlight(Const.POSITION_HIGHLIGHT_DEFAULT);
                     mInvoiceAdapter.notifyDataSetChanged();
-                    mEmptyView.active(mInvoiceList.isEmpty());
+                    if (mEmptyView != null) mEmptyView.active(mInvoiceList.isEmpty());
                     return;
                 }
             }
@@ -99,7 +99,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         if (!isHave && invoice.getStatusCode() == mStatusCode) {
             mInvoiceList.add(Const.HEAD_LIST, invoice);
             mInvoiceAdapter.setPositionHighlight(Const.HEAD_LIST);
-            mEmptyView.active(mInvoiceList.isEmpty());
+            if (mEmptyView != null) mEmptyView.active(mInvoiceList.isEmpty());
             mInvoiceAdapter.notifyDataSetChanged();
         }
     }
@@ -212,7 +212,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     public void addListInvoice(List<Invoice> invoiceList) {
         mInvoiceList.clear();
         mInvoiceList.addAll(invoiceList);
-        mEmptyView.active(mInvoiceList.isEmpty());
+        if (mEmptyView != null) mEmptyView.active(mInvoiceList.isEmpty());
         mInvoiceAdapter.setPositionHighlight(Const.DEFAULT_HIGHLIGHT_POSITION);
         mInvoiceAdapter.notifyDataSetChanged();
     }
@@ -340,6 +340,11 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         if (mOnActionClickListener != null) {
             mOnActionClickListener.onClickView(invoice);
         }
+    }
+
+    public boolean isAvaiable() {
+        if (mCurrentUser == null || mPresenter == null || mContext == null) return false;
+        return true;
     }
 
     public interface OnActionClickListener {

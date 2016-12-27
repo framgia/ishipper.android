@@ -11,19 +11,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.Notification;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.util.Const;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -118,7 +118,7 @@ public class NotificationActivity extends BaseToolbarActivity
         LinearLayoutManager layoutManager =
                 ((LinearLayoutManager) rvListNotification.getLayoutManager());
         if (layoutManager.findFirstVisibleItemPosition() == Const.HEAD_LIST ||
-                mNotificationList.size() == Const.ZERO) {
+            mNotificationList.size() == Const.ZERO) {
             layoutManager.scrollToPosition(Const.HEAD_LIST);
         } else {
             mTvNewNotification.setVisibility(View.VISIBLE);
@@ -126,6 +126,21 @@ public class NotificationActivity extends BaseToolbarActivity
         Notification notification = new Notification();
         notification.setContent(intent.getStringExtra(Const.KEY_BODY));
         notification.setTimePost(intent.getStringExtra(Const.KEY_TITLE));
+        Invoice invoice = null;
+        try {
+            if (intent.hasExtra(Const.KEY_INVOICE)) {
+                invoice = new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE), Invoice.class);
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        if (invoice != null) notification.setInvoice(invoice);
+        if (intent.hasExtra(Const.KEY_ACTION)) {
+            notification.setAction(intent.getStringExtra(Const.KEY_ACTION));
+        }
+        if (intent.hasExtra(Const.KEY_NOTIFICATION_ID)) {
+            notification.setId(intent.getStringExtra(Const.KEY_NOTIFICATION_ID));
+        }
         mNotificationList.add(Const.HEAD_LIST, notification);
         mAdapter.notifyItemInserted(Const.HEAD_LIST);
     }
@@ -146,7 +161,9 @@ public class NotificationActivity extends BaseToolbarActivity
 
     @Override
     public void onClick(Notification notification, int position) {
-        mPresenter.changeStateNotification(mCurrentUser, notification, position);
+        if (!notification.isRead()) {
+            mPresenter.changeStateNotification(mCurrentUser, notification, position);
+        }
         Intent intent = new Intent(notification.getAction());
         Bundle bundle = new Bundle();
         bundle.putString(Const.KEY_INVOICE_ID, notification.getInvoice().getStringId());

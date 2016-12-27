@@ -21,11 +21,11 @@ public interface InvoiceManagerContract {
 
     interface Presenter {
 
-        void actionTakeInvoice(Invoice invoice);
+        void actionTakeInvoice(int statusCode, Invoice invoice);
 
-        void actionShippedInvoice(Invoice invoice);
+        void actionShippedInvoice(int statusCode, Invoice invoice);
 
-        void actionFinishInvoice(Invoice invoice);
+        void actionFinishInvoice(int statusCode, Invoice invoice);
 
         void startDetailInvoiceActivity(Invoice invoice);
     }
