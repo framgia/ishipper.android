@@ -63,6 +63,7 @@ public class NotificationAdapter extends
             Log.d("NotificationActivity", "position " + position);
             ((LoadingViewHolder) holder).bindData();
         } else {
+            holder.itemView.setSelected(mNotificationList.get(position).isRead());
             ((NotificationViewHolder) holder).bindData(mNotificationList.get(position), position);
         }
     }
@@ -109,9 +110,6 @@ public class NotificationAdapter extends
             mTvContent.setText(item.getContent());
             notificationItem = item;
             mTvTimePost.setText(item.getTimePost());
-            if (!item.isRead()) {
-                mView.setBackgroundResource(R.color.back_ground_dark_grey);
-            }
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

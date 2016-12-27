@@ -27,6 +27,8 @@ public interface ListInvoiceContract {
         void addListInvoice(List<Invoice> invoiceList);
 
         void onCancelledReceiveInvoice();
+
+        void removeInvoice(Invoice invoice, int position);
     }
 
     interface Presenter {
@@ -38,7 +40,7 @@ public interface ListInvoiceContract {
                 String role, String authenticationToken, int statusCode, String nameSearch,
                 ListInvoiceFragment.OnGetInvoiceListener callback);
 
-        void cancelReceiveInvoice(User currentUser, Invoice invoice);
+        void cancelReceiveInvoice(User currentUser, Invoice invoice, int position);
 
         void startListShipperRegActivity(Invoice invoice);
     }

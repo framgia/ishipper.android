@@ -53,14 +53,14 @@ public class ListInvoicePresenter implements ListInvoiceContract.Presenter {
     }
 
     @Override
-    public void cancelReceiveInvoice(final User currentUser, Invoice invoice) {
+    public void cancelReceiveInvoice(final User currentUser, final Invoice invoice, final int position) {
+        mActivity.showDialog();
         API.putCancelReceiveOrder(currentUser.getAuthenticationToken(), invoice.getUserInvoiceId(),
             new API.APICallback<APIResponse<EmptyData>>() {
             @Override
             public void onResponse(APIResponse<EmptyData> response) {
                 mActivity.dismissDialog();
-                getInvoice(currentUser.getRole(), currentUser.getAuthenticationToken(), Invoice
-                        .STATUS_CODE_INIT, null);
+                mView.removeInvoice(invoice, position);
             }
 
             @Override

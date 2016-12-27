@@ -290,7 +290,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 mClickViewListener.onclickViewListener(mInvoice);
             }
             if (view.getId() == R.id.action_cancel_accept_invoice && mClickCancelListener != null) {
-                mClickCancelListener.onClickCancelListener(mInvoice);
+                mClickCancelListener.onClickCancelListener(mInvoice, getAdapterPosition());
             }
             if (view.getId() == R.id.btn_action_item_invoice && mClickActionListener != null) {
                 mClickActionListener.onClickActionListener(mInvoice);
@@ -303,7 +303,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     }
 
     public interface OnClickCancelListener {
-        void onClickCancelListener(Invoice invoice);
+        void onClickCancelListener(Invoice invoice, int adapterPosition);
     }
 
     public interface OnclickViewListener {
