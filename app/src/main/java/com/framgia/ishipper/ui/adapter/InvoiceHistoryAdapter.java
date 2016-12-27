@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class InvoiceHistoryAdapter extends ArrayAdapter<InvoiceHistory> {
     private Context mContext;
     private int layoutId;
-    private ArrayList<InvoiceHistory> mInvoiceHistories;
+    private List<InvoiceHistory> mInvoiceHistories;
 
     @BindView(R.id.tv_history_time)
     TextView mTvTime;
@@ -35,7 +35,7 @@ public class InvoiceHistoryAdapter extends ArrayAdapter<InvoiceHistory> {
         super(context, resource, objects);
         mContext = context;
         layoutId = resource;
-        mInvoiceHistories = new ArrayList<>(objects);
+        mInvoiceHistories = objects;
     }
 
     @NonNull

@@ -11,19 +11,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.InvoiceHistory;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.ui.adapter.InvoiceHistoryAdapter;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.TextFormatUtils;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 import com.framgia.ishipper.widget.dialog.UserInfoDialogFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -60,10 +66,14 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     @BindView(R.id.tv_shipping_invoice_status) TextView mTvInvoiceStatus;
     @BindView(R.id.layoutHistoryInvoice) View mLayoutHistoryInvoice;
     @BindView(R.id.layout_customer) CardView mLayoutCustomer;
+    @BindView(R.id.lv_detail_history) ListView mLvHistoryList;
+    @BindView(R.id.iv_detail_expand) ImageView mIvDetailExpand;
 
     private User mCurrentUser;
     private User mInvoiceUser;
     private Invoice mInvoice;
+    private List<InvoiceHistory> mInvoiceHistories;
+    private boolean mIsExpanded;
     private InvoiceDetailPresenter mPresenter;
 
     @Override
@@ -133,7 +143,8 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             R.id.btn_detail_cancel_register_invoice,
             R.id.btn_report_user,
             R.id.btn_finished_invoice,
-            R.id.btn_take_invoice
+            R.id.btn_take_invoice,
+            R.id.iv_detail_expand
     })
     public void onClick(View view) {
         switch (view.getId()) {
@@ -170,6 +181,15 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             case R.id.btn_take_invoice:
                 mPresenter.takeInvoice(mInvoice.getId());
                 break;
+            case R.id.iv_detail_expand:
+                if (mIsExpanded) {
+                    mIvDetailExpand.setImageResource(R.drawable.ic_expand_more_32dp);
+                    CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList, Const.ZERO);
+                } else {
+                    mIvDetailExpand.setImageResource(R.drawable.ic_expand_less_32dp);
+                    CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList, mInvoiceHistories.size());
+                }
+                mIsExpanded = !mIsExpanded;
         }
     }
 
@@ -327,7 +347,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                     mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 case Invoice.STATUS_CODE_CANCEL:
-//                    mBtnReportUser.setVisibility(View.VISIBLE);
                     mBtnDetailCancelInvoice.setVisibility(View.GONE);
                     break;
                 default:
@@ -346,6 +365,13 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         mTvDetailShipPrice.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
         mTvDetailShipTime.setText(invoice.getDeliveryTime());
         mTvDetailNote.setText(invoice.getDescription());
+        mInvoiceHistories = mInvoice.getHistories();
+        if (mInvoiceHistories == null) return;
+        InvoiceHistoryAdapter adapter = new InvoiceHistoryAdapter(
+                getBaseContext(), R.layout.item_invoice_history, mInvoiceHistories);
+        mLvHistoryList.setAdapter(adapter);
+        CommonUtils.setListViewHeightBasedOnItems(mLvHistoryList, Const.ZERO);
+
     }
 
     @Override
