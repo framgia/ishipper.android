@@ -5,6 +5,7 @@ import com.framgia.ishipper.model.Notification;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
+import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListNotificationData;
 import com.framgia.ishipper.util.Const;
 
@@ -44,6 +45,26 @@ public class NotificationPresenter implements NotificationContract.Presenter {
                         mActivity.showUserMessage(message);
                     }
                 }
+        );
+    }
+
+    @Override
+    public void changeStateNotification(User currentUser, Notification notification, final int position) {
+        API.updateNotification(currentUser.getUserType(),
+               String.valueOf(notification.getId()),
+               currentUser.getAuthenticationToken(), true,
+               new API.APICallback<APIResponse<EmptyData>>() {
+                   @Override
+                   public void onResponse(
+                           APIResponse<EmptyData> response) {
+                       mView.markNotificationAsRead(position);
+                   }
+
+                   @Override
+                   public void onFailure(int code, String message) {
+                       //TODO: update state notification fail
+                   }
+               }
         );
     }
 }

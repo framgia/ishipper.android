@@ -130,6 +130,12 @@ public class NotificationActivity extends BaseToolbarActivity
         mAdapter.notifyItemInserted(Const.HEAD_LIST);
     }
 
+    @Override
+    public void markNotificationAsRead(int position) {
+        mNotificationList.get(position).setRead(true);
+        mAdapter.notifyItemChanged(position);
+    }
+
     @OnClick(R.id.tv_new_notification)
     public void onClick(View view) {
         LinearLayoutManager layoutManager =
@@ -139,7 +145,8 @@ public class NotificationActivity extends BaseToolbarActivity
     }
 
     @Override
-    public void onClick(Notification notification) {
+    public void onClick(Notification notification, int position) {
+        mPresenter.changeStateNotification(mCurrentUser, notification, position);
         Intent intent = new Intent(notification.getAction());
         Bundle bundle = new Bundle();
         bundle.putString(Const.KEY_INVOICE_ID, notification.getInvoice().getStringId());

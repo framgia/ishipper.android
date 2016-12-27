@@ -63,7 +63,7 @@ public class NotificationAdapter extends
             Log.d("NotificationActivity", "position " + position);
             ((LoadingViewHolder) holder).bindData();
         } else {
-            ((NotificationViewHolder) holder).bindData(mNotificationList.get(position));
+            ((NotificationViewHolder) holder).bindData(mNotificationList.get(position), position);
         }
     }
 
@@ -90,7 +90,7 @@ public class NotificationAdapter extends
         }
     }
 
-    public class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class NotificationViewHolder extends RecyclerView.ViewHolder {
         public Notification notificationItem;
         User currentUser;
         @BindView(R.id.imgAvatar) ImageView mImgAvatar;
@@ -105,7 +105,7 @@ public class NotificationAdapter extends
             mView = itemView;
         }
 
-        private void bindData(final Notification item) {
+        private void bindData(final Notification item, final int position) {
             mTvContent.setText(item.getContent());
             notificationItem = item;
             mTvTimePost.setText(item.getTimePost());
@@ -115,37 +115,14 @@ public class NotificationAdapter extends
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mClickListener.onClick(item);
+                    mClickListener.onClick(item, position);
 
                 }
             });
         }
-
-        @Override
-        public void onClick(View view) {
-            if (mView.getId() == view.getId()) {
-                API.updateNotification(currentUser.getUserType(),
-                        String.valueOf(notificationItem.getId()),
-                        currentUser.getAuthenticationToken(), true,
-                        new API.APICallback<APIResponse<EmptyData>>() {
-                            @Override
-                            public void onResponse(
-                                    APIResponse<EmptyData> response) {
-                                //TODO: read notificationItem
-                            }
-
-                            @Override
-                            public void onFailure(int code, String message) {
-
-                            }
-                        }
-                );
-
-            }
-        }
     }
 
     public interface OnItemClickListener {
-        void onClick(Notification notification);
+        void onClick(Notification notification, int position);
     }
 }

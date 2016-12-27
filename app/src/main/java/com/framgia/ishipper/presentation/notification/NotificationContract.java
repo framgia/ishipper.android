@@ -17,10 +17,14 @@ public class NotificationContract {
         void updateListNoti(APIResponse<ListNotificationData> response);
 
         void addNewNotification(Intent intent);
+
+        void markNotificationAsRead(int position);
     }
 
     interface Presenter {
         void loadMore(List<Notification> notifications,
                       NotificationAdapter adapter, User currentUser, int page);
+
+        void changeStateNotification(User currentUser, Notification notification, int position);
     }
 }

@@ -11,7 +11,6 @@ import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
-import com.framgia.ishipper.presentation.manager_shipper_register.ChooseShipperRegisterActivity;
 import com.framgia.ishipper.util.Const;
 
 /**
