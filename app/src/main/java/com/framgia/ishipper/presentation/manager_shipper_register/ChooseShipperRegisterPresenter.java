@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
+import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
@@ -99,10 +100,16 @@ public class ChooseShipperRegisterPresenter implements ChooseShipperRegisterCont
     }
 
     @Override
-    public void addShipper(Intent intent) {
+    public void addShipper(int id, Intent intent) {
         if (intent == null) return;
-        String userStr = intent.getStringExtra(Const.KEY_USER);
-        User user = new Gson().fromJson(userStr, User.class);
-        mView.addUser(user);
+        String invoiceStr = intent.getStringExtra(Const.KEY_INVOICE);
+        Invoice invoice = new Gson().fromJson(invoiceStr, Invoice.class);
+        if (invoice == null) return;
+        if (invoice.getId() == id) {
+            String userStr = intent.getStringExtra(Const.KEY_USER);
+            if (userStr == null) return;
+            User user = new Gson().fromJson(userStr, User.class);
+            mView.addUser(user);
+        }
     }
 }

@@ -28,16 +28,13 @@ import com.framgia.ishipper.util.TextFormatUtils;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 import com.framgia.ishipper.widget.dialog.UserInfoDialogFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.framgia.ishipper.util.Const.KEY_INVOICE_ID;
 
-public class InvoiceDetailActivity extends BaseToolbarActivity implements InvoiceDetailContact.View {
-
-    public static final int REQUEST_INVOICE_ID = 1;
+public class InvoiceDetailActivity extends BaseToolbarActivity implements InvoiceDetailContract.View {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.tv_detail_distance) TextView mTvDetailDistance;
@@ -179,7 +176,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mPresenter.finishedInvoice(mInvoice.getStringId());
                 break;
             case R.id.btn_take_invoice:
-                mPresenter.takeInvoice(mInvoice.getId());
+                mPresenter.takeInvoice(mInvoice.getStringId());
                 break;
             case R.id.iv_detail_expand:
                 if (mIsExpanded) {
@@ -398,5 +395,10 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         mBtnDetailCancelInvoice.setVisibility(View.GONE);
         mBtnDetailReceiveInvoice.setVisibility(View.VISIBLE);
         mTvInvoiceStatus.setText(getString(R.string.invoice_status_init));
+    }
+
+    @Override
+    public void showRatingDialog(String invoiceId) {
+        new ReviewDialog(this, invoiceId).show();
     }
 }

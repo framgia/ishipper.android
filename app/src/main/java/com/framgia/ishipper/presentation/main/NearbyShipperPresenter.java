@@ -108,34 +108,34 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
                        String.valueOf(Const.SHIPPER_NEARBY_RADIUS));
         API.getShipperNearby(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
                              userParams, new API.APICallback<APIResponse<ShipperNearbyData>>() {
-                    @Override
-                    public void onResponse(APIResponse<ShipperNearbyData> response) {
-                        ArrayList<User> lastUpdateShippers = (ArrayList<User>) response.getData().getUsers();
-                        // init common list invoices
-                        ArrayList<User> commonShippers = new ArrayList<>(mShippers);
-                        // get common invoices between previous list invoices and new update invoices
-                        commonShippers.retainAll(lastUpdateShippers);
-                        // init list invoices need to be removed
-                        ArrayList<User> removeShippers = new ArrayList<>(mShippers);
-                        // init list invoices need to be added
-                        ArrayList<User> addShippers = new ArrayList<>(lastUpdateShippers);
-                        // get invoices need to be added
-                        addShippers.removeAll(commonShippers);
-                        // get invoices need to be removed
-                        removeShippers.removeAll(commonShippers);
-                        mView.addListMarker(addShippers);
-                        mView.removeListMarker(removeShippers);
-                        // update invoices
-                        mShippers.clear();
-                        mShippers.addAll(lastUpdateShippers);
+            @Override
+            public void onResponse(APIResponse<ShipperNearbyData> response) {
+                ArrayList<User> lastUpdateShippers = (ArrayList<User>) response.getData().getUsers();
+                // init common list invoices
+                ArrayList<User> commonShippers = new ArrayList<>(mShippers);
+                // get common invoices between previous list invoices and new update invoices
+                commonShippers.retainAll(lastUpdateShippers);
+                // init list invoices need to be removed
+                ArrayList<User> removeShippers = new ArrayList<>(mShippers);
+                // init list invoices need to be added
+                ArrayList<User> addShippers = new ArrayList<>(lastUpdateShippers);
+                // get invoices need to be added
+                addShippers.removeAll(commonShippers);
+                // get invoices need to be removed
+                removeShippers.removeAll(commonShippers);
+                mView.removeListMarker(removeShippers);
+                mView.addListMarker(addShippers);
+                // update invoices
+                mShippers.clear();
+                mShippers.addAll(lastUpdateShippers);
 //                        mView.onGetShipperNearbyComplete(mShippers);
-                    }
+            }
 
-                    @Override
-                    public void onFailure(int code, String message) {
-                        mFragment.showUserMessage(message);
-                    }
-                });
+            @Override
+            public void onFailure(int code, String message) {
+                mFragment.showUserMessage(message);
+            }
+        });
     }
 
     @Override
@@ -151,10 +151,10 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
         LatLng latLng = new LatLng(shipper.getLatitude(), shipper.getLongitude());
         final Marker marker = mView.addMark(latLng);
         MapUtils.setAnimatedInMarker(marker);
-        if (! shipperMap.containsKey(Integer.valueOf(shipper.getId()))) {
+        if (!shipperMap.containsValue(shipper)) {
             mShippers.add(shipper);
+            shipperMap.put(marker, shipper);
         }
-        shipperMap.put(marker, shipper);
     }
 
     @Override

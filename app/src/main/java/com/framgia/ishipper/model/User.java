@@ -73,6 +73,12 @@ public class User implements Parcelable {
         }
     };
 
+    @Override
+    public boolean equals(Object o) {
+        User user = (User) o;
+        return mId.equals(user.mId) && mLatitude == user.getLatitude() && mLongitude == user.getLongitude();
+    }
+
     public boolean isShop() {
         return mRole != null && mRole.equals(ROLE_SHOP);
     }

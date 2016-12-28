@@ -33,13 +33,13 @@ import static com.framgia.ishipper.util.Const.KEY_INVOICE_ID;
  * Created by HungNT on 11/28/16.
  */
 
-public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
+public class InvoiceDetailPresenter implements InvoiceDetailContract.Presenter {
 
-    private InvoiceDetailContact.View mView;
+    private InvoiceDetailContract.View mView;
     private BaseToolbarActivity mActivity;
     private User mCurrentUser;
 
-    public InvoiceDetailPresenter(InvoiceDetailContact.View view, BaseToolbarActivity activity) {
+    public InvoiceDetailPresenter(InvoiceDetailContract.View view, BaseToolbarActivity activity) {
         mView = view;
         mActivity = activity;
         mCurrentUser = Config.getInstance().getUserInfo(mActivity.getBaseContext());
@@ -135,49 +135,45 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
         cancelDialog.setOnReportListener(new CancelDialog.OnReportListener() {
             @Override
             public void onReportListener(final ReviewUser reviewUser) {
-                mActivity.showDialog();
-                API.putUpdateInvoiceStatus(
-                        mCurrentUser.getRole(),
-                        invoice.getStringId(),
-                        mCurrentUser.getAuthenticationToken(),
-                        Invoice.STATUS_CANCEL,
-                        new API.APICallback<APIResponse<InvoiceData>>() {
-                            @Override
-                            public void onResponse(APIResponse<InvoiceData> response) {
-                                // Report User
-                                Map<String, String> params = new HashMap<>();
-                                params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID, invoice.getStringId());
-                                params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
-                                params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
+            mActivity.showDialog();
+            API.putUpdateInvoiceStatus(
+                mCurrentUser.getRole(),
+                invoice.getStringId(),
+                mCurrentUser.getAuthenticationToken(),
+                Invoice.STATUS_CANCEL,
+                new API.APICallback<APIResponse<InvoiceData>>() {
+                    @Override
+                    public void onResponse(APIResponse<InvoiceData> response) {
+                        // Report User
+                        Map<String, String> params = new HashMap<>();
+                        params.put(APIDefinition.ReportUser.PARAM_INVOICE_ID, invoice.getStringId());
+                        params.put(APIDefinition.ReportUser.PARAM_REVIEW_TYPE, ReviewUser.TYPE_REPORT);
+                        params.put(APIDefinition.ReportUser.PARAM_CONTENT, reviewUser.getContent());
+                        API.reportUser(mCurrentUser.getRole(),
+                                mCurrentUser.getAuthenticationToken(),
+                                params,
+                                new API.APICallback<APIResponse<ReportUserData>>() {
+                                    @Override
+                                    public void onResponse(APIResponse<ReportUserData> response) {
+                                        mActivity.showUserMessage(response.getMessage());
+                                        mActivity.dismissDialog();
+                                        finishActivity(invoice.getStringId());
+                                    }
 
-                                API.reportUser(mCurrentUser.getRole(),
-                                        mCurrentUser.getAuthenticationToken(),
-                                        params,
-                                        new API.APICallback<APIResponse<ReportUserData>>() {
-                                            @Override
-                                            public void onResponse(APIResponse<ReportUserData> response) {
-                                                mActivity.showUserMessage(response.getMessage());
-                                                mActivity.dismissDialog();
-                                                Intent intent = new Intent();
-                                                intent.putExtra(KEY_INVOICE_ID, invoice.getId());
-                                                mActivity.setResult(Activity.RESULT_OK, intent);
-                                                mActivity.onBackPressed();
-                                            }
+                                    @Override
+                                    public void onFailure(int code, String message) {
+                                        mActivity.dismissDialog();
+                                        mActivity.showUserMessage(message);
+                                    }
+                                });
+                    }
 
-                                            @Override
-                                            public void onFailure(int code, String message) {
-                                                mActivity.dismissDialog();
-                                                mActivity.showUserMessage(message);
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onFailure(int code, String message) {
-                                mActivity.dismissDialog();
-                                mActivity.showUserMessage(message);
-                            }
-                        });
+                    @Override
+                    public void onFailure(int code, String message) {
+                        mActivity.dismissDialog();
+                        mActivity.showUserMessage(message);
+                    }
+                });
             }
         });
         cancelDialog.show();
@@ -194,10 +190,7 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
                    public void onResponse(APIResponse<InvoiceData> response) {
                        mActivity.dismissDialog();
                        mActivity.showUserMessage(response.getMessage());
-                       Intent intent = new Intent();
-                       intent.putExtra(KEY_INVOICE_ID, invoice.getId());
-                       mActivity.setResult(Activity.RESULT_OK, intent);
-                       mActivity.onBackPressed();
+                       finishActivity(invoice.getStringId());
                    }
 
                    @Override
@@ -225,15 +218,15 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
     }
 
     @Override
-    public void takeInvoice(int invoiceId) {
+    public void takeInvoice(final String invoiceId) {
         mActivity.showDialog();
-        API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoiceId),
+        API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, invoiceId,
                 mCurrentUser.getAuthenticationToken(),
                 Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
                         mActivity.dismissDialog();
-                        mActivity.onBackPressed();
+                        finishActivity(invoiceId);
                     }
 
                     @Override
@@ -246,7 +239,7 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
     }
 
     @Override
-    public void finishedInvoice(String stringId) {
+    public void finishedInvoice(final String invoiceId) {
         mActivity.showDialog();
         String status;
         if (!mCurrentUser.isShop()) {
@@ -255,13 +248,14 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
             status = Invoice.STATUS_FINISHED;
         }
         API.putUpdateInvoiceStatus(mCurrentUser.getRole(),
-                stringId, mCurrentUser.getAuthenticationToken(),
+                invoiceId, mCurrentUser.getAuthenticationToken(),
                 status, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
                         mActivity.showUserMessage(response.getMessage());
                         mActivity.dismissDialog();
-                        mActivity.onBackPressed();
+                        mView.showRatingDialog(invoiceId);
+                        finishActivity(invoiceId);
                     }
 
                     @Override
@@ -270,6 +264,13 @@ public class InvoiceDetailPresenter implements InvoiceDetailContact.Presenter {
                         mActivity.dismissDialog();
                     }
                 });
+    }
+
+    private void finishActivity(String invoiceId) {
+        Intent intent = new Intent();
+        intent.putExtra(KEY_INVOICE_ID, invoiceId);
+        mActivity.setResult(Activity.RESULT_OK, intent);
+        mActivity.onBackPressed();
     }
 
     @Override

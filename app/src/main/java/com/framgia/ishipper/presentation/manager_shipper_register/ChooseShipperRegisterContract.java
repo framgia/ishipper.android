@@ -27,7 +27,7 @@ public interface ChooseShipperRegisterContract {
 
         void actionAcceptShipper(User shipper, int invoiceId);
 
-        void addShipper(Intent intent);
+        void addShipper(int invoiceId, Intent intent);
 
     }
 

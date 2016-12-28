@@ -7,7 +7,7 @@ import com.framgia.ishipper.model.User;
  * Created by HungNT on 11/28/16.
  */
 
-public class InvoiceDetailContact {
+public class InvoiceDetailContract {
     interface View {
         void onGetInvoiceDetailSuccess(Invoice invoice);
 
@@ -20,6 +20,8 @@ public class InvoiceDetailContact {
         void showUserData(User user);
 
         void onCancelledReceiveInvoice();
+
+        void showRatingDialog(String invoiceId);
     }
 
     interface Presenter {
@@ -33,7 +35,7 @@ public class InvoiceDetailContact {
 
         void cancelInvoice(Invoice invoice);
 
-        void takeInvoice(int invoiceId);
+        void takeInvoice(String invoiceId);
 
         void finishedInvoice(String stringId);
 
