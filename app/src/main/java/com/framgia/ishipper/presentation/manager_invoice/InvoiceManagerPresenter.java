@@ -31,14 +31,14 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
     }
 
     @Override
-    public void actionTakeInvoice(final Invoice invoice) {
+    public void actionTakeInvoice(final int statusCode, final Invoice invoice) {
         mActivity.showDialog();
         API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoice.getId()),
                                    Config.getInstance().getUserInfo(mActivity).getAuthenticationToken(),
                                    Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
-                        mView.notifyChangeTab(Invoice.STATUS_CODE_WAITING);
+                        mView.notifyChangeTab(statusCode);
                         mView.notifyChangeTab(Invoice.STATUS_CODE_SHIPPING, true, invoice.getId());
                         mActivity.dismissDialog();
                     }
@@ -52,13 +52,13 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
     }
 
     @Override
-    public void actionShippedInvoice(final Invoice invoice) {
+    public void actionShippedInvoice(final int statusCode, final Invoice invoice) {
         API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoice.getId()),
                                    Config.getInstance().getUserInfo(mActivity).getAuthenticationToken(),
                                    Invoice.STATUS_SHIPPED, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
-                        mView.notifyChangeTab(Invoice.STATUS_CODE_SHIPPING);
+                        mView.notifyChangeTab(statusCode);
                         mView.notifyChangeTab(Invoice.STATUS_CODE_SHIPPED, true, invoice.getId());
                         mView.showReviewDialog(invoice);
                     }
@@ -71,13 +71,13 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
     }
 
     @Override
-    public void actionFinishInvoice(final Invoice invoice) {
+    public void actionFinishInvoice(final int statusCode, final Invoice invoice) {
         API.putUpdateInvoiceStatus(User.ROLE_SHOP.toLowerCase(), String.valueOf(invoice.getId()),
                                    Config.getInstance().getUserInfo(mActivity).getAuthenticationToken(),
                                    Invoice.STATUS_FINISHED, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<InvoiceData> response) {
-                        mView.notifyChangeTab(Invoice.STATUS_CODE_SHIPPED);
+                        mView.notifyChangeTab(statusCode);
                         mView.notifyChangeTab(Invoice.STATUS_CODE_FINISHED, true, invoice.getId());
                         mView.showReviewDialog(invoice);
                     }
