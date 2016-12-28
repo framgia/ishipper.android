@@ -33,7 +33,7 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
     @Override
     public void actionTakeInvoice(final int statusCode, final Invoice invoice) {
         mActivity.showDialog();
-        API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, String.valueOf(invoice.getId()),
+        API.putUpdateInvoiceStatus(User.ROLE_SHIPPER, invoice.getStringId(),
                                    Config.getInstance().getUserInfo(mActivity).getAuthenticationToken(),
                                    Invoice.STATUS_SHIPPING, new API.APICallback<APIResponse<InvoiceData>>() {
                     @Override
@@ -95,7 +95,6 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
         Bundle extras = new Bundle();
         extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);
-        mFragment.startActivityForResult(intent,
-                                         InvoiceDetailActivity.REQUEST_INVOICE_ID);
+        mFragment.startActivityForResult(intent, Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL);
     }
 }

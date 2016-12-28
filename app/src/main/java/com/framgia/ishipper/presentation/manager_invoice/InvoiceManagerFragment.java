@@ -23,6 +23,7 @@ import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -120,10 +121,25 @@ public class InvoiceManagerFragment extends BaseFragment implements
     public void removeInvoice(int invoiceId) {
         ListInvoiceFragment listFragment = mListOrderFragment.get(mViewPager.getCurrentItem());
         if (listFragment == null) return;
-        for (Invoice invoice : listFragment.getInvoiceList()) {
+        Iterator<Invoice> iterator = listFragment.getInvoiceList().iterator();
+        while (iterator.hasNext()) {
+            Invoice invoice = iterator.next();
             if (invoice.getId() == invoiceId) {
                 listFragment.getInvoiceList().remove(invoice);
                 listFragment.getInvoiceAdapter().notifyDataSetChanged();
+                break;
+            }
+        }
+        for (int i = 1; i <= mViewPager.getOffscreenPageLimit(); i++) {
+            if (mViewPager.getCurrentItem() + i <= mListOrderFragment.size()) {
+                ListInvoiceFragment nextListFragment =
+                        mListOrderFragment.get(mViewPager.getCurrentItem() + i);
+                if (nextListFragment != null) nextListFragment.notifyChangedData(null);
+            }
+            if (mViewPager.getCurrentItem() - i >= 0) {
+                ListInvoiceFragment prevListFragment =
+                        mListOrderFragment.get(mViewPager.getCurrentItem() - i);
+                if (prevListFragment != null) prevListFragment.notifyChangedData(null);
             }
         }
     }
@@ -176,7 +192,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
                 case Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER:
                     notifyChangeTab(Invoice.STATUS_CODE_WAITING, true, invoiceId);
                     break;
-                case InvoiceDetailActivity.REQUEST_INVOICE_ID:
+                case Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL:
                     removeInvoice(invoiceId);
                     break;
             }

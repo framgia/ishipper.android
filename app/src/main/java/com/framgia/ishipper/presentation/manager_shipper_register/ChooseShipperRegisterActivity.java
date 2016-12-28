@@ -44,7 +44,7 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mPresenter != null) {
-                mPresenter.addShipper(intent);
+                mPresenter.addShipper(mInvoiceId, intent);
             }
         }
     };

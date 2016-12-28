@@ -58,6 +58,7 @@ public class Const {
         public static final int LOCATION_PERMISSION_REQUEST_CODE = 4;
         public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 5;
         public static final int REQUEST_CHECK_SETTINGS = 6;
+        public static final int REQUEST_CODE_INVOICE_DETAIL = 7;
     }
 
     public class ErrorMessage {
