@@ -24,6 +24,7 @@ import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.SocketResponse;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.ui.view.EmptyView;
 import com.framgia.ishipper.util.Const;
@@ -63,9 +64,15 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent == null) return;
+            String responseStr = intent.getStringExtra(Const.KEY_SOCKET_RESPONSE);
+            SocketResponse socketResponse = new Gson().fromJson(responseStr, SocketResponse.class);
+            if (socketResponse != null) {
+                Invoice invoice = socketResponse.getInvoice();
+                if (invoice == null) return;
+                changeCountShipperReg(invoice);
+            }
             if (intent.hasExtra(Const.KEY_INVOICE)) {
-                Invoice invoice = new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE),
-                        Invoice.class);
+                Invoice invoice = new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE), Invoice.class);
                 switch (mStatusCode) {
                     case Invoice.STATUS_CODE_INIT:
                         if (mCurrentUser.isShop()) {
@@ -133,7 +140,10 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
             mStatusCode = getArguments().getInt(STATUS_CODE, Invoice.STATUS_CODE_ALL);
         }
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
-        getActivity().registerReceiver(mReceiver, new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Const.ACTION_NEW_NOTIFICATION);
+        intentFilter.addAction(Const.ACTION_CANCEL_INVOICE);
+        getActivity().registerReceiver(mReceiver, intentFilter);
     }
 
     @Override

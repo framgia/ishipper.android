@@ -20,6 +20,7 @@ import com.framgia.ishipper.util.Const;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,7 +45,7 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mPresenter != null) {
-                mPresenter.addShipper(mInvoiceId, intent);
+                mPresenter.updateShipper(mInvoiceId, intent);
             }
         }
     };
@@ -53,7 +54,10 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, FirebaseInstanceId.getInstance().getToken());
-        registerReceiver(mReceiver, new IntentFilter(Const.ACTION_NEW_NOTIFICATION));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Const.ACTION_NEW_NOTIFICATION);
+        intentFilter.addAction(Const.ACTION_CANCEL_INVOICE);
+        registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
@@ -114,6 +118,17 @@ public class ChooseShipperRegisterActivity extends BaseToolbarActivity implement
     public void addUser(User user) {
         mShipperList.add(user);
         mShipperRegAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void remove(User user) {
+        for (User u : mShipperList) {
+            if (u.getId().equals(user.getId())) {
+                mShipperList.remove(u);
+                mShipperRegAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     @Override

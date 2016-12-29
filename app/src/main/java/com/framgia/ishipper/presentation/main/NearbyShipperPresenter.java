@@ -150,10 +150,21 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
             User shipper, HashMap<Marker, User> shipperMap) {
         LatLng latLng = new LatLng(shipper.getLatitude(), shipper.getLongitude());
         final Marker marker = mView.addMark(latLng);
-        MapUtils.setAnimatedInMarker(marker);
+        for (Map.Entry<Marker, User> entry : shipperMap.entrySet()) {
+            Marker key = entry.getKey();
+            User value = entry.getValue();
+            if (value.getId().equals(shipper.getId()) && value.getLatitude() != shipper.getLatitude()
+                && value.getLongitude() != shipper.getLongitude()) {
+                shipperMap.remove(key);
+                mShippers.remove(value);
+                MapUtils.setAnimatedOutMarker(key);
+                break;
+            }
+        }
         if (!shipperMap.containsValue(shipper)) {
             mShippers.add(shipper);
             shipperMap.put(marker, shipper);
+            MapUtils.setAnimatedInMarker(marker);
         }
     }
 
