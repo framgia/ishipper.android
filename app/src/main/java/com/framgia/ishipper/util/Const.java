@@ -13,8 +13,6 @@ public class Const {
     public static final int SETTING_MIN_INVOICE_RADIUS = 1;
     public static final int SHIPPER_NEARBY_RADIUS = 5;
     public static final int SETTING_INVOICE_RADIUS_DEFAULT = 5;
-    public static final String ACTION_NEW_INVOICE = "new_invoice";
-    public static final String ACTION_REMOVE_INVOICE = "remove_invoice";
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0x2233;
     public static final int INVALID = -1;
     public static String VIETNAM_PREFIX = "+84";
@@ -29,26 +27,29 @@ public class Const {
     public static final String COMMAND = "command";
     public static final String COMMAND_SUBSCRIBE = "subscribe";
     public static final String IDENTIFIER = "identifier";
-    public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
     public static final int SIZE_INVOICE_STATUS = 6;
     public static final int DEFAULT_HIGHLIGHT_POSITION = - 1;
-    public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
-    public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
-    public static final String ACTION_NEW_NOTIFICATION = "new_notification";
     public static final int HEAD_LIST = 0;
     public static final String KEY_INVOICE_ID = "KEY_INVOICE_ID";
     public static final String KEY_INVOICE = "invoice";
     public static final int POSITION_HIGHLIGHT_DEFAULT = -1;
     public static final int INVOICE_ID_DEFAULT = - 1;
-
     public static final long AUTO_COMPLETE_PLACE_RADIUS = 2000;
     public static final String AUTO_COMPLETE_PLACE_LANGUAGE_CODE = "vi";
     public static final int TIME_HIGHLIGHT_INVOICE = 500;
     public static final int TIME_REVERSE_HIGHLIGHT_INVOICE = 2000;
     public static final String KEY_ACTION = "click_action";
+    public static final String KEY_SOCKET_RESPONSE = "socket_response";
     public static final String KEY_NOTIFICATION_ID = "notification_id";
+    public static final String ACTION_NEW_NOTIFICATION = "new_notification";
+    public static final String ACTION_UNREAD_NOTIFICATION = "unread_notification";
+    public static final String ACTION_NEW_INVOICE = "new_invoice";
+    public static final String ACTION_REMOVE_INVOICE = "remove_invoice";
+    public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
+    public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
+    public static final String ACTION_CANCEL_INVOICE = "cancel_invoice";
 
     public class RequestCode {
 

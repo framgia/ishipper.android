@@ -6,6 +6,7 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Invoice;
+import com.framgia.ishipper.model.SocketResponse;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
@@ -100,16 +101,28 @@ public class ChooseShipperRegisterPresenter implements ChooseShipperRegisterCont
     }
 
     @Override
-    public void addShipper(int id, Intent intent) {
+    public void updateShipper(int id, Intent intent) {
         if (intent == null) return;
-        String invoiceStr = intent.getStringExtra(Const.KEY_INVOICE);
-        Invoice invoice = new Gson().fromJson(invoiceStr, Invoice.class);
-        if (invoice == null) return;
-        if (invoice.getId() == id) {
-            String userStr = intent.getStringExtra(Const.KEY_USER);
-            if (userStr == null) return;
-            User user = new Gson().fromJson(userStr, User.class);
-            mView.addUser(user);
+        String responseStr = intent.getStringExtra(Const.KEY_SOCKET_RESPONSE);
+        SocketResponse socketResponse = new Gson().fromJson(responseStr, SocketResponse.class);
+        if (socketResponse != null) {
+            Invoice invoice = socketResponse.getInvoice();
+            if (invoice == null) return;
+            if (invoice.getId() == id) {
+                User user = socketResponse.getUser();
+                if (user == null) return;
+                mView.remove(user);
+            }
+        } else {
+            String invoiceStr = intent.getStringExtra(Const.KEY_INVOICE);
+            Invoice invoice = new Gson().fromJson(invoiceStr, Invoice.class);
+            if (invoice == null) return;
+            if (invoice.getId() == id) {
+                String userStr = intent.getStringExtra(Const.KEY_USER);
+                if (userStr == null) return;
+                User user = new Gson().fromJson(userStr, User.class);
+                mView.addUser(user);
+            }
         }
     }
 }

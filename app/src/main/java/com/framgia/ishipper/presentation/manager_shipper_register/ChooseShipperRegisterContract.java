@@ -15,6 +15,8 @@ public interface ChooseShipperRegisterContract {
         void addListShipper(List<User> userList);
 
         void addUser(User user);
+
+        void remove(User user);
     }
 
     interface Presenter {
@@ -27,7 +29,7 @@ public interface ChooseShipperRegisterContract {
 
         void actionAcceptShipper(User shipper, int invoiceId);
 
-        void addShipper(int invoiceId, Intent intent);
+        void updateShipper(int invoiceId, Intent intent);
 
     }
 

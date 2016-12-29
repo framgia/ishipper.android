@@ -361,10 +361,21 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                     mShipperUpdateListener.onShipperOffline(response.getUser());
                 }
                 break;
+            case  Const.ACTION_CANCEL_INVOICE:
+                sendBroadcastCancelInvoice(text);
+                break;
             //TODO: add other action
             default:
                 break;
         }
+    }
+
+    private void sendBroadcastCancelInvoice(String sockerResponse) {
+        Intent intent = new Intent();
+        intent.setAction(Const.ACTION_CANCEL_INVOICE);
+        intent.putExtra(Const.KEY_SOCKET_RESPONSE, sockerResponse);
+        sendBroadcast(intent);
+
     }
 
     public void setOnInvoiceUpdate(OnInvoiceUpdate onInvoiceUpdate) {
