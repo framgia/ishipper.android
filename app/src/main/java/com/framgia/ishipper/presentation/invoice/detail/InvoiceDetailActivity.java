@@ -72,6 +72,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     private List<InvoiceHistory> mInvoiceHistories;
     private boolean mIsExpanded;
     private InvoiceDetailPresenter mPresenter;
+    private boolean isStateChanged;
 
     @Override
     public Toolbar getToolbar() {
@@ -123,10 +124,13 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (CommonUtils.isOpenFromNoti(this)) {
             mPresenter.startMainActivity();
+        } else if (isStateChanged) {
+            isStateChanged = false;
+            mPresenter.finishActivity(mInvoice.getStringId());
         }
+        super.onBackPressed();
     }
 
     @OnClick({
@@ -162,6 +166,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             case R.id.btn_cancel_invoice:
                 if (mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT) {
                     mPresenter.cancelInvoice(mInvoice);
+                    isStateChanged = true;
                 } else {
                     mPresenter.report(mInvoice);
                 }

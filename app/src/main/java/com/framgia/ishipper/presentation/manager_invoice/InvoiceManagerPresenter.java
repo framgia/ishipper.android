@@ -1,6 +1,7 @@
 package com.framgia.ishipper.presentation.manager_invoice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
@@ -12,6 +13,7 @@ import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.InvoiceData;
 import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.util.Const;
+import java.util.List;
 
 /**
  * Created by vuduychuong1994 on 11/23/16.
@@ -96,5 +98,25 @@ public class InvoiceManagerPresenter implements InvoiceManagerContract.Presenter
         extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);
         mFragment.startActivityForResult(intent, Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL);
+    }
+
+    @Override
+    public void syncData(
+            ViewPager viewPager, List<ListInvoiceFragment> listOrderFragment,
+            boolean isSyncCurrentTab) {
+        if (viewPager == null || listOrderFragment == null) return;
+        if (isSyncCurrentTab) listOrderFragment.get(viewPager.getCurrentItem()).notifyChangedData(null);
+        for (int i = 1; i <= viewPager.getOffscreenPageLimit(); i++) {
+            if (viewPager.getCurrentItem() + i <= listOrderFragment.size()) {
+                ListInvoiceFragment nextListFragment =
+                        listOrderFragment.get(viewPager.getCurrentItem() + i);
+                if (nextListFragment != null) nextListFragment.notifyChangedData(null);
+            }
+            if (viewPager.getCurrentItem() - i >= 0) {
+                ListInvoiceFragment prevListFragment =
+                        listOrderFragment.get(viewPager.getCurrentItem() - i);
+                if (prevListFragment != null) prevListFragment.notifyChangedData(null);
+            }
+        }
     }
 }
