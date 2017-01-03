@@ -17,7 +17,6 @@ import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
-import com.framgia.ishipper.presentation.invoice.detail.InvoiceDetailActivity;
 import com.framgia.ishipper.presentation.manager_invoice.InvoiceManagerContract.Presenter;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ReviewDialog;
@@ -130,18 +129,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
                 break;
             }
         }
-        for (int i = 1; i <= mViewPager.getOffscreenPageLimit(); i++) {
-            if (mViewPager.getCurrentItem() + i <= mListOrderFragment.size()) {
-                ListInvoiceFragment nextListFragment =
-                        mListOrderFragment.get(mViewPager.getCurrentItem() + i);
-                if (nextListFragment != null) nextListFragment.notifyChangedData(null);
-            }
-            if (mViewPager.getCurrentItem() - i >= 0) {
-                ListInvoiceFragment prevListFragment =
-                        mListOrderFragment.get(mViewPager.getCurrentItem() - i);
-                if (prevListFragment != null) prevListFragment.notifyChangedData(null);
-            }
-        }
+        mPresenter.syncData(mViewPager, mListOrderFragment, false);
     }
 
     @Override
@@ -194,6 +182,7 @@ public class InvoiceManagerFragment extends BaseFragment implements
                     break;
                 case Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL:
                     removeInvoice(invoiceId);
+                    if (mPresenter != null) mPresenter.syncData(mViewPager, mListOrderFragment, false);
                     break;
             }
         }

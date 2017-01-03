@@ -241,6 +241,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     @Override
     public void notifyChangedData(OnGetInvoiceListener listener) {
         initAdapter(mContext);
+        if (mPresenter == null || mCurrentUser == null) return;
         mPresenter.getInvoice(mCurrentUser.getRole(),
                 mCurrentUser.getAuthenticationToken(),
                 mStatusCode, listener);
@@ -260,6 +261,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
 
     @Override
     public void initAdapter(Context context) {
+        if (context == null) return;
         if (mInvoiceList == null) {
             mInvoiceList = new ArrayList<>();
         }

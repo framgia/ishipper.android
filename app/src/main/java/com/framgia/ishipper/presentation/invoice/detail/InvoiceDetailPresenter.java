@@ -266,7 +266,7 @@ public class InvoiceDetailPresenter implements InvoiceDetailContract.Presenter {
                 });
     }
 
-    private void finishActivity(String invoiceId) {
+    public void finishActivity(String invoiceId) {
         Intent intent = new Intent();
         intent.putExtra(KEY_INVOICE_ID, invoiceId);
         mActivity.setResult(Activity.RESULT_OK, intent);

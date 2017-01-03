@@ -153,8 +153,7 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
         for (Map.Entry<Marker, User> entry : shipperMap.entrySet()) {
             Marker key = entry.getKey();
             User value = entry.getValue();
-            if (value.getId().equals(shipper.getId()) && value.getLatitude() != shipper.getLatitude()
-                && value.getLongitude() != shipper.getLongitude()) {
+            if (value.equals(shipper)) {
                 shipperMap.remove(key);
                 mShippers.remove(value);
                 MapUtils.setAnimatedOutMarker(key);

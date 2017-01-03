@@ -1,5 +1,7 @@
 package com.framgia.ishipper.presentation.manager_invoice;
+import android.support.v4.view.ViewPager;
 import com.framgia.ishipper.model.Invoice;
+import java.util.List;
 
 /**
  * Created by vuduychuong1994 on 11/23/16.
@@ -28,5 +30,7 @@ public interface InvoiceManagerContract {
         void actionFinishInvoice(int statusCode, Invoice invoice);
 
         void startDetailInvoiceActivity(Invoice invoice);
+
+        void syncData(ViewPager viewPager, List<ListInvoiceFragment> listOrderFragment, boolean isSyncCurrentTab);
     }
 }

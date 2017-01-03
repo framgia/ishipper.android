@@ -172,7 +172,7 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
         Bundle extras = new Bundle();
         extras.putString(Const.KEY_INVOICE_ID, invoice.getStringId());
         intent.putExtras(extras);
-        mFragment.getActivity().startActivity(intent);
+        mFragment.startActivityForResult(intent, Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL);
     }
 
     @Override

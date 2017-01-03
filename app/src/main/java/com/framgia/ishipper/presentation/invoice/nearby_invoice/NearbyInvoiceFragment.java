@@ -227,46 +227,36 @@ public class NearbyInvoiceFragment extends BaseFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case Const.RequestCode.PLACE_AUTOCOMPLETE_REQUEST_CODE:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        Place place = PlaceAutocomplete.getPlace(mContext, data);
-                        Log.d(TAG, "onActivityResult: " + place.getName());
-                        mTvSearchArea.setText(place.getName());
-                        MapUtils.zoomToPosition(mGoogleMap,
-                            new LatLng(place.getLatLng().latitude, place.getLatLng().longitude));
-                        break;
-                    case PlaceAutocomplete.RESULT_ERROR:
-                        Status status = PlaceAutocomplete.getStatus(mContext, data);
-                        Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Log.d(TAG, " Search Cancel");
-                        break;
-                }
-                break;
-            case Const.RequestCode.REQUEST_CHECK_SETTINGS:
-                // location setting is set up
-                if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case Const.RequestCode.PLACE_AUTOCOMPLETE_REQUEST_CODE:
+                    Place place = PlaceAutocomplete.getPlace(mContext, data);
+                    Log.d(TAG, "onActivityResult: " + place.getName());
+                    mTvSearchArea.setText(place.getName());
+                    MapUtils.zoomToPosition(mGoogleMap,
+                        new LatLng(place.getLatLng().latitude, place.getLatLng().longitude));
+                    break;
+                case Const.RequestCode.REQUEST_CHECK_SETTINGS:
                     mMapFragment.getMapAsync(NearbyInvoiceFragment.this);
-                }
-                break;
-            case Const.REQUEST_SETTING:
-                // setting app is set up
-                if (resultCode == Activity.RESULT_OK) {
+                    break;
+                case Const.REQUEST_SETTING:
                     initMap();
-                }
-                break;
-            case REQUEST_FILTER:
-                if (resultCode == Activity.RESULT_OK) {
-                    // Update list invoice in map
+                    break;
+                case REQUEST_FILTER:
                     String jsonData = data.getStringExtra(FilterInvoiceActivity.INTENT_FILTER_DATA);
-                    mInvoices = new Gson().fromJson(jsonData,
-                        new TypeToken<List<Invoice>>() {}.getType());
+                    mInvoices = new Gson().fromJson(jsonData, new TypeToken<List<Invoice>>() {}.getType());
                     addListMarker(mInvoices);
-                }
-                break;
+                    break;
+                case Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL:
+                    if (mPresenter == null) return;
+                    mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
+                         new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
+                    break;
+            }
+        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR &&
+                   requestCode == Const.RequestCode.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            Status status = PlaceAutocomplete.getStatus(mContext, data);
+            Toast.makeText(mContext, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
