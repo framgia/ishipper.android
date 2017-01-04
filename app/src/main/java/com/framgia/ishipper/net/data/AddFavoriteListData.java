@@ -1,13 +1,13 @@
 package com.framgia.ishipper.net.data;
 
-import com.framgia.ishipper.model.FavoriteListResponse;
+import com.framgia.ishipper.model.User;
 import com.google.gson.annotations.SerializedName;
 
 public class AddFavoriteListData {
 
-    @SerializedName("favorite_list") private FavoriteListResponse mData;
+    @SerializedName("user") private User mUser;
 
-    public FavoriteListResponse getResponse() {
-        return mData;
+    public User getUser() {
+        return mUser;
     }
 }

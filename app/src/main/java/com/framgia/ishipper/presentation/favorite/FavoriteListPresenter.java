@@ -1,10 +1,12 @@
 package com.framgia.ishipper.presentation.favorite;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
+import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -13,7 +15,9 @@ import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.net.data.ListUserData;
 import com.framgia.ishipper.presentation.profile.SearchUserActivity;
+import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.Const;
+import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 
 /**
  * Created by vuduychuong1994 on 11/21/16.
@@ -24,13 +28,13 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
 
     private Context mContext;
     private BaseFragment mFragment;
-    FavoriteListContract.View mFavoriteListView;
+    private FavoriteListContract.View mView;
 
     public FavoriteListPresenter(Context context, BaseFragment fragment,
-                                 FavoriteListContract.View favoriteListView) {
+                                 FavoriteListContract.View view) {
         mContext = context;
         mFragment = fragment;
-        mFavoriteListView = favoriteListView;
+        mView = view;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
                                 @Override
                                 public void onResponse(APIResponse<ListUserData> response) {
                                     Log.d(TAG, response.getMessage());
-                                    mFavoriteListView.showListUser(response.getData());
+                                    mView.showListUser(response.getData());
                                     ((BaseActivity) mContext).dismissDialog();
                                 }
 
@@ -60,7 +64,7 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
                                   new API.APICallback<APIResponse<EmptyData>>() {
                                       @Override
                                       public void onResponse(APIResponse<EmptyData> response) {
-                                          mFavoriteListView.showListUser(null);
+                                          mView.showListUser(null);
                                           ((BaseActivity) mContext).dismissDialog();
                                           Toast.makeText(mContext, R.string.toast_delete_all,
                                                          Toast.LENGTH_SHORT).show();
@@ -83,10 +87,8 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
                             new API.APICallback<APIResponse<AddFavoriteListData>>() {
                                 @Override
                                 public void onResponse(APIResponse<AddFavoriteListData> response) {
-                                    mFavoriteListView.insertUser(Const.ZERO, favoriteUser);
+                                    mView.insertUser(Const.ZERO, response.getData().getUser());
                                     ((BaseActivity) mContext).dismissDialog();
-                                    Toast.makeText(mContext, response.getMessage(),
-                                                   Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -101,5 +103,29 @@ public class FavoriteListPresenter implements FavoriteListContract.Presenter {
     public void startSearchUserActivity() {
         mFragment.startActivityForResult(new Intent(mContext, SearchUserActivity.class),
                                          Const.RequestCode.REQUEST_SEARCH_FAVORITE);
+    }
+
+    @Override
+    public void sendRequestRemoveUser(final User user) {
+        User currentUser = Config.getInstance().getUserInfo(mContext);
+        final Dialog loadingDialog = CommonUtils.showLoadingDialog(mContext);
+        API.deleteUserFavorite(
+            currentUser.getAuthenticationToken(),
+            currentUser.getUserType(),
+            user.getFavoriteListId(),
+            new API.APICallback<APIResponse<EmptyData>>() {
+                @Override
+                public void onResponse(APIResponse<EmptyData> response) {
+                    loadingDialog.dismiss();
+                    mView.removeUser(user);
+                }
+
+                @Override
+                public void onFailure(int code, String message) {
+                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                    loadingDialog.dismiss();
+                }
+            }
+        );
     }
 }

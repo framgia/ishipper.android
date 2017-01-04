@@ -15,6 +15,7 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.ui.listener.OnRemoveUserListener;
 import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
 
@@ -31,11 +32,13 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
 
     private Context mContext;
     private List<User> mUserList;
+    OnRemoveUserListener mRemoveUserListener;
 
 
-    public FavoriteListAdapter(Context context, List<User> userList) {
+    public FavoriteListAdapter(Context context, List<User> userList, OnRemoveUserListener listener) {
         mContext = context;
         mUserList = userList;
+        mRemoveUserListener = listener;
     }
 
     @Override
@@ -74,46 +77,7 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
 
         @OnClick(R.id.btnRemove)
         public void onClick() {
-            new ConfirmDialog(mContext)
-                    .setMessage(mContext.getString(R.string.dialog_remove_user_from_favorite))
-                    .setTitle(mContext.getString(R.string.dialog_delete_message))
-                    .setIcon(R.drawable.ic_delete_white_24dp)
-                    .setButtonCallback(new ConfirmDialog.ConfirmDialogCallback() {
-                        @Override
-                        public void onPositiveButtonClick(ConfirmDialog confirmDialog) {
-                            deleteUserFromList(getAdapterPosition());
-                            confirmDialog.cancel();
-                        }
-
-                        @Override
-                        public void onNegativeButtonClick(ConfirmDialog confirmDialog) {
-                            confirmDialog.cancel();
-                        }
-                    }).show();
-        }
-
-        private void deleteUserFromList(final int position) {
-            User currentUser = Config.getInstance().getUserInfo(mContext);
-            final Dialog loadingDialog = CommonUtils.showLoadingDialog(mContext);
-            API.deleteUserFavorite(
-                    currentUser.getAuthenticationToken(),
-                    currentUser.getUserType(),
-                    mUserList.get(position).getFavoriteListId(),
-                    new API.APICallback<APIResponse<EmptyData>>() {
-                        @Override
-                        public void onResponse(APIResponse<EmptyData> response) {
-                            loadingDialog.dismiss();
-                            mUserList.remove(position);
-                            notifyItemRemoved(position);
-                        }
-
-                        @Override
-                        public void onFailure(int code, String message) {
-                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                            loadingDialog.dismiss();
-                        }
-                    }
-            );
+            mRemoveUserListener.onRemove(mUserList.get(getAdapterPosition()), getAdapterPosition());
         }
     }
 }
