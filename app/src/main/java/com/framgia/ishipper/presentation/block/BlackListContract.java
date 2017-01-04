@@ -19,6 +19,10 @@ public interface BlackListContract {
         void insertUser(int index, User blockUser);
 
         void showEmptyLayout(boolean active);
+
+        void confirmRemoveUser(User user);
+
+        void removeUser(User user);
     }
 
     interface Presenter {
@@ -30,5 +34,7 @@ public interface BlackListContract {
         void addUserToBlackList(User currentUser, User blockUser);
 
         void startSearchUserActivity();
+
+        void sendRequestRemoveUser(User user);
     }
 }

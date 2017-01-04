@@ -18,6 +18,7 @@ import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.data.ListUserData;
+import com.framgia.ishipper.ui.listener.OnRemoveUserListener;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 
@@ -27,7 +28,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class FavoriteListFragment extends BaseFragment implements FavoriteListContract.View {
+public class FavoriteListFragment extends BaseFragment implements FavoriteListContract.View,
+        OnRemoveUserListener {
     private static final String TAG = "FavoriteListFragment";
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
@@ -70,7 +72,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
     public void initViews() {
         mCurrentUser = Config.getInstance().getUserInfo(mContext);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mFavoriteListAdapter = new FavoriteListAdapter(mContext, mFavoriteList);
+        mFavoriteListAdapter = new FavoriteListAdapter(mContext, mFavoriteList, this);
         mRecyclerView.setAdapter(mFavoriteListAdapter);
     }
 
@@ -133,21 +135,18 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
 
     @Override
     public void showListUser(ListUserData listUserData) {
+        if (listUserData == null) return;
         mFavoriteList.clear();
-        if (listUserData != null) {
-            mFavoriteList.addAll(listUserData.getShippersList());
-        } else {
-            showEmptyLayout(true);
-        }
+        mFavoriteList.addAll(listUserData.getShippersList());
         showEmptyLayout(mFavoriteList.isEmpty());
         mFavoriteListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void insertUser(int index, User favoriteUser) {
-        showEmptyLayout(true);
-        mFavoriteList.add(Const.ZERO, favoriteUser);
-        mFavoriteListAdapter.notifyDataSetChanged();
+        showEmptyLayout(mLayoutEmpty.getVisibility() == View.GONE);
+        mFavoriteList.add(index, favoriteUser);
+        mFavoriteListAdapter.notifyItemInserted(index);
     }
 
     @Override
@@ -155,8 +154,46 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
         mLayoutEmpty.setVisibility(active ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void removeUser(User user) {
+        if (mFavoriteList == null || mFavoriteListAdapter == null) return;
+        int position = mFavoriteList.indexOf(user);
+        try {
+            mFavoriteList.remove(position);
+            mFavoriteListAdapter.notifyItemRemoved(position);
+            showEmptyLayout(mFavoriteList.isEmpty());
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
     @OnClick(R.id.layoutEmpty)
     public void onClick() {
         mPresenter.getFavoriteList(mCurrentUser);
+    }
+
+    @Override
+    public void onRemove(User user, int position) {
+        confirmRemoveUser(user);
+    }
+
+    @Override
+    public void confirmRemoveUser(final User user) {
+        new ConfirmDialog(mContext)
+            .setMessage(mContext.getString(R.string.dialog_remove_user_from_favorite))
+            .setTitle(mContext.getString(R.string.dialog_delete_message))
+            .setIcon(R.drawable.ic_delete_white_24dp)
+            .setButtonCallback(new ConfirmDialog.ConfirmDialogCallback() {
+                @Override
+                public void onPositiveButtonClick(ConfirmDialog confirmDialog) {
+                    mPresenter.sendRequestRemoveUser(user);
+                    confirmDialog.cancel();
+                }
+
+                @Override
+                public void onNegativeButtonClick(ConfirmDialog confirmDialog) {
+                    confirmDialog.cancel();
+                }
+            }).show();
     }
 }

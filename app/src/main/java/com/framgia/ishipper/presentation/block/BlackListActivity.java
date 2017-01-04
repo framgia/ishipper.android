@@ -14,6 +14,7 @@ import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.data.ListUserData;
+import com.framgia.ishipper.ui.listener.OnRemoveUserListener;
 import com.framgia.ishipper.ui.view.EmptyView;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.widget.dialog.ConfirmDialog;
@@ -27,7 +28,8 @@ import butterknife.BindView;
  * Created by vuduychuong1994 on 9/30/16.
  */
 
-public class BlackListActivity extends BaseToolbarActivity implements BlackListContract.View {
+public class BlackListActivity extends BaseToolbarActivity implements BlackListContract.View,
+        OnRemoveUserListener {
 
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
@@ -45,7 +47,7 @@ public class BlackListActivity extends BaseToolbarActivity implements BlackListC
         mCurrentUser = Config.getInstance().getUserInfo(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBlackListUser = new ArrayList<>();
-        mBlackListAdapter = new BlackListAdapter(this, mBlackListUser);
+        mBlackListAdapter = new BlackListAdapter(this, mBlackListUser, this);
         mRecyclerView.setAdapter(mBlackListAdapter);
     }
 
@@ -128,6 +130,44 @@ public class BlackListActivity extends BaseToolbarActivity implements BlackListC
     @Override
     public void showEmptyLayout(boolean active) {
         mEmptyView.setVisibility(active ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void confirmRemoveUser(final User user) {
+        new ConfirmDialog(this)
+            .setTitle(getString(R.string.dialog_delete_message))
+            .setMessage(getString(R.string.dialog_remove_user_from_blacklist))
+            .setIcon(R.drawable.ic_delete_white_24dp)
+            .setButtonCallback(new ConfirmDialog.ConfirmDialogCallback() {
+                @Override
+                public void onPositiveButtonClick(ConfirmDialog confirmDialog) {
+                    mPresenter.sendRequestRemoveUser(user);
+                    confirmDialog.cancel();
+                }
+
+                @Override
+                public void onNegativeButtonClick(ConfirmDialog confirmDialog) {
+                    confirmDialog.cancel();
+                }
+            }).show();
+    }
+
+    @Override
+    public void removeUser(User user) {
+        if (mBlackListUser == null || mBlackListAdapter == null) return;
+        int position = mBlackListUser.indexOf(user);
+        try {
+            mBlackListUser.remove(position);
+            mBlackListAdapter.notifyItemRemoved(position);
+            showEmptyLayout(mBlackListUser.isEmpty());
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRemove(User user, int position) {
+        confirmRemoveUser(user);
     }
 
     @Override
