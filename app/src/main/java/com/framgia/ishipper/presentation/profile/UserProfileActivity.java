@@ -25,6 +25,8 @@ public class UserProfileActivity extends BaseToolbarActivity implements UserProf
     @BindView(R.id.edt_profile_plate) TextInputEditText mEdtProfilePlate;
     @BindView(R.id.edt_profile_phone) TextInputEditText mEdtProfilePhone;
     @BindView(R.id.edt_profile_address) TextInputEditText mEdtProfileAddress;
+    @BindView(R.id.tv_count_total_invoice) TextView mTvCountTotalInvoice;
+    @BindView(R.id.tv_count_success_invoice) TextView mTvCountSuccessInvoice;
     private TextView mEdtProfilePassword;
     private AlertDialog mInputPasswordDialog;
     private UserProfilePresenter mPresenter;
@@ -42,7 +44,7 @@ public class UserProfileActivity extends BaseToolbarActivity implements UserProf
 
     @Override
     public int getActivityTitle() {
-        return R.string.nav_user_name_example;
+        return R.string.title_activity_user_profile;
     }
 
     @Override
@@ -98,6 +100,8 @@ public class UserProfileActivity extends BaseToolbarActivity implements UserProf
         mEdtProfileName.setText(currentUser.getName());
         mEdtProfilePhone.setText(currentUser.getPhoneNumber());
         mEdtProfileAddress.setText(currentUser.getAddress());
+        mTvCountSuccessInvoice.setText(String.valueOf(currentUser.getCountInvoiceSuccess()));
+        mTvCountTotalInvoice.setText(String.valueOf(currentUser.getCountTotalInvoice()));
         if (currentUser.isShop()) {
             mEdtProfilePlate.setVisibility(View.GONE);
         } else {

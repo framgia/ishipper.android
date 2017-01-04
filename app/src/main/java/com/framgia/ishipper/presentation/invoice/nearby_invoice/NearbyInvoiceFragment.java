@@ -502,18 +502,14 @@ public class NearbyInvoiceFragment extends BaseFragment
     public void updateStatusReceiveInvoice(String invoiceId, int userInvoiceId) {
         mRlOrderDetail.setVisibility(View.GONE);
         Invoice item = findInvoiceById(invoiceId);
-        if (item != null) {
-            item.setUserInvoiceId(userInvoiceId);
-            mAdapter.notifyDataSetChanged();
-
-            Marker marker = findMarkerByInvoice(item);
-            int markerResId = item.isReceived() ? R.drawable.ic_marker_shop_received :
-                    R.drawable.ic_marker_shop;
-            if (marker != null) {
-                marker.setIcon(BitmapDescriptorFactory.fromResource(markerResId));
-                mInvoiceMap.get(marker).setUserInvoiceId(userInvoiceId);
-            }
-        }
+        if (item == null) return;
+        item.setUserInvoiceId(userInvoiceId);
+        mAdapter.notifyDataSetChanged();
+        Marker marker = findMarkerByInvoice(item);
+        int markerResId = item.isReceived() ? R.drawable.ic_marker_shop_received : R.drawable.ic_marker_shop;
+        if (marker == null) return;
+        marker.setIcon(BitmapDescriptorFactory.fromResource(markerResId));
+        mInvoiceMap.get(marker).setUserInvoiceId(userInvoiceId);
     }
 
     @Override

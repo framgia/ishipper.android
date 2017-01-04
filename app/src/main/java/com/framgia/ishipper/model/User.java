@@ -32,6 +32,8 @@ public class User implements Parcelable {
     @SerializedName("black_list_id") private String mBlackListUserId;
     @SerializedName("favorite_list_id") private String mFavoriteListId;
     @SerializedName("notificationItem") private int mNotification;
+    @SerializedName("count_success_invoice") private int mCountInvoiceSuccess;
+    @SerializedName("count_total_invoice") private int mCountTotalInvoice;
 
 
     public User() {}
@@ -222,6 +224,22 @@ public class User implements Parcelable {
 
     public void setNotification(int notification) {
         mNotification = notification;
+    }
+
+    public int getCountInvoiceSuccess() {
+        return mCountInvoiceSuccess;
+    }
+
+    public void setCountInvoiceSuccess(int countInvoiceSuccess) {
+        mCountInvoiceSuccess = countInvoiceSuccess;
+    }
+
+    public int getCountTotalInvoice() {
+        return mCountTotalInvoice;
+    }
+
+    public void setCountTotalInvoice(int countTotalInvoice) {
+        mCountTotalInvoice = countTotalInvoice;
     }
 
     @Override

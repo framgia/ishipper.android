@@ -144,7 +144,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
 
     @Override
     public void insertUser(int index, User favoriteUser) {
-        showEmptyLayout(mLayoutEmpty.getVisibility() == View.GONE);
+        showEmptyLayout(mLayoutEmpty.getVisibility() == View.VISIBLE);
         mFavoriteList.add(index, favoriteUser);
         mFavoriteListAdapter.notifyItemInserted(index);
     }

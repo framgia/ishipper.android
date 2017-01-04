@@ -106,8 +106,8 @@
     <string name="name_shop">Tên shop</string>
     <string name="all_plate_sample">30K1 56789</string>
     <string name="all_search_area">Khu vực tìm kiếm</string>
-    <string name="nav_order_total">Tổng đơn:</string>
-    <string name="nav_success_order">Đơn thành công:</string>
+    <string name="nav_total_invoice">Tổng đơn:</string>
+    <string name="nav_success_invoice">Đơn thành công:</string>
     <string name="all_address_sample">Nguyễn Khoái, Hoàng Mai, Hà Nội</string>
     <string name="all_password_confirm">Nhập lại mật khẩu</string>
     <string name="confirm_phone_input">Nhập mã số xác nhận của bạn</string>
@@ -247,6 +247,7 @@
     <string name="detail_route_path">Đường đi chi tiết</string>
     <string name="all_msg_empty_favorite">Hiện chưa có người dùng nào trong danh sách, thêm hoặc click vào đây để tải lại</string>
     <string name="msg_fragment_list_invoice_empty">Hiện chưa có đơn hàng nào!</string>
+    <string name="title_activity_user_profile">Thông tin cá nhân</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>
