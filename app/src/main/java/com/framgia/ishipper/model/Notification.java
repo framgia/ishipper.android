@@ -11,7 +11,7 @@ public class Notification {
     @SerializedName("click_action") private String mAction;
     @SerializedName("invoice") private Invoice mInvoice;
     @SerializedName("content") private String mContent;
-    @SerializedName("created_at") private String mTimePost;
+    @SerializedName("created_time") private long mTimePost;
     @SerializedName("owner_id") private String mOwnerId;
     @SerializedName("read") private boolean mRead;
     private String avatarUrl;
@@ -56,11 +56,11 @@ public class Notification {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getTimePost() {
+    public long getTimePost() {
         return mTimePost;
     }
 
-    public void setTimePost(String timePost) {
+    public void setTimePost(long timePost) {
         mTimePost = timePost;
     }
 
@@ -78,5 +78,9 @@ public class Notification {
 
     public void setRead(boolean read) {
         mRead = read;
+    }
+
+    public void getCreatedTimeAgo() {
+
     }
 }

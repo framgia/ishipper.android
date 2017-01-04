@@ -34,6 +34,11 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by framgia on 18/08/2016.
  */
@@ -79,7 +84,7 @@ public class CommonUtils {
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         try {
                             status.startResolutionForResult(activity,
-                                                            Const.RequestCode.REQUEST_CHECK_SETTINGS);
+                                    Const.RequestCode.REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                         }
@@ -220,5 +225,11 @@ public class CommonUtils {
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static String showTimeAgoFrom(long milliSeconds) {
+        Date date = new Date(milliSeconds);
+        PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+        return prettyTime.format(date);
     }
 }

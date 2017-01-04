@@ -14,9 +14,7 @@ import com.framgia.ishipper.R;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.Notification;
 import com.framgia.ishipper.model.User;
-import com.framgia.ishipper.net.API;
-import com.framgia.ishipper.net.APIResponse;
-import com.framgia.ishipper.net.data.EmptyData;
+import com.framgia.ishipper.util.CommonUtils;
 
 import java.util.List;
 
@@ -96,7 +94,7 @@ public class NotificationAdapter extends
         User currentUser;
         @BindView(R.id.imgAvatar) ImageView mImgAvatar;
         @BindView(R.id.tvContent) TextView mTvContent;
-        @BindView(R.id.tvTimePost) TextView mTvTimePost;
+        @BindView(R.id.tvCreatedAt) TextView mTvTimePost;
         View mView;
 
         public NotificationViewHolder(View itemView) {
@@ -109,7 +107,7 @@ public class NotificationAdapter extends
         private void bindData(final Notification item, final int position) {
             mTvContent.setText(item.getContent());
             notificationItem = item;
-            mTvTimePost.setText(item.getTimePost());
+            mTvTimePost.setText(CommonUtils.showTimeAgoFrom(item.getTimePost()));
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

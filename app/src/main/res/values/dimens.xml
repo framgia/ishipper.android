@@ -35,6 +35,7 @@
 
     <!-- Shape -->
     <dimen name="all_divider_height">1dp</dimen>
+    <dimen name="all_divider_notification_height">0.5dp</dimen>
     <dimen name="all_stroke_width">1dp</dimen>
     <dimen name="all_corner_radius">2dp</dimen>
 
@@ -83,7 +84,7 @@
     <dimen name="info_dialog_width">300dp</dimen>
     <dimen name="search_layout_height">40dp</dimen>
     <dimen name="search_icon_size">13dp</dimen>
-    <dimen name="avatar_search_size">50dp</dimen>
+    <dimen name="avatar_search_size">55dp</dimen>
     <dimen name="confirm_dialog_padding">16dp</dimen>
     <dimen name="_65">65dp</dimen>
     <dimen name="_7dp">7dp</dimen>
