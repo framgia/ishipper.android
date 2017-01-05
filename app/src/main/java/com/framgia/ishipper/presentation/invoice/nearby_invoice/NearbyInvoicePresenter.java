@@ -103,6 +103,7 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
                 new API.APICallback<APIResponse<ShowInvoiceData>>() {
                     @Override
                     public void onResponse(APIResponse<ShowInvoiceData> response) {
+                        if (response.getData().mInvoice == null) return;
                         mView.updateStatusReceiveInvoice(invoiceId,
                                 response.getData().mInvoice.getUserInvoiceId());
                         mView.onReceiveInvoiceSuccess(response.getMessage(),

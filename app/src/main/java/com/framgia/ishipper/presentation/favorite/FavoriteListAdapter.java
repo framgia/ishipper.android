@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.framgia.ishipper.R;
+import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
@@ -18,6 +19,7 @@ import com.framgia.ishipper.net.data.EmptyData;
 import com.framgia.ishipper.ui.listener.OnRemoveUserListener;
 import com.framgia.ishipper.widget.dialog.ConfirmDialog;
 import com.framgia.ishipper.util.CommonUtils;
+import com.framgia.ishipper.widget.dialog.UserInfoDialogFragment;
 
 import java.util.List;
 
@@ -75,9 +77,18 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick(R.id.btnRemove)
-        public void onClick() {
-            mRemoveUserListener.onRemove(mUserList.get(getAdapterPosition()), getAdapterPosition());
+        @OnClick({R.id.btnRemove, R.id.layout_container})
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btnRemove:
+                    mRemoveUserListener.onRemove(mUserList.get(getAdapterPosition()), getAdapterPosition());
+                    break;
+                case R.id.layout_container:
+                    UserInfoDialogFragment
+                            dialogFragment = UserInfoDialogFragment.newInstance(mUserList.get(getAdapterPosition()));
+                    dialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), "dialog");
+                    break;
+            }
         }
     }
 }

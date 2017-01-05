@@ -120,4 +120,5 @@
     <dimen name="map_anchor_margin">16.5dp</dimen>
     <dimen name="start_icon_size">10dp</dimen>
     <dimen name="end_icon_size">18dp</dimen>
+    <dimen name="all_divider_height_medium">15dp</dimen>
 </resources>

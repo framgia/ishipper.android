@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_nav_header"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/nav_user_icon"
@@ -21,7 +21,7 @@
         app:civ_border_color="@android:color/white"
         app:civ_border_width="@dimen/nav_contact_icon_border_width"
         app:civ_shadow="true"
-        app:civ_shadow_radius="5"/>
+        app:civ_shadow_radius="5" />
 
     <TextView
         android:id="@+id/nav_header_user_name"
@@ -29,10 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/nav_header_order_number"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="@string/nav_user_name_example"
         android:textColor="@android:color/white"
         android:textSize="@dimen/nav_header_text_size"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/nav_header_order_number"
@@ -40,21 +39,54 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin">
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/nav_order_total"
-            android:textColor="@android:color/white"/>
+            android:layout_weight="1">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_success_invoice"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_invoice_success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/all_margin_small"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/all_divider_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/all_margin_small"
+            android:layout_marginRight="@dimen/all_margin_small"
+            android:background="@color/white" />
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/nav_success_order"
-            android:textColor="@android:color/white"/>
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_total_invoice"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_all_invoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/all_margin_small"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

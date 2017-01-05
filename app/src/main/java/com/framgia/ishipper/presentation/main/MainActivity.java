@@ -110,6 +110,12 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
                 startActivity(new Intent(getBaseContext(), UserProfileActivity.class));
             }
         });
+        TextView tvName = (TextView) view.findViewById(R.id.nav_header_user_name);
+        TextView tvCountSuccessInvoice = (TextView) view.findViewById(R.id.tv_invoice_success);
+        TextView tvCountAllInvoice = (TextView) view.findViewById(R.id.tv_all_invoice);
+        tvName.setText(mCurrentUser.getName());
+        tvCountAllInvoice.setText(String.valueOf(mCurrentUser.getCountTotalInvoice()));
+        tvCountSuccessInvoice.setText(String.valueOf(mCurrentUser.getCountInvoiceSuccess()));
 
         if (mCurrentUser.isShop()) {
             selectItem(R.id.nav_nearby_shipper);
