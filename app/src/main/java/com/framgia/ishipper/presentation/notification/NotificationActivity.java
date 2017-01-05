@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
@@ -19,11 +20,14 @@ import com.framgia.ishipper.model.Notification;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.APIResponse;
 import com.framgia.ishipper.net.data.ListNotificationData;
+import com.framgia.ishipper.ui.view.DividerItemDecoration;
 import com.framgia.ishipper.util.Const;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -77,6 +81,7 @@ public class NotificationActivity extends BaseToolbarActivity
         rvListNotification.setLayoutManager(mLayoutManager);
         mAdapter = new NotificationAdapter(getBaseContext(), mNotificationList, this);
         rvListNotification.setAdapter(mAdapter);
+        rvListNotification.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
         mPresenter.loadMore(mNotificationList, mAdapter, mCurrentUser, ++mPage);
         rvListNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -118,14 +123,14 @@ public class NotificationActivity extends BaseToolbarActivity
         LinearLayoutManager layoutManager =
                 ((LinearLayoutManager) rvListNotification.getLayoutManager());
         if (layoutManager.findFirstVisibleItemPosition() == Const.HEAD_LIST ||
-            mNotificationList.size() == Const.ZERO) {
+                mNotificationList.size() == Const.ZERO) {
             layoutManager.scrollToPosition(Const.HEAD_LIST);
         } else {
             mTvNewNotification.setVisibility(View.VISIBLE);
         }
         Notification notification = new Notification();
         notification.setContent(intent.getStringExtra(Const.KEY_BODY));
-        notification.setTimePost(intent.getStringExtra(Const.KEY_TITLE));
+//        notification.setContent(valueOf(intent.getStringExtra(Const.KEY_TITLE)));
         Invoice invoice = null;
         try {
             if (intent.hasExtra(Const.KEY_INVOICE)) {

@@ -28,14 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="3"
+            android:ellipsize="end"
             android:textSize="@dimen/text_size_content" />
 
         <TextView
-            android:id="@+id/tvTimePost"
+            android:id="@+id/tvCreatedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3dp"
             android:maxLines="1"
+            android:text="asdasdasd"
+            android:textColor="@color/black_80"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
 </LinearLayout>
