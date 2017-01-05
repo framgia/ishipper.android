@@ -237,7 +237,7 @@
     <string name="detail_history">Lịch sử đơn hàng</string>
     <string name="fragment_nearby_order_view_in_map"><u>Xem trên map</u></string>
     <string name="fragment_nearby_order_view_in_list"><u>Xem danh sách</u></string>
-    <string name="fragment_nearby_invoice_count">Có %1$d đơn hàng đang chờ</string>
+    <string name="fragment_nearby_invoice_count">Có &lt;font color=&quot;#ff4a40&quot;&gt;&lt;b&gt;%1$d&lt;/b&gt;&lt;/font&gt; đơn hàng đang chờ</string>
     <string name="create_step_2_require_customer_name">Bạn cần nhập tên người nhận</string>
     <string name="create_step_2_require_weight">Bạn cần nhập khối lượng đơn hàng</string>
     <string name="create_step_2_require_invoice_price">Bạn chưa nhập tiền hàng</string>

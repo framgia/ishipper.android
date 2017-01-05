@@ -79,7 +79,7 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
 
         @OnClick(R.id.action_cancel_accept_invoice)
         void cancelInvoice() {
-            mCallback.onCancelAcceptOrder(mInvoiceList.get(getAdapterPosition()));
+            mCallback.onCancelAcceptInvoice(mInvoiceList.get(getAdapterPosition()));
         }
 
         void bindData(Invoice invoice) {
@@ -106,6 +106,6 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
 
         void onInvoiceItemClick(Invoice invoice);
 
-        void onCancelAcceptOrder(Invoice invoice);
+        void onCancelAcceptInvoice(Invoice invoice);
     }
 }

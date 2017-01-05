@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -113,8 +114,6 @@ public class NearbyInvoiceFragment extends BaseFragment
     @BindView(R.id.rl_search_view) LinearLayout mLayoutSearch;
     @BindView(R.id.layout_expand_item) LinearLayout mLayoutExpandItem;
     @BindView(R.id.img_collapse_item_invoice) ImageView mImageCollapseItemInvoice;
-
-    private Dialog mDialog;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -249,6 +248,8 @@ public class NearbyInvoiceFragment extends BaseFragment
                     break;
                 case Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL:
                     if (mPresenter == null) return;
+                    String invoiceId = data.getStringExtra(Const.KEY_INVOICE_ID);
+                    if (invoiceId != null) updateStatusReceiveInvoice(invoiceId, Invoice.INVALID_USER_INVOICE);
                     mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
                          new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
                     break;
@@ -306,7 +307,8 @@ public class NearbyInvoiceFragment extends BaseFragment
         mInvoices.addAll(invoices);
         mAdapter.notifyDataSetChanged();
         mLayoutEmpty.setVisibility(invoices.isEmpty() ? View.VISIBLE : View.GONE);
-        mTvInvoiceCount.setText(getString(R.string.fragment_nearby_invoice_count, mInvoices.size()));
+        mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count,
+                                                        mInvoices.size())));
     }
 
     @Override
@@ -355,6 +357,7 @@ public class NearbyInvoiceFragment extends BaseFragment
         mInvoices.add(Const.HEAD_LIST, invoice);
         mAdapter.notifyItemInserted(Const.HEAD_LIST);
         mRvListInvoice.getLayoutManager().scrollToPosition(Const.HEAD_LIST);
+        mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
         LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
         int markerResId = invoice.isReceived() ? R.drawable.ic_marker_shop_received :
                 R.drawable.ic_marker_shop;
@@ -576,6 +579,8 @@ public class NearbyInvoiceFragment extends BaseFragment
                         break;
                     }
                 }
+                mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count,
+                                                                mInvoices.size())));
                 Marker marker = findMarkerByInvoice(invoice);
                 if (marker != null) {
                     MapUtils.setAnimatedOutMarker(marker);
@@ -647,7 +652,7 @@ public class NearbyInvoiceFragment extends BaseFragment
     }
 
     @Override
-    public void onCancelAcceptOrder(Invoice invoice) {
+    public void onCancelAcceptInvoice(Invoice invoice) {
         mPresenter.cancelAcceptOrder(invoice);
     }
 
