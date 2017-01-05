@@ -160,6 +160,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
             case R.id.btn_detail_shop_call:
                 break;
             case R.id.btn_detail_receive_invoice:
+                isStateChanged = true;
                 mPresenter.receiveInvoice(mInvoice.getStringId());
                 break;
             case R.id.btn_detail_cancel_invoice:

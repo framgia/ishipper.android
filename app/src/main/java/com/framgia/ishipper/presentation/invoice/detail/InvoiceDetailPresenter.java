@@ -270,7 +270,7 @@ public class InvoiceDetailPresenter implements InvoiceDetailContract.Presenter {
         Intent intent = new Intent();
         intent.putExtra(KEY_INVOICE_ID, invoiceId);
         mActivity.setResult(Activity.RESULT_OK, intent);
-        mActivity.onBackPressed();
+        mActivity.finish();
     }
 
     @Override
