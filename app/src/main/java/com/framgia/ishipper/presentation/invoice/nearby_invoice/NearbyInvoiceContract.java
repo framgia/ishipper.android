@@ -42,6 +42,8 @@ public interface NearbyInvoiceContract {
 
         void showSearchArea();
 
+        void showMapLoadingIndicator(boolean isActive);
+
     }
 
     interface Presenter {

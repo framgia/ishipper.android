@@ -59,10 +59,10 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
     }
 
     @Override
-    public void getShipperInfo(int post) {
+    public void getShipperInfo(User user) {
         /** get shop information */
         API.getUser(Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                    String.valueOf(mShippers.get(post).getId()),
+                    String.valueOf(user.getId()),
                     new API.APICallback<APIResponse<GetUserData>>() {
                         @Override
                         public void onResponse(APIResponse<GetUserData> response) {
@@ -222,6 +222,7 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
         protected void onPreExecute() {
             super.onPreExecute();
             mView.onAddressChange(mContext.getString(R.string.all_symbol_loading));
+            mView.showMapLoadingIndicator(true);
         }
 
         @Override
@@ -236,6 +237,7 @@ public class NearbyShipperPresenter implements NearbyShipperContract.Presenter {
         protected void onPostExecute(String address) {
             super.onPostExecute(address);
             mView.onAddressChange(address);
+            mView.showMapLoadingIndicator(false);
         }
     }
 }

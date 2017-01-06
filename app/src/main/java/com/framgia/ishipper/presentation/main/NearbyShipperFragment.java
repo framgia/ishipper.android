@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
@@ -34,7 +36,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,7 +51,8 @@ import butterknife.OnClick;
  */
 public class NearbyShipperFragment extends BaseFragment implements NearbyShipperContract.View,
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, OnShipperUpdateListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, OnShipperUpdateListener,
+        GoogleMap.OnCameraIdleListener {
     private static final String TAG = "NearbyShipperFragment";
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -63,6 +65,8 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     private NearbyShipperPresenter mPresenter;
 
     @BindView(R.id.tv_main_search_area) TextView mTvSearchArea;
+    @BindView(R.id.progress_map_loading) ProgressBar mMapLoadingProgress;
+    private LatLng mLastCameraPosition;
 
     public static NearbyShipperFragment newInstance() {
         NearbyShipperFragment fragment = new NearbyShipperFragment();
@@ -233,22 +237,11 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.setPadding(Const.MapPadding.LEFT_PADDING, Const.MapPadding.TOP_PADDING,
                 Const.MapPadding.RIGHT_PADDING, Const.MapPadding.BOTTOM_PADDING);
-        mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                mPresenter.getAddressFromLatLng(new LatLng(cameraPosition.target.latitude,
-                        cameraPosition.target.longitude));
-            }
-        });
+        mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                String id = marker.getId();
-                int pos = Integer.parseInt(id.replace("m", ""));
-                if (pos >= mPresenter.getListSize()) {
-                    return false;
-                }
-                mPresenter.getShipperInfo(pos);
+                mPresenter.getShipperInfo(mShipperMap.get(marker));
                 return true;
             }
         });
@@ -258,6 +251,18 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
                 // TODO: 30/08/2016  
             }
         });
+    }
+
+    @Override
+    public void onCameraIdle() {
+        // The camera has stopped moving.
+        if (mLastCameraPosition != null
+                && mLastCameraPosition.equals(mGoogleMap.getCameraPosition().target)) {
+            return;
+        }
+        mLastCameraPosition = mGoogleMap.getCameraPosition().target;
+
+        mPresenter.getAddressFromLatLng(mLastCameraPosition);
     }
 
     @Override
@@ -302,6 +307,11 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
                 mPresenter.addShipper(shipper, mShipperMap);
             }
         });
+    }
+
+    @Override
+    public void showMapLoadingIndicator(boolean isActive) {
+        mMapLoadingProgress.setVisibility(isActive ? View.VISIBLE : View.GONE);
     }
 
     @Override

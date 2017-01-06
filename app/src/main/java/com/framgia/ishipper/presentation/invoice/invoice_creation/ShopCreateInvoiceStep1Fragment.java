@@ -26,7 +26,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -48,7 +47,7 @@ import static com.framgia.ishipper.util.Const.AUTO_COMPLETE_PLACE_RADIUS;
 
 public class ShopCreateInvoiceStep1Fragment extends BaseFragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ShopCreateInvoiceStep1Contract.View {
+        ShopCreateInvoiceStep1Contract.View, GoogleMap.OnCameraIdleListener {
     private static final String TAG = "ShopCreateOrder1";
     private final int NONE = 1;
     private final int PICK_START_POINT = 2;
@@ -61,7 +60,7 @@ public class ShopCreateInvoiceStep1Fragment extends BaseFragment implements OnMa
     @BindView(R.id.btnPickStart) ImageView mBtnPickStart;
     @BindView(R.id.btnPickEnd) ImageView mBtnPickEnd;
     @BindView(R.id.tvDistance) TextView mTvDistance;
-    @BindView(R.id.loading_dialog) ProgressBar mProgressLoading;
+    @BindView(R.id.progress_map_loading) ProgressBar mProgressLoading;
 
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
@@ -359,30 +358,31 @@ public class ShopCreateInvoiceStep1Fragment extends BaseFragment implements OnMa
         if (PermissionUtils.checkLocationPermission(mContext)) return;
 
         googleMap.setMyLocationEnabled(true);
-        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                if (mDisableCameraChange) {
-                    mDisableCameraChange = false;
-                    return;
-                }
-                CommonUtils.hideKeyboard(getActivity());
-                if (mStatus == NONE) return;
-                LatLng position = new LatLng(cameraPosition.target.latitude, cameraPosition.target.longitude);
-                if (mStatus == PICK_START_POINT) {
-                    mPresenter.saveLatLngStart(position);
-                } else if (mStatus == PICK_END_POINT) {
-                    mPresenter.saveLatLngEnd(position);
-                }
+        googleMap.setOnCameraIdleListener(this);
+    }
 
-                if (task != null) {
-                    task.cancel(true);
-                }
-                task = new FetchAddressTask();
-                task.execute(position);
-                mPresenter.getDistance();
-            }
-        });
+    @Override
+    public void onCameraIdle() {
+        // The camera has stopped moving.
+        if (mDisableCameraChange) {
+            mDisableCameraChange = false;
+            return;
+        }
+        CommonUtils.hideKeyboard(getActivity());
+        if (mStatus == NONE) return;
+        LatLng position = new LatLng(mMap.getCameraPosition().target.latitude,
+                mMap.getCameraPosition().target.longitude);
+        if (mStatus == PICK_START_POINT) {
+            mPresenter.saveLatLngStart(position);
+        } else if (mStatus == PICK_END_POINT) {
+            mPresenter.saveLatLngEnd(position);
+        }
+        if (task != null) {
+            task.cancel(true);
+        }
+        task = new FetchAddressTask();
+        task.execute(position);
+        mPresenter.getDistance();
     }
 
     @Override
