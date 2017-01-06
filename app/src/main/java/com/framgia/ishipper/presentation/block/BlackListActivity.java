@@ -121,10 +121,10 @@ public class BlackListActivity extends BaseToolbarActivity implements BlackListC
 
     @Override
     public void insertUser(int index, User blockUser) {
-        showEmptyLayout(false);
         mBlackListUser.add(index, blockUser);
         mBlackListAdapter.notifyDataSetChanged();
         mRecyclerView.getLayoutManager().scrollToPosition(Const.ZERO);
+        showEmptyLayout(mBlackListUser.isEmpty());
     }
 
     @Override

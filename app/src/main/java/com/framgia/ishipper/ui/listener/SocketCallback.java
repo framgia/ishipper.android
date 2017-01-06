@@ -1,5 +1,6 @@
 package com.framgia.ishipper.ui.listener;
-import com.neovisionaries.ws.client.WebSocket;
+
+import org.java_websocket.WebSocket;
 
 /**
  * Created by vuduychuong1994 on 11/8/16.

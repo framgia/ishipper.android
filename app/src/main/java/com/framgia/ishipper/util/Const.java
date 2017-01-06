@@ -50,6 +50,7 @@ public class Const {
     public static final String ACTION_SHIPPER_ONLINE = "shipper_online";
     public static final String ACTION_SHIPPER_OFFLINE = "shipper_offline";
     public static final String ACTION_CANCEL_INVOICE = "cancel_invoice";
+    public static final String ACTION_NONE = "oops";
 
     public class RequestCode {
 

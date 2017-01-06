@@ -7,8 +7,10 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-        private static final String DEV_URL = "http://ishipper.framgia.vn";
-//    private static final String DEV_URL = "http://192.168.1.249:3001/";
+//    private static final String DEV_URL = "http://ishipper.framgia.vn/";
+//    private static final String SOCKET_URL = "ws://ishipper.framgia.vn/";
+    private static final String DEV_URL = "http://192.168.1.249:3001/";
+    private static final String SOCKET_URL = "http://192.168.1.249:3001/";
     private static final String PROD_URL = "";
 
     public static final String BASE_GOOGLE_MAP_API = "https://maps.googleapis.com";
@@ -350,8 +352,9 @@ public class APIDefinition {
     }
 
     public class WebSockets {
-        public static final String WEBSOCKETS_URL = DEV_URL + "cable";
-        public static final String PARAM_PHONE_NUMBER = "phone_number";
+        public static final String WEBSOCKETS_URL = SOCKET_URL + "cable";
+        public static final String PARAM_PHONE_NUMBER = "PHONE_NUMBER";
+        public static final String PARAM_AUTHORIZATION = "AUTHORIZATION";
         public static final int INTERVAL_DEFAULT = 15 * 1000;
         public static final int TIMEOUT_DEFAULT = 60 * 1000;
     }
