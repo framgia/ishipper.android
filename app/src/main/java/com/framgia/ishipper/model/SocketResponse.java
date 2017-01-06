@@ -1,5 +1,6 @@
 package com.framgia.ishipper.model;
 
+import com.framgia.ishipper.util.Const;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -16,15 +17,27 @@ public class SocketResponse {
     }
 
     public String getAction() {
-        return mMessage.mAction;
+        try {
+            return mMessage.mAction;
+        } catch (NullPointerException e) {
+            return Const.ACTION_NONE;
+        }
     }
 
     public int getUnreadNotification() {
-        return mMessage.mData.mUnreadNotifiction;
+        try {
+            return mMessage.mData.mUnreadNotifiction;
+        } catch (NullPointerException e) {
+            return -1;
+        }
     }
 
     public Invoice getInvoice() {
-        return mMessage.mData.mInvoice;
+        try {
+            return mMessage.mData.mInvoice;
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public User getUser() {

@@ -43,9 +43,10 @@ import com.framgia.ishipper.ui.listener.SocketCallback;
 import com.framgia.ishipper.util.Const;
 import com.framgia.ishipper.util.StorageUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.neovisionaries.ws.client.WebSocket;
 
+import org.java_websocket.WebSocket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -329,10 +330,16 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     @Override
     public void onCallback(WebSocket websocket, String text) {
         //TODO: handle data from socket server
-        final SocketResponse response = new Gson().fromJson(text, SocketResponse.class);
+        SocketResponse response;
+        try {
+            response = new Gson().fromJson(text, SocketResponse.class);
+        } catch (JsonSyntaxException e) {
+            return;
+        }
         if (text.contains(Const.WELCOME)) {
             subscribeChannel(mCurrentUser.getAuthenticationToken(), websocket, Const.CHANNEL_REALTIME);
         }
+        if (response.getAction() == null) return;
         switch (response.getAction()) {
             case Const.ACTION_UNREAD_NOTIFICATION:
                 if (response.getUnreadNotification() >= Const.ZERO) {
@@ -400,7 +407,7 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
             identifyObject.put(Const.AUTHENTICATION_TOKEN, token);
             object.put(Const.COMMAND, Const.COMMAND_SUBSCRIBE);
             object.put(Const.IDENTIFIER, identifyObject.toString());
-            websocket.sendText(object.toString());
+            websocket.send(object.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

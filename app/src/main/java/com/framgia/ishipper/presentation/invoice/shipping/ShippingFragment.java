@@ -202,7 +202,7 @@ public class ShippingFragment extends BaseFragment implements OnMapReadyCallback
 
     @Override
     public void showEmptyData(boolean isEmpty) {
-        if (isEmpty) {
+        if (isEmpty && mLayoutEmpty != null) {
             mLayoutEmpty.setVisibility(View.VISIBLE);
         } else {
             mLayoutEmpty.setVisibility(View.GONE);
