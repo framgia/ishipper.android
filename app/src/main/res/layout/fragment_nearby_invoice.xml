@@ -88,6 +88,14 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/map_anchor_margin"
                     android:src="@drawable/ic_map_picker_start" />
+
+                <ProgressBar
+                    android:id="@+id/progress_map_loading"
+                    android:visibility="gone"
+                    android:layout_width="@dimen/fragment_create_1_dialog_loading_size"
+                    android:layout_height="@dimen/fragment_create_1_dialog_loading_size"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="@dimen/all_margin_medium"/>
             </FrameLayout>
 
             <RelativeLayout

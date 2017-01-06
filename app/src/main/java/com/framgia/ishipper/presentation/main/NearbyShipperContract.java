@@ -25,6 +25,9 @@ public interface NearbyShipperContract {
         void removeListMarker(List<User> shipperList);
 
         Marker addMark(LatLng latLng);
+
+        void showMapLoadingIndicator(boolean isActive);
+
     }
 
     interface Presenter {
@@ -32,7 +35,7 @@ public interface NearbyShipperContract {
 
         void getPlace(Intent place);
 
-        void getShipperInfo(int pos);
+        void getShipperInfo(User pos);
 
         void startSearchPlace();
 
