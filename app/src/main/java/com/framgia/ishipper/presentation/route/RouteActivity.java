@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,19 +23,17 @@ import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.net.data.ListRouteData;
 import com.framgia.ishipper.util.Const;
+import com.framgia.ishipper.util.MapUtils;
 import com.framgia.ishipper.util.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -87,16 +86,17 @@ public class RouteActivity extends BaseToolbarActivity implements
         mMap = googleMap;
         mPresenter.initMap(mGoogleApiClient, mInvoice);
         mPresenter.showPath(mMap, mStartLatLng, mFinishLatLng);
+        View view = ButterKnife.findById(RouteActivity.this, R.id.layoutSearch);
+        int height = view.getMeasuredHeight() +
+                ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin * 2 +
+                MapUtils.MAP_PADDING;
+        mMap.setPadding(0, height, 0, (int) getResources().getDimension(R.dimen.rv_guide_path_height));
     }
 
+
     @Override
-    public void setUpUI(
-            LatLng startLatLng,
-            LatLng finishLatLng,
-            String startAddress,
-            String finishAddress,
-            int startIcon,
-            int finishIcon) {
+    public void setUpUI(LatLng startLatLng, LatLng finishLatLng, String startAddress,
+                        String finishAddress, int startIcon, int finishIcon) {
         mTvStartAddress.setText(startAddress);
         mTvFinishAddress.setText(finishAddress);
         mStartLatLng = startLatLng;
@@ -158,19 +158,6 @@ public class RouteActivity extends BaseToolbarActivity implements
     }
 
     @Override
-    public void updateZoomMap(GoogleMap googleMap) {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(mStartLatLng);
-        builder.include(mFinishLatLng);
-        LatLngBounds bounds = builder.build();
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int padding = (int) (width * 0.12);
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-        googleMap.moveCamera(cu);
-    }
-
-    @Override
     public void drawRoute(ArrayList<Route> routes) {
         PolylineOptions polyOptions = new PolylineOptions();
         for (int i = 0; i < routes.size(); i++) {
@@ -180,8 +167,8 @@ public class RouteActivity extends BaseToolbarActivity implements
             polyOptions.addAll(route.getPoints());
             Log.d(TAG, route.getPoints().size() + "");
         }
-
         mMap.addPolyline(polyOptions);
+        MapUtils.zoomToBounds(mMap, polyOptions);
     }
 
     @Override
@@ -238,11 +225,5 @@ public class RouteActivity extends BaseToolbarActivity implements
         }
         mPresenter.getListStep(mInvoice.getAddressStart(), mInvoice.getAddressFinish());
         mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetView);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
     }
 }
