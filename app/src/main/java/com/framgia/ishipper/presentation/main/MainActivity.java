@@ -60,8 +60,6 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.appbar) AppBarLayout mAppbar;
 
-    public static final int SHIPPER = 0;
-    public static final int SHOP = 1;
     public static boolean firstTime = true;
     private User mCurrentUser;
     private int mSelectedId;
@@ -75,6 +73,11 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         connectWebSocket(this);
     }
 
@@ -322,8 +325,8 @@ public class MainActivity extends BaseToolbarActivity implements SocketCallback 
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         disconnectWebSocket();
     }
 

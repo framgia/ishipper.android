@@ -18,7 +18,6 @@ import retrofit2.Response;
 public class RouteContract {
     interface View {
         void drawRoute(ArrayList<Route> routes);
-        void updateZoomMap(GoogleMap map);
         void setUpUI(LatLng startLatLng,
                      LatLng finishLatLng,
                      String startAddress,

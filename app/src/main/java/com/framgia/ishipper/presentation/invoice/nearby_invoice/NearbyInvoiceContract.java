@@ -32,8 +32,6 @@ public interface NearbyInvoiceContract {
 
         void drawRoute(ArrayList<Route> route);
 
-        void updateMapAfterDrawRoute(LatLng startAddress, LatLng finishAddress);
-
         void updateStatusReceiveInvoice(String invoiceId, int userInvoiceId);
 
         void removeLoading();

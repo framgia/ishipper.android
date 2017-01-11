@@ -313,7 +313,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         mAdapter.notifyDataSetChanged();
         mLayoutEmpty.setVisibility(invoices.isEmpty() ? View.VISIBLE : View.GONE);
         mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count,
-                                                        mInvoices.size())));
+                mInvoices.size())));
     }
 
     @Override
@@ -501,14 +501,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
             mPolylineRoute.remove();
         }
         mPolylineRoute = mGoogleMap.addPolyline(polyOptions);
-    }
-
-    @Override
-    public void updateMapAfterDrawRoute(LatLng startAddress, LatLng finishAddress) {
-        Point mapSize = getConfigSizeMap();
-//        LatLng configLatLng = CommonUtils.configLatLng(startAddress, finishAddress);
-//        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, configLatLng);
-        MapUtils.updateZoomMap(mGoogleMap, mapSize.x, mapSize.y, startAddress, finishAddress);
+        MapUtils.zoomToBounds(mGoogleMap, polyOptions);
     }
 
     @Override
@@ -590,7 +583,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                     }
                 }
                 mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count,
-                                                                mInvoices.size())));
+                        mInvoices.size())));
                 Marker marker = findMarkerByInvoice(invoice);
                 if (marker != null) {
                     MapUtils.setAnimatedOutMarker(marker);
@@ -674,9 +667,15 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         switch (view.getId()) {
             case R.id.btn_view_change:
                 if (mSwitcherLayout.getCurrentView().getId() == R.id.layout_refresh) {
+                    // Map
+                    mSwitcherLayout.setInAnimation(getContext(), R.anim.enter_from_right);
+                    mSwitcherLayout.setOutAnimation(getContext(), R.anim.exit_from_left);
                     mSwitcherLayout.showNext();
                     mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_list);
                 } else {
+                    // List
+                    mSwitcherLayout.setInAnimation(getContext(), R.anim.enter_from_left);
+                    mSwitcherLayout.setOutAnimation(getContext(), R.anim.exit_to_right);
                     mSwitcherLayout.showPrevious();
                     mBtnViewChange.setText(R.string.fragment_nearby_order_view_in_map);
                 }

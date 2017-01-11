@@ -103,7 +103,6 @@ public class RoutePresenter implements RouteContract.Presenter {
             map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                 @Override
                 public void onMyLocationChange(Location location) {
-                    mView.updateZoomMap(map);
                     MapUtils.routing(finishLatLng, startLatLng, new RoutingListener() {
                         @Override
                         public void onRoutingFailure(RouteException e) {

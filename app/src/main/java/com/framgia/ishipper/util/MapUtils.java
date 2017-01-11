@@ -3,7 +3,6 @@ package com.framgia.ishipper.util;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -15,15 +14,12 @@ import com.framgia.ishipper.presentation.main.MainActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.Projection;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +31,7 @@ public class MapUtils {
     private static final String TAG = "MapUtils";
 
     private static final int MARKER_FADE_DURATION = 500;
-    private static final int MAP_PADDING = 30;
+    public static final int MAP_PADDING = 30;
 
     public static final float MAP_PADDING_PERCENT = 0.12f;
 
@@ -185,11 +181,10 @@ public class MapUtils {
         ani.start();
     }
 
-    public static void zoomToBounds(GoogleMap map, PolylineOptions p)
-    {
+    public static void zoomToBounds(GoogleMap map, PolylineOptions p) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         List<LatLng> arr = p.getPoints();
-        for(int i = 0; i < arr.size();i++){
+        for (int i = 0; i < arr.size(); i++) {
             builder.include(arr.get(i));
         }
         LatLngBounds bounds = builder.build();

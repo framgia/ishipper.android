@@ -134,7 +134,6 @@ public class NearbyInvoicePresenter implements NearbyInvoiceContract.Presenter {
                     public void onRoutingSuccess(ArrayList<Route> routes,
                                                  int shortestRouteIndex) {
                         mView.drawRoute(routes);
-                        mView.updateMapAfterDrawRoute(startAddress, finishAddress);
                     }
 
                     @Override
