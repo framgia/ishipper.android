@@ -254,7 +254,9 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                 case Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL:
                     if (mPresenter == null) return;
                     String invoiceId = data.getStringExtra(Const.KEY_INVOICE_ID);
-                    if (invoiceId != null) updateStatusReceiveInvoice(invoiceId, Invoice.INVALID_USER_INVOICE);
+                    if (invoiceId != null) {
+                        updateStatusReceiveInvoice(invoiceId, Invoice.INVALID_USER_INVOICE);
+                    }
                     mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
                             new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
                     break;
@@ -560,6 +562,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
 
     @Override
     public void onInvoiceCreate(final Invoice invoice) {
+        if (getActivity() == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -570,6 +573,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
 
     @Override
     public void onInvoiceRemove(final Invoice invoice) {
+        if (getActivity() == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

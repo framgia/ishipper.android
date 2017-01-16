@@ -2,6 +2,7 @@ package com.framgia.ishipper.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.view.LayoutInflater;
@@ -44,6 +45,10 @@ public class ReviewDialog {
                 .setView(view)
                 .setCancelable(false)
                 .create();
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
+        mDialog.setOnDismissListener(listener);
     }
 
     @OnClick({R.id.btn_dialog_review_send, R.id.btn_dialog_review_cancel})

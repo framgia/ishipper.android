@@ -1,11 +1,13 @@
 package com.framgia.ishipper.presentation.invoice.detail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +31,7 @@ import com.framgia.ishipper.widget.dialog.ReviewDialog;
 import com.framgia.ishipper.widget.dialog.UserInfoDialogFragment;
 
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -236,7 +239,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 if (mCurrentUser.isShop()) {
                     textStatus = getString(R.string.invoice_shop_status_wait);
                 } else {
-                    textStatus = invoice.isReceived()? getString(R.string.invoice_status_wait) :
+                    textStatus = invoice.isReceived() ? getString(R.string.invoice_status_wait) :
                             getString(R.string.invoice_status_init);
                     mLayoutCustomer.setVisibility(View.GONE);
                 }
@@ -334,8 +337,8 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         } else {
             switch (statusCode) {
                 case Invoice.STATUS_CODE_INIT:
-                    mBtnDetailReceiveInvoice.setVisibility(mInvoice.isReceived()? View.GONE : View.VISIBLE);
-                    mBtnDetailCancelInvoice.setVisibility(mInvoice.isReceived()? View.VISIBLE : View.GONE);
+                    mBtnDetailReceiveInvoice.setVisibility(mInvoice.isReceived() ? View.GONE : View.VISIBLE);
+                    mBtnDetailCancelInvoice.setVisibility(mInvoice.isReceived() ? View.VISIBLE : View.GONE);
                     break;
                 case Invoice.STATUS_CODE_WAITING:
                     mBtnTakeInvoice.setVisibility(View.VISIBLE);
@@ -404,7 +407,14 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
     }
 
     @Override
-    public void showRatingDialog(String invoiceId) {
-        new ReviewDialog(this, invoiceId).show();
+    public void showRatingDialog(final String invoiceId) {
+        ReviewDialog dialog = new ReviewDialog(this, invoiceId);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mPresenter.finishActivity(invoiceId);
+            }
+        });
+        dialog.show();
     }
 }

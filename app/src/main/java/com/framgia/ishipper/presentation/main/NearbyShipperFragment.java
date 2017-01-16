@@ -300,7 +300,7 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
 
     @Override
     public void onShipperOnline(final User shipper) {
-        if (shipper == null) return;
+        if (shipper == null || getActivity() == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -316,7 +316,7 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
 
     @Override
     public void onShipperOffline(final User shipper) {
-        if (shipper == null) return;
+        if (shipper == null || getActivity() == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
