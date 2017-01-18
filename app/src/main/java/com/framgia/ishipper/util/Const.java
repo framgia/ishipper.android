@@ -106,6 +106,7 @@ public class Const {
         public static final String CLICK_ACTION = "click_action";
         public static final String INVOICE_ID = "invoice_id";
         public static final String NOTIFICATION_ID = "notification_id";
+        public static final String KEY_CREATED_TIME = "created_time";
     }
 
     public class Setting {

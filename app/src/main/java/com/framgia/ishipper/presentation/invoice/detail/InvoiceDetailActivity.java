@@ -255,6 +255,7 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                     textStatus = getString(R.string.invoice_shop_status_take);
                 } else {
                     textStatus = getString(R.string.invoice_status_take);
+                    mLayoutCustomer.setVisibility(View.GONE);
                 }
                 drawableStatus = ResourcesCompat.getDrawable(
                         getResources(),
@@ -262,7 +263,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_pick);
-                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_SHIPPING:
                 textStatus = getString(R.string.invoice_status_shipping);
@@ -271,7 +271,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_shipping);
-                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_SHIPPED:
                 textStatus = getString(R.string.invoice_status_delivered);
@@ -280,7 +279,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_delivered);
-                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_FINISHED:
                 textStatus = getString(R.string.invoice_status_finished);
@@ -289,7 +287,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_finish);
-                mLayoutHistoryInvoice.setVisibility(View.VISIBLE);
                 break;
             case Invoice.STATUS_CODE_CANCEL:
                 textStatus = getString(R.string.invoice_status_cancelled);
@@ -299,7 +296,6 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                         null
                 );
                 statusColor = getResources().getColor(R.color.color_status_cancelled);
-                mLayoutHistoryInvoice.setVisibility(View.GONE);
                 break;
             default:
                 textStatus = "";
@@ -372,6 +368,8 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
         mTvDetailShipTime.setText(invoice.getDeliveryTime());
         mTvDetailNote.setText(invoice.getDescription());
         mInvoiceHistories = mInvoice.getHistories();
+        mDetailCustomerName.setText(mInvoice.getCustomerName());
+        mDetailCustomerPhone.setText(mInvoice.getCustomerNumber());
         if (mInvoiceHistories == null) return;
         InvoiceHistoryAdapter adapter = new InvoiceHistoryAdapter(
                 getBaseContext(), R.layout.item_invoice_history, mInvoiceHistories);
@@ -393,9 +391,9 @@ public class InvoiceDetailActivity extends BaseToolbarActivity implements Invoic
                 mCardviewDetailShipperInfor.setVisibility(View.GONE);
             } else {
                 mCardviewDetailShipperInfor.setVisibility(View.VISIBLE);
+                mTvDetailShipperName.setText(user.getName());
+                mTvDetailShipperPhone.setText(user.getPhoneNumber());
             }
-            mTvDetailShipperName.setText(user.getName());
-            mTvDetailShipperPhone.setText(user.getPhoneNumber());
         }
     }
 

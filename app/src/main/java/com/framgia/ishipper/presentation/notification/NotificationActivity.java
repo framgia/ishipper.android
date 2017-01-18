@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -145,6 +146,10 @@ public class NotificationActivity extends BaseToolbarActivity
         }
         if (intent.hasExtra(Const.KEY_NOTIFICATION_ID)) {
             notification.setId(intent.getStringExtra(Const.KEY_NOTIFICATION_ID));
+        }
+        if (intent.hasExtra(Const.FirebaseData.KEY_CREATED_TIME)) {
+            notification.setTimePost(intent.getLongExtra(Const.FirebaseData.KEY_CREATED_TIME,
+                    Calendar.getInstance().getTimeInMillis()));
         }
         mNotificationList.add(Const.HEAD_LIST, notification);
         mAdapter.notifyItemInserted(Const.HEAD_LIST);
