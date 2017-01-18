@@ -76,6 +76,9 @@ public class ShopCreateInvoiceStep3Presenter implements ShopCreateInvoiceStep3Co
                         mFragment.dismissLoadingDialog();
                         // TODO: Go to invoice manager
                         mFragment.showUserMessage(response.getMessage());
+                        Intent intent = new Intent(Const.ACTION_CREATE_INVOICE);
+                        intent.putExtra(Const.KEY_INVOICE, response.getData().getInvoice().toJson());
+                        mContext.sendBroadcast(intent);
                         mFragment.getActivity().finish();
                     }
 
