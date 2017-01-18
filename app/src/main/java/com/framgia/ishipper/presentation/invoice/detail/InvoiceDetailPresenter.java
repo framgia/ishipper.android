@@ -255,7 +255,6 @@ public class InvoiceDetailPresenter implements InvoiceDetailContract.Presenter {
                         mActivity.showUserMessage(response.getMessage());
                         mActivity.dismissDialog();
                         mView.showRatingDialog(invoiceId);
-                        finishActivity(invoiceId);
                     }
 
                     @Override
