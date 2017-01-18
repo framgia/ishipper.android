@@ -363,6 +363,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
     private void addNewMarkerInvoice(Invoice invoice) {
         mInvoices.add(Const.HEAD_LIST, invoice);
         mAdapter.notifyItemInserted(Const.HEAD_LIST);
+        if (mRvListInvoice == null) return;
         mRvListInvoice.getLayoutManager().scrollToPosition(Const.HEAD_LIST);
         mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
         LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());

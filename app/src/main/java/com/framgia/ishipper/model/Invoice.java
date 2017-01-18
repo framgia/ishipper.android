@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.TextFormatUtils;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -48,12 +49,16 @@ public class Invoice implements Parcelable {
     @SerializedName("customer_name") private String mCustomerName;
     @SerializedName("customer_number") private String mCustomerNumber;
     @SerializedName("received") private boolean mReceived;
-    @SerializedName("number_of_recipients") private String mNumOfRecipient;
+    @SerializedName("number_of_recipients") private int mNumOfRecipient;
     @SerializedName("user_invoice_id") private int mUserInvoiceId;
     @SerializedName("status_histories") private ArrayList<InvoiceHistory> mHistories;
 
     public Invoice() {
 
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
     }
 
     public int getStatusCode() {
@@ -240,11 +245,11 @@ public class Invoice implements Parcelable {
         return mUserInvoiceId != INVALID_USER_INVOICE;
     }
 
-    public String getNumOfRecipient() {
+    public int getNumOfRecipient() {
         return mNumOfRecipient;
     }
 
-    public void setNumOfRecipient(String numOfRecipient) {
+    public void setNumOfRecipient(int numOfRecipient) {
         mNumOfRecipient = numOfRecipient;
     }
 
@@ -281,7 +286,7 @@ public class Invoice implements Parcelable {
         parcel.writeString(mCustomerName);
         parcel.writeString(mCustomerNumber);
         parcel.writeByte((byte) (mReceived ? 1 : 0));
-        parcel.writeString(mNumOfRecipient);
+        parcel.writeInt(mNumOfRecipient);
     }
 
     protected Invoice(Parcel in) {
@@ -303,7 +308,7 @@ public class Invoice implements Parcelable {
         mCustomerName = in.readString();
         mCustomerNumber = in.readString();
         mReceived = in.readByte() != 0;
-        mNumOfRecipient = in.readString();
+        mNumOfRecipient = in.readInt();
     }
 
     public static final Creator<Invoice> CREATOR = new Creator<Invoice>() {

@@ -184,10 +184,11 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.mTvShippingInvoiceStatus.setCompoundDrawablesWithIntrinsicBounds(drawableStatus,
                                                                                 null, null, null);
         try {
-            if (holder.mInvoice.getNumOfRecipient() != null &&
-                Integer.parseInt(holder.mInvoice.getNumOfRecipient()) > Const.ZERO) {
+            if (holder.mInvoice.getStatusCode() == Invoice.STATUS_CODE_INIT &&
+                Config.getInstance().isShop(mContext) &&
+                holder.mInvoice.getNumOfRecipient() > Const.ZERO) {
                 holder.mTvNumShipRegister.setVisibility(View.VISIBLE);
-                holder.mTvNumShipRegister.setText(holder.mInvoice.getNumOfRecipient());
+                holder.mTvNumShipRegister.setText(String.valueOf(holder.mInvoice.getNumOfRecipient()));
             } else {
                 holder.mTvNumShipRegister.setVisibility(View.GONE);
             }

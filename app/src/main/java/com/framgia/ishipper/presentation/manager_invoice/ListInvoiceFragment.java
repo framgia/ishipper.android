@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.base.BaseFragment;
@@ -29,15 +28,13 @@ import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.ui.view.EmptyView;
 import com.framgia.ishipper.util.Const;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 
-public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.OnClickCancelListener,
-        InvoiceAdapter.OnClickActionListener, InvoiceAdapter.OnclickViewListener,
-        ListInvoiceContract.View {
+public class ListInvoiceFragment extends BaseFragment
+        implements InvoiceAdapter.OnClickCancelListener, InvoiceAdapter.OnClickActionListener,
+        InvoiceAdapter.OnclickViewListener, ListInvoiceContract.View {
     private static final String TAG = "ListInvoiceFragment";
     private static final String TAB_TITLE = "title";
     private static final String STATUS_CODE = "status";
@@ -63,28 +60,39 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent == null) return;
-            String responseStr = intent.getStringExtra(Const.KEY_SOCKET_RESPONSE);
-            SocketResponse socketResponse = new Gson().fromJson(responseStr, SocketResponse.class);
-            if (socketResponse != null) {
-                Invoice invoice = socketResponse.getInvoice();
-                if (invoice == null) return;
-                changeCountShipperReg(invoice);
-            }
-            if (intent.hasExtra(Const.KEY_INVOICE)) {
-                Invoice invoice = new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE), Invoice.class);
-                switch (mStatusCode) {
-                    case Invoice.STATUS_CODE_INIT:
-                        if (mCurrentUser.isShop()) {
-                            changeCountShipperReg(invoice);
-                        } else {
-                            updateInvoice(invoice);
+            if (intent == null) { return; }
+            switch (intent.getAction()) {
+                case Const.ACTION_CANCEL_INVOICE:
+                    String responseStr = intent.getStringExtra(Const.KEY_SOCKET_RESPONSE);
+                    SocketResponse socketResponse =
+                            new Gson().fromJson(responseStr, SocketResponse.class);
+                    if (socketResponse != null) {
+                        Invoice invoice = socketResponse.getInvoice();
+                        if (invoice == null) { return; }
+                        changeCountShipperReg(invoice);
+                    }
+                    break;
+                case Const.ACTION_CREATE_INVOICE:
+                case Const.ACTION_NEW_NOTIFICATION:
+                    if (intent.hasExtra(Const.KEY_INVOICE)) {
+                        Invoice invoice =
+                                new Gson().fromJson(intent.getStringExtra(Const.KEY_INVOICE),
+                                        Invoice.class);
+                        switch (mStatusCode) {
+                            case Invoice.STATUS_CODE_INIT:
+                                if (mCurrentUser.isShop() &&
+                                    intent.getAction().equals(Const.ACTION_NEW_NOTIFICATION)) {
+                                    changeCountShipperReg(invoice);
+                                } else {
+                                    updateInvoice(invoice);
+                                }
+                                break;
+                            default:
+                                updateInvoice(invoice);
+                                break;
                         }
-                        break;
-                    default:
-                        updateInvoice(invoice);
-                        break;
-                }
+                    }
+                    break;
             }
         }
     };
@@ -103,7 +111,9 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
                 }
             }
         }
-        if (!isHave && invoice.getStatusCode() == mStatusCode) {
+        if (!isHave && invoice.getStatusCode() == mStatusCode &&
+            ((mCurrentUser.isShop() && !invoice.isReceived()) ||
+             (!mCurrentUser.isShop() && invoice.isReceived()))) {
             mInvoiceList.add(Const.HEAD_LIST, invoice);
             mInvoiceAdapter.setPositionHighlight(Const.HEAD_LIST);
             if (mEmptyView != null) mEmptyView.active(mInvoiceList.isEmpty());
@@ -119,7 +129,6 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
                 return;
             }
         }
-
     }
 
     public static ListInvoiceFragment newInstance(String title, int status) {
@@ -130,7 +139,6 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,6 +151,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Const.ACTION_NEW_NOTIFICATION);
         intentFilter.addAction(Const.ACTION_CANCEL_INVOICE);
+        intentFilter.addAction(Const.ACTION_CREATE_INVOICE);
         getActivity().registerReceiver(mReceiver, intentFilter);
     }
 
@@ -167,8 +176,8 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         mRecyclerView.setAdapter(mInvoiceAdapter);
         mLayoutRefresh.setColorSchemeColors(Color.GREEN, Color.RED, Color.BLUE);
         mPresenter.getInvoice(Config.getInstance().getUserInfo(mContext).getRole(),
-                Config.getInstance().getUserInfo(mContext).getAuthenticationToken(),
-                mStatusCode, null);
+                Config.getInstance().getUserInfo(mContext).getAuthenticationToken(), mStatusCode,
+                null);
     }
 
     @Override
@@ -178,8 +187,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
         mLayoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.getInvoice(mCurrentUser.getRole(),
-                        mCurrentUser.getAuthenticationToken(),
+                mPresenter.getInvoice(mCurrentUser.getRole(), mCurrentUser.getAuthenticationToken(),
                         mStatusCode, null);
             }
         });
@@ -204,7 +212,6 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
                 mPresenter.searchInvoice(Config.getInstance().getUserInfo(getContext()).getRole(),
                         Config.getInstance().getUserInfo(getContext()).getAuthenticationToken(),
                         mStatusCode, mEdtSearch.getText().toString(), null);
-
             }
         });
     }
@@ -213,9 +220,11 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK || data == null) return;
-        Fragment fragment = getFragmentManager().findFragmentByTag(InvoiceManagerFragment.class.getName());
+        Fragment fragment =
+                getFragmentManager().findFragmentByTag(InvoiceManagerFragment.class.getName());
         if (fragment != null) fragment.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER) notifyChangedData(null);
+        if (requestCode == Const.RequestCode.REQUEST_CODE_CHOOSE_SHIPPER) {notifyChangedData(null);
+        }
     }
 
     @Override
@@ -242,8 +251,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     public void notifyChangedData(OnGetInvoiceListener listener) {
         initAdapter(mContext);
         if (mPresenter == null || mCurrentUser == null) return;
-        mPresenter.getInvoice(mCurrentUser.getRole(),
-                mCurrentUser.getAuthenticationToken(),
+        mPresenter.getInvoice(mCurrentUser.getRole(), mCurrentUser.getAuthenticationToken(),
                 mStatusCode, listener);
     }
 
@@ -298,10 +306,11 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     }
 
     public String getTitle() {
-        if (mTitle != null)
+        if (mTitle != null) {
             return mTitle;
-        else
+        } else {
             return "";
+        }
     }
 
     public void setTitle(String title) {
@@ -355,8 +364,7 @@ public class ListInvoiceFragment extends BaseFragment implements InvoiceAdapter.
     }
 
     public boolean isAvaiable() {
-        if (mCurrentUser == null || mPresenter == null || mContext == null) return false;
-        return true;
+        return !(mCurrentUser == null || mPresenter == null || mContext == null);
     }
 
     public interface OnActionClickListener {
