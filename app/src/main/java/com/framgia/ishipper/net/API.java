@@ -265,9 +265,10 @@ public abstract class API {
 
     public static void getListReviews(
             String token,
+            String userType,
             String userId,
             APICallback<APIResponse<ListReviewData>> callback) {
-        client.getListReview(userId, token).enqueue(new RetrofitCallback<>(callback));
+        client.getListReview(userType, token, userId).enqueue(new RetrofitCallback<>(callback));
     }
 
     public static void getSearchUser(

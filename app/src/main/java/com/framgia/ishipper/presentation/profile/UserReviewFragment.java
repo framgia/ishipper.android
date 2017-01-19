@@ -29,7 +29,7 @@ public class UserReviewFragment extends BaseFragment implements UserReviewContra
     @BindView(R.id.rcv_user_review) RecyclerView mListReview;
 
     private Context mContext;
-    private ArrayList<ReviewUser> mReviewUsers = new ArrayList<>();
+    private List<ReviewUser> mReviewUsers = new ArrayList<>();
     private ReviewUserAdapter mAdapter;
     private User mUserInvoice;
     private User mCurrentUser;
@@ -65,37 +65,23 @@ public class UserReviewFragment extends BaseFragment implements UserReviewContra
 
     @Override
     public int getLayoutId() {
-        return fragment_user_review;
+        return R.layout.fragment_user_review;
     }
 
     @Override
     public void initViews() {
-        ReviewUser reviewUser = new ReviewUser();
-        reviewUser.setRatingPoint("3.5");
-        reviewUser.setContent("Good Good");
-        reviewUser.setDate("20/09/2016");
-        mReviewUsers.add(reviewUser);
-        reviewUser = new ReviewUser();
-        reviewUser.setRatingPoint("3.5");
-        reviewUser.setContent("Good Good");
-        reviewUser.setDate("20/09/2016");
-        mReviewUsers.add(reviewUser);
-        reviewUser = new ReviewUser();
-        reviewUser.setRatingPoint("3.5");
-        reviewUser.setContent("Good Good");
-        reviewUser.setDate("20/09/2016");
-        mReviewUsers.add(reviewUser);
-
-
         mAdapter = new ReviewUserAdapter(mContext, R.layout.item_user_review, mReviewUsers);
         mListReview.setLayoutManager(new LinearLayoutManager(mContext));
         mListReview.setAdapter(mAdapter);
+        mPresenter.getListReview(mCurrentUser, mUserInvoice.getId());
     }
 
     @Override
     public void notifyListReviewerChange(List<ReviewUser> reviewUsers) {
         mReviewUsers.clear();
+        if (reviewUsers == null) return;
         mReviewUsers.addAll(reviewUsers);
         mAdapter.notifyDataSetChanged();
+
     }
 }

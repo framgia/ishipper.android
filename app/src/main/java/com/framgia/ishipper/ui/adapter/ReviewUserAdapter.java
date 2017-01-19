@@ -23,12 +23,12 @@ import butterknife.ButterKnife;
 public class ReviewUserAdapter extends RecyclerView.Adapter<ReviewUserAdapter.ViewHolder> {
     Context mContext;
     int mLayoutId;
-    ArrayList<ReviewUser> mReviewUsers;
+    List<ReviewUser> mReviewUsers;
 
     public ReviewUserAdapter(Context context, int layoutId, List<ReviewUser> reviewUsers) {
         mContext = context;
         mLayoutId = layoutId;
-        mReviewUsers = new ArrayList<>(reviewUsers);
+        mReviewUsers = reviewUsers;
     }
 
     @Override

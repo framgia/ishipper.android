@@ -1,5 +1,6 @@
 package com.framgia.ishipper.net;
 
+import com.framgia.ishipper.model.ReviewUser;
 import com.framgia.ishipper.net.data.AddBlacklistData;
 import com.framgia.ishipper.net.data.AddFavoriteListData;
 import com.framgia.ishipper.net.data.ChangePasswordData;
@@ -223,8 +224,10 @@ public class APIServices {
 
         @GET(APIDefinition.GetListReview.PATH)
         Call<APIResponse<ListReviewData>> getListReview(
-                @Path(APIDefinition.GetListReview.PARAMS_USER_ID) String userId,
-                @Header(APIDefinition.HEADER_AUTHORIZE) String token);
+                @Path(APIDefinition.PARAM_USER_TYPE) String type,
+                @Header(APIDefinition.HEADER_AUTHORIZE) String token,
+                @Query(APIDefinition.GetListReview.PARAMS_USER_ID) String userId
+                );
 
         @GET(APIDefinition.GetSearchUser.PATH)
         Call<APIResponse<ListUserData>> getSearchUser(

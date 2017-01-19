@@ -18,6 +18,7 @@ public class APIDefinition {
     public static final String HEADER_AUTHORIZE = "Authorization";
 
     public static final String PARAM_LANGUAGE = "language";
+    public static final String PARAM_USER_TYPE = "user_type";
 
     public static class RegisterUser {
         public static final String PATH = "/api/sign_up/";
@@ -72,6 +73,7 @@ public class APIDefinition {
         public static final String PATH = "api/sign_in";
         public static final String PARAM_PHONE_NUMBER = "user[phone_number]";
         public static final String PARAM_PASSWORD = "user[password]";
+        public static final String PARAM_REGISTRATION_ID = "user[registration_id]";
     }
 
     /**
@@ -301,8 +303,8 @@ public class APIDefinition {
     }
 
     public static class GetListReview {
-        public static final String PATH = "";
-        public static final String PARAMS_USER_ID = "";
+        public static final String PATH = "/api/{" + PARAM_USER_TYPE +"}/reviews";
+        public static final String PARAMS_USER_ID = "review[recipient_id]";
     }
 
     public static class GetSearchUser {
