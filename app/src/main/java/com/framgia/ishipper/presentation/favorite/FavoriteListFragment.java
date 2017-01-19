@@ -91,7 +91,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
                 return true;
             case R.id.menu_delete_all:
                 if (mFavoriteList == null || mFavoriteList.size() == 0) return false;
-                showConfirmDialog();
+                showConfirmDeleteAll();
                 return true;
             default:
                 break;
@@ -113,7 +113,7 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
     }
 
     @Override
-    public void showConfirmDialog() {
+    public void showConfirmDeleteAll() {
         new ConfirmDialog(mContext)
                 .setIcon(R.drawable.ic_delete_white_24dp)
                 .setMessage(getString(R.string.delete_all_dialog_message))
@@ -135,11 +135,13 @@ public class FavoriteListFragment extends BaseFragment implements FavoriteListCo
 
     @Override
     public void showListUser(ListUserData listUserData) {
-        if (listUserData == null) return;
+        if (mFavoriteList == null || mFavoriteListAdapter == null) return;
         mFavoriteList.clear();
-        mFavoriteList.addAll(listUserData.getShippersList());
-        showEmptyLayout(mFavoriteList.isEmpty());
+        if (listUserData != null) {
+            mFavoriteList.addAll(listUserData.getShippersList());
+        }
         mFavoriteListAdapter.notifyDataSetChanged();
+        showEmptyLayout(mFavoriteList.isEmpty());
     }
 
     @Override

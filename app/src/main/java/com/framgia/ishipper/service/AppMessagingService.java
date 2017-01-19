@@ -12,6 +12,8 @@ import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.util.Const;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import static com.framgia.ishipper.util.Const.*;
+import static com.framgia.ishipper.util.Const.FirebaseData.*;
 
 /**
  * Created by HungNT on 10/21/16.
@@ -31,13 +33,13 @@ public class AppMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotification(RemoteMessage remoteMessage) {
-        String action = remoteMessage.getData().get(Const.FirebaseData.CLICK_ACTION);
+        String action = remoteMessage.getData().get(CLICK_ACTION);
         Intent intent = new Intent(action);
         Bundle bundle = new Bundle();
-        bundle.putString(Const.FirebaseData.INVOICE_ID,
-                remoteMessage.getData().get(Const.FirebaseData.INVOICE_ID));
-        bundle.putString(Const.FirebaseData.NOTIFICATION_ID,
-                remoteMessage.getData().get(Const.FirebaseData.NOTIFICATION_ID));
+        bundle.putString(INVOICE_ID,
+                remoteMessage.getData().get(INVOICE_ID));
+        bundle.putString(NOTIFICATION_ID,
+                remoteMessage.getData().get(NOTIFICATION_ID));
         intent.putExtras(bundle);
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
@@ -67,27 +69,31 @@ public class AppMessagingService extends FirebaseMessagingService {
 
     private void sendBroadcastNewNotification(RemoteMessage remoteMessage) {
         Intent intent = new Intent();
-        intent.setAction(Const.ACTION_NEW_NOTIFICATION);
-        intent.putExtra(Const.KEY_TITLE, remoteMessage.getNotification().getTitle());
-        intent.putExtra(Const.KEY_BODY, remoteMessage.getNotification().getBody());
-        if (remoteMessage.getData().containsKey(Const.KEY_NOTIFICATION_ID)) {
-            intent.putExtra(Const.KEY_NOTIFICATION_ID, remoteMessage.getData().get(Const.KEY_NOTIFICATION_ID));
+        intent.setAction(ACTION_NEW_NOTIFICATION);
+        intent.putExtra(KEY_TITLE, remoteMessage.getNotification().getTitle());
+        intent.putExtra(KEY_BODY, remoteMessage.getNotification().getBody());
+        if (remoteMessage.getData().containsKey(KEY_NOTIFICATION_ID)) {
+            intent.putExtra(KEY_NOTIFICATION_ID, remoteMessage.getData().get(KEY_NOTIFICATION_ID));
         }
-        if (remoteMessage.getData().containsKey(Const.KEY_NOTIFICATION_ID)) {
-            intent.putExtra(Const.KEY_NOTIFICATION_ID, remoteMessage.getData().get(Const.KEY_NOTIFICATION_ID));
+        if (remoteMessage.getData().containsKey(KEY_NOTIFICATION_ID)) {
+            intent.putExtra(KEY_NOTIFICATION_ID, remoteMessage.getData().get(KEY_NOTIFICATION_ID));
         }
-        if (remoteMessage.getData().containsKey(Const.KEY_ACTION)) {
-            intent.putExtra(Const.KEY_ACTION, remoteMessage.getData().get(Const.KEY_ACTION));
+        if (remoteMessage.getData().containsKey(KEY_ACTION)) {
+            intent.putExtra(KEY_ACTION, remoteMessage.getData().get(KEY_ACTION));
         }
-        if (remoteMessage.getData().containsKey(Const.KEY_USER)) {
-            intent.putExtra(Const.KEY_USER, remoteMessage.getData().get(Const.KEY_USER));
+        if (remoteMessage.getData().containsKey(KEY_USER)) {
+            intent.putExtra(KEY_USER, remoteMessage.getData().get(KEY_USER));
         }
-        if (remoteMessage.getData().containsKey(Const.KEY_INVOICE_ID)) {
-            intent.putExtra(Const.KEY_INVOICE_ID, remoteMessage.getData().get(Const.KEY_INVOICE_ID));
+        if (remoteMessage.getData().containsKey(KEY_INVOICE_ID)) {
+            intent.putExtra(KEY_INVOICE_ID, remoteMessage.getData().get(KEY_INVOICE_ID));
         }
-        if (remoteMessage.getData().containsKey(Const.KEY_INVOICE)) {
-            intent.putExtra(Const.KEY_INVOICE, remoteMessage.getData().get(Const.KEY_INVOICE));
+        if (remoteMessage.getData().containsKey(KEY_INVOICE)) {
+            intent.putExtra(KEY_INVOICE, remoteMessage.getData().get(KEY_INVOICE));
         }
+        if (remoteMessage.getData().containsKey(KEY_CREATED_TIME)) {
+            intent.putExtra(KEY_CREATED_TIME, remoteMessage.getData().get(KEY_CREATED_TIME));
+        }
+
         sendBroadcast(intent);
     }
 }

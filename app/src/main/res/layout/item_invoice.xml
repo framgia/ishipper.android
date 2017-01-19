@@ -251,7 +251,9 @@
                         android:id="@+id/tv_item_invoice_ship_time"
                         style="@style/invoice_detail_content"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red"
+                        android:textStyle="normal"/>
                 </LinearLayout>
 
                 <LinearLayout

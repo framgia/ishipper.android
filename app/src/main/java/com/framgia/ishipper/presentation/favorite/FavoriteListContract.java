@@ -11,7 +11,7 @@ public interface FavoriteListContract {
 
     interface View {
 
-        void showConfirmDialog();
+        void showConfirmDeleteAll();
 
         void showListUser(ListUserData listUserData);
 

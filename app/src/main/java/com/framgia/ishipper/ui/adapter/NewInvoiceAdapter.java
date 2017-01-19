@@ -1,10 +1,12 @@
 package com.framgia.ishipper.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.framgia.ishipper.R;
@@ -60,6 +62,7 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
         @BindView(R.id.btn_item_invoice_register) TextView mBtnReceiveInvoice;
         @BindView(R.id.tv_item_invoice_distance) TextView mTvDistance;
         @BindView(R.id.action_cancel_accept_invoice) TextView mBtnCancelAcceptInvoice;
+        @BindView(R.id.rating_invoice_window) AppCompatRatingBar mRateOfShop;
 
         public ViewHolder(View view) {
             super(view);
@@ -98,6 +101,7 @@ public class NewInvoiceAdapter extends RecyclerView.Adapter<NewInvoiceAdapter.Vi
             mInvoiceShippingCost.setText(TextFormatUtils.formatPrice(invoice.getShippingPrice()));
             mInvoiceShippingTime.setText(invoice.getDeliveryTime());
             mTvDistance.setText(TextFormatUtils.formatDistance(invoice.getDistance()));
+            mRateOfShop.setRating((float) invoice.getUser().getRate());
         }
     }
 
