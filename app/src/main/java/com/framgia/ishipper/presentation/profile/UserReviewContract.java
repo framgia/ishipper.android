@@ -1,6 +1,7 @@
 package com.framgia.ishipper.presentation.profile;
 
 import com.framgia.ishipper.model.ReviewUser;
+import com.framgia.ishipper.model.User;
 
 import java.util.List;
 
@@ -14,6 +15,6 @@ public class UserReviewContract {
     }
 
     interface Presenter {
-        void getListReview(String userInvoiceId);
+        void getListReview(User currentUser, String userInvoiceId);
     }
 }

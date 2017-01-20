@@ -3,7 +3,6 @@ package com.framgia.ishipper.presentation.authenication.login;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.EditText;
-
 import com.framgia.ishipper.base.BaseActivity;
 import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.model.User;
@@ -17,7 +16,6 @@ import com.framgia.ishipper.presentation.authenication.update_pass.ForgetPasswor
 import com.framgia.ishipper.presentation.main.MainActivity;
 import com.framgia.ishipper.util.InputValidate;
 import com.google.firebase.iid.FirebaseInstanceId;
-
 import java.util.HashMap;
 
 /**
@@ -46,6 +44,8 @@ class LoginPresenter implements LoginContract.Presenter {
         HashMap<String, String> params = new HashMap<>();
         params.put(APIDefinition.SignIn.PARAM_PHONE_NUMBER, phoneNumber);
         params.put(APIDefinition.SignIn.PARAM_PASSWORD, edtPassword.getText().toString());
+        params.put(APIDefinition.SignIn.PARAM_REGISTRATION_ID,
+                FirebaseInstanceId.getInstance().getToken());
 
         mLoginActivity.showDialog();
         API.signIn(params, new API.APICallback<APIResponse<SignInData>>() {
@@ -53,24 +53,8 @@ class LoginPresenter implements LoginContract.Presenter {
             public void onResponse(APIResponse<SignInData> response) {
                 mLoginActivity.dismissDialog();
                 mLoginActivity.showUserMessage(response.getMessage());
-
                 User user = response.getData().getUser();
                 Config.getInstance().setUserInfo(mLoginActivity.getApplicationContext(), user);
-
-                API.putFCMRegistrationID(user.getAuthenticationToken(),
-                        FirebaseInstanceId.getInstance().getToken(),
-                        new API.APICallback<APIResponse<EmptyData>>() {
-                            @Override
-                            public void onResponse(APIResponse<EmptyData> response) {
-                            }
-
-                            @Override
-                            public void onFailure(int code, String message) {
-                                mLoginActivity.dismissDialog();
-                                mLoginActivity.showUserMessage(message);
-                            }
-                        });
-
                 startMainActivity();
             }
 

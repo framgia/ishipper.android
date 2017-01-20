@@ -24,16 +24,15 @@ class UserReviewPresenter implements UserReviewContract.Presenter {
     }
 
     @Override
-    public void getListReview(String userInvoiceId) {
-        User currentUser = Config.getInstance().getUserInfo(mBaseFragment.getContext());
+    public void getListReview(User currentUser, String userInvoiceId) {
         API.getListReviews(
                 currentUser.getAuthenticationToken(),
+                currentUser.getUserType(),
                 userInvoiceId,
                 new API.APICallback<APIResponse<ListReviewData>>() {
                     @Override
                     public void onResponse(APIResponse<ListReviewData> response) {
-                        List<ReviewUser> reviewUsers = response.getData().getReviewUsers();
-                        mView.notifyListReviewerChange(reviewUsers);
+                        mView.notifyListReviewerChange(response.getData().getReviewUsers());
                     }
 
                     @Override
