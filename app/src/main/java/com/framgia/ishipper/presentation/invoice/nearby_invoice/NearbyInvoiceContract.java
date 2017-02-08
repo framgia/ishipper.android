@@ -20,7 +20,7 @@ public interface NearbyInvoiceContract {
 
         void removeListMarker(List<Invoice> invoiceList);
 
-        void updateInvoices(ArrayList<Invoice> invoices);
+        void updateInvoices(List<Invoice> invoices);
 
         void onReceiveInvoiceSuccess(String message, Invoice invoice);
 

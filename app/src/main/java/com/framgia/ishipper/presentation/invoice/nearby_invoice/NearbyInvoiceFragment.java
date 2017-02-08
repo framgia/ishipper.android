@@ -33,7 +33,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
-
 import com.directions.route.Route;
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
@@ -41,6 +40,7 @@ import com.framgia.ishipper.common.Config;
 import com.framgia.ishipper.common.Log;
 import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
+import com.framgia.ishipper.net.data.ListInvoiceData;
 import com.framgia.ishipper.presentation.filter.FilterInvoiceActivity;
 import com.framgia.ishipper.presentation.main.MainActivity;
 import com.framgia.ishipper.ui.adapter.NewInvoiceAdapter;
@@ -71,20 +71,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoiceContract.View,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, OnInvoiceUpdate,
-        NewInvoiceAdapter.OnItemClickListener, GoogleMap.OnCameraIdleListener {
+public class NearbyInvoiceFragment extends BaseFragment
+        implements NearbyInvoiceContract.View, OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        LocationListener, OnInvoiceUpdate, NewInvoiceAdapter.OnItemClickListener,
+        GoogleMap.OnCameraIdleListener {
 
     private static final String TAG = "NearbyOrderFragment";
     private static final int REQUEST_FILTER = 0x1234;
@@ -171,8 +169,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                     new LocationSettingCallback() {
                         @Override
                         public void onSuccess() {
-                            mMapFragment.getMapAsync(
-                                    NearbyInvoiceFragment.this);
+                            mMapFragment.getMapAsync(NearbyInvoiceFragment.this);
                         }
                     });
         } else {
@@ -192,9 +189,9 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation == null) {
             showLoadingDialog();
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
-                    new LocationRequest(),
-                    NearbyInvoiceFragment.this);
+            LocationServices.FusedLocationApi
+                    .requestLocationUpdates(mGoogleApiClient, new LocationRequest(),
+                            NearbyInvoiceFragment.this);
         } else {
             onLocationChange(mLocation);
             android.util.Log.d(TAG, "initMap: " + mLocation);
@@ -247,9 +244,15 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                     break;
                 case REQUEST_FILTER:
                     String jsonData = data.getStringExtra(FilterInvoiceActivity.INTENT_FILTER_DATA);
-                    mInvoices = new Gson().fromJson(jsonData, new TypeToken<List<Invoice>>() {
-                    }.getType());
-                    addListMarker(mInvoices);
+                    ListInvoiceData listInvoiceData =
+                            new Gson().fromJson(jsonData, ListInvoiceData.class);
+                    if (listInvoiceData == null) return;
+                    removeListMarker(mInvoices);
+                    mInvoices.clear();
+                    mAdapter.notifyDataSetChanged();
+                    addListMarker(listInvoiceData.getInvoiceList());
+                    mTvInvoiceCount.setText(Html.fromHtml(
+                            getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
                     break;
                 case Const.RequestCode.REQUEST_CODE_INVOICE_DETAIL:
                     if (mPresenter == null) return;
@@ -258,7 +261,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                         updateStatusReceiveInvoice(invoiceId, Invoice.INVALID_USER_INVOICE);
                     }
                     mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
-                            new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
+                            new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()),
+                            mRadius);
                     break;
             }
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR &&
@@ -278,8 +282,7 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                     new LocationSettingCallback() {
                         @Override
                         public void onSuccess() {
-                            mMapFragment.getMapAsync(
-                                    NearbyInvoiceFragment.this);
+                            mMapFragment.getMapAsync(NearbyInvoiceFragment.this);
                         }
                     });
         }
@@ -309,13 +312,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
     }
 
     @Override
-    public void updateInvoices(ArrayList<Invoice> invoices) {
+    public void updateInvoices(List<Invoice> invoices) {
         mInvoices.clear();
         mInvoices.addAll(invoices);
         mAdapter.notifyDataSetChanged();
         mLayoutEmpty.setVisibility(invoices.isEmpty() ? View.VISIBLE : View.GONE);
-        mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count,
-                mInvoices.size())));
+        mTvInvoiceCount.setText(
+                Html.fromHtml(getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
     }
 
     @Override
@@ -365,13 +368,15 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         mAdapter.notifyItemInserted(Const.HEAD_LIST);
         if (mRvListInvoice == null) return;
         mRvListInvoice.getLayoutManager().scrollToPosition(Const.HEAD_LIST);
-        mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
+        mTvInvoiceCount.setText(
+                Html.fromHtml(getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
         LatLng latLng = new LatLng(invoice.getLatStart(), invoice.getLngStart());
         int markerResId = invoice.isReceived() ? R.drawable.ic_marker_shop_received :
                 R.drawable.ic_marker_shop;
-        final Marker marker = mGoogleMap.addMarker(
-                new MarkerOptions().position(latLng).alpha(0)
-                        .icon(BitmapDescriptorFactory.fromResource(markerResId)));
+        final Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).alpha(0)
+                                                                      .icon(BitmapDescriptorFactory
+                                                                              .fromResource(
+                                                                                      markerResId)));
         MapUtils.setAnimatedInMarker(marker);
 
         /** save invoice with marker to hashmap */
@@ -418,8 +423,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                 mInvoice = mInvoiceMap.get(marker);
                 removeRoute();
                 hideSearchArea();
-                mMakerEndOrder = mGoogleMap.addMarker(new MarkerOptions().position(
-                        new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish())));
+                mMakerEndOrder = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish())));
                 mPresenter.getRoute(new LatLng(mInvoice.getLatStart(), mInvoice.getLngStart()),
                         new LatLng(mInvoice.getLatFinish(), mInvoice.getLngFinish()));
                 showInvoiceDetailWindow(mInvoice);
@@ -438,13 +443,12 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         });
     }
 
-
     @Override
     public void onCameraIdle() {
         // The camera has stopped moving.
         if (!mAutoRefresh) return;
-        if (mLastCameraPosition != null
-                && mLastCameraPosition.equals(mGoogleMap.getCameraPosition().target)) {
+        if (mLastCameraPosition != null &&
+                mLastCameraPosition.equals(mGoogleMap.getCameraPosition().target)) {
             return;
         }
         mLastCameraPosition = mGoogleMap.getCameraPosition().target;
@@ -496,7 +500,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
     public void drawRoute(ArrayList<Route> routes) {
         PolylineOptions polyOptions = new PolylineOptions();
         for (int i = 0; i < routes.size(); i++) {
-            polyOptions.color(ContextCompat.getColor(mContext.getApplicationContext(), R.color.colorGreen));
+            polyOptions.color(ContextCompat
+                    .getColor(mContext.getApplicationContext(), R.color.colorGreen));
             polyOptions.width(8);
             polyOptions.addAll(routes.get(i).getPoints());
         }
@@ -515,7 +520,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         item.setUserInvoiceId(userInvoiceId);
         mAdapter.notifyDataSetChanged();
         Marker marker = findMarkerByInvoice(item);
-        int markerResId = item.isReceived() ? R.drawable.ic_marker_shop_received : R.drawable.ic_marker_shop;
+        int markerResId =
+                item.isReceived() ? R.drawable.ic_marker_shop_received : R.drawable.ic_marker_shop;
         if (marker == null) return;
         marker.setIcon(BitmapDescriptorFactory.fromResource(markerResId));
         mInvoiceMap.get(marker).setUserInvoiceId(userInvoiceId);
@@ -551,13 +557,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                 mPresenter.receiveInvoice(invoiceId);
             }
         });
-        view.findViewById(R.id.confirm_dialog_cancel).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mReceiveDialog.dismiss();
-                    }
-                });
+        view.findViewById(R.id.confirm_dialog_cancel)
+            .setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mReceiveDialog.dismiss();
+                }
+            });
         mReceiveDialog = new AlertDialog.Builder(mContext).setView(view).show();
     }
 
@@ -587,8 +593,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                         break;
                     }
                 }
-                mTvInvoiceCount.setText(Html.fromHtml(getString(R.string.fragment_nearby_invoice_count,
-                        mInvoices.size())));
+                mTvInvoiceCount.setText(Html.fromHtml(
+                        getString(R.string.fragment_nearby_invoice_count, mInvoices.size())));
                 Marker marker = findMarkerByInvoice(invoice);
                 if (marker != null) {
                     MapUtils.setAnimatedOutMarker(marker);
@@ -616,7 +622,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
 
     @Override
     public void initViews() {
-        mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_nearby_order);
+        mMapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map_nearby_order);
         mPresenter = new NearbyInvoicePresenter(mContext, this, this);
         mBtnNearbyShowPath.setVisibility(View.VISIBLE);
         mBtnNearbyReceiveOrder.setVisibility(View.VISIBLE);
@@ -625,9 +632,13 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
         mRadius = StorageUtils.getIntValue(mContext, Const.Storage.KEY_SETTING_INVOICE_RADIUS,
                 Const.SETTING_INVOICE_RADIUS_DEFAULT);
         if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(mContext).addConnectionCallbacks(
-                    this).addOnConnectionFailedListener(this).addApi(LocationServices.API).addApi(
-                    Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API).build();
+            mGoogleApiClient = new GoogleApiClient.Builder(mContext).addConnectionCallbacks(this)
+                                                                    .addOnConnectionFailedListener(
+                                                                            this)
+                                                                    .addApi(LocationServices.API)
+                                                                    .addApi(Places.GEO_DATA_API)
+                                                                    .addApi(Places.PLACE_DETECTION_API)
+                                                                    .build();
         }
         setHasOptionsMenu(true);
         if (getActivity() instanceof MainActivity) {
@@ -639,8 +650,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
             @Override
             public void onRefresh() {
                 mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
-                        new LatLng(mCurrentUser.getLatitude(),
-                                mCurrentUser.getLongitude()), mRadius);
+                        new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()),
+                        mRadius);
             }
         });
 
@@ -665,9 +676,9 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
     }
 
     @OnClick({R.id.btn_item_invoice_show_path, R.id.btn_item_invoice_register,
-            R.id.action_detail_invoice, R.id.rl_search_view, R.id.btn_view_change,
-            R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_invoice,
-            R.id.img_collapse_item_invoice})
+                     R.id.action_detail_invoice, R.id.rl_search_view, R.id.btn_view_change,
+                     R.id.layoutInvoiceSummary, R.id.tv_empty, R.id.action_cancel_accept_invoice,
+                     R.id.img_collapse_item_invoice})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_view_change:
@@ -697,7 +708,8 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
                 break;
             case R.id.tv_empty:
                 mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
-                        new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()), mRadius);
+                        new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()),
+                        mRadius);
                 break;
             case R.id.action_cancel_accept_invoice:
                 mPresenter.cancelAcceptOrder(findInvoiceById((String) view.getTag()));
@@ -754,8 +766,9 @@ public class NearbyInvoiceFragment extends BaseFragment implements NearbyInvoice
 
         @Override
         protected String doInBackground(LatLng... latLngs) {
-            mPresenter.markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(),
-                    latLngs[0], mRadius);
+            mPresenter
+                    .markInvoiceNearby(mInvoices, mCurrentUser.getAuthenticationToken(), latLngs[0],
+                            mRadius);
             return MapUtils.getAddressFromLocation(mContext, latLngs[0]);
         }
 

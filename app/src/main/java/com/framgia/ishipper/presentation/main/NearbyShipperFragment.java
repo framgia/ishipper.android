@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseFragment;
 import com.framgia.ishipper.common.Config;
@@ -39,20 +38,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * Created by dinhduc on 20/07/2016.
  */
-public class NearbyShipperFragment extends BaseFragment implements NearbyShipperContract.View,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, OnShipperUpdateListener,
-        GoogleMap.OnCameraIdleListener {
+public class NearbyShipperFragment extends BaseFragment
+        implements NearbyShipperContract.View, OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        LocationListener, OnShipperUpdateListener, GoogleMap.OnCameraIdleListener {
     private static final String TAG = "NearbyShipperFragment";
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -99,13 +96,13 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
         mMapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map_nearby_shipper);
         if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .build();
+            mGoogleApiClient = new GoogleApiClient.Builder(mContext).addConnectionCallbacks(this)
+                                                                    .addOnConnectionFailedListener(
+                                                                            this)
+                                                                    .addApi(LocationServices.API)
+                                                                    .addApi(Places.GEO_DATA_API)
+                                                                    .addApi(Places.PLACE_DETECTION_API)
+                                                                    .build();
         }
     }
 
@@ -123,8 +120,9 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation == null) {
             mDialog = CommonUtils.showLoadingDialog(mContext);
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, new LocationRequest(), NearbyShipperFragment.this);
+            LocationServices.FusedLocationApi
+                    .requestLocationUpdates(mGoogleApiClient, new LocationRequest(),
+                            NearbyShipperFragment.this);
         } else {
             onLocationChange(mLocation);
         }
@@ -144,12 +142,9 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
                     });
         } else {
             // request location permission
-            PermissionUtils.requestPermission(
-                    (AppCompatActivity) getActivity(),
+            PermissionUtils.requestPermission((AppCompatActivity) getActivity(),
                     Const.RequestCode.LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    false
-            );
+                    Manifest.permission.ACCESS_FINE_LOCATION, false);
         }
     }
 
@@ -175,8 +170,8 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             CommonUtils.checkLocationRequestSetting(getActivity(), mGoogleApiClient,
@@ -228,7 +223,6 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
         mCurrentUser.setLongitude(location.getLongitude());
         MapUtils.zoomToPosition(mGoogleMap,
                 new LatLng(location.getLatitude(), location.getLongitude()));
-        mPresenter.requestShipperNearby(new LatLng(mCurrentUser.getLatitude(), mCurrentUser.getLongitude()));
         mPresenter.updateCurrentLocation(mCurrentUser);
         configGoogleMap();
     }
@@ -256,8 +250,8 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
     @Override
     public void onCameraIdle() {
         // The camera has stopped moving.
-        if (mLastCameraPosition != null
-                && mLastCameraPosition.equals(mGoogleMap.getCameraPosition().target)) {
+        if (mLastCameraPosition != null &&
+                mLastCameraPosition.equals(mGoogleMap.getCameraPosition().target)) {
             return;
         }
         mLastCameraPosition = mGoogleMap.getCameraPosition().target;
@@ -292,11 +286,10 @@ public class NearbyShipperFragment extends BaseFragment implements NearbyShipper
 
     @Override
     public Marker addMark(LatLng latLng) {
-        return mGoogleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_shipper)));
+        return mGoogleMap.addMarker(new MarkerOptions().position(latLng)
+                                                       .icon(BitmapDescriptorFactory.fromResource(
+                                                               R.drawable.ic_marker_shipper)));
     }
-
 
     @Override
     public void onShipperOnline(final User shipper) {

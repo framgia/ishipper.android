@@ -7,10 +7,10 @@ import com.framgia.ishipper.common.Config;
  */
 public class APIDefinition {
 
-//    private static final String DEV_URL = "http://ishipper.framgia.vn/";
-//    private static final String SOCKET_URL = "ws://ishipper.framgia.vn/";
-    private static final String DEV_URL = "http://192.168.1.249:3001/";
-    private static final String SOCKET_URL = "http://192.168.1.249:3001/";
+    private static final String DEV_URL = "http://ishipper.framgia.vn/";
+    private static final String SOCKET_URL = "ws://ishipper.framgia.vn/";
+//    private static final String DEV_URL = "http://192.168.1.142:3000/";
+//    private static final String SOCKET_URL = "http://192.168.1.142:3000/";
     private static final String PROD_URL = "";
 
     public static final String BASE_GOOGLE_MAP_API = "https://maps.googleapis.com";

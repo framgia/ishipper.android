@@ -2,11 +2,9 @@ package com.framgia.ishipper.presentation.filter;
 
 import android.content.Intent;
 import android.widget.TextView;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.common.Config;
-import com.framgia.ishipper.model.Invoice;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.net.API;
 import com.framgia.ishipper.net.APIDefinition;
@@ -15,14 +13,9 @@ import com.framgia.ishipper.net.data.FilterInvoiceData;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.florescu.android.rangeseekbar.RangeSeekBar;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import static android.app.Activity.RESULT_OK;
 import static com.framgia.ishipper.presentation.filter.FilterInvoiceActivity.INTENT_FILTER_DATA;
 
@@ -41,12 +34,9 @@ public class FilterInvoicePresenter implements FilterInvoiceContract.Presenter {
 
     @Override
     public void filterInvoice(
-            TextView textView,
-            RangeSeekBar seekbarFilterOrderPrice,
-            RangeSeekBar seekbarFilterShipPrice,
-            RangeSeekBar seekbarFilterDistance,
-            RangeSeekBar seekbarFilterWeight,
-            RangeSeekBar seekbarFilterRadius,
+            TextView textView, RangeSeekBar seekbarFilterOrderPrice,
+            RangeSeekBar seekbarFilterShipPrice, RangeSeekBar seekbarFilterDistance,
+            RangeSeekBar seekbarFilterWeight, RangeSeekBar seekbarFilterRadius,
             String startAddress) {
         switch (textView.getId()) {
             case R.id.tv_filter_order_price:
@@ -92,13 +82,13 @@ public class FilterInvoicePresenter implements FilterInvoiceContract.Presenter {
                 }
                 if (mView.isVisible(seekbarFilterOrderPrice)) {
                     params.put(APIDefinition.FilterInvoice.PARAM_MIN_ORDER_PRICE,
-                            seekbarFilterOrderPrice.getSelectedMinValue() + "");
+                            (int) seekbarFilterOrderPrice.getSelectedMinValue() * 1000 + "");
                     params.put(APIDefinition.FilterInvoice.PARAM_MAX_ORDER_PRICE,
                             (int) seekbarFilterOrderPrice.getSelectedMaxValue() * 1000 + "");
                 }
                 if (mView.isVisible(seekbarFilterShipPrice)) {
                     params.put(APIDefinition.FilterInvoice.PARAM_MIN_SHIP_PRICE,
-                            seekbarFilterShipPrice.getSelectedMinValue() + "");
+                            (int) seekbarFilterShipPrice.getSelectedMinValue() * 1000 + "");
                     params.put(APIDefinition.FilterInvoice.PARAM_MAX_SHIP_PRICE,
                             (int) seekbarFilterShipPrice.getSelectedMaxValue() * 1000 + "");
                 }
@@ -116,16 +106,12 @@ public class FilterInvoicePresenter implements FilterInvoiceContract.Presenter {
                             mActivity.getString(R.string.activity_filter_msg_more_info));
                 }
 
-                API.filterInvoice(
-                        currentUser.getAuthenticationToken(),
-                        params,
+                API.filterInvoice(currentUser.getAuthenticationToken(), params,
                         new API.APICallback<APIResponse<FilterInvoiceData>>() {
                             @Override
                             public void onResponse(APIResponse<FilterInvoiceData> response) {
                                 Intent intent = new Intent();
-                                String data = new Gson().toJson(response.getData().getInvoiceList(),
-                                        new TypeToken<List<Invoice>>() {
-                                        }.getType());
+                                String data = new Gson().toJson(response.getData());
                                 intent.putExtra(INTENT_FILTER_DATA, data);
                                 mActivity.setResult(RESULT_OK, intent);
                                 mActivity.finish();
@@ -135,8 +121,7 @@ public class FilterInvoicePresenter implements FilterInvoiceContract.Presenter {
                             public void onFailure(int code, String message) {
                                 mActivity.showUserMessage(message);
                             }
-                        }
-                );
+                        });
                 break;
         }
     }
