@@ -20,7 +20,7 @@
     <string name="tab_title_finished">KẾT THÚC</string>
     <string name="tab_title_cancelled">HUỶ</string>
 
-    <string name="nav_nearby_order_item">Đơn hàng xung quanh</string>
+    <string name="nav_nearby_order_item">Đơn hàng quanh đây</string>
     <string name="nav_fb_order_item">Đơn hàng từ Facebook</string>
     <string name="nav_order_management_item">Quản lý đơn hàng</string>
     <string name="nav_inform_item">Thông tin</string>
@@ -248,6 +248,7 @@
     <string name="all_msg_empty_favorite">Hiện chưa có người dùng nào trong danh sách, thêm hoặc click vào đây để tải lại</string>
     <string name="msg_fragment_list_invoice_empty">Hiện chưa có đơn hàng nào!</string>
     <string name="title_activity_user_profile">Thông tin cá nhân</string>
+    <string name="get_distance_error">Địa điểm không hợp lệ</string>
 
     <string-array name="prefix_phone_number">
         <item>+84</item>

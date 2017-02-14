@@ -10,13 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.base.BaseToolbarActivity;
 import com.framgia.ishipper.model.User;
 import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.InputValidate;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -47,13 +45,10 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
     public void onClick() {
         CommonUtils.hideKeyboard(this);
         clearError();
-        mPresenter.requestRegister(mCurrentUser,
-                                   mEdtPlateNumber.getText().toString(),
-                                   mEdtPhoneNumber.getText().toString(),
-                                   mEdtNameRegister.getText().toString(),
-                                   mEdtPasswordRegister.getText().toString(),
-                                   mEdtPasswordConfirm.getText().toString(),
-                                   mPrefixPhoneNumber);
+        mPresenter.requestRegister(mCurrentUser, mEdtPlateNumber.getText().toString(),
+                mEdtPhoneNumber.getText().toString(), mEdtNameRegister.getText().toString(),
+                mEdtPasswordRegister.getText().toString(), mEdtPasswordConfirm.getText().toString(),
+                mPrefixPhoneNumber);
     }
 
     @Override
@@ -90,9 +85,8 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
             }
         });
         // Setup Spinner
-        ArrayAdapter<CharSequence> adapter =
-                ArrayAdapter.createFromResource(this,
-                        R.array.prefix_phone_number,
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter
+                .createFromResource(this, R.array.prefix_phone_number,
                         android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpnPrefixPhoneNumber.setAdapter(adapter);
@@ -112,7 +106,8 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
     @Override
     public boolean validatePlateNumber(String plateNumber) {
         if (mCurrentUser.isShop() ||
-            (!mCurrentUser.isShop() && InputValidate.notEmpty(mEdtPlateNumber, this))) return true;
+                (!mCurrentUser.isShop() && InputValidate.notEmpty(mEdtPlateNumber, this)))
+            return true;
         mEdtPlateNumber.setError(getString(R.string.error_empty_string));
         return false;
     }
@@ -133,7 +128,8 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
 
     @Override
     public boolean validatePassword(String password, String confirmPassword) {
-        if (InputValidate.confirmPassword(mEdtPasswordRegister, mEdtPasswordConfirm, this)) return true;
+        if (InputValidate.confirmPassword(mEdtPasswordRegister, mEdtPasswordConfirm, this))
+            return true;
         mEdtPasswordConfirm.setError(getString(R.string.error_password_match));
         return false;
     }
@@ -145,5 +141,12 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
         mEdtPasswordConfirm.setError(null);
         mEdtNameRegister.setError(null);
         mEdtPlateNumber.setError(null);
+    }
+
+    @Override
+    public void showValidatePin(String phoneNum) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                ValidatePinFragment.newInstance(phoneNum, ValidatePinFragment.ACTION_ACTIVATE))
+                                   .addToBackStack(null).commit();
     }
 }

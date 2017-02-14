@@ -20,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.framgia.ishipper.R;
 import com.framgia.ishipper.ui.listener.LocationSettingCallback;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,9 +32,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
-
 import org.ocpsoft.prettytime.PrettyTime;
-
 import java.util.Date;
 import java.util.Locale;
 
@@ -65,12 +62,11 @@ public class CommonUtils {
     }
 
     public static void checkLocationRequestSetting(
-            final Activity activity,
-            GoogleApiClient googleApiClient,
+            final Activity activity, GoogleApiClient googleApiClient,
             final LocationSettingCallback callback) {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .setAlwaysShow(true)
-                .addLocationRequest(createLocationRequest());
+        LocationSettingsRequest.Builder builder =
+                new LocationSettingsRequest.Builder().setAlwaysShow(true)
+                                                     .addLocationRequest(createLocationRequest());
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi
                 .checkLocationSettings(googleApiClient, builder.build());
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
@@ -122,9 +118,9 @@ public class CommonUtils {
         context.startActivity(intent);
     }
 
-    public static Dialog showOkCancelDialog(Context context, String message,
-                                            String namePositiveButton, String nameNegativeButton,
-                                            DialogInterface.OnClickListener okClickListener) {
+    public static Dialog showOkCancelDialog(
+            Context context, String message, String namePositiveButton, String nameNegativeButton,
+            DialogInterface.OnClickListener okClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(message);
         builder.setPositiveButton(namePositiveButton, okClickListener);
@@ -135,8 +131,7 @@ public class CommonUtils {
     }
 
     public static boolean stringIsValid(String str) {
-        if (str != null && !str.trim().equals("")
-                && !str.toLowerCase().equals("null")) {
+        if (str != null && !str.trim().equals("") && !str.toLowerCase().equals("null")) {
             return true;
         }
         return false;
@@ -174,7 +169,8 @@ public class CommonUtils {
 
     private static int fixHeight(ListView listView) {
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) listView.getLayoutParams();
-        return listView.getPaddingTop() + listView.getPaddingBottom() + lp.bottomMargin + lp.topMargin;
+        return listView.getPaddingTop() + listView.getPaddingBottom() + lp.bottomMargin +
+                lp.topMargin;
     }
 
     /**
@@ -195,9 +191,9 @@ public class CommonUtils {
                         new LatLng(endPoint.latitude - scale * diffHeight - Math.abs(diffWidth) / 2,
                                 (startPoint.longitude + endPoint.longitude) / 2);
             } else {
-                latLng =
-                        new LatLng(startPoint.latitude + scale * diffHeight - Math.abs(diffWidth) / 2,
-                                (startPoint.longitude + endPoint.longitude) / 2);
+                latLng = new LatLng(
+                        startPoint.latitude + scale * diffHeight - Math.abs(diffWidth) / 2,
+                        (startPoint.longitude + endPoint.longitude) / 2);
             }
         } else {
             if (diffWidth > 0) {
@@ -212,7 +208,8 @@ public class CommonUtils {
     }
 
     public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm =
+                (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
         //If no view currently has focus, create a new one, just so we can grab a window token from it
@@ -223,7 +220,8 @@ public class CommonUtils {
     }
 
     public static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm =
+                (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
