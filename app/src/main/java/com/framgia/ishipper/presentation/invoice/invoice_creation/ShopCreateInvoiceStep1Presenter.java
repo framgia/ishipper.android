@@ -2,7 +2,6 @@ package com.framgia.ishipper.presentation.invoice.invoice_creation;
 
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
-
 import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.RoutingListener;
@@ -12,7 +11,6 @@ import com.framgia.ishipper.util.CommonUtils;
 import com.framgia.ishipper.util.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 import java.util.ArrayList;
 
 /**
@@ -25,7 +23,8 @@ public class ShopCreateInvoiceStep1Presenter implements ShopCreateInvoiceStep1Co
     private AsyncTask mGetDistanceTask;
     private LatLng mLatLngStart, mLatLngFinish;
 
-    public ShopCreateInvoiceStep1Presenter(ShopCreateInvoiceStep1Contract.View view, BaseFragment fragment) {
+    public ShopCreateInvoiceStep1Presenter(
+            ShopCreateInvoiceStep1Contract.View view, BaseFragment fragment) {
         mView = view;
         mFragment = fragment;
     }
@@ -41,6 +40,7 @@ public class ShopCreateInvoiceStep1Presenter implements ShopCreateInvoiceStep1Co
             @Override
             public void onRoutingFailure(RouteException e) {
                 mView.showMapLoadingIndicator(false);
+                mView.onDistanceError();
             }
 
             @Override
@@ -82,8 +82,9 @@ public class ShopCreateInvoiceStep1Presenter implements ShopCreateInvoiceStep1Co
             public void onRoutingSuccess(ArrayList<Route> arrayList, int i) {
                 PolylineOptions polyOptions = new PolylineOptions();
                 for (int j = 0; j < arrayList.size(); j++) {
-                    polyOptions.color(ContextCompat.getColor(mFragment.getContext().getApplicationContext(),
-                            R.color.colorGreen));
+                    polyOptions.color(ContextCompat
+                            .getColor(mFragment.getContext().getApplicationContext(),
+                                    R.color.colorGreen));
                     polyOptions.width(8);
                     polyOptions.addAll(arrayList.get(j).getPoints());
                 }
@@ -145,7 +146,6 @@ public class ShopCreateInvoiceStep1Presenter implements ShopCreateInvoiceStep1Co
     public void setStartLocation(LatLng position) {
         mLatLngStart = position;
         mView.onStartLocationSave(position);
-
     }
 
     @Override

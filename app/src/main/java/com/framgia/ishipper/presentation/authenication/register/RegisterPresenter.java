@@ -58,13 +58,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                 mActivity.dismissDialog();
                 Config.getInstance().setUserInfo(mActivity.getBaseContext(),
                                                  response.getData().getUser());
-                mActivity.getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.container,
-                             ValidatePinFragment.newInstance(phoneNum,
-                                                             ValidatePinFragment.ACTION_ACTIVATE))
-                        .addToBackStack(null)
-                        .commit();
+                mView.showValidatePin(phoneNum);
 
             }
 

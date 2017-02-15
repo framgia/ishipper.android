@@ -230,6 +230,10 @@ public class ShopCreateInvoiceStep1Fragment extends BaseFragment implements OnMa
                 break;
             case R.id.btnContinue:
                 if (!mPresenter.validateInput()) return;
+                if (mDistance == 0.0f) {
+                    showUserMessage(R.string.get_distance_error);
+                    return;
+                }
                 if (mStatus == PICK_END_POINT) {
                     mPresenter.setEndLocation(mMap.getCameraPosition().target);
                 }
@@ -339,6 +343,11 @@ public class ShopCreateInvoiceStep1Fragment extends BaseFragment implements OnMa
     @Override
     public void showMapLoadingIndicator(boolean isActive) {
         mProgressLoading.setVisibility(isActive ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onDistanceError() {
+        mDistance = 0.0f;
     }
 
     private void removePath() {

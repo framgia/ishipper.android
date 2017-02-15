@@ -20,6 +20,7 @@ public interface RegisterContract {
 
         void clearError();
 
+        void showValidatePin(String phoneNum);
     }
 
     interface Presenter {

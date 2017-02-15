@@ -31,6 +31,8 @@ public interface ShopCreateInvoiceStep1Contract {
         void onStartLocationSave(LatLng startLocation);
 
         void showMapLoadingIndicator(boolean isActive);
+
+        void onDistanceError();
     }
 
     interface Presenter {
